@@ -5,13 +5,13 @@ angular.module('walkins').config(['$stateProvider',
 	function($stateProvider) {
 		// Walkins state routing
 		$stateProvider.
+        state('createWalkin', {
+            url: '/walkins',
+            templateUrl: 'modules/walkins/views/create-walkin.client.view.html'
+        }).
 		state('listWalkins', {
-			url: '/walkins',
+			url: '/walkins/list',
 			templateUrl: 'modules/walkins/views/list-walkins.client.view.html'
-		}).
-		state('createWalkin', {
-			url: '/walkins/create',
-			templateUrl: 'modules/walkins/views/create-walkin.client.view.html'
 		}).
 		state('viewWalkin', {
 			url: '/walkins/:walkinId',

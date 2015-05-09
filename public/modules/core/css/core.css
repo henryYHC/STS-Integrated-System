@@ -13,3 +13,21 @@
 .ng-valid.ng-dirty {
 	border-color: #78FA89;
 }
+
+#title{
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2em;
+}
+
+#functions{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#functions .function{
+
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
