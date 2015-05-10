@@ -7,11 +7,14 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
     autoIncrement = require('mongoose-auto-increment');
 
+// Plugin initialization
+autoIncrement.initialize(mongoose.connection);
+
 /*
  * Field validations
  */
 var validateDevice = function(){
-    var device = this.deviceCategory
+    var device = this.deviceCategory;
     if(device === 'Computer' || device === 'Phone/Tablet')
         return this.os;
     else if(device === 'Gaming System' || device === 'TV/Media Device')
@@ -102,8 +105,7 @@ var WalkinSchema = new Schema({
     resolutionTime: {
       type: Date
     }
-
 });
 
-PostSchema.plugin(autoIncrement.plugin, 'Walkin');
+//WalkinSchema.plugin(autoIncrement.plugin, 'Walkin');
 mongoose.model('Walkin', WalkinSchema);

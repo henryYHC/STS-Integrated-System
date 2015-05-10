@@ -7,6 +7,9 @@ var init = require('./config/init')(),
 	mongoose = require('mongoose'),
 	chalk = require('chalk');
 
+// Set maximum listener to avoid memory leak
+require('events').EventEmitter.prototype._maxListeners = 20;
+
 /**
  * Main application entry file.
  * Please note that the order of loading is important.
