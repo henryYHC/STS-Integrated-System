@@ -57,16 +57,17 @@ exports.update = function(req, res) {
  */
 exports.delete = function(req, res) {
 	var walkin = req.walkin ;
+    walkin = _.extend(walkin , {isActive : false});
 
-	walkin.remove(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(walkin);
-		}
-	});
+    walkin.save(function(err) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.jsonp(walkin);
+        }
+    });
 };
 
 /**
@@ -100,7 +101,7 @@ exports.walkinByID = function(req, res, next, id) {
  * Walkin authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.walkin.user.id !== req.user.id) {
+	if (req.walkin.user.id !== req.user.id && req.user.roles == 'customer') {
 		return res.status(403).send('User is not authorized');
 	}
 	next();
