@@ -8,57 +8,69 @@ var mongoose = require('mongoose'),
 	crypto = require('crypto');
 
 /**
- * A Validation function for local strategy properties
- */
-var validateLocalStrategyProperty = function(property) {
-	return ((this.provider !== 'local' && !this.updated) || property.length);
-};
-
-/**
- * A Validation function for local strategy password
- */
-var validateLocalStrategyPassword = function(password) {
-	return (this.provider !== 'local' || (password && password.length > 6));
-};
-
-/**
  * User Schema
  */
 var UserSchema = new Schema({
+    roles: {
+        type: [{
+            type: String,
+            enum: ['admin', 'technician', 'customer']
+        }],
+        default: ['customer']
+    },
+
+    //Basic information
 	firstName: {
 		type: String,
 		trim: true,
 		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your first name']
+		required: 'Please fill in your first name'
 	},
 	lastName: {
 		type: String,
 		trim: true,
 		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your last name']
+		required: 'Please fill in your last name'
 	},
 	displayName: {
 		type: String,
 		trim: true
 	},
-	email: {
+	netid: {
 		type: String,
-		trim: true,
-		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your email'],
-		match: [/.+\@.+\..+/, 'Please fill a valid email address']
-	},
-	username: {
-		type: String,
-		unique: 'testing error message',
-		required: 'Please fill in a username',
+		required: 'Please fill in your NetID',
 		trim: true
 	},
 	password: {
 		type: String,
-		default: '',
-		validate: [validateLocalStrategyPassword, 'Password should be longer']
+		default: ''
 	},
+    phone: {
+        type: String,
+        required: 'Please fill in your phone number'
+    },
+    location: {
+        type: String,
+        enum: ['Alabama', 'Alpha Delta Pi', 'Alpha Epsilon Pi', 'Alpha Kappa Alpha', 'Alpha Tau Omega', 'Beta Theta Pi', 'Clairmont CRC', 'Clairmont Towers', 'Clairmont URC', 'Clifton', 'Delta Delta Delta', 'Delta Phi Epsilon', 'Delta Phi Lambda', 'Dobbs', 'Evans', 'Few', 'Gamma Phi Beta', 'Hamilton', 'Kappa Alpha', 'Kappa Alpha Theta', 'Kappa Kappa Gamma', 'Kappa Sigma', 'Longstreet', 'McTyeire', 'Pi Kappa Alpha', 'Raoul', 'Sigma Alpha Epsilon', 'Sigma Chi', 'Sigma Delta Tau', 'Turman', 'Woodruff', 'Xi Kappa', 'Zeta Beta Tau', 'Off Campus'],
+        required: 'Please fill in your residence hall (or off-campus)'
+    },
+
+    //User log information
+    updated: {
+        type: Date
+    },
+    lastWalkin: {
+        type: Date
+    },
+    lastCheckin: {
+        type: Date
+    },
+    created: {
+        type: Date,
+        default: Date.now
+    },
+
+    //System log information
 	salt: {
 		type: String
 	},
@@ -68,20 +80,7 @@ var UserSchema = new Schema({
 	},
 	providerData: {},
 	additionalProvidersData: {},
-	roles: {
-		type: [{
-			type: String,
-			enum: ['user', 'admin']
-		}],
-		default: ['user']
-	},
-	updated: {
-		type: Date
-	},
-	created: {
-		type: Date,
-		default: Date.now
-	},
+
 	/* For reset password */
 	resetPasswordToken: {
 		type: String
