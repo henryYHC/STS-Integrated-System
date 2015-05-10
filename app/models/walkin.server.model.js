@@ -107,5 +107,5 @@ var WalkinSchema = new Schema({
     }
 });
 
-//WalkinSchema.plugin(autoIncrement.plugin, 'Walkin');
+WalkinSchema.plugin(autoIncrement.plugin, 'Walkin');
 mongoose.model('Walkin', WalkinSchema);
