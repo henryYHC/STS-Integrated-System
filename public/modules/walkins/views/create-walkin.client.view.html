@@ -1,33 +1,25 @@
-<section data-ng-controller="WalkinsController">
-    <div class="page-header">
+<div class="col-md-3"></div>
+<section data-ng-controller="WalkinsController" class="col-md-6 conatiner">
+    <div class="page-header" style="text-align: center">
         <h1>New Walk-in Instance</h1>
     </div>
-    <div class="col-md-12">
-        <form class="form-horizontal" data-ng-submit="create()" novalidate>
-            <fieldset>
-                <div id="field">
-                    <div id="NetID" name="netid" class="form-group">
-                        <label class="control-label" for="name">Please enter your Emory NetID (OPUS username):</label>
-                        <div class="controls">
-                            <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Enter NetID here" required>
-                        </div>
-                    </div>
-                </div>
 
-                <div id="formFunctions">
-                    <div class="pull-left">
-                        <button type="button" class="btn btn-default">Previous</button>
-                    </div>
+    <form id="walkin-form" ng-submit="createWalkin()">
+        <div id="walkin-view" ui-view style="height: 300px"></div>
+    </form>
 
-                    <div class="pull-right">
-                        <button type="button" class="btn btn-primary">Next</button>
-                    </div>
-                </div>
+    <pre class="hidden">{{ formData }}</pre>
 
-				<div data-ng-show="error" class="text-danger">
-					<strong data-ng-bind="error"></strong>
-				</div>
-            </fieldset>
-        </form>
+    <div id="status-buttons" class="text-center">
+        <a ui-sref-active="active" ui-sref=".netid"><span>1</span> NetID</a>
+        <a ui-sref-active="active" ui-sref=".info"><span>2</span> Information</a>
+        <a ui-sref-active="active" ui-sref=".device"><span>3</span> Device</a>
+        <a ui-sref-active="active" ui-sref=".problem"><span>4</span> Problem</a>
+        <a ui-sref-active="active" ui-sref=".review"><span>5</span> Review</a>
+    </div>
+
+    <div data-ng-show="error" class="text-center text-danger">
+        <strong data-ng-bind="error"></strong>
     </div>
 </section>
+<div class="col-md-3"></div>

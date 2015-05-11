@@ -1,12 +1,15 @@
 'use strict';
 
 // Walkins controller
-angular.module('walkins').controller('WalkinsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Walkins',
-	function($scope, $stateParams, $location, Authentication, Walkins) {
-		$scope.authentication = Authentication;
+angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '$stateParams', '$location', 'Authentication', 'Walkins',
+	function($scope, $state,  $stateParams, $location, Authentication, Walkins) {
+		//$location.path('walkins/netid');
+        $scope.authentication = Authentication;
+
+        $scope.formData = {};
 
 		// Create new Walkin
-		$scope.create = function() {
+		$scope.createWalkin = function() {
 			// Create new Walkin object
 			var walkin = new Walkins ({
 				name: this.name
@@ -62,5 +65,14 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$statePara
 				walkinId: $stateParams.walkinId
 			});
 		};
+
+        // Validation
+        $scope.validateNetID = function() {
+            var netid = $scope.formData.netid;
+        }
 	}
+]).controller('WalkinNetidController', ['$scope', '$state', '$http',
+        function($scope, $state, $http) {
+
+        }
 ]);

@@ -6,9 +6,35 @@ angular.module('walkins').config(['$stateProvider',
 		// Walkins state routing
 		$stateProvider.
         state('createWalkin', {
+            abstract: true,
             url: '/walkins',
-            templateUrl: 'modules/walkins/views/create-walkin.client.view.html'
+            templateUrl: 'modules/walkins/views/create-walkin.client.view.html',
+            css: 'modules/walkins/css/new-walkin.css'
         }).
+
+        // Multi-page walkin form route
+        state('createWalkin.netid', {
+            url: '',
+            templateUrl: 'modules/walkins/views/create-walkin-netid.client.view.html',
+        }).
+        state('createWalkin.info', {
+            url: '/info',
+            templateUrl: 'modules/walkins/views/create-walkin-info.client.view.html'
+        }).
+        state('createWalkin.device', {
+            url: '/device',
+            templateUrl: 'modules/walkins/views/create-walkin-device.client.view.html'
+        }).
+        state('createWalkin.problem', {
+            url: '/problem',
+            templateUrl: 'modules/walkins/views/create-walkin-problem.client.view.html'
+        }).
+        state('createWalkin.review', {
+            url: '/review',
+            templateUrl: 'modules/walkins/views/create-walkin-review.client.view.html'
+        }).
+
+        // Walkin form functions
 		state('listWalkins', {
 			url: '/walkins/list',
 			templateUrl: 'modules/walkins/views/list-walkins.client.view.html'
