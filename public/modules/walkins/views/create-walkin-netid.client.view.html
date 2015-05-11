@@ -1,14 +1,14 @@
 <section data-ng-controller="WalkinNetidController">
     <div id="NetID" name="netid" class="form-group">
-        <label class="control-label" for="name">Please enter your Emory NetID (OPUS username):</label>
+        <label class="control-label" for="net-id">Please enter your Emory NetID (OPUS username):</label>
         <div class="controls">
-            <input type="text" id="name" class="form-control" placeholder="Enter NetID here" data-ng-model="formData.netid" required>
+            <input type="text" id="net-id" class="form-control" placeholder="Enter NetID here" data-ng-model="formData.user.netid" required>
         </div>
     </div>
 
     <div id="formFunctions" style="">
         <div class="pull-right">
-            <a class="btn btn-primary" ng-click="validateNetID">Next&emsp;<span class="glyphicon glyphicon-circle-arrow-right"></span></a>
+            <a class="btn btn-primary" ng-click="validateNetID()">Next&emsp;<span class="glyphicon glyphicon-circle-arrow-right"></span></a>
         </div>
     </div>
 </section>

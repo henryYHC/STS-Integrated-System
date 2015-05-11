@@ -3,10 +3,9 @@
 // Walkins controller
 angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '$stateParams', '$location', 'Authentication', 'Walkins',
 	function($scope, $state,  $stateParams, $location, Authentication, Walkins) {
-		//$location.path('walkins/netid');
         $scope.authentication = Authentication;
 
-        $scope.formData = {};
+        $scope.formData = { };
 
 		// Create new Walkin
 		$scope.createWalkin = function() {
@@ -61,18 +60,54 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
 
 		// Find existing Walkin
 		$scope.findOne = function() {
-			$scope.walkin = Walkins.get({ 
+			$scope.walkin = Walkins.get({
 				walkinId: $stateParams.walkinId
 			});
 		};
-
-        // Validation
-        $scope.validateNetID = function() {
-            var netid = $scope.formData.netid;
-        }
 	}
 ]).controller('WalkinNetidController', ['$scope', '$state', '$http',
-        function($scope, $state, $http) {
+    function($scope, $state, $http) {
+        $scope.validateNetID = function(){
+            var netid = $scope.formData.user.netid;
+
+            if(netid === undefined || netid === '') {
+                $scope.$parent.$parent.error = 'Please put in your NetID.';
+            }
+            else{
+                $http.get('/user/validate/'+netid)
+                    .success(function(response){
+                        switch(response.status){
+                            // User record found
+                            case 'Found':
+                                $scope.formData.userExisted = true;
+                                $scope.formData.user = response.user;
+                                break;
+                            // User record not found
+                            case 'Not found':
+                                $scope.formData.userExisted = false;
+                                break;
+                            // User NetId invalid
+                            case 'Invalid':
+                                $scope.$parent.$parent.error = 'User NetId is invalid';
+                                return;
+                            default:
+                                $scope.$parent.$parent.error = 'Something is wrong with user record query.';
+                                return;
+                        }
+
+                        delete $scope.$parent.$parent.error;
+                        $state.go('createWalkin.info');
+                    })
+                    .error(function(response){
+                        $scope.$parent.$parent.error = response;
+                    });
+            }
+        };
+    }
+]).controller('WalkinInfoController', ['$scope', '$state', '$http',
+    function($scope, $state, $http){
+        $scope.getLocationOptions = function(){
 
         }
+    }
 ]);
