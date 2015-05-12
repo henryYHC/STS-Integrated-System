@@ -14,6 +14,9 @@ module.exports = function(app) {
 		.put(users.requiresLogin, walkins.hasAuthorization, walkins.update)
 		.delete(users.requiresLogin, walkins.hasAuthorization, walkins.delete);
 
+    // Walkin util routes
+    app.route('/walkins/util/loadLocationOptions').get(walkins.getLocationOptions);
+
 	// Finish by binding the Walkin middleware
 	app.param('walkinId', walkins.walkinByID);
 };

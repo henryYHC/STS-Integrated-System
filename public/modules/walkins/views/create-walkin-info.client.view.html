@@ -18,15 +18,23 @@
         </div>
     </div>
     <div id="location" name="location" class="form-group">
-        <label class="control-label" for="location-">Please enter your residence hall (off-campus):</label>
+        <label class="control-label" for="location-">
+            Please enter your residence hall:
+            <div class="pull-right" style="margin-left: 1em;">
+                <input type="checkbox" ng-click="offCampusChecked()"> Off Campus?<br>
+            </div>
+        </label>
         <div class="controls">
-            <input type="text" id="location-" class="form-control" placeholder="Enter last name here" data-ng-model="formData.user.location" required>
+            <select id="location-" class="form-control" data-ng-model="formData.user.location" ng-disabled="offCampus" required>
+                <option value="" disabled selected>Select your residence hall</option>
+                <option ng-repeat="option in locationOptions" value="{{option}}">{{option}}</option>
+            </select>
         </div>
     </div>
 
     <div id="formFunctions" style="">
         <div class="pull-left">
-            <a class="btn btn-default" ng-click=""><span class="glyphicon glyphicon-circle-arrow-left"></span>&emsp;Previous</a>
+            <a class="btn btn-default" ui-sref="createWalkin.netid"><span class="glyphicon glyphicon-circle-arrow-left"></span>&emsp;Previous</a>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" ng-click="">Next&emsp;<span class="glyphicon glyphicon-circle-arrow-right"></span></a>

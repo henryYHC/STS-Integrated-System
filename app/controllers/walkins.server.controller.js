@@ -5,7 +5,8 @@
  */
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
-	Walkin = mongoose.model('Walkin'),
+	User = mongoose.model('User'),
+    Walkin = mongoose.model('Walkin'),
 	_ = require('lodash');
 
 /**
@@ -105,4 +106,11 @@ exports.hasAuthorization = function(req, res, next) {
 		return res.status(403).send('User is not authorized');
 	}
 	next();
+};
+
+/*
+ * Walkin util
+ */
+exports.getLocationOptions = function (req, res) {
+    res.json(User.schema.path('location').enumValues);
 };

@@ -5,6 +5,7 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
 	function($scope, $state,  $stateParams, $location, Authentication, Walkins) {
         $scope.authentication = Authentication;
 
+        $scope.formStatus = { };
         $scope.formData = { };
 
 		// Create new Walkin
@@ -96,6 +97,7 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
                         }
 
                         delete $scope.$parent.$parent.error;
+                        $scope.formStatus.netid = true;
                         $state.go('createWalkin.info');
                     })
                     .error(function(response){
@@ -106,8 +108,19 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
     }
 ]).controller('WalkinInfoController', ['$scope', '$state', '$http',
     function($scope, $state, $http){
-        $scope.getLocationOptions = function(){
+        // Form status check
+        if(!$scope.formStatus.netid)    $state.go('createWalkin.netid');
 
+        // Load location options
+        $scope.offCampus = false;
+        $http.get('/walkins/util/loadLocationOptions').success(function(response){
+            $scope.locationOptions = response;
+        });
+
+        // Off campus checkbox
+        $scope.offCampusChecked = function(){
+            $scope.offCampus = !$scope.offCampus;
+            if($scope.offCampus)    $scope.formData.user.location = 'Off Campus';
         }
     }
 ]);
