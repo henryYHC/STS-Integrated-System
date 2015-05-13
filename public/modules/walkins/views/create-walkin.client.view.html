@@ -1,11 +1,11 @@
 <div class="col-md-3"></div>
 <section data-ng-controller="WalkinsController" class="col-md-6 conatiner">
-    <div class="page-header" style="text-align: center">
+    <div class="page-header" style="text-align: center; margin-top: 0px;">
         <h1>New Walk-in Instance</h1>
     </div>
 
     <form id="walkin-form" ng-submit="createWalkin()">
-        <div id="walkin-view" ui-view style="height: 400px"></div>
+        <div id="walkin-view" ui-view style="height: 420px"></div>
         <div data-ng-show="error" class="text-center text-danger" style="margin-bottom: 1em;">
             <strong data-ng-bind="error"></strong>
         </div>
@@ -13,7 +13,7 @@
 
     <pre class="hidden">{{ formData }}</pre>
 
-    <div id="status-buttons" class="text-center">
+    <div class="status-buttons" class="text-center" style="margin-left: 3em;">
         <a ui-sref-active="active" ui-sref=".netid"><span>1</span> NetID</a>
         <a ui-sref-active="active" ui-sref=".info"><span>2</span> Information</a>
         <a ui-sref-active="active" ui-sref=".device"><span>3</span> Device</a>

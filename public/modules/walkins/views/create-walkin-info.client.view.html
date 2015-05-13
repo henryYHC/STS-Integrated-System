@@ -14,7 +14,7 @@
     <div id="phone" name="phone" class="form-group">
         <label class="control-label" for="phone-">Please enter your phone number:</label>
         <div class="controls">
-            <input type="text" id="phone-" class="form-control" placeholder="Enter phone number here" data-ng-model="formData.user.phone" required>
+            <input type="number" id="phone-" class="form-control" placeholder="Enter phone number here" data-ng-model="formData.user.phone" ng-minlength="10" ng-maxlength="10" required>
         </div>
     </div>
     <div id="location" name="location" class="form-group">
@@ -32,12 +32,12 @@
         </div>
     </div>
 
-    <div id="formFunctions" style="">
+    <div class="formFunctions" style="">
         <div class="pull-left">
             <a class="btn btn-default" ui-sref="createWalkin.netid"><span class="glyphicon glyphicon-circle-arrow-left"></span>&emsp;Previous</a>
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" ng-click="">Next&emsp;<span class="glyphicon glyphicon-circle-arrow-right"></span></a>
+            <a class="btn btn-primary" ng-click="validateInfo()">Next&emsp;<span class="glyphicon glyphicon-circle-arrow-right"></span></a>
         </div>
     </div>
 </section>
