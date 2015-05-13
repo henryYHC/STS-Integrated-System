@@ -121,6 +121,98 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
         $scope.offCampusChecked = function(){
             $scope.offCampus = !$scope.offCampus;
             if($scope.offCampus)    $scope.formData.user.location = 'Off Campus';
+        };
+
+        // Validation
+        $scope.validateInfo = function(){
+            var firstName = $scope.formData.user.firstName,
+                lastName = $scope.formData.user.lastName,
+                phone = $scope.formData.user.phone,
+                location = $scope.formData.user.location;
+
+            // Validate first and last name
+            if      (!firstName){   $scope.$parent.$parent.error = 'Please put in your first name.'; return; }
+            else if (!lastName){    $scope.$parent.$parent.error = 'Please put in your last name.'; return; }
+
+            // Validate phone number
+            if(!phone){  $scope.$parent.$parent.error = 'Please put in your phone number in the correct format (All digtis).'; return; }
+
+            // Validate location
+            if(!location){   $scope.$parent.$parent.error = 'Please select your residence hall or off campus.'; return; }
+
+            delete $scope.$parent.$parent.error;
+            $scope.formStatus.info = true;
+            $state.go('createWalkin.device');
         }
+    }
+]).controller('WalkinDeviceController', ['$scope', '$state', '$http',
+    function($scope, $state, $http){
+        // Form status check
+        if(!$scope.formStatus.info)     $state.go('createWalkin.info');
+        if(!$scope.formStatus.netid)    $state.go('createWalkin.netid');
+
+        // State initialization
+        $scope.state = { 'deviceCategory' : true, 'computerOS' : false, 'mobileOS' : false, 'TVMDevice' : false, 'GamingDevice' : false, otherDevice : false };
+
+        $scope.selectDeviceCategory = function(category){
+            $scope.formData.deviceCategory = category;
+
+            if(category === 'Other')    setState('otherDevice');
+            else                        setState(category);
+        };
+
+        $scope.selectOS = function(os){
+            $scope.formData.os = os;
+
+            if(os === 'Other')    setState('otherDevice');
+            else                        validateDevice();
+        };
+
+        $scope.selectDeviceType = function(type){
+            $scope.formData.deviceType = type;
+
+            if(type === 'Other')    setState('otherDevice');
+            else                        validateDevice();
+        };
+
+        // Validate device
+        $scope.validateOtherDevice = function(){
+            if(!$scope.formData.otherDevice)    $scope.$parent.$parent.error = 'Please sepcifiy your device information.';
+            else                                validateDevice();
+        };
+
+        var validateDevice = function() {
+            if ($scope.state.otherDevice || ($scope.formData.deviceCategory && ($scope.formData.os || $scope.formData.deviceType))) {
+                delete $scope.$parent.$parent.error;
+                $scope.formStatus.device = true;
+                $state.go('createWalkin.problem');
+            }
+            else
+                $scope.$parent.$parent.error = 'There is something wrong with your device selection.';
+        };
+
+        // State helper function
+        $scope.resetState = function(){
+            setState('deviceCategory');
+        };
+
+        var setState = function(state){
+            $scope.state.deviceCategory = false;
+            $scope.state.computerOS = false;
+            $scope.state.mobileOS = false;
+            $scope.state.TVMDevice = false;
+            $scope.state.GamingDevice = false;
+            $scope.state.otherDevice = false;
+
+            switch(state){
+                case 'deviceCategory':  $scope.state.deviceCategory = true; break;
+                case 'Computer':      $scope.state.computerOS = true; break;
+                case 'Phone/Tablet':        $scope.state.mobileOS = true; break;
+                case 'TV/Media Device':       $scope.state.TVMDevice = true; break;
+                case 'Gaming System':    $scope.state.GamingDevice = true; break;
+                case 'otherDevice':     $scope.state.otherDevice = true; break;
+
+            }
+        };
     }
 ]);

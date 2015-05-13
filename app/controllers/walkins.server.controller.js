@@ -114,3 +114,6 @@ exports.hasAuthorization = function(req, res, next) {
 exports.getLocationOptions = function (req, res) {
     res.json(User.schema.path('location').enumValues);
 };
+exports.getDeviceType = function (req, res) {
+    res.json(Walkin.schema.path('deviceCategory').enumValues);
+};
