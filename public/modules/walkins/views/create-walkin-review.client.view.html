@@ -1,0 +1,55 @@
+<section data-ng-controller="WalkinReviewController">
+        <div class="form-horizontal">
+            <div class="form-group" style="text-align: left">
+                <label class="col-sm-3 control-label" for="netid">NetID:</label>
+                <div class="col-sm-9" id="netid" style="margin-top: 8px;">{{formData.user.netid}}</div>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            <div class="form-group" style="text-align: left">
+                <label class="col-sm-3 control-label" for="name">Name:</label>
+                <div class="col-sm-9" id="name" style="margin-top: 8px;">{{formData.user.firstName}} {{formData.user.firstName}}</div>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            <div class="form-group" style="text-align: left">
+                <label class="col-sm-3 control-label" for="phone">Phone:</label>
+                <div class="col-sm-9" id="phone" style="margin-top: 8px;">{{formData.user.phone}}</div>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            <div class="form-group" style="text-align: left">
+                <label class="col-sm-3 control-label" for="location">Residenecn Hall:</label>
+                <div class="col-sm-9" id="location" style="margin-top: 8px;">{{formData.user.location}}</div>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            <div class="form-group" style="text-align: left">
+                <label class="col-sm-3 control-label" for="deviceT">Device Type:</label>
+                <div class="col-sm-9" id="deviceT" style="margin-top: 8px;">{{formData.deviceCategory}}</div>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            <div class="form-group" style="text-align: left">
+                <label class="col-sm-3 control-label" for="deviceI">Device info:</label>
+                <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="formData.deviceType">{{formData.deviceType}}</div>
+                <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="formData.os">{{formData.os}}</div>
+            </div>
+        </div>
+        <div class="form-horizontal" ng-show="formData.otherDevice">
+            <div class="form-group" style="text-align: left">
+                <label class="col-sm-3 control-label" for="other">Other info:</label>
+                <div class="col-sm-9" id="other" style="margin-top: 8px;">{{formData.otherDevice}}</div>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            <div class="form-group" style="text-align: left;">
+                <label class="col-sm-3 control-label" for="problem">Problem description:</label>
+                <div class="col-sm-9" id="problem" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;">{{formData.description}}</p></div>
+            </div>
+        </div>
+    <div class="formFunctions" style="margin-top: 0.5em">
+        <a class="btn btn-lg btn-block btn-primary" >Submit</a>
+    </div>
+</section>
+

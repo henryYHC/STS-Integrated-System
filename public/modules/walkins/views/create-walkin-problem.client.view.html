@@ -1,0 +1,16 @@
+<section data-ng-controller="WalkinProblemController">
+    <div id="problem" name="problem" class="form-group">
+        <label class="control-label" for="problem-">Please describe the problem you encounter:</label>
+        <div class="controls">
+            <textarea rows="10" id="problem-" class="form-control" placeholder="Enter problem here" data-ng-model="formData.description" required></textarea>
+        </div>
+    </div>
+    <div class="formFunctions" style="">
+        <div class="pull-left">
+            <a class="btn btn-default" ui-sref="createWalkin.device"><span class="glyphicon glyphicon-circle-arrow-left"></span>&emsp;Previous</a>
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-primary" ng-click="validateProblem()">Next&emsp;<span class="glyphicon glyphicon-circle-arrow-right"></span></a>
+        </div>
+    </div>
+</section>

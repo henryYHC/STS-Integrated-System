@@ -71,6 +71,8 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
         $scope.validateNetID = function(){
             var netid = $scope.formData.user.netid;
 
+            $scope.formStatus.netid = false;
+
             if(netid === undefined || netid === '') {
                 $scope.$parent.$parent.error = 'Please put in your NetID.';
             }
@@ -111,6 +113,8 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
         // Form status check
         if(!$scope.formStatus.netid)    $state.go('createWalkin.netid');
 
+        $scope.formStatus.info = false;
+
         // Load location options
         $scope.offCampus = false;
         $http.get('/walkins/util/loadLocationOptions').success(function(response){
@@ -143,7 +147,7 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
             delete $scope.$parent.$parent.error;
             $scope.formStatus.info = true;
             $state.go('createWalkin.device');
-        }
+        };
     }
 ]).controller('WalkinDeviceController', ['$scope', '$state', '$http',
     function($scope, $state, $http){
@@ -151,13 +155,22 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
         if(!$scope.formStatus.info)     $state.go('createWalkin.info');
         if(!$scope.formStatus.netid)    $state.go('createWalkin.netid');
 
+        $scope.formStatus.device = false;
+        $scope.formData.deviceCategory = '';
+        $scope.formData.deviceType = '';
+        $scope.formData.os = '';
+        $scope.formData.otherDevice = '';
+
         // State initialization
         $scope.state = { 'deviceCategory' : true, 'computerOS' : false, 'mobileOS' : false, 'TVMDevice' : false, 'GamingDevice' : false, otherDevice : false };
 
         $scope.selectDeviceCategory = function(category){
             $scope.formData.deviceCategory = category;
 
-            if(category === 'Other')    setState('otherDevice');
+            if(category === 'Other'){
+                setState('otherDevice');
+                $scope.formData.deviceType = 'Other';
+            }
             else                        setState(category);
         };
 
@@ -177,7 +190,7 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
 
         // Validate device
         $scope.validateOtherDevice = function(){
-            if(!$scope.formData.otherDevice)    $scope.$parent.$parent.error = 'Please sepcifiy your device information.';
+            if(!$scope.formData.otherDevice)    $scope.$parent.$parent.error = 'Please specify your device information.';
             else                                validateDevice();
         };
 
@@ -214,5 +227,32 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
 
             }
         };
+    }
+]).controller('WalkinProblemController', ['$scope', '$state', '$http',
+    function($scope, $state, $http){
+        if(!$scope.formStatus.device)     $state.go('createWalkin.device');
+        if(!$scope.formStatus.info)     $state.go('createWalkin.info');
+        if(!$scope.formStatus.netid)    $state.go('createWalkin.netid');
+
+        $scope.formStatus.problem = false;
+
+        $scope.validateProblem = function(){
+            if(!$scope.formData.description) {
+                $scope.$parent.$parent.error = 'Please specify your problem.';
+                return;
+            }
+            delete $scope.$parent.$parent.error;
+            $scope.formStatus.problem = true;
+            $state.go('createWalkin.review');
+        };
+    }
+]).controller('WalkinReviewController', ['$scope', '$state', '$http',
+    function($scope, $state, $http){
+        if(!$scope.formStatus.problem)     $state.go('createWalkin.problem');
+        if(!$scope.formStatus.device)     $state.go('createWalkin.device');
+        if(!$scope.formStatus.info)     $state.go('createWalkin.info');
+        if(!$scope.formStatus.netid)    $state.go('createWalkin.netid');
+
+        console.log($scope.formData);
     }
 ]);
