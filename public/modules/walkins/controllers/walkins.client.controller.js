@@ -112,7 +112,6 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
     function($scope, $state, $http){
         // Form status check
         if(!$scope.formStatus.netid)    $state.go('createWalkin.netid');
-
         $scope.formStatus.info = false;
 
         // Load location options
@@ -253,6 +252,10 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
         if(!$scope.formStatus.info)     $state.go('createWalkin.info');
         if(!$scope.formStatus.netid)    $state.go('createWalkin.netid');
 
-        console.log($scope.formData);
+        $scope.submitWalkin = function(){
+            $http.post('/walkins', $scope.formData).success(function(){
+               console.log('sucess!');
+            });
+        };
     }
 ]);

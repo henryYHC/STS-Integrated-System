@@ -28,6 +28,11 @@ exports.validateNetId = function(req, res){
 
     if(!user)
         res.jsonp( { status : 'Not found', user : user });
-    else
+    else{
+        user.provider = undefined;
+        user.password = undefined;
+        user.roles = undefined;
         res.jsonp( { status : 'Found', user : user });
+    }
+
 };

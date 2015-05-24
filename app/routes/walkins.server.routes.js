@@ -7,7 +7,7 @@ module.exports = function(app) {
 	// Walkins Routes
 	app.route('/walkins')
 		.get(walkins.list)
-		.post(users.requiresLogin, walkins.create);
+		.post(walkins.create);
 
 	app.route('/walkins/:walkinId')
 		.get(walkins.read)

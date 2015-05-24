@@ -39,17 +39,19 @@ var WalkinSchema = new Schema({
     deviceCategory: {
         type: String,
         required: 'Please fill in the category of your device',
-        enum: ['', 'Computer', 'Phone/Tablet', 'Gaming System', 'TV/Media Device', 'Other']
+        enum: ['Computer', 'Phone/Tablet', 'Gaming System', 'TV/Media Device', 'Other']
     },
     deviceType: {
         type: String,
-        enum: ['TV', 'Roku', 'Apple TV', 'Fire Stick', 'Xbox', 'Playstation', 'Nintendo', 'Other'],
-        validate: [validateDevice, 'Please fill in the type of your device']
+        enum: ['N/A', 'TV', 'Roku', 'Apple TV', 'Fire Stick', 'Xbox', 'Playstation', 'Nintendo', 'Other'],
+        validate: [validateDevice, 'Please fill in the type of your device'],
+        default: 'N/A'
     },
     os: {
-      type: String,
-      enum: ['Windows 10', 'Windows 8/8.1', 'Windows 7', 'Mac OSX 10.10 (Yosemite)', 'Mac OSX 10.9 (Mavericks)', 'Mac OSX 10.8 (Mountain Lion)', 'Mac OSX 10.7 (Lion)', 'iOS', 'Android', 'Windows', 'Other'],
-      validate: [validateDevice, 'Please fill in the operating system type of your device']
+        type: String,
+        enum: ['N/A', 'Windows 10', 'Windows 8/8.1', 'Windows 7', 'Mac OSX 10.10 (Yosemite)', 'Mac OSX 10.9 (Mavericks)', 'Mac OSX 10.8 (Mountain Lion)', 'Mac OSX 10.7 (Lion)', 'iOS', 'Android', 'Windows', 'Other'],
+        validate: [validateDevice, 'Please fill in the operating system type of your device'],
+        default: 'N/A'
     },
     otherDevice: {
         type: String,

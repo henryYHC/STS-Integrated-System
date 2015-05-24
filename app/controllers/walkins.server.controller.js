@@ -13,17 +13,27 @@ var mongoose = require('mongoose'),
  * Create a Walkin
  */
 exports.create = function(req, res) {
-	var walkin = new Walkin(req.body);
-	walkin.user = req.user;
+	var user, data = req.body;
+
+    if(!data.userExisted){
+        data.user.provider = 'local';
+        data.user.displayName = data.user.firstName + ' ' + data.user.lastName;
+        user = new User(data.user);
+        user.save(function(err){
+            console.log(err);
+            if (err) return res.status(400).send({   message: errorHandler.getErrorMessage(err) });
+        });
+    }
+    else user = data.user;
+    delete data.user;   delete data.userExisted;
+
+	var walkin = new Walkin(data);
+	walkin.user = user;
 
 	walkin.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(walkin);
-		}
+
+		if (err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        else     res.jsonp(walkin);
 	});
 };
 
