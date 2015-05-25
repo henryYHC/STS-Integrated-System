@@ -254,8 +254,8 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
             $state.go('createWalkin.review');
         };
     }
-]).controller('WalkinReviewController', ['$scope', '$state', '$http',
-    function($scope, $state, $http){
+]).controller('WalkinReviewController', ['$scope', '$state', '$http', '$location',
+    function($scope, $state, $http, $location){
         if(!$scope.formStatus.problem)     $state.go('createWalkin.problem');
         if(!$scope.formStatus.device)     $state.go('createWalkin.device');
         if(!$scope.formStatus.info)     $state.go('createWalkin.info');
@@ -264,7 +264,8 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
         $scope.submitWalkin = function(){
             $http.post('/walkins', $scope.formData)
                 .success(function(){
-                    console.log('sucess!');
+                    alert('Walk in request submitted sucessfully!');
+                    $location.path('/#!/');
                 })
                 .error(function(err){
                     $scope.error = err.message;

@@ -60,7 +60,10 @@ exports.create = function(req, res) {
                 walkin.save(function(err) {
                     console.log(err);
                     if (err){ return res.status(400).send({ message: errorHandler.getErrorMessage(err) }); }
-                    else     res.jsonp(walkin);
+                    else{
+                        alert('Walk in request submitted sucessfully!');
+                        $http.redirect()
+                    }
                 });
             });
         });
