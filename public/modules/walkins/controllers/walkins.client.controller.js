@@ -69,7 +69,7 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
 ]).controller('WalkinNetidController', ['$scope', '$state', '$http',
     function($scope, $state, $http) {
         $scope.validateNetID = function(){
-            var netid = $scope.formData.user.netid;
+            var netid = $scope.formData.user.username;
 
             $scope.formStatus.netid = false;
 
@@ -88,6 +88,7 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
                             // User record not found
                             case 'Not found':
                                 $scope.formData.userExisted = false;
+                                $scope.formData.user = {'username' : netid};
                                 break;
                             // User NetId invalid
                             case 'Invalid':
@@ -118,6 +119,14 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
         $scope.offCampus = false;
         $http.get('/walkins/util/loadLocationOptions').success(function(response){
             $scope.locationOptions = response;
+            if($scope.formData.userExisted){
+                var temp = $scope.formData.user.location;
+                delete $scope.formData.user.location;
+
+                if(temp === 'Off Campus') $scope.offCampus = true;
+                $scope.formData.user.location = temp;
+            }
+
         });
 
         // Off campus checkbox
@@ -253,9 +262,13 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
         if(!$scope.formStatus.netid)    $state.go('createWalkin.netid');
 
         $scope.submitWalkin = function(){
-            $http.post('/walkins', $scope.formData).success(function(){
-               console.log('sucess!');
-            });
+            $http.post('/walkins', $scope.formData)
+                .success(function(){
+                    console.log('sucess!');
+                })
+                .error(function(err){
+                    $scope.error = err.message;
+                });
         };
     }
 ]);

@@ -8,9 +8,9 @@ var _ = require('lodash'),
 /*
  * User-Instance middleware
  */
-exports.userByNetId = function(req, res, next, netid) {
+exports.userByNetId = function(req, res, next, username) {
     User.findOne({
-        netid: netid
+        username: username
     }).exec(function(err, user) {
         if (err) return next(err);
 

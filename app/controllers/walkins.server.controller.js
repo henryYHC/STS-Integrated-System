@@ -18,23 +18,53 @@ exports.create = function(req, res) {
     if(!data.userExisted){
         data.user.provider = 'local';
         data.user.displayName = data.user.firstName + ' ' + data.user.lastName;
+        data.user.lastWalkin = Date.now();
         user = new User(data.user);
+
         user.save(function(err){
-            console.log(err);
             if (err) return res.status(400).send({   message: errorHandler.getErrorMessage(err) });
+
+            delete data.user;   delete data.userExisted;
+            var walkin = new Walkin(data);
+            walkin.user = user._id;
+
+            if(!walkin.deviceType) walkin.deviceType = 'N/A';
+            if(!walkin.os)         walkin.os = 'N/A';
+
+            walkin.save(function(err) {
+                if (err){ return res.status(400).send({ message: errorHandler.getErrorMessage(err) }); }
+                else     res.jsonp(walkin);
+            });
         });
     }
-    else user = data.user;
-    delete data.user;   delete data.userExisted;
+    else{
+        data.user.lastWalkin = Date.now();
+        User.findOne({
+            _id: data.user._id
+        }).exec(function(err, foundUser) {
+            if (!foundUser) return res.status(400).send({ message: 'Failed to load User ' + data.user._id });
+            foundUser = _.extend(foundUser, data.user);
 
-	var walkin = new Walkin(data);
-	walkin.user = user;
+            foundUser.save(function(err){
+                if (err) return res.status(400).send({   message: errorHandler.getErrorMessage(err) });
 
-	walkin.save(function(err) {
+                delete data.user;   delete data.userExisted;
+                var walkin = new Walkin(data);
+                walkin.user = foundUser._id;
 
-		if (err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-        else     res.jsonp(walkin);
-	});
+                if(!walkin.deviceType) walkin.deviceType = 'N/A';
+                if(!walkin.os)         walkin.os = 'N/A';
+
+                console.log(walkin);
+
+                walkin.save(function(err) {
+                    console.log(err);
+                    if (err){ return res.status(400).send({ message: errorHandler.getErrorMessage(err) }); }
+                    else     res.jsonp(walkin);
+                });
+            });
+        });
+    }
 };
 
 /**

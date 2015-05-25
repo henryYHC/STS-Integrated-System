@@ -21,13 +21,13 @@
         <label class="control-label" for="location-">
             Please enter your residence hall:
             <div class="pull-right" style="margin-left: 1em;">
-                <input type="checkbox" ng-click="offCampusChecked()"> Off Campus?<br>
+                <input type="checkbox" ng-click="offCampusChecked()" ng-checked="formData.user.location == 'Off Campus'"> Off Campus?<br>
             </div>
         </label>
         <div class="controls">
             <select id="location-" class="form-control" data-ng-model="formData.user.location" ng-disabled="offCampus" required>
                 <option value="" disabled selected>Select your residence hall</option>
-                <option ng-repeat="option in locationOptions" value="{{option}}">{{option}}</option>
+                <option ng-repeat="option in locationOptions" value="{{option}}" ng-selected="option == formData.user.location">{{option}}</option>
             </select>
         </div>
     </div>
