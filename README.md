@@ -7,7 +7,8 @@
 		npm install -g bower
 
 4. Install Grunt:
-
+		
+		npm install
 		npm install -g grunt-cli
 		
 5. Clone this repo to you destinated directory
@@ -20,7 +21,8 @@
 
 		cd /../../STS_IntegratedSystem
 		
-2. Initialize a MongoDB instance (port set to 27017)
+2. Initialize a MongoDB instance (port set to 27017) 
+   Important: User needs to have read/write permissions to /data/db/ folder
 
 		mongod
 	
