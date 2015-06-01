@@ -61,8 +61,7 @@ exports.create = function(req, res) {
                     console.log(err);
                     if (err){ return res.status(400).send({ message: errorHandler.getErrorMessage(err) }); }
                     else{
-                        alert('Walk in request submitted sucessfully!');
-                        $http.redirect()
+                        res.jsonp(walkin);
                     }
                 });
             });
@@ -117,8 +116,20 @@ exports.delete = function(req, res) {
 /**
  * List of Walkins
  */
-exports.list = function(req, res) { 
-	Walkin.find().sort('-created').populate('user', 'displayName').exec(function(err, walkins) {
+exports.queue = function(req, res){
+    Walkin.find({ isActive : true, status : 'In queue' }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.jsonp(walkins);
+        }
+    });
+};
+
+exports.list = function(req, res) {
+	Walkin.find({ isActive : true }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

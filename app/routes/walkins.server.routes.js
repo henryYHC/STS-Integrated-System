@@ -9,6 +9,8 @@ module.exports = function(app) {
 		.get(walkins.list)
 		.post(walkins.create);
 
+    app.route('/walkins/queue').get(walkins.queue);
+
 	app.route('/walkins/:walkinId')
 		.get(walkins.read)
 		.put(users.requiresLogin, walkins.hasAuthorization, walkins.update)

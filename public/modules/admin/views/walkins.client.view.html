@@ -1,0 +1,74 @@
+<section data-ng-controller="AdminWalkinsController">
+	<h1>STS Admin Panel - Walk in </h1>
+    <hr/>
+    <div class="container">
+        <div class="col-md-2" ng-init="initQueue()">
+            <h4>Process Queue<div class="pull-right"><a ng-click="initQueue()"><span class="glyphicon glyphicon-retweet" tooltip-placement="top" tooltip="Refresh"></div></a></h4>
+            <table class="table table-hover">
+                <tr>
+                    <th>Order</th>
+                    <th>Customer</th>
+                </tr>
+                <tr data-ng-repeat="queueItem in queueItems | orderBy: '-created'" data-ng-href="#">
+                    <td>{{ $index + 1 }} <a ng-click="gotoWalkin({{queueItem._id}})"><span class="glyphicon glyphicon-log-in" tooltip-placement="top" tooltip="Goto"></span></a></td>
+                    <td data-ng-bind="queueItem.user.displayName"></td>
+                </tr>
+            </table>
+            <div class="alert alert-warning text-center" data-ng-hide="!queueItems.$resolved || queueItems.length">
+                Nothin in queue!
+            </div>
+        </div>
+        <div class="col-md-10" ng-init="initListing()">
+            <h4>Walkin Listings</h4>
+            <table class="table table-hover">
+                <tr>
+                    <th>Actions</th>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>NetID</th>
+                    <th>Device Type</th>
+                    <th>Device Spec</th>
+                    <th>Status</th>
+                    <th>Last Update</th>
+                    <th>Created Time</th>
+                </tr>
+                <tr data-ng-repeat="walkin in walkins | orderBy: '-created'" data-ng-href="#">
+                    <td>
+                        <a ng-click="viewWalkin({{walkin._id}})"><span class="glyphicon glyphicon-info-sign" tooltip-placement="top" tooltip="View"></span> </a>
+                        <a ng-click="editWalkin({{walkin._id}})"<span class="glyphicon glyphicon-edit" tooltip-placement="top" tooltip="Edit"></span>  </a>
+                        <a ng-click="deleteWalkin({{walkin._id}})"><span class="glyphicon glyphicon-trash" tooltip-placement="top" tooltip="Delete"></span></a>
+                    </td>
+                    <td data-ng-bind="walkin._id"></td>
+                    <td data-ng-bind="walkin.user.displayName"></td>
+                    <td data-ng-bind="walkin.user.username"></td>
+                    <td data-ng-bind="walkin.deviceCategory"></td>
+                    <td data-ng-bind="walkin.deviceType" ng-hide="walkin.deviceType=='N/A'"></td>
+                    <td data-ng-bind="walkin.os" ng-hide="walkin.os=='N/A'"></td>
+                    <td data-ng-bind="walkin.status"></td>
+                    <td data-ng-bind="(walkin.updated | date:'short') || 'N/A'"></td>
+                    <td data-ng-bind="(walkin.created | date:'short') || 'N/A'"></td>
+                </tr>
+            </table>
+            <div class="alert alert-warning text-center" data-ng-hide="!walkins.$resolved || walkins.length">
+                No Walk ins yet!
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="WalkinView" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Walk in Information</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{WalkinView._id}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
