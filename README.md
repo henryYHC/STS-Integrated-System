@@ -1,4 +1,8 @@
 # STS_IntegratedSystem
+### Updates
+1. Admin panel for walkin (Partially functional): `localhost:3000/#!/admin/walkins` (2015.06.01)
+2. Walk in instance creation: `localhost:3000/#!/walkins` (2015.05.25)
+
 ### Intsallaion guide for Mac
 1. Install Node: [Click here](https://nodejs.org/download/)
 2. Install MongoDB: [Click here](http://www.mongodb.org/downloads) 
