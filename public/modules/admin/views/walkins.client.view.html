@@ -1,5 +1,5 @@
 <section data-ng-controller="AdminWalkinsController">
-	<h1>STS Admin Panel - Walk in </h1>
+	<h1 id="test">STS Admin Panel - Walk in </h1>
     <hr/>
     <div class="container">
         <div class="col-md-2" ng-init="initQueue()">
@@ -34,7 +34,7 @@
                 </tr>
                 <tr data-ng-repeat="walkin in walkins | orderBy: '-created'" data-ng-href="#">
                     <td>
-                        <a ng-click="viewWalkin({{walkin._id}})"><span class="glyphicon glyphicon-info-sign" tooltip-placement="top" tooltip="View"></span> </a>
+                        <a ng-click="viewWalkin({{walkin._id}})" data-toggle="modal" data-target="#WalkinView"><span class="glyphicon glyphicon-info-sign" tooltip-placement="top" tooltip="View"></span> </a>
                         <a ng-click="editWalkin({{walkin._id}})"<span class="glyphicon glyphicon-edit" tooltip-placement="top" tooltip="Edit"></span>  </a>
                         <a ng-click="deleteWalkin({{walkin._id}})"><span class="glyphicon glyphicon-trash" tooltip-placement="top" tooltip="Delete"></span></a>
                     </td>
@@ -55,20 +55,80 @@
         </div>
     </div>
 
-    <div class="modal fade" id="WalkinView" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Walk in Information</h4>
+    <script type="text/ng-template" id="WalkinView.html">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                Walk in Information
+                <p class="pull-right" style="font-size: 14px; font-weight: 500;" data-ng-bind="('Created at ' + (walkin.created | date:'short')) || 'N/A'"></p>
+            </h2>
+
+        </div>
+        <div class="modal-body">
+            <div class="form-horizontal">
+                <div class="form-group" style="text-align: left">
+                    <label class="col-sm-3 control-label" for="netid">NetID:</label>
+                    <div class="col-sm-9" id="netid" style="margin-top: 8px;">{{walkin.user.username}}</div>
                 </div>
-                <div class="modal-body">
-                    <p>{{WalkinView._id}}</p>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group" style="text-align: left">
+                    <label class="col-sm-3 control-label" for="name">Name:</label>
+                    <div class="col-sm-9" id="name" style="margin-top: 8px;">{{walkin.user.displayName}}</div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group" style="text-align: left">
+                    <label class="col-sm-3 control-label" for="phone">Phone:</label>
+                    <div class="col-sm-9" id="phone" style="margin-top: 8px;">{{walkin.user.phone}}</div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group" style="text-align: left">
+                    <label class="col-sm-3 control-label" for="location">Residenecn Hall:</label>
+                    <div class="col-sm-9" id="location" style="margin-top: 8px;">{{walkin.user.location}}</div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group" style="text-align: left">
+                    <label class="col-sm-3 control-label" for="deviceT">Device Type:</label>
+                    <div class="col-sm-9" id="deviceT" style="margin-top: 8px;">{{walkin.deviceCategory}}</div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group" style="text-align: left">
+                    <label class="col-sm-3 control-label" for="deviceI">Device info:</label>
+                    <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="walkin.deviceType!='N/A'">{{walkin.deviceType}}</div>
+                    <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="walkin.os!='N/A'">{{walkin.os}}</div>
+                </div>
+            </div>
+            <div class="form-horizontal" ng-show="formData.otherDevice">
+                <div class="form-group" style="text-align: left">
+                    <label class="col-sm-3 control-label" for="other">Other info:</label>
+                    <div class="col-sm-9" id="other" style="margin-top: 8px;">{{walkin.otherDevice}}</div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group" style="text-align: left;">
+                    <label class="col-sm-3 control-label" for="problem">Problem description:</label>
+                    <div class="col-sm-9" id="problem" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;">{{walkin.description}}</p></div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group" style="text-align: left;">
+                    <label class="col-sm-3 control-label" for="workNote">Work Note:</label>
+                    <div class="col-sm-9" id="workNote" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;" data-ng-bind="walkin.workNote || 'None'"></p></div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group" style="text-align: left;">
+                    <label class="col-sm-3 control-label" for="resolution">Resolution:</label>
+                    <div class="col-sm-9" id="resolution" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;" data-ng-bind="walkin.resolution || 'None'"></p></div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="modal-footer">
+            <p class="pull-left" style="font-size: 14px; font-weight: 500;" data-ng-bind="'Last updated at ' + ((walkin.updated | date:'short') || 'N/A')"></p>
+            <button class="btn btn-default" ng-click="close()">Cancel</button>
+        </div>
+    </script>
 </section>

@@ -144,7 +144,7 @@ exports.list = function(req, res) {
  * Walkin middleware
  */
 exports.walkinByID = function(req, res, next, id) { 
-	Walkin.findById(id).populate('user', 'displayName').exec(function(err, walkin) {
+	Walkin.findById(id).populate('user', 'displayName username phone location').exec(function(err, walkin) {
 		if (err) return next(err);
 		if (! walkin) return next(new Error('Failed to load Walkin ' + id));
 		req.walkin = walkin ;

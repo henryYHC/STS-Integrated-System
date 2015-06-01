@@ -5,8 +5,8 @@ angular.module('admin').controller('AdminController', ['$scope',
 		// Controller Logic
 		// ...
 	}
-]).controller('AdminWalkinsController', ['$http', '$scope',
-    function($http, $scope){
+]).controller('AdminWalkinsController', ['$http', '$scope', '$modal',
+    function($http, $scope, $modal){
 
         $scope.initQueue = function(){
             $http.get('/walkins/queue').success(function(response){
@@ -22,7 +22,22 @@ angular.module('admin').controller('AdminController', ['$scope',
         };
 
         $scope.viewWalkin = function(id){
-            $('#WalkinView').show();
+            $http.get('/walkins/'+id).success(function(response){
+                $modal.open({
+                    animation: true,
+                    templateUrl: 'WalkinView.html',
+                    controller: 'ModalInstanceCtrl',
+                    size: 'lg',
+                    resolve: { walkin : function() { return response; } }
+                });
+            });
         };
     }
-]);
+]).controller('ModalInstanceCtrl', function ($scope, $modalInstance, walkin) {
+    $scope.walkin = walkin;
+    console.log(walkin);
+
+    $scope.close = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
