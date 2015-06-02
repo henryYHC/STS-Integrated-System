@@ -32,6 +32,15 @@ angular.module('admin').controller('AdminController', ['$scope',
                 });
             });
         };
+
+        $scope.deleteWalkin = function(id){
+            if(confirm("Are you sure you want to delete this instance?"))
+                $http.delete('/walkins/'+id).success(
+                    function(){
+                        $scope.initQueue();
+                        $scope.initListing();
+                });
+        }
     }
 ]).controller('AdminWalkinViewModalCtrl', function ($scope, $modalInstance, walkin) {
     $scope.walkin = walkin;

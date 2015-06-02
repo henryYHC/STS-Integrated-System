@@ -9,7 +9,7 @@
                     <th>Order</th>
                     <th>Customer</th>
                 </tr>
-                <tr data-ng-repeat="queueItem in queueItems | orderBy: '-created'" data-ng-href="#">
+                <tr data-ng-repeat="queueItem in queueItems | orderBy: '-created' : true" data-ng-href="#">
                     <td>{{ $index + 1 }} <a ng-click="gotoWalkin({{queueItem._id}})"><span class="glyphicon glyphicon-log-in" tooltip-placement="top" tooltip="Goto"></span></a></td>
                     <td data-ng-bind="queueItem.user.displayName"></td>
                 </tr>
@@ -20,7 +20,7 @@
         </div>
         <div class="col-md-10" ng-init="initListing()">
             <h4>Walkin Listings</h4>
-            <table class="table table-hover">
+            <table class="table table-hover">   
                 <tr>
                     <th>Actions</th>
                     <th>ID</th>
