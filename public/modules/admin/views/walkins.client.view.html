@@ -2,25 +2,83 @@
 	<h1 id="test">STS Admin Panel - Walk in </h1>
     <hr/>
     <div class="container">
-        <div class="col-md-2" ng-init="initQueue()">
-            <h4>Process Queue<div class="pull-right"><a ng-click="initQueue()"><span class="glyphicon glyphicon-retweet" tooltip-placement="top" tooltip="Refresh"></div></a></h4>
+        <div class="col-md-3" ng-init="initQueue()">
+            <h4>Process Queue<div class="pull-right"><a ng-click="initQueue()"><span class="glyphicon glyphicon-refresh" tooltip-placement="top" tooltip="Refresh"></div></a></h4>
             <table class="table table-hover">
                 <tr>
                     <th>Order</th>
                     <th>Customer</th>
                 </tr>
                 <tr data-ng-repeat="queueItem in queueItems | orderBy: '-created' : true" data-ng-href="#">
-                    <td>{{ $index + 1 }} <a ng-click="gotoWalkin({{queueItem._id}})"><span class="glyphicon glyphicon-log-in" tooltip-placement="top" tooltip="Goto"></span></a></td>
-                    <td data-ng-bind="queueItem.user.displayName"></td>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{queueItem.user.displayName}}
+                        <a ng-mouseover="quickviewWalkin(queueItem._id);" ng-click="quickviewWalkin(queueItem._id);"><span class="glyphicon glyphicon-info-sign pull-right" tooltip-placement="top" tooltip="{{(queueItem.created | date:'short') || 'N/A'}}"></span></a>
+                    </td>
                 </tr>
             </table>
-            <div class="alert alert-warning text-center" data-ng-hide="!queueItems.$resolved || queueItems.length">
-                Nothin in queue!
+            <div class="alert alert-info text-center" data-ng-hide="!queueItems.$resolved || queueItems.length">
+                <span class="glyphicon glyphicon-exclamation-sign"/> Nothing in queue!
             </div>
         </div>
-        <div class="col-md-10" ng-init="initListing()">
+        <div class="col-md-9">
+            <h4>Quick View
+                <div class="pull-right" ng-hide="!quickWalkin">
+                    <a ng-click="editWalkin(quickWalkin._id)"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Work on this!"></a>
+                    <a ng-click="viewWalkin(quickWalkin._id)" ng-hide="!quickWalkin" data-toggle="modal" data-target="#WalkinView" style="margin-right: 8px;"><span class="glyphicon glyphicon-eye-open" tooltip-placement="top" tooltip="View"></span></a>
+                </div>
+
+
+            </h4>
+            <hr/>
+            <div class="col-md-6" style="font-size: 11px;" ng-hide="!quickWalkin">
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left">
+                        <label class="col-sm-3 control-label" for="1">NetID:</label>
+                        <div class="col-sm-9" id="1" style="margin-top: 8px;">{{quickWalkin.user.username || 'N/A'}}</div>
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left">
+                        <label class="col-sm-3 control-label" for="2">Name:</label>
+                        <div class="col-sm-9" id="2" style="margin-top: 8px;">{{quickWalkin.user.displayName || 'N/A'}}</div>
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left">
+                        <label class="col-sm-3 control-label" for="3">Device Type:</label>
+                        <div class="col-sm-9" id="3" style="margin-top: 8px;">{{quickWalkin.deviceCategory || 'N/A'}}</div>
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left">
+                        <label class="col-sm-3 control-label" for="4">Device info:</label>
+                        <div class="col-sm-9" id="4" style="margin-top: 8px;" ng-show="quickWalkin.deviceType!='N/A'">{{quickWalkin.deviceType || 'N/A'}}</div>
+                        <div class="col-sm-9" id="4" style="margin-top: 8px;" ng-show="quickWalkin.os!='N/A'">{{quickWalkin.os}}</div>
+                    </div>
+                </div>
+                <div class="form-horizontal" ng-show="formData.otherDevice">
+                    <div class="form-group" style="text-align: left">
+                        <label class="col-sm-3 control-label" for="5">Other info:</label>
+                        <div class="col-sm-9" id="5" style="margin-top: 8px;">{{quickWalkin.otherDevice || 'N/A'}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" style="font-size: 11px;" ng-hide="!quickWalkin">
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left;">
+                        <label class="col-sm-3 control-label" for="6">Problem:</label>
+                        <div class="col-sm-9" id="6" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;">{{quickWalkin.description || 'N/A'}}</p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-info text-center" ng-show="!queueIquickWalkin" ng-hide="quickWalkin">
+                <span class="glyphicon glyphicon-exclamation-sign"/> Please select in queue instance to view.
+            </div>
+        </div>
+
+        <div class="col-md-12" ng-init="initListing()">
             <h4>Walkin Listings</h4>
-            <table class="table table-hover">   
+            <table class="table table-hover">
                 <tr>
                     <th>Actions</th>
                     <th>ID</th>
@@ -34,9 +92,9 @@
                 </tr>
                 <tr data-ng-repeat="walkin in walkins | orderBy: '-created'" data-ng-href="#">
                     <td>
-                        <a ng-click="viewWalkin({{walkin._id}})" data-toggle="modal" data-target="#WalkinView"><span class="glyphicon glyphicon-info-sign" tooltip-placement="top" tooltip="View"></span> </a>
-                        <a ng-click="editWalkin({{walkin._id}})"<span class="glyphicon glyphicon-edit" tooltip-placement="top" tooltip="Edit"></span>  </a>
-                        <a ng-click="deleteWalkin({{walkin._id}})"><span class="glyphicon glyphicon-trash" tooltip-placement="top" tooltip="Delete"></span></a>
+                        <a ng-click="viewWalkin(walkin._id)" data-toggle="modal" data-target="#WalkinView"><span class="glyphicon glyphicon-eye-open" tooltip-placement="top" tooltip="View"></span> </a>
+                        <a ng-click="editWalkin(walkin._id)"<span class="glyphicon glyphicon-edit" tooltip-placement="top" tooltip="Edit"></span>  </a>
+                        <a ng-click="deleteWalkin(walkin._id)"><span class="glyphicon glyphicon-trash" tooltip-placement="top" tooltip="Delete"></span></a>
                     </td>
                     <td data-ng-bind="walkin._id"></td>
                     <td data-ng-bind="walkin.user.displayName"></td>
@@ -49,8 +107,8 @@
                     <td data-ng-bind="(walkin.created | date:'short') || 'N/A'"></td>
                 </tr>
             </table>
-            <div class="alert alert-warning text-center" data-ng-hide="!walkins.$resolved || walkins.length">
-                No Walk ins yet!
+            <div class="alert alert-info text-center" data-ng-hide="!walkins.$resolved || walkins.length">
+                <span class="glyphicon glyphicon-exclamation-sign"/> No Walk ins yet!
             </div>
         </div>
     </div>

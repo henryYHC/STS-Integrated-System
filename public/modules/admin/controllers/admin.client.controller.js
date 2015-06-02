@@ -21,6 +21,12 @@ angular.module('admin').controller('AdminController', ['$scope',
             });
         };
 
+        $scope.quickviewWalkin = function(id){
+            $http.get('/walkins/'+id).success(function(response){
+                $scope.quickWalkin = response;
+            });
+        };
+
         $scope.viewWalkin = function(id){
             $http.get('/walkins/'+id).success(function(response){
                 $modal.open({
@@ -31,6 +37,12 @@ angular.module('admin').controller('AdminController', ['$scope',
                     resolve: { walkin : function() { return response; } }
                 });
             });
+        };
+
+        $scope.editWalkin = function(id){
+            if(id !== undefined){
+                console.log('Editing ' + id);
+            }
         };
 
         $scope.deleteWalkin = function(id){
