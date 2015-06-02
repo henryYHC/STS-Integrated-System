@@ -26,16 +26,15 @@ angular.module('admin').controller('AdminController', ['$scope',
                 $modal.open({
                     animation: true,
                     templateUrl: 'WalkinView.html',
-                    controller: 'ModalInstanceCtrl',
+                    controller: 'AdminWalkinViewModalCtrl',
                     size: 'lg',
                     resolve: { walkin : function() { return response; } }
                 });
             });
         };
     }
-]).controller('ModalInstanceCtrl', function ($scope, $modalInstance, walkin) {
+]).controller('AdminWalkinViewModalCtrl', function ($scope, $modalInstance, walkin) {
     $scope.walkin = walkin;
-    console.log(walkin);
 
     $scope.close = function () {
         $modalInstance.dismiss('cancel');

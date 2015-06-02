@@ -254,22 +254,43 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
             $state.go('createWalkin.review');
         };
     }
-]).controller('WalkinReviewController', ['$scope', '$state', '$http', '$location',
-    function($scope, $state, $http, $location){
+]).controller('WalkinReviewController', ['$scope', '$state', '$http', '$location', '$modal',
+    function($scope, $state, $http, $location, $modal){
         if(!$scope.formStatus.problem)     $state.go('createWalkin.problem');
         if(!$scope.formStatus.device)     $state.go('createWalkin.device');
         if(!$scope.formStatus.info)     $state.go('createWalkin.info');
         if(!$scope.formStatus.netid)    $state.go('createWalkin.netid');
 
+
+
         $scope.submitWalkin = function(){
-            $http.post('/walkins', $scope.formData)
-                .success(function(){
-                    alert('Walk in request submitted sucessfully!');
-                    $location.path('/#!/');
-                })
-                .error(function(err){
-                    $scope.error = err.message;
-                });
+            var viewLibaility = $modal.open({
+                animation: true,
+                templateUrl: 'Liability.html',
+                controller: 'LiabilityModalCtrl',
+                size: 'lg'
+            }).result.then(
+                function(response){
+                    if(response){
+                        $scope.formData.liabilityAgreement = response;
+                        $http.post('/walkins', $scope.formData)
+                            .success(function(){
+                                alert('Walk in request submitted sucessfully!');
+                                $location.path('/#!/');
+                            })
+                            .error(function(err){
+                                $scope.error = err.message;
+                            });
+                    }
+                }
+            );
         };
     }
-]);
+]).controller('LiabilityModalCtrl', function ($scope, $modalInstance) {
+    $scope.accept = function () {
+        $modalInstance.close(true);
+    };
+    $scope.close = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
