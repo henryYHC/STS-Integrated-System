@@ -46,7 +46,7 @@ angular.module('admin').controller('AdminController', ['$scope',
         };
 
         $scope.deleteWalkin = function(id){
-            if(confirm("Are you sure you want to delete this instance?"))
+            if(confirm('Are you sure you want to delete this instance?'))
                 $http.delete('/walkins/'+id).success(
                     function(){
                         $scope.initQueue();
@@ -56,6 +56,10 @@ angular.module('admin').controller('AdminController', ['$scope',
     }
 ]).controller('AdminWalkinViewModalCtrl', function ($scope, $modalInstance, walkin) {
     $scope.walkin = walkin;
+
+    $scope.edit = function () {
+        $modalInstance.dismiss('cancel');
+    };
 
     $scope.close = function () {
         $modalInstance.dismiss('cancel');
