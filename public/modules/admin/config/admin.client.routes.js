@@ -5,6 +5,10 @@ angular.module('admin').config(['$stateProvider',
 	function($stateProvider) {
 		// Admin state routing
 		$stateProvider.
+		state('walkin-view', {
+			url: '/admin/walkins/:walkinId',
+			templateUrl: 'modules/admin/views/walkin-view.client.view.html'
+		}).
 		state('walkins', {
 			url: '/admin/walkins',
 			templateUrl: 'modules/admin/views/walkins.client.view.html'

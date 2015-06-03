@@ -5,8 +5,16 @@ angular.module('admin').controller('AdminController', ['$scope',
 		// Controller Logic
 		// ...
 	}
-]).controller('AdminWalkinsController', ['$http', '$scope', '$modal',
-    function($http, $scope, $modal){
+]).controller('WalkinviewController', ['$http', '$scope', '$stateParams',
+    function($http, $scope, $stateParams){
+        $scope.initWalkin = function(){
+            $http.get('/walkins/'+$stateParams.walkinId).success(function(response){
+                $scope.walkin = response;
+            });
+        };
+    }
+]).controller('AdminWalkinsController', ['$http', '$scope', '$modal', '$location',
+    function($http, $scope, $modal, $location){
 
         $scope.initQueue = function(){
             $http.get('/walkins/queue').success(function(response){

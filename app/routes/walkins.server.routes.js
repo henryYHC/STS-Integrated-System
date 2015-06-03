@@ -13,7 +13,7 @@ module.exports = function(app) {
 
 	app.route('/walkins/:walkinId')
 		.get(walkins.read)
-		.put(users.requiresLogin, walkins.hasAuthorization, walkins.update)
+		.put(walkins.update)
 		.delete(walkins.delete);
 
     // Walkin util routes
