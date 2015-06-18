@@ -1,0 +1,44 @@
+<section data-ng-controller="AdminWalkinListingController">
+    <div>
+        <h2>STS Admin Panel - Walk in Listing</h2><hr/>
+    </div>
+    <div class="container">
+        <div class="col-md-12" ng-init="initListing()" style="margin-top: 0.5em;">
+            <h4>Walkin Listings</h4>
+            <div style="height: 420px; overflow: auto">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Actions</th>
+                        <th>ID</th>
+                        <th>Customer</th>
+                        <th>NetID</th>
+                        <th>Device Type</th>
+                        <th>Device Spec</th>
+                        <th>Status</th>
+                        <th>Last Update</th>
+                        <th>Created Time</th>
+                    </tr>
+                    <tr data-ng-repeat="walkin in walkins | orderBy: '-created'" data-ng-href="#">
+                        <td>
+                            <a ng-click="viewWalkin(walkin._id)" data-toggle="modal" data-target="#WalkinView"><span class="glyphicon glyphicon-eye-open" tooltip-placement="top" tooltip="View"></span> </a>
+                            <a ng-click="editWalkin(walkin._id)"<span class="glyphicon glyphicon-edit" tooltip-placement="top" tooltip="Edit"></span>  </a>
+                            <a ng-click="deleteWalkin(walkin._id)"><span class="glyphicon glyphicon-trash" tooltip-placement="top" tooltip="Delete"></span></a>
+                        </td>
+                        <td data-ng-bind="walkin._id"></td>
+                        <td data-ng-bind="walkin.user.displayName"></td>
+                        <td data-ng-bind="walkin.user.username"></td>
+                        <td data-ng-bind="walkin.deviceCategory"></td>
+                        <td data-ng-bind="walkin.deviceType" ng-hide="walkin.deviceType=='N/A'"></td>
+                        <td data-ng-bind="walkin.os" ng-hide="walkin.os=='N/A'"></td>
+                        <td data-ng-bind="walkin.status"></td>
+                        <td data-ng-bind="(walkin.updated | date:'short') || 'N/A'"></td>
+                        <td data-ng-bind="(walkin.created | date:'short') || 'N/A'"></td>
+                    </tr>
+                </table>
+                <div class="alert alert-info text-center" data-ng-hide="!walkins.$resolved || walkins.length">
+                    <span class="glyphicon glyphicon-exclamation-sign"/> No Walk ins yet!
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
