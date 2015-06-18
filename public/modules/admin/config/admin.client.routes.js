@@ -13,6 +13,10 @@ angular.module('admin').config(['$stateProvider',
 			url: '/admin/walkins',
 			templateUrl: 'modules/admin/views/walkins.client.view.html'
 		}).
+        state('walkin-list', {
+            url: '/admin/walkins-list',
+            templateUrl: 'modules/admin/views/walkin-list.client.view.html'
+        }).
 		state('admin', {
 			url: '/admin',
 			templateUrl: 'modules/admin/views/admin.client.view.html'
