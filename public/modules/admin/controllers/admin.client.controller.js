@@ -60,7 +60,7 @@ angular.module('admin').controller('AdminController', ['$scope',
                         $scope.initQueue();
                         $scope.initListing();
                 });
-        }
+        };
     }
 ]).controller('AdminWalkinViewModalCtrl', function ($scope, $modalInstance, walkin) {
     $scope.walkin = walkin;

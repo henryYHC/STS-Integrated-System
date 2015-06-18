@@ -58,7 +58,7 @@
                 GENERAL RELEASE OF LIABILITY AND HOLD HARMLESS AGREEMENT
             </h3>
         </div>
-        <div class="modal-body" style="height: 425px; overflow: auto;">
+        <div id="agreement" class="modal-body" style="height: 425px; overflow: auto;">
             <p align="justify">Emory University, by and through its Information Technology Division “Student Technology Support” Program, (hereinafter, “University”) offers assistance, free of charge, with removal of computer viruses (hereinafter the “service”) from infected laptop computers for the convenience of University customers. All service is provided at the sole risk of the customer-owner of the computer (hereinafter “owner”), and the University assumes absolutely no risk or responsibility for any damage to the computer incurred as a result of the service. If we back up your documents and data, we will only keep your data on file until you retrieve your computer. If you do not retrieve your computer after we are finished remediating it, we will dispose of your computer.</p>
             <p align="justify">The risks associated with acceptance of this free service include the following:<b> 1. Loss of data, 2. Damage to the operating system that may require reloading or replacement of the operating system. </b>If the operating system must be replaced, the owner is responsible for the cost of replacing the operating system, although University will assist with installation of the replacement operating system at no charge.</p>
             <p align="justify">I acknowledge that I am aware of the risks of loss associated with acceptance of this free service, and I voluntarily and knowingly assume full responsibility for these risks, including property damage, loss, or other injury that may be sustained by me as a result of my acceptance of the service, whether caused by the negligence of the university and/or its officers or employees (“releasees”) or otherwise.</p>
@@ -67,9 +67,10 @@
             <p align="justify" style="color: red;">By clicking the "Accept" button, you agree with your digital signature to the terms and conditions stated above.</p>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="accept()">Accept</button>
+            <button id="accept" class="btn btn-primary" ng-click="accept()" disabled="true" >Accept</button>
             <button class="btn btn-default" ng-click="close()">Cancel</button>
         </div>
+
+        <script> $('#agreement').bind('scroll', function(){ if($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) $('#accept').attr("disabled", false); else $('#accept').attr("disabled", true); }); </script>
     </script>
 </section>
-

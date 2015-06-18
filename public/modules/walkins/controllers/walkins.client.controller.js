@@ -203,8 +203,6 @@ angular.module('walkins').controller('WalkinsController', ['$scope', '$state', '
         if(!$scope.formStatus.info)     $state.go('createWalkin.info');
         if(!$scope.formStatus.netid)    $state.go('createWalkin.netid');
 
-
-
         $scope.submitWalkin = function(){
             var viewLibaility = $modal.open({
                 animation: true,
