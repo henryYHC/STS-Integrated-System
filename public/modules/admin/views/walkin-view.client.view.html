@@ -1,3 +1,122 @@
 <section data-ng-controller="WalkinviewController"  ng-init="initWalkin()">
-	This is the Walkin view
+    <div>
+        <h2>STS Admin Panel - Walk in Edit</h2><hr/>
+    </div>
+    <div class="container">
+        <div class="col-md-12">
+            <h3>Instance information<span class="label label-info" style="font-size: 13px; margin-left: 2.5em;">{{walkin.status}}</span></h3><hr/>
+            <div class="col-md-6">
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left">
+                        <label class="col-sm-3 control-label" for="instanceId">Instance ID:</label>
+                        <div class="col-sm-9" id="instanceId" style="margin-top: 8px;">{{walkin._id}}</div>
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left">
+                        <label class="col-sm-3 control-label" for="deviceT">Device Type:</label>
+                        <div class="col-sm-9" id="deviceT" style="margin-top: 8px;">
+                            {{walkin.deviceCategory}}
+                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left">
+                        <label class="col-sm-3 control-label" for="deviceI">Device info:</label>
+                        <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="walkin.deviceType!='N/A'">
+                            {{walkin.deviceType}}
+                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                        </div>
+                        <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="walkin.os!='N/A'">
+                            {{walkin.os}}
+                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal" ng-show="formData.otherDevice">
+                    <div class="form-group" style="text-align: left">
+                        <label class="col-sm-3 control-label" for="other">Other info:</label>
+                        <div class="col-sm-9" id="other" style="margin-top: 8px;">
+                            {{walkin.otherDevice}}
+                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" style="margin-top: -50px;" tooltip-placement="left" tooltip="Edit"></span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left;">
+                        <label class="col-sm-3 control-label" for="problem">Problem description:</label>
+                        <div class="col-sm-9" id="problem" style="margin-top: 8px;">
+                            <p style="height: 50px; overflow: auto;">{{walkin.description}}</p>
+                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" style="margin-top: -50px;" tooltip-placement="left" tooltip="Edit"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left;">
+                        <label class="col-sm-3 control-label" for="workNote">Work Note:</label>
+                        <div class="col-sm-9" id="workNote" style="margin-top: 8px;">
+                            <p style="height: 50px; overflow: auto;" data-ng-bind="walkin.workNote || 'None'"></p>
+                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" style="margin-top: -50px;" tooltip-placement="left" tooltip="Edit"></span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left;">
+                        <label class="col-sm-3 control-label" for="resolution">Resolution:</label>
+                        <div class="col-sm-9" id="resolution" style="margin-top: 8px;">
+                            <p style="height: 50px; overflow: auto;" data-ng-bind="walkin.resolution || 'None'"></p>
+                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" style="margin-top: -50px;" tooltip="Edit"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <h3>Customer information</h3><hr/>
+            <div class="col-md-6">
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left">
+                        <label class="col-sm-3 control-label" for="netid">NetID:</label>
+                        <div class="col-sm-9" id="netid" style="margin-top: 8px;">
+                            {{walkin.user.username}}
+                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left">
+                        <label class="col-sm-3 control-label" for="name">Name:</label>
+                        <div class="col-sm-9" id="name" style="margin-top: 8px;">
+                            {{walkin.user.displayName}}
+                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left">
+                        <label class="col-sm-3 control-label" for="phone">Phone:</label>
+                        <div class="col-sm-9" id="phone" style="margin-top: 8px;">
+                            {{walkin.user.phone}}
+                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left">
+                        <label class="col-sm-3 control-label" for="location">Residence Hall:</label>
+                        <div class="col-sm-9" id="location" style="margin-top: 8px;">
+                            {{walkin.user.location}}
+                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
