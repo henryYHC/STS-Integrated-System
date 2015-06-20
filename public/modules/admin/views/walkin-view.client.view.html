@@ -1,6 +1,6 @@
 <section data-ng-controller="WalkinviewController"  ng-init="initWalkin()">
     <div>
-        <h2>STS Admin Panel - Walk in Edit</h2><hr/>
+        <h2>STS Admin Panel - Walk in Edit</h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
     </div>
     <div class="container">
         <div class="col-md-12">
@@ -16,30 +16,63 @@
                     <div class="form-group" style="text-align: left">
                         <label class="col-sm-3 control-label" for="deviceT">Device Type:</label>
                         <div class="col-sm-9" id="deviceT" style="margin-top: 8px;">
-                            {{walkin.deviceCategory}}
-                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                            <div id="deviceType-display" ng-show="!editDeviceType">
+                                {{walkin.deviceCategory}}
+                                <a ng-click="editDeviceType=!editDeviceType;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                            </div>
+                            <div id="deviceType-edit" ng-show="editDeviceType" ng-init="initDeviceType();">
+                                <select id="deviceT" class="form-control" data-ng-model="walkin.deviceCategory" ng-change="editDeviceType=!editDeviceType;updateDevice();">
+                                    <option ng-repeat="option in deviceTypeOptions" value="{{option}}" ng-selected="option == walkin.deviceCategory;">{{option}}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-horizontal">
+                <div class="form-horizontal" ng-show="walkin.deviceCategory!='Other';">
                     <div class="form-group" style="text-align: left">
                         <label class="col-sm-3 control-label" for="deviceI">Device info:</label>
-                        <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="walkin.deviceType!='N/A'">
-                            {{walkin.deviceType}}
-                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+
+                        <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="walkin.deviceCategory!='Other' && (walkin.deviceCategory == 'Gaming System' || walkin.deviceCategory == 'TV/Media Device')">
+                            <div id="deviceInfo-display" ng-show="!editDeviceInfo">
+                                {{walkin.deviceType}}
+                                <a ng-click="editDeviceInfo=!editDeviceInfo;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                            </div>
+                            <div id="deviceInfo-edit" ng-show="editDeviceInfo" ng-init="initDeviceInfo();">
+                                <select id="deviceI" class="form-control" data-ng-model="walkin.deviceType" ng-change="editDeviceInfo=!editDeviceInfo;updateDevice();">
+                                    <option ng-repeat="option in deviceInfoOptions" value="{{option}}" ng-selected="option == walkin.deviceType;">{{option}}</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="walkin.os!='N/A'">
-                            {{walkin.os}}
-                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+
+                        <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="walkin.deviceCategory!='Other' && (walkin.deviceCategory == 'Computer' || walkin.deviceCategory == 'Phone/Tablet')">
+                            <div id="deviceOS-display" ng-show="!editDeviceOS">
+                                {{walkin.os}}
+                                <a ng-click="editDeviceOS=!editDeviceOS;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                            </div>
+                            <div id="deviceOS-edit" ng-show="editDeviceOS" ng-init="initDeviceOS();">
+                                <select id="deviceI" class="form-control" data-ng-model="walkin.os" ng-change="editDeviceOS=!editDeviceOS;updateDevice();">
+                                    <option ng-repeat="option in deviceOSOptions" value="{{option}}" ng-selected="option == walkin.os;">{{option}}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-horizontal" ng-show="formData.otherDevice">
+                <div class="form-horizontal" ng-show="walkin.deviceCategory=='Other' || walkin.deviceType == 'Other' || walkin.os == 'Other'">
                     <div class="form-group" style="text-align: left">
                         <label class="col-sm-3 control-label" for="other">Other info:</label>
                         <div class="col-sm-9" id="other" style="margin-top: 8px;">
-                            {{walkin.otherDevice}}
-                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" style="margin-top: -50px;" tooltip-placement="left" tooltip="Edit"></span></a>
+                            <div id="other-display" ng-show="!editDeviceOther">
+                                {{walkin.otherDevice || 'None'}}
+                                <a ng-click="editDeviceOther=!editDeviceOther;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                            </div>
+                            <div id="other-edit" ng-show="editDeviceOther">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-ng-model="walkin.otherDevice">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="button" ng-click="editDeviceOther=!editDeviceOther;updateDevice();">Done</button>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -47,8 +80,14 @@
                     <div class="form-group" style="text-align: left;">
                         <label class="col-sm-3 control-label" for="problem">Problem description:</label>
                         <div class="col-sm-9" id="problem" style="margin-top: 8px;">
-                            <p style="height: 50px; overflow: auto;">{{walkin.description}}</p>
-                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" style="margin-top: -50px;" tooltip-placement="left" tooltip="Edit"></span></a>
+                            <div id="problem-display" ng-show="!editProblem">
+                                <p style="height: 75px; overflow: auto;">{{walkin.description}}</p>
+                                <a ng-click="editProblem=!editProblem;  "><span class="glyphicon glyphicon-pencil pull-right" style="margin-top: -75px;" tooltip-placement="left" tooltip="Edit"></span></a>
+                            </div>
+                            <div id="problem-edit" ng-show="editProblem">
+                                <textarea class="form-control" rows="2" data-ng-model="walkin.description"></textarea>
+                                <button ng-click="editProblem=!editProblem;updateWalkin();" class="btn btn-sm btn-primary pull-right">Done</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -59,8 +98,14 @@
                     <div class="form-group" style="text-align: left;">
                         <label class="col-sm-3 control-label" for="workNote">Work Note:</label>
                         <div class="col-sm-9" id="workNote" style="margin-top: 8px;">
-                            <p style="height: 50px; overflow: auto;" data-ng-bind="walkin.workNote || 'None'"></p>
-                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" style="margin-top: -50px;" tooltip-placement="left" tooltip="Edit"></span></a>
+                            <div id="workNote-display" ng-show="!editWorkNote">
+                                <p style="height: 75px; overflow: auto;" data-ng-bind="walkin.workNote || 'None'"></p>
+                                <a ng-click="editWorkNote=!editWorkNote;"><span class="glyphicon glyphicon-pencil pull-right" style="margin-top: -75px;" tooltip-placement="left" tooltip="Edit"></span></a>
+                            </div>
+                            <div id="workNote-edit" ng-show="editWorkNote">
+                                <textarea class="form-control" rows="2" data-ng-model="walkin.workNote"></textarea>
+                                <button ng-click="editWorkNote=!editWorkNote;updateWalkin();" class="btn btn-sm btn-primary pull-right">Done</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -68,8 +113,14 @@
                     <div class="form-group" style="text-align: left;">
                         <label class="col-sm-3 control-label" for="resolution">Resolution:</label>
                         <div class="col-sm-9" id="resolution" style="margin-top: 8px;">
-                            <p style="height: 50px; overflow: auto;" data-ng-bind="walkin.resolution || 'None'"></p>
-                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" style="margin-top: -50px;" tooltip="Edit"></span></a>
+                            <div id="resolution-display" ng-show="!editResolution">
+                                <p style="height: 75px; overflow: auto;" data-ng-bind="walkin.resolution || 'None'"></p>
+                                <a ng-click="editResolution=!editResolution;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" style="margin-top: -75px;" tooltip="Edit"></span></a>
+                            </div>
+                            <div id="resolution-edit" ng-show="editResolution">
+                                <textarea class="form-control" rows="2" data-ng-model="walkin.resolution"></textarea>
+                                <button ng-click="editResolution=!editResolution;updateWalkin();" class="btn btn-sm btn-primary pull-right">Done</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -83,7 +134,6 @@
                         <label class="col-sm-3 control-label" for="netid">NetID:</label>
                         <div class="col-sm-9" id="netid" style="margin-top: 8px;">
                             {{walkin.user.username}}
-                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
                         </div>
                     </div>
                 </div>
@@ -92,7 +142,6 @@
                         <label class="col-sm-3 control-label" for="name">Name:</label>
                         <div class="col-sm-9" id="name" style="margin-top: 8px;">
                             {{walkin.user.displayName}}
-                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
                         </div>
                     </div>
                 </div>
@@ -103,7 +152,6 @@
                         <label class="col-sm-3 control-label" for="phone">Phone:</label>
                         <div class="col-sm-9" id="phone" style="margin-top: 8px;">
                             {{walkin.user.phone}}
-                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
                         </div>
                     </div>
                 </div>
@@ -112,7 +160,6 @@
                         <label class="col-sm-3 control-label" for="location">Residence Hall:</label>
                         <div class="col-sm-9" id="location" style="margin-top: 8px;">
                             {{walkin.user.location}}
-                            <a ng-click=""><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
                         </div>
                     </div>
                 </div>
