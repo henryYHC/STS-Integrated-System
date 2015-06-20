@@ -81,8 +81,8 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
 	var walkin = req.walkin ;
-
 	walkin = _.extend(walkin , req.body);
+    walkin.updated = Date.now();
 
 	walkin.save(function(err) {
 		if (err) {
@@ -170,4 +170,10 @@ exports.getLocationOptions = function (req, res) {
 };
 exports.getDeviceType = function (req, res) {
     res.json(Walkin.schema.path('deviceCategory').enumValues);
+};
+exports.getDeviceInfo = function (req, res) {
+    res.json(Walkin.schema.path('deviceType').enumValues);
+};
+exports.getDeviceOS = function (req, res) {
+    res.json(Walkin.schema.path('os').enumValues);
 };
