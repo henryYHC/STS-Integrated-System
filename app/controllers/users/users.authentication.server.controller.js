@@ -13,16 +13,18 @@ var _ = require('lodash'),
  * Signup
  */
 exports.signup = function(req, res) {
-	// For security measurement we remove the roles from the req.body object
-	delete req.body.roles;
-
 	// Init Variables
 	var user = new User(req.body);
 	var message = null;
 
+    if(!user.username || !user.password)
+        res.status(400).send({ message: errorHandler.getErrorMessage('Invalid username or passowrd.') });
+
 	// Add missing user fields
 	user.provider = 'local';
 	user.displayName = user.firstName + ' ' + user.lastName;
+    user.phone = '0000000000';
+    user.location = 'Off-Campus';
 
 	// Then save the user 
 	user.save(function(err) {
