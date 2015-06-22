@@ -37,7 +37,7 @@ angular.module('walkins').config(['$stateProvider',
         // Walkin form functions
 		state('listWalkins', {
 			url: '/walkins/list',
-			templateUrl: 'modules/walkins/views/list-walkins.client.view.html'
+			templateUrl: 'modules/walkins/views/list-walkins-queue.client.view.html'
 		}).
 		state('viewWalkin', {
 			url: '/walkins/:walkinId',
