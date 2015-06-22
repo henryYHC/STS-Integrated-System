@@ -21,13 +21,12 @@
 }
 
 .functions{
-    width: 50%;
+    width: 40%;
     margin-left: auto;
     margin-right: auto;
 }
 
 .functions .function{
-
     margin-top: 1em;
     margin-bottom: 1em;
 }
