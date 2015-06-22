@@ -4,7 +4,7 @@
     </div>
     <div class="container">
         <div class="col-md-12">
-            <h3>Instance information<span class="label label-info" style="font-size: 13px; margin-left: 2.5em;">{{walkin.status}}</span></h3><hr/>
+            <h3>Instance information<span class="label label-success" style="font-size: 13px; margin-left: 2.5em;" ng-show="walkin.isActive">Active</span><span class="label label-danger" style="font-size: 13px; margin-left: 2.5em;" ng-show="!walkin.isActive">Inactive</span><span class="label label-info" style="font-size: 13px; margin-left: 1em;">{{walkin.status}}</span></h3><hr/>
             <div class="col-md-6">
                 <div class="form-horizontal">
                     <div class="form-group" style="text-align: left">
