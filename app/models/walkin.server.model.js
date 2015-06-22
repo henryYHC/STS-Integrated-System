@@ -101,6 +101,10 @@ var WalkinSchema = new Schema({
         default: '',
         trim: true
     },
+    serviceTechnician: {
+        type: Schema.ObjectId,
+        ref: 'User'
+    },
     resoluteTechnician: {
         type: Schema.ObjectId,
         ref: 'User'

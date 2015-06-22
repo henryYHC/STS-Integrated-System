@@ -5,9 +5,7 @@ module.exports = function(app) {
 	var walkins = require('../../app/controllers/walkins.server.controller');
 
 	// Walkins Routes
-	app.route('/walkins')
-		.get(walkins.list)
-		.post(walkins.create);
+	app.route('/walkins').post(walkins.create);
 
     app.route('/walkins/queue').get(walkins.queue);
 
@@ -15,6 +13,15 @@ module.exports = function(app) {
 		.get(walkins.read)
 		.put(walkins.update)
 		.delete(walkins.delete);
+
+    // Walkins list
+    app.route('/walkins/list/listAll').get(walkins.listAll);
+    app.route('/walkins/list/listToday').get(walkins.listToday);
+    app.route('/walkins/list/listUnresolved').get(walkins.listUnresolved);
+
+    // Walkins logs
+    app.route('/walkins/log/logService/:walkinId').put(users.hasAuthorization(['admin', 'technician']), walkins.logService);
+    app.route('/walkins/log/logResolution/:walkinId').put(users.hasAuthorization(['admin', 'technician']), walkins.logResolution);
 
     // Walkin util routes
     app.route('/walkins/util/loadLocationOptions').get(walkins.getLocationOptions);

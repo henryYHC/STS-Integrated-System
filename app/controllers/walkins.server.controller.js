@@ -9,6 +9,13 @@ var mongoose = require('mongoose'),
     Walkin = mongoose.model('Walkin'),
 	_ = require('lodash');
 
+var popOpt = [
+    { path : 'user', model : 'User', select : 'displayName username phone location'},
+    { path : 'lastUpdateTechnician', model : 'User', select : 'displayName'},
+    { path : 'serviceTechnician', model : 'User', select : 'displayName'},
+    { path : 'resoluteTechnician', model : 'User', select : 'displayName'}
+];
+
 /**
  * Create a Walkin
  */
@@ -103,6 +110,9 @@ exports.delete = function(req, res) {
 	var walkin = req.walkin ;
     walkin = _.extend(walkin , {isActive : false});
 
+    if(walkin.status !== 'Completed')
+        walkin.status = 'Unresolved';
+
     walkin.save(function(err) {
         if (err) {
             return res.status(400).send({
@@ -118,18 +128,19 @@ exports.delete = function(req, res) {
  * List of Walkins
  */
 exports.queue = function(req, res){
-    Walkin.find({ isActive : true, status : 'In queue' }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+    Walkin.find({ isActive : true, $or : [ {status : 'In queue'}, {status : 'Work in progress'} ] }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
         if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
+            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
         } else {
-            res.jsonp(walkins);
+            Walkin.populate(walkins, popOpt, function(err, walkins){
+                if(err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+                res.jsonp(walkins);
+            });
         }
     });
 };
 
-exports.list = function(req, res) {
+exports.listAll = function(req, res) {
 	Walkin.find({ isActive : true }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
 		if (err) {
 			return res.status(400).send({
@@ -141,15 +152,82 @@ exports.list = function(req, res) {
 	});
 };
 
+exports.listToday = function(req, res) {
+    var d = new Date(), today = new Date(d.getFullYear()+','+(d.getMonth()+1)+','+d.getDate());
+    Walkin.find({ isActive : true, created : {$gt : today} }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.jsonp(walkins);
+        }
+    });
+};
+
+exports.listUnresolved = function(req, res) {
+    Walkin.find({ isActive : true, status : { $ne : 'Completed' } }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.jsonp(walkins);
+        }
+    });
+};
+
+/*
+ * Walkin logs
+ */
+
+exports.logService = function(req, res){
+    var walkin = req.walkin ;
+    walkin = _.extend(walkin , {serviceTechnician : req.user, serviceStartTime : Date.now() });
+    walkin.updated = Date.now();
+    walkin.status = 'Work in progress';
+
+    walkin.save(function(err) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.jsonp(walkin);
+        }
+    });
+};
+
+exports.logResolution = function(req, res){
+    var walkin = req.walkin ;
+    walkin = _.extend(walkin , {resoluteTechnician : req.user, resolutionTime : Date.now() });
+    walkin.updated = Date.now();
+    walkin.status = 'Completed';
+
+    walkin.save(function(err) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.jsonp(walkin);
+        }
+    });
+};
+
 /**
  * Walkin middleware
  */
-exports.walkinByID = function(req, res, next, id) { 
+exports.walkinByID = function(req, res, next, id) {
 	Walkin.findById(id).populate('user', 'displayName username phone location').exec(function(err, walkin) {
 		if (err) return next(err);
 		if (! walkin) return next(new Error('Failed to load Walkin ' + id));
-		req.walkin = walkin ;
-		next();
+
+        Walkin.populate(walkin, popOpt, function(err, walkin){
+            if (err) return next(err);
+            req.walkin = walkin;
+            next();
+        });
 	});
 };
 
