@@ -1,4 +1,4 @@
-<section data-ng-controller="AdminWalkinsController">
+<section data-ng-controller="AdminWalkinsQueueController">
 	<div>
         <h2>STS Admin Panel - Walk in </h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
     </div>
@@ -26,7 +26,7 @@
         <div class="col-md-9">
             <h4>Quick View
                 <div class="pull-right" ng-hide="!quickWalkin">
-                    <a ng-click="editWalkin(quickWalkin._id)"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Work on this!"></span></a>
+                    <a ng-click="serviceWalkin(quickWalkin._id)"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Work on this!"></span></a>
                     <a ng-click="viewWalkin(quickWalkin._id)" ng-hide="!quickWalkin" data-toggle="modal" data-target="#WalkinView" style="margin-right: 8px;"><span class="glyphicon glyphicon-eye-open" tooltip-placement="top" tooltip="View"></span></a>
                 </div>
             </h4>
