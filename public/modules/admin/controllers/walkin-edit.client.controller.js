@@ -63,5 +63,7 @@ angular.module('admin').controller('WalkinviewController', ['$http', '$scope', '
             }
             $http.put('/walkins/'+$scope.walkin._id, $scope.walkin).success(function(response){ });
         };
+
+        $scope.deleteWalkin = function(id){ if(confirm('Are you sure you want to delete this instance?')) $http.delete('/walkins/'+id).success(function(){ $location.path('/admin'); }); };
     }
 ]);
