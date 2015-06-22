@@ -1,17 +1,19 @@
 'use strict';
 
 //Setting up route
-angular.module('admin').config(['$stateProvider',
-	function($stateProvider) {
+angular.module('admin').config(['$stateProvider', '$urlRouterProvider',
+	function($stateProvider, $urlRouterProvider) {
+        $urlRouterProvider.otherwise('/admin');
+
 		// Admin state routing
 		$stateProvider.
 		state('walkin-view', {
 			url: '/admin/walkins/:walkinId',
-			templateUrl: 'modules/admin/views/walkin-view.client.view.html'
+			templateUrl: 'modules/admin/views/walkin-edit.client.view.html'
 		}).
-		state('walkins', {
+		state('walkins-queue', {
 			url: '/admin/walkins',
-			templateUrl: 'modules/admin/views/walkins.client.view.html'
+			templateUrl: 'modules/admin/views/walkins-queue.client.view.html'
 		}).
         state('walkin-list', {
             url: '/admin/walkins-list',
