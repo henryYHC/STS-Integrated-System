@@ -87,7 +87,7 @@ var WalkinSchema = new Schema({
       enum: ['In queue', 'Pending', 'Work in progress', 'Completed', 'Unresolved'],
       default: ['In queue']
     },
-    technician: {
+    lastUpdateTechnician: {
         type: Schema.ObjectId,
         ref: 'User'
     },
@@ -100,6 +100,10 @@ var WalkinSchema = new Schema({
       type: String,
         default: '',
         trim: true
+    },
+    resoluteTechnician: {
+        type: Schema.ObjectId,
+        ref: 'User'
     },
     serviceStartTime: {
         type: Date

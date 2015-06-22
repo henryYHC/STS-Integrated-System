@@ -80,9 +80,10 @@ exports.read = function(req, res) {
  * Update a Walkin
  */
 exports.update = function(req, res) {
-	var walkin = req.walkin ;
+    var walkin = req.walkin ;
 	walkin = _.extend(walkin , req.body);
     walkin.updated = Date.now();
+    walkin.lastUpdateTechnician = req.user._id;
 
 	walkin.save(function(err) {
 		if (err) {

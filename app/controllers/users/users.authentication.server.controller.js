@@ -24,7 +24,7 @@ exports.signup = function(req, res) {
 	user.provider = 'local';
 	user.displayName = user.firstName + ' ' + user.lastName;
     user.phone = '0000000000';
-    user.location = 'Off-Campus';
+    user.location = 'Off Campus';
 
 	// Then save the user 
 	user.save(function(err) {
