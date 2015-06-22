@@ -1,7 +1,10 @@
 # STS_IntegratedSystem
 ### Updates
-1. Admin panel for walkin (Partially functional): `localhost:3000/#!/admin/walkins` (2015.06.01)
+1. Admin panel for walkin (Partially functional): `localhost:3000/#!/admin` (2015.06.01)
 2. Walk in instance creation: `localhost:3000/#!/walkins` (2015.05.25)
+3. Admin panel walkin in edit/service functions updated (2015.06.21)
+4. Admin panel user security updated. Service time log added (2015.06.22)
+5. Optimized partial code structures and runtime efficiency (2015.06.22)
 
 ### Intsallaion guide for Mac
 1. Install Node: [Click here](https://nodejs.org/download/)
