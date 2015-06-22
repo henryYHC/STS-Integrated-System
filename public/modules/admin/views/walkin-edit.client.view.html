@@ -1,10 +1,16 @@
 <section data-ng-controller="WalkinviewController"  ng-init="initWalkin()">
     <div>
-        <h2>STS Admin Panel - Walk in Edit</h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
+        <h2>STS Admin Panel - Walk in Edit<a href="/#!/admin" class="btn btn-sm btn-default pull-right">Back</a></h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
     </div>
     <div class="container">
         <div class="col-md-12">
-            <h3>Instance information<span class="label label-success" style="font-size: 13px; margin-left: 2.5em;" ng-show="walkin.isActive">Active</span><span class="label label-danger" style="font-size: 13px; margin-left: 2.5em;" ng-show="!walkin.isActive">Inactive</span><span class="label label-info" style="font-size: 13px; margin-left: 1em;">{{walkin.status}}</span></h3><hr/>
+            <h3>
+                Instance information
+                <span class="label label-success" style="font-size: 13px; margin-left: 2.5em;" ng-show="walkin.isActive">Active</span>
+                <span class="label label-danger" style="font-size: 13px; margin-left: 2.5em;" ng-show="!walkin.isActive">Inactive</span>
+                <span class="label label-info" style="font-size: 13px; margin-left: 1em;">{{walkin.status}}</span>
+                <a class="pull-right" ng-click="deleteWalkin(walkin._id)"><span class="glyphicon glyphicon-trash" tooltip-placement="top" tooltip="Delete"></span></a>
+            </h3><hr/>
             <div class="col-md-6">
                 <div class="form-horizontal">
                     <div class="form-group" style="text-align: left">

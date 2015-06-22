@@ -1,6 +1,6 @@
 <section data-ng-controller="AdminWalkinsQueueController">
 	<div>
-        <h2>STS Admin Panel - Walk in </h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
+        <h2>STS Admin Panel - Walk in<a href="/#!/admin" class="btn btn-sm btn-default pull-right">Back</a></h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
     </div>
     <div class="container">
         <div class="col-md-3" ng-init="initQueue()" >
@@ -12,7 +12,7 @@
                         <th>Customer</th>
                     </tr>
                     <tr data-ng-repeat="queueItem in queueItems | orderBy: '-created' : true" data-ng-href="#">
-                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $index + 1 }}   <span class="glyphicon glyphicon-cog pull-right" tooltip-placement="top" tooltip="In progress" ng-show="queueItem.status=='Work in progress'"/></td>
                         <td>{{queueItem.user.displayName}}
                             <a ng-mouseover="quickviewWalkin(queueItem._id);" ng-click="quickviewWalkin(queueItem._id);"><span class="glyphicon glyphicon-info-sign pull-right" tooltip-placement="top" tooltip="{{(queueItem.created | date:'short') || 'N/A'}}"></span></a>
                         </td>
@@ -24,14 +24,17 @@
             </div>
         </div>
         <div class="col-md-9">
-            <h4>Quick View
+            <h4>
+                Quick View &emsp;
+                <span class="label label-success" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='Work in progress'">Work in progress</span>
+                <span class="label label-info" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='In queue'">In queue</span>
                 <div class="pull-right" ng-hide="!quickWalkin">
                     <a ng-click="serviceWalkin(quickWalkin._id)"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Work on this!"></span></a>
                     <a ng-click="viewWalkin(quickWalkin._id)" ng-hide="!quickWalkin" data-toggle="modal" data-target="#WalkinView" style="margin-right: 8px;"><span class="glyphicon glyphicon-eye-open" tooltip-placement="top" tooltip="View"></span></a>
                 </div>
             </h4>
             <hr/>
-            <div class="col-md-6" style="font-size: 11.5px;" ng-hide="!quickWalkin">
+            <div class="col-md-6" style="font-size: 12px;" ng-hide="!quickWalkin">
                 <div class="form-horizontal">
                     <div class="form-group" style="text-align: left">
                         <label class="col-sm-3 control-label" for="1">NetID:</label>
@@ -64,11 +67,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6" style="font-size: 11.5px;" ng-hide="!quickWalkin">
+            <div class="col-md-6" style="font-size: 12px;" ng-hide="!quickWalkin">
                 <div class="form-horizontal">
                     <div class="form-group" style="text-align: left;">
-                        <label class="col-sm-3 control-label" for="6">Problem:</label>
-                        <div class="col-sm-9" id="6" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;">{{quickWalkin.description || 'N/A'}}</p></div>
+                        <label class="col-sm-3 control-label" for="7">Problem:</label>
+                        <div class="col-sm-9" id="7" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;">{{quickWalkin.description || 'N/A'}}</p></div>
                     </div>
                 </div>
             </div>

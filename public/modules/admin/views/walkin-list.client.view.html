@@ -1,10 +1,18 @@
 <section data-ng-controller="AdminWalkinListingController">
     <div>
-        <h2>STS Admin Panel - Walk in Listing</h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
+        <h2>STS Admin Panel - Walk in Listing<a href="/#!/admin" class="btn btn-sm btn-default pull-right">Back</a></h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
     </div>
     <div class="container">
-        <div class="col-md-12" ng-init="initListing()" style="margin-top: 0.5em;">
-            <h4>Walkin Listings</h4>
+        <div class="col-md-12" style="margin-top: 0.5em;">
+        <h4>
+            Walkin Listings
+            <div class="pull-right">
+                <button style="width: 80px;" class="btn btn-sm btn-primary" ng-click="listToday()">View Today</button>
+                <button style="width: 80px;" class="btn btn-sm btn-warning" ng-click="listUnresolved()">Unresolved</button>
+                <button style="width: 80px;" class="btn btn-sm btn-default" ng-click="listAll()">View All</button>
+            </div>
+        </h4>
+        <div class="col-md-12" ng-init="listAll()" style="margin-top: 0.5em;">
             <div style="height: 420px; overflow: auto">
                 <table class="table table-hover">
                     <tr>
@@ -35,8 +43,8 @@
                         <td data-ng-bind="(walkin.created | date:'short') || 'N/A'"></td>
                     </tr>
                 </table>
-                <div class="alert alert-info text-center" data-ng-hide="!walkins.$resolved || walkins.length">
-                    <span class="glyphicon glyphicon-exclamation-sign"/> No Walk ins yet!
+                <div class="alert alert-info text-center" data-ng-hide="walkins.length > 0">
+                    <span class="glyphicon glyphicon-exclamation-sign"/> No Walk ins!
                 </div>
             </div>
         </div>
