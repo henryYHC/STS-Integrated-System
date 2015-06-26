@@ -18,7 +18,7 @@ exports.signup = function(req, res) {
 	var message = null;
 
     if(!user.username || !user.password)
-        res.status(400).send({ message: errorHandler.getErrorMessage('Invalid username or passowrd.') });
+        return res.status(400).send({ message: 'Invalid username or passowrd.' });
 
 	// Add missing user fields
 	user.provider = 'local';

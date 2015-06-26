@@ -26,29 +26,53 @@ exports.userByID = function(req, res, next, id) {
  */
 exports.requiresLogin = function(req, res, next) {
 	if (!req.isAuthenticated()) {
-		return res.status(401).send({
-			message: 'User is not logged in'
-		});
+		return res.status(401).send({ message: 'User is not logged in' });
 	}
-
 	next();
 };
 
 /**
  * User authorizations routing middleware
  */
-exports.hasAuthorization = function(roles) {
+exports.hasAdmin = function(req, res, next){
+    User.find({ roles : { $in : ['admin'] } }, function(err, result){
+        if(result.length)
+            return res.status(400).send({ message: 'Admin account has been initialized' });
+
+        req.body.roles = ['admin'];
+        next();
+    });
+};
+
+exports.hasAdminPermission = function(req, res, next){
+    if (!req.isAuthenticated())
+        return res.status(401).send({ message: 'User is not logged in' });
+
+    if (_.intersection(req.user.roles, ['admin']).length)
+        next();
+    else
+        res.status(403).send({ message: 'User is not authorized' });
+};
+
+exports.hasTechnicianPermission = function(req, res, next){
+    if (!req.isAuthenticated())
+        return res.status(401).send({ message: 'User is not logged in' });
+
+    if (_.intersection(req.user.roles, ['admin']).length)
+        next();
+    else
+        res.status(403).send({ message: 'User is not authorized' });
+};
+
+exports.hasAuthorization = function() {
 	var _this = this;
 
 	return function(req, res, next) {
 		_this.requiresLogin(req, res, function() {
-			if (_.intersection(req.user.roles, roles).length) {
-				return next();
-			} else {
-				return res.status(403).send({
-					message: 'User is not authorized'
-				});
-			}
+			if (_.intersection(req.user.roles, ['customer']).length)
+                return res.status(403).send({ message: 'User is not authorized' });
+			else
+                return next();
 		});
 	};
 };
