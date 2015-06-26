@@ -2,7 +2,6 @@
 
 module.exports = {
 	db: 'mongodb://localhost/sts-integratedsystem',
-    port: 80,
 	assets: {
 		lib: {
 			css: [
