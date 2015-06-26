@@ -41,3 +41,12 @@
 4. Open your browser and connect to 
 
 		http://localhost:3000/
+		
+### How to Updaet after Pull
+1. Update node package dependency
+		
+		npm install --save --save-dev
+		
+2. Updae bower package dependecy
+
+		bower install --allow-root
