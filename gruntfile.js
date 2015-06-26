@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 			serverViews: {
 				files: watchFiles.serverViews,
 				options: {
-					livereload: true,
+					livereload: true
 				}
 			},
 			serverJS: {
@@ -31,7 +31,7 @@ module.exports = function(grunt) {
 			clientViews: {
 				files: watchFiles.clientViews,
 				options: {
-					livereload: true,
+					livereload: true
 				}
 			},
 			clientJS: {
