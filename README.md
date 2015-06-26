@@ -42,7 +42,7 @@
 
 		http://localhost:3000/
 		
-### How to Updaet after Pull
+### How to Update after Pull
 1. Update node package dependency
 		
 		npm install --save --save-dev
