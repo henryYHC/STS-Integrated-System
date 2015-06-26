@@ -47,6 +47,6 @@
 		
 		npm install --save --save-dev
 		
-2. Updae bower package dependecy
+2. Update bower package dependecy
 
 		bower install --allow-root
