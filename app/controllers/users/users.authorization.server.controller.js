@@ -64,15 +64,28 @@ exports.hasTechnicianPermission = function(req, res, next){
         res.status(403).send({ message: 'User is not authorized' });
 };
 
-exports.hasAuthorization = function() {
-	var _this = this;
+exports.hasPermission = function(req, res, next){
+    if (!req.isAuthenticated())
+        return res.status(401).send({ message: 'User is not logged in' });
 
-	return function(req, res, next) {
-		_this.requiresLogin(req, res, function() {
-			if (_.intersection(req.user.roles, ['customer']).length)
-                return res.status(403).send({ message: 'User is not authorized' });
-			else
+    if (_.intersection(req.user.roles, ['customer']).length)
+        return res.status(403).send({ message: 'User is not authorized' });
+    else
+        return next();
+};
+
+exports.hasAuthorization = function(roles) {
+    var _this = this;
+
+    return function(req, res, next) {
+        _this.requiresLogin(req, res, function() {
+            if (_.intersection(req.user.roles, roles).length) {
                 return next();
-		});
-	};
+            } else {
+                return res.status(403).send({
+                    message: 'User is not authorized'
+                });
+            }
+        });
+    };
 };

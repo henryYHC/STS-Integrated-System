@@ -210,7 +210,7 @@ exports.changePassword = function(req, res) {
 											res.status(400).send(err);
 										} else {
 											res.send({
-												message: 'Password changed successfully'
+												message: 'Password changed successfully, you will be redirected in 3 seconds.'
 											});
 										}
 									});

@@ -128,7 +128,8 @@ exports.delete = function(req, res) {
  * List of Walkins
  */
 exports.queue = function(req, res){
-    Walkin.find({ isActive : true, $or : [ {status : 'In queue'}, {status : 'Work in progress'} ] }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+    var d = new Date(), today = new Date(d.getFullYear()+','+(d.getMonth()+1)+','+d.getDate());
+    Walkin.find({ isActive : true, $or : [ {status : 'In queue'}, {status : 'Work in progress'} ], created : {$gt : today} }).sort('-created').exec(function(err, walkins) {
         if (err) {
             return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
         } else {
