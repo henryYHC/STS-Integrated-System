@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('users').controller('SettingsController', ['$scope', '$http', '$location', 'Users', 'Authentication',
-	function($scope, $http, $location, Users, Authentication) {
+angular.module('users').controller('SettingsController', ['$scope', '$http', '$location', 'Users', 'Authentication', '$interval',
+	function($scope, $http, $location, Users, Authentication, $interval) {
 		$scope.user = Authentication.user;
 
 		// If user is not signed in then redirect back home
@@ -63,6 +63,7 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 				// If successful show success message and clear form
 				$scope.success = true;
 				$scope.passwordDetails = null;
+                $interval(function(){ $location.path('/admin'); }, 3000, 1);
 			}).error(function(response) {
 				$scope.error = response.message;
 			});
