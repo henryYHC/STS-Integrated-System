@@ -1,4 +1,7 @@
-# STS_IntegratedSystem
+# STS Integrated System
+### Introduction
+This is a integrated system for customer instance handling at Emory Student Technology Support (STS). The system is four different sub-components, walk-in instance, check-in instance, Emory ServiceNow integration, and back-end admin panel for instance processing. The goal of this system is to replace the existing manually inputed paperworks and to provide customers as well as technician a cleaer and more friendly UI design and simpler experience at Emory STS.
+
 ### Updates
 1. Admin panel for walkin (Partially functional): `localhost:3000/#!/admin` (2015.06.01)
 2. Walk in instance creation: `localhost:3000/#!/walkins` (2015.05.25)
