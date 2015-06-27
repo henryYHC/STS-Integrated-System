@@ -5,6 +5,8 @@
 3. Admin panel walkin in edit/service functions updated (2015.06.21)
 4. Admin panel user security updated. Service time log added (2015.06.22)
 5. Optimized partial code structures and runtime efficiency (2015.06.22)
+6. Upload scripts for run and end produnction instances (2015.06.26)
+7. Fixed permission issue and package dependency and modularized code (2015.06.27)
 
 ### Intsallaion guide for Mac
 1. Install Node: [Click here](https://nodejs.org/download/)
@@ -33,10 +35,16 @@
 
 		mongod
 	
-3. Set the environment variable to dev then grunt
+3. Set the environment variable to development then grunt
 
-		export NODE_ENV=development
-		grunt
+		NODE_ENV=development grunt
+		
+	For deployment: (First build then run the instance)
+		
+		NODE_ENV=development grunt build
+		(PORT=80) NODE_ENV=production node server.js(&)
+	
+	You can specify port number here (might need sudoer permission). Add & at the end to screen the instance.
 		
 4. Open your browser and connect to 
 
