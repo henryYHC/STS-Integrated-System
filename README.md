@@ -6,7 +6,8 @@
 4. Admin panel user security updated. Service time log added (2015.06.22)
 5. Optimized partial code structures and runtime efficiency (2015.06.22)
 6. Upload scripts for run and end produnction instances (2015.06.26)
-7. Fixed permission issue and package dependency and modularized code (2015.06.27)
+7. Fixed permission issue and package dependency and modularized code 
+8. Version 0.1 released (2015.06.27)
 
 ### Intsallaion guide for Mac
 1. Install Node: [Click here](https://nodejs.org/download/)
