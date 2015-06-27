@@ -1,13 +1,17 @@
 'use strict';
 
-angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$scope', '$modal', '$location', 'Authentication',
-    function($http, $scope, $modal, $location, Authentication){
+angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$scope', '$modal', '$location', 'Authentication', '$interval', '$rootScope',
+    function($http, $scope, $modal, $location, Authentication, $interval, $rootScope){
 
         var user = Authentication.user;
         if (!user || user.roles.indexOf('customer') >= 0) $location.path('/');
 
         $scope.initQueue = function(){ $http.get('/walkins/queue').success(function(response){ $scope.queueCount = 0; $scope.queueItems = response; }); };
         $scope.quickviewWalkin = function(id){ $http.get('/walkins/'+id).success(function(response){ $scope.quickWalkin = response; }); };
+
+        // Auto refresh
+        $scope.autoRefresher = $interval(function(){ $scope.initQueue(); }, 5000);
+        $rootScope.$on('$locationChangeSuccess', function() { $interval.cancel($scope.autoRefresher); });
 
         $scope.viewWalkin = function(id){
             $http.get('/walkins/'+id).success(function(response){
@@ -39,8 +43,7 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
                                 alert('Function under development.');
                         }
                         // Re-init queue
-                        $scope.quickWalkin = undefined;
-                        $http.get('/walkins/queue').success(function(response){ $scope.queueCount = 0; $scope.queueItems = response; });
+                        $scope.initQueue();
                     });
                 });
             }
