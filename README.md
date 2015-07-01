@@ -12,7 +12,7 @@ This is a integrated system for customer instance handling at Emory Student Tech
 7. Fixed permission issue and package dependency and modularized code 
 8. Version 0.1 released (2015.06.27)
 
-### Intsallaion guide for Mac
+### Installation guide for Mac
 1. Install Node: [Click here](https://nodejs.org/download/)
 2. Install MongoDB: [Click here](http://www.mongodb.org/downloads) 
 3. Install Bower :
@@ -24,7 +24,7 @@ This is a integrated system for customer instance handling at Emory Student Tech
 		npm install
 		npm install -g grunt-cli
 		
-5. Clone this repo to you destinated directory
+5. Clone this repo to you destination directory
 
 		cd /../../DESTINATION
 		git clone https://github.com/henryYHC/STS_IntegratedSystem.git
