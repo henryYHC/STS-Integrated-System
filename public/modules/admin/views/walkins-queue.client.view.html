@@ -1,18 +1,18 @@
 <section data-ng-controller="AdminWalkinsQueueController">
 	<div>
-        <h2>STS Admin Panel - Walk in<a href="/#!/admin" class="btn btn-sm btn-default pull-right">Back</a></h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
+        <h2>STS Admin Panel - Walk-in<a href="/#!/admin" class="btn btn-sm btn-default pull-right">Back</a></h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
     </div>
     <div class="container">
         <div class="col-md-3" ng-init="initQueue()" >
-            <h4>Process Queue<a class="pull-right" ng-click="initQueue()"><span class="glyphicon glyphicon-refresh" tooltip-placement="top" tooltip="Refresh"/></a></h4><hr/>
-            <div style="height: 420px; overflow: auto">
+            <h4>Customers waiting<a class="pull-right" ng-click="initQueue()"><span class="glyphicon glyphicon-refresh" tooltip-placement="top" tooltip="Refresh"/></a></h4><hr/>
+            <div style="height: 420px; overflow: auto">s
                 <table class="table table-hover" data-ng-show="queueItems.length">
                     <tr>
                         <th>Order</th>
                         <th>Customer</th>
                     </tr>
                     <tr data-ng-repeat="queueItem in queueItems | orderBy: '-created' : true" data-ng-href="#">
-                        <td>{{ $index + 1 }}   <span class="glyphicon glyphicon-cog pull-right" tooltip-placement="top" tooltip="Serving by {{queueItem.serviceTechnician.displayName}}" ng-show="queueItem.status=='Work in progress'"/></td>
+                        <td>{{ $index + 1 }}   <span class="glyphicon glyphicon-cog pull-right" tooltip-placement="top" tooltip="helped by {{queueItem.serviceTechnician.displayName}}" ng-show="queueItem.status=='Work in progress'"/></td>
                         <td>{{queueItem.user.displayName}}
                             <a ng-click="quickviewWalkin(queueItem._id);"><span class="glyphicon glyphicon-info-sign pull-right" tooltip-placement="top" tooltip="{{(queueItem.created | date:'shortTime') || 'N/A'}}"></span></a>
                         </td>
