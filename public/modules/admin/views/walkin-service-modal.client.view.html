@@ -4,7 +4,10 @@
             Walk-in Information
             <span class="label label-success" style="font-size: 13px; margin-left: 1em;" ng-show="walkin.isActive">Active</span>
             <span class="label label-danger" style="font-size: 13px; margin-left: 1em;" ng-show="!walkin.isActive">Inactive</span>
-            <p class="pull-right" style="font-size: 14px; font-weight: 500;" data-ng-bind="('Created at ' + (walkin.created | date:'short')) || 'N/A'"></p>
+            <p class="pull-right"style="font-size: 14px; font-weight: 500;">
+                <font style="font-weight: 300;">Created at </font>{{(walkin.created | date:'short') || 'N/A'}} <br>
+                <font style="font-weight: 300;">Updated at </font>{{(walkin.updated | date:'short') || 'N/A'}}
+            </p>
         </h2>
     </div>
 
@@ -157,10 +160,10 @@
         </div>
     </div>
     <div class="modal-footer">
-        <p class="pull-left" style="font-size: 14px; font-weight: 500;" data-ng-bind="'Last updated at ' + ((walkin.updated | date:'short') || 'N/A')"></p>
-        <div data-ng-show="error" class="text-center text-danger pull-left" style="margin-left: 1em;"><strong data-ng-bind="error"></strong></div>
+        <div data-ng-show="error" class="text-center text-danger pull-left" style="margin-left: 1em; font-size: 13px;"><strong data-ng-bind="error"></strong></div>
+        <button class="btn btn-primary" ng-click="save()">Save</button>
         <button class="btn btn-success" ng-click="resolve()">Resolve</button>
-        <button class="btn btn-info" ng-click="transfer()">Transfer</button>
+        <button class="btn btn-warning" ng-click="transfer()">Transfer</button>
         <button class="btn btn-default" ng-click="close()">Cancel</button>
     </div>
 </section>

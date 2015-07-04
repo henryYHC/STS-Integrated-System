@@ -37,6 +37,9 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
                     });
                     service.result.then(function(result){
                         switch(result){
+                            case 'saved':
+                                $scope.quickviewWalkin(id);
+                                break;
                             case 'resolved':
                                 break;
                             case 'transfer':

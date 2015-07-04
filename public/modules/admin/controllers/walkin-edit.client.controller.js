@@ -52,10 +52,12 @@ angular.module('admin').controller('WalkinviewController', ['$http', '$scope', '
                 case 'Computer':
                 case 'Phone/Tablet':
                     $scope.walkin.deviceType = 'N/A';
+                    $scope.walkin.otherDevice = undefined;
                     break;
                 case 'Gaming System':
                 case 'TV/Media Device':
                     $scope.walkin.os = 'N/A';
+                    $scope.walkin.otherDevice = undefined;
                     break;
                 default:
                     $scope.walkin.deviceType = 'N/A';

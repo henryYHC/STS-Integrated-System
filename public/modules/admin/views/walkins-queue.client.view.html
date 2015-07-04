@@ -5,17 +5,15 @@
     <div class="container">
         <div class="col-md-3" ng-init="initQueue()" >
             <h4>Customers waiting<a class="pull-right" ng-click="initQueue()"><span class="glyphicon glyphicon-refresh" tooltip-placement="top" tooltip="Refresh"/></a></h4><hr/>
-            <div style="height: 420px; overflow: auto">s
+            <div style="height: 420px; overflow: auto">
                 <table class="table table-hover" data-ng-show="queueItems.length">
                     <tr>
                         <th>Order</th>
                         <th>Customer</th>
                     </tr>
-                    <tr data-ng-repeat="queueItem in queueItems | orderBy: '-created' : true" data-ng-href="#">
+                    <tr data-ng-repeat="queueItem in queueItems | orderBy: '-created' : true" ng-click="quickviewWalkin(queueItem._id);">
                         <td>{{ $index + 1 }}   <span class="glyphicon glyphicon-cog pull-right" tooltip-placement="top" tooltip="helped by {{queueItem.serviceTechnician.displayName}}" ng-show="queueItem.status=='Work in progress'"/></td>
-                        <td>{{queueItem.user.displayName}}
-                            <a ng-click="quickviewWalkin(queueItem._id);"><span class="glyphicon glyphicon-info-sign pull-right" tooltip-placement="top" tooltip="{{(queueItem.created | date:'shortTime') || 'N/A'}}"></span></a>
-                        </td>
+                        <td>{{queueItem.user.displayName}}<span class="glyphicon glyphicon-info-sign pull-right" tooltip-placement="top" tooltip="{{(queueItem.created | date:'shortTime') || 'N/A'}}"></span></td>
                     </tr>
                 </table>
                 <div class="alert alert-info text-center" data-ng-hide="queueItems.length">
@@ -29,8 +27,7 @@
                 <span class="label label-success" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='Work in progress'">Work in progress</span>
                 <span class="label label-info" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='In queue'">In queue</span>
                 <div class="pull-right" ng-hide="!quickWalkin">
-                    <a ng-click="serviceWalkin(quickWalkin._id)"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Work on this!"></span></a>
-                    <a ng-click="viewWalkin(quickWalkin._id)" ng-hide="!quickWalkin" data-toggle="modal" data-target="#WalkinView" style="margin-right: 8px;"><span class="glyphicon glyphicon-eye-open" tooltip-placement="top" tooltip="View"></span></a>
+                    <button class="btn btn-md btn-primary" ng-click="serviceWalkin(quickWalkin._id)">Begin Service</button>
                 </div>
             </h4>
             <hr/>
@@ -49,7 +46,7 @@
                 </div>
                 <div class="form-horizontal">
                     <div class="form-group" style="text-align: left">
-                        <label class="col-sm-3 control-label" for="3">Device Type:</label>
+                        <label class="col-sm-3 control-label" for="3">Device type:</label>
                         <div class="col-sm-9" id="3" style="margin-top: 8px;">{{quickWalkin.deviceCategory || 'N/A'}}</div>
                     </div>
                 </div>
@@ -74,9 +71,15 @@
                         <div class="col-sm-9" id="7" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;">{{quickWalkin.description || 'N/A'}}</p></div>
                     </div>
                 </div>
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left;">
+                        <label class="col-sm-3 control-label" for="8">Work note:</label>
+                        <div class="col-sm-9" id="8" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;">{{quickWalkin.workNote || 'N/A'}}</p></div>
+                    </div>
+                </div>
             </div>
             <div class="alert alert-info text-center" ng-show="!queueIquickWalkin" ng-hide="quickWalkin">
-                <span class="glyphicon glyphicon-exclamation-sign"/> Please select in queue instance to view.
+                <span class="glyphicon glyphicon-exclamation-sign"/> Please click any queue item to view
             </div>
         </div>
 

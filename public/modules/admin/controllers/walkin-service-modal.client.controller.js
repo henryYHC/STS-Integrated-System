@@ -22,7 +22,24 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
         $scope.initDeviceInfo = function(){ $http.get('/walkins/util/loadDeviceInfo').success(function(response){ $scope.deviceInfoOptions = response; }); };
         $scope.initDeviceOS = function(){ $http.get('/walkins/util/loadDeviceOS').success(function(response){ $scope.deviceOSOptions = response; }); };
 
-
+        $scope.save = function(){
+            switch($scope.walkin.deviceCategory){
+                case 'Computer':
+                case 'Phone/Tablet':
+                    $scope.walkin.deviceType = 'N/A';
+                    $scope.walkin.otherDevice = undefined;
+                    break;
+                case 'Gaming System':
+                case 'TV/Media Device':
+                    $scope.walkin.os = 'N/A';
+                    $scope.walkin.otherDevice = undefined;
+                    break;
+                default:
+                    $scope.walkin.deviceType = 'N/A';
+                    $scope.walkin.os = 'N/A';
+            }
+            $http.put('/walkins/'+$scope.walkin._id, $scope.walkin).success(function(response){ $modalInstance.close('saved'); });
+        };
 
         $scope.resolve = function(){
             walkin = $scope.walkin;
@@ -42,8 +59,9 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
                     $scope.walkin.os = 'N/A';
             }
 
-            if(!walkin.resolution || walkin.resolution.length < 25)
-                $scope.error = 'Resolution has to be at least 25 characters';
+            var resolution = walkin.resolution;
+            if(!resolution || resolution.replace(/ /g,'').length < 25)
+                $scope.error = 'Resolution has to be at least 25 characters (excluding space)';
             else{
                 $http.put('/walkins/'+walkin._id, walkin).success(function(){
                     $http.put('/walkins/log/logResolution/'+walkin._id).success(function(){
@@ -54,7 +72,6 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
         };
 
         $scope.transfer = function () { $modalInstance.close('transfer'); };
-
         $scope.close = function () { $modalInstance.dismiss('cancel'); };
     }
 ]);
