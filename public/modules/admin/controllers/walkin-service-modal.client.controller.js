@@ -22,6 +22,10 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
         $scope.initDeviceInfo = function(){ $http.get('/walkins/util/loadDeviceInfo').success(function(response){ $scope.deviceInfoOptions = response; }); };
         $scope.initDeviceOS = function(){ $http.get('/walkins/util/loadDeviceOS').success(function(response){ $scope.deviceOSOptions = response; }); };
 
+        $scope.verify = function(){
+            $http.put('/user/verify/'+$scope.walkin.user.username).success(function(response){ $scope.walkin.user = response; });
+        };
+
         $scope.save = function(){
             switch($scope.walkin.deviceCategory){
                 case 'Computer':

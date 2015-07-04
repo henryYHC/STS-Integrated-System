@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
 	_ = require('lodash');
 
 var popOpt = [
-    { path : 'user', model : 'User', select : 'displayName username phone location'},
+    { path : 'user', model : 'User', select : 'displayName username phone location verified'},
     { path : 'lastUpdateTechnician', model : 'User', select : 'displayName'},
     { path : 'serviceTechnician', model : 'User', select : 'displayName'},
     { path : 'resoluteTechnician', model : 'User', select : 'displayName'}
@@ -34,6 +34,7 @@ exports.create = function(req, res) {
             delete data.user;   delete data.userExisted;
             var walkin = new Walkin(data);
             walkin.user = user._id;
+            user.lastWalkin = walkin;
 
             if(!walkin.deviceType) walkin.deviceType = 'N/A';
             if(!walkin.os)         walkin.os = 'N/A';
@@ -62,10 +63,7 @@ exports.create = function(req, res) {
                 if(!walkin.deviceType) walkin.deviceType = 'N/A';
                 if(!walkin.os)         walkin.os = 'N/A';
 
-                console.log(walkin);
-
                 walkin.save(function(err) {
-                    console.log(err);
                     if (err){ return res.status(400).send({ message: errorHandler.getErrorMessage(err) }); }
                     else{
                         res.jsonp(walkin);

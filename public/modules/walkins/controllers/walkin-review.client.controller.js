@@ -7,6 +7,8 @@ angular.module('walkins').controller('WalkinReviewController', ['$scope', '$stat
         if(!$scope.formStatus.info)     $state.go('createWalkin.info');
         if(!$scope.formStatus.netid)    $state.go('createWalkin.netid');
 
+
+        console.log($scope.formData);
         $scope.submitWalkin = function(){
             var viewLibaility = $modal.open({
                 animation: true,
@@ -18,9 +20,10 @@ angular.module('walkins').controller('WalkinReviewController', ['$scope', '$stat
             viewLibaility.result.then(
                 function(response){
                     if(response){
+                        // Create instance
                         $scope.formData.liabilityAgreement = response;
                         $http.post('/walkins', $scope.formData)
-                            .success(function(){
+                            .success(function(response){
                                 alert('Walk in request submitted sucessfully!');
                                 $location.path('/#!/');
                             })

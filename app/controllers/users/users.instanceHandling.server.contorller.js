@@ -34,5 +34,15 @@ exports.validateNetId = function(req, res){
         user.roles = undefined;
         res.jsonp( { status : 'Found', user : user });
     }
+};
 
+exports.verifyNetId = function(req, res){
+    var user = req.profile;
+    if(user){
+        user.verified = true;
+        user.save(function(err) {
+            if (err)    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        });
+    }
+    res.jsonp(user);
 };

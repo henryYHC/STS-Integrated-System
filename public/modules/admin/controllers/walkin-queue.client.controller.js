@@ -7,7 +7,7 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
         if (!user || user.roles.indexOf('customer') >= 0) $location.path('/');
 
         $scope.initQueue = function(){ $http.get('/walkins/queue').success(function(response){ $scope.queueCount = 0; $scope.queueItems = response; }); };
-        $scope.quickviewWalkin = function(id){ $http.get('/walkins/'+id).success(function(response){ $scope.quickWalkin = response; }); };
+        $scope.quickviewWalkin = function(id){ $http.get('/walkins/'+id).success(function(response){ $scope.quickWalkin = response; console.log(response); }); };
 
         // Auto refresh
         $scope.autoRefresher = $interval(function(){ $scope.initQueue(); }, 5000);

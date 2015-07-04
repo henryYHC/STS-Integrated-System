@@ -54,7 +54,10 @@ var UserSchema = new Schema({
         enum: ['Alabama', 'Alpha Delta Pi', 'Alpha Epsilon Pi', 'Alpha Kappa Alpha', 'Alpha Tau Omega', 'Beta Theta Pi', 'Clairmont CRC', 'Clairmont Towers', 'Clairmont URC', 'Clifton', 'Delta Delta Delta', 'Delta Phi Epsilon', 'Delta Phi Lambda', 'Dobbs', 'Evans', 'Few', 'Gamma Phi Beta', 'Hamilton', 'Kappa Alpha', 'Kappa Alpha Theta', 'Kappa Kappa Gamma', 'Kappa Sigma', 'Longstreet', 'McTyeire', 'Pi Kappa Alpha', 'Raoul', 'Sigma Alpha Epsilon', 'Sigma Chi', 'Sigma Delta Tau', 'Turman', 'Woodruff', 'Xi Kappa', 'Zeta Beta Tau', 'Off Campus'],
         required: 'Please fill in your residence hall (or off-campus)'
     },
-
+    verified: {
+        type: Boolean,
+        default: false
+    },
     //User log information
     updated: {
         type: Date
