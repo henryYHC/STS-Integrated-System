@@ -16,9 +16,7 @@ module.exports = function(app) {
 
 	// Setting up the users password api
 	app.route('/users/password').post(users.hasPermission, users.changePassword);
-	app.route('/auth/forgot').post(users.hasPermission, users.forgot);
-	app.route('/auth/reset/:token').get(users.validateResetToken);
-	app.route('/auth/reset/:token').post(users.reset);
+	app.route('/admin/resetPassword/:userNetId').post(users.hasPermission, users.resetPassword);
 
 	// Setting up the users authentication api
     app.route('/auth/initAdmin').post(users.hasAdmin, users.signup);
