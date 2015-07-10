@@ -1,9 +1,10 @@
 'use strict';
 
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication',
-	function($scope, Authentication) {
-		// This provides Authentication context.
+angular.module('core').controller('HomeController', ['$scope', '$http', 'Authentication',
+	function($scope, $http, Authentication) {
 		$scope.authentication = Authentication;
+
+        $http.get('/test/servicenow/createWalkin');
 	}
 ]);
