@@ -8,3 +8,5 @@ public/lib
 app/tests/coverage/
 .bower-*/
 .idea/
+app/credentials/
+!ExampleCredential.json
