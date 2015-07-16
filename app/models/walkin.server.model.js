@@ -114,6 +114,18 @@ var WalkinSchema = new Schema({
     },
     resolutionTime: {
       type: Date
+    },
+
+    // Service Now information
+    snSysId: {
+        type: String,
+        trim: true,
+        default: ''
+    },
+    snValue: {
+        type: String,
+        trim: true,
+        default: ''
     }
 });
 
