@@ -27,11 +27,29 @@ var popOpt = [
     { path : 'resoluteTechnician', model : 'User', select : 'username'}
 ];
 
+var getTemplateShortDescription = function(walkin){
+    var prefix = 'CR: ';
+
+    return prefix + 'Dummy Template';
+};
+
 var formulateWalkin = function(walkin, soapAction){
     var SNObj = {
         // Request info
         u_soapaction : soapAction,
-        u_incident_state : walkin.status,
+        u_incident_state : 'Resolved',
+
+        // Static info
+        category_1 : 'Desktop Management',
+        configuration_item : 'Student Technology',
+        impact : '4 – Minor/Localized',
+        suppress_notification : 'Yes',
+        urgency : '4 - Low',
+
+        // Walk-in info
+        record_type:  'Incident',
+        reported_source :  'Walk In',
+        short_description : getTemplateShortDescription(walkin),
 
         // Assignment info
         u_assigned_to : walkin.serviceTechnician.username,
@@ -43,8 +61,12 @@ var formulateWalkin = function(walkin, soapAction){
     };
 
     console.log(SNObj);
+    return SNObj;
 };
 
+exports.getWalkinIncident = function(id){
+
+};
 
 exports.createWalkinIncident = function(walkin){
     var data = {
@@ -66,6 +88,17 @@ exports.createWalkinIncident = function(walkin){
     //    client.insert(data, function(err, response){
     //        if(err) return console.log(err);
     //        console.log(response);
+    //
+    //        walkin.snSysId = response.sys_id;
+    //        walkin.snValue = response.display_name;
+    //        walkin.save(function(err, updatedWalkin){
+    //            if(err) return console.log(err);
+    //            return updatedWalkin;
+    //        });
     //    });
     //});
+};
+
+exports.updateWalkinIncident = function(walkin){
+
 };

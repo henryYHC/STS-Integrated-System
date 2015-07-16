@@ -7,7 +7,8 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	User = mongoose.model('User'),
     Walkin = mongoose.model('Walkin'),
-	_ = require('lodash');
+	_ = require('lodash'),
+    servicenow = require('../../app/controllers/servicenow-requestor.server.controller');
 
 var popOpt = [
     { path : 'user', model : 'User', select : 'displayName username phone location verified'},
@@ -209,7 +210,7 @@ exports.logResolution = function(req, res){
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
-            res.jsonp(walkin);
+            res.jsonp(servicenow.createWalkinIncident(walkin));
         }
     });
 };
