@@ -65,7 +65,15 @@ var formulateWalkin = function(walkin, soapAction){
 };
 
 exports.getWalkinIncident = function(id){
+    soap.createClient(credential.wsdl_url, function(err, client){
+        if(err) return console.log(err);
+        client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
 
+        client.getRecords({number : id}, function(err, response){
+            if(err) return console.log(err);
+            console.log(response);
+        });
+    });
 };
 
 exports.createWalkinIncident = function(walkin){
@@ -76,10 +84,20 @@ exports.createWalkinIncident = function(walkin){
         u_assignment_group : 'LITS: Student Digital Life'
     };
 
-    Walkin.findOne({ _id : 15 }).populate(popOpt).exec(function(err, result){
+    soap.createClient(credential.wsdl_url, function(err, client){
         if(err) return console.log(err);
-        formulateWalkin(result, 'CREATE');
+        client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
+
+        client.getRecords({number : 'INC02201494'}, function(err, response){
+            if(err) return console.log(err);
+            console.log(response);
+        });
     });
+
+    //Walkin.findOne({ _id : 15 }).populate(popOpt).exec(function(err, result){
+    //    if(err) return console.log(err);
+    //    formulateWalkin(result, 'CREATE');
+    //});
 
     //soap.createClient(credential.wsdl_url, function(err, client){
     //    if(err) return console.log(err);

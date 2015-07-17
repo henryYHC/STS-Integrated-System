@@ -204,15 +204,17 @@ exports.logResolution = function(req, res){
     walkin.updated = Date.now();
     walkin.status = 'Completed';
 
-    walkin.save(function(err) {
-        if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
-        } else {
-            res.jsonp(servicenow.createWalkinIncident(walkin));
-        }
-    });
+    servicenow.createWalkinIncident(walkin);
+
+    //walkin.save(function(err) {
+    //    if (err) {
+    //        return res.status(400).send({
+    //            message: errorHandler.getErrorMessage(err)
+    //        });
+    //    } else {
+    //        res.jsonp(servicenow.createWalkinIncident(walkin));
+    //    }
+    //});
 };
 
 /**
