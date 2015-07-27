@@ -18,6 +18,7 @@ module.exports = function(app) {
     app.route('/walkins/list/listAll').get(walkins.listAll);
     app.route('/walkins/list/listToday').get(walkins.listToday);
     app.route('/walkins/list/listUnresolved').get(walkins.listUnresolved);
+    app.route('/walkins/list/listBySearch').post(walkins.listBySearch);
 
     // Walkins logs
     app.route('/walkins/log/logService/:walkinId').put(users.hasAuthorization(['admin', 'technician']), walkins.logService);
@@ -28,6 +29,7 @@ module.exports = function(app) {
     app.route('/walkins/util/loadDeviceType').get(walkins.getDeviceType);
     app.route('/walkins/util/loadDeviceInfo').get(walkins.getDeviceInfo);
     app.route('/walkins/util/loadDeviceOS').get(walkins.getDeviceOS);
+    app.route('/walkins/util/loadResolutionOptions').get(walkins.getResolutionOptions);
 
 	// Finish by binding the Walkin middleware
 	app.param('walkinId', walkins.walkinByID);

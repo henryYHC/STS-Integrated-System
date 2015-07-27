@@ -58,7 +58,7 @@ exports.hasTechnicianPermission = function(req, res, next){
     if (!req.isAuthenticated())
         return res.status(401).send({ message: 'User is not logged in' });
 
-    if (_.intersection(req.user.roles, ['admin']).length)
+    if (_.intersection(req.user.roles, ['technician']).length)
         next();
     else
         res.status(403).send({ message: 'User is not authorized' });
@@ -68,7 +68,7 @@ exports.hasPermission = function(req, res, next){
     if (!req.isAuthenticated())
         return res.status(401).send({ message: 'User is not logged in' });
 
-    if (_.intersection(req.user.roles, ['customer']).length)
+    if (_.intersection(req.user.roles, ['admin', 'technician']).length === 0)
         return res.status(403).send({ message: 'User is not authorized' });
     else
         return next();

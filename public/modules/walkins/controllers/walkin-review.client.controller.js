@@ -24,7 +24,7 @@ angular.module('walkins').controller('WalkinReviewController', ['$scope', '$stat
                         $scope.formData.liabilityAgreement = response;
                         $http.post('/walkins', $scope.formData)
                             .success(function(response){
-                                alert('Walk in request submitted sucessfully!');
+                                alert('Walk in request submitted successfully!');
                                 $location.path('/#!/');
                             })
                             .error(function(err){ $scope.error = err.message; });

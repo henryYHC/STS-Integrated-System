@@ -84,7 +84,7 @@ var WalkinSchema = new Schema({
     // Service log
     status: {
       type: String,
-      enum: ['In queue', 'Pending', 'Work in progress', 'Completed', 'Unresolved'],
+      enum: ['In queue', 'House call pending', 'Work in progress', 'Completed', 'Unresolved'],
       default: ['In queue']
     },
     lastUpdateTechnician: {
@@ -96,8 +96,18 @@ var WalkinSchema = new Schema({
         default: '',
         trim: true
     },
+    resolutionType: {
+        type: String,
+        enum: ['N/A', 'DooleyNet', 'EmoryUnplugged', 'Hardware', 'Office365', 'OS Troubleshooting', 'Password Resets', 'Other'],
+        default: ['N/A']
+    },
+    otherResolution: {
+        type: String,
+        default: '',
+        trim: true
+    },
     resolution: {
-      type: String,
+        type: String,
         default: '',
         trim: true
     },

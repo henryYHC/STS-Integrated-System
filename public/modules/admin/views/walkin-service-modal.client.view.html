@@ -146,6 +146,29 @@
             </div>
             <div class="form-horizontal">
                 <div class="form-group" style="text-align: left;">
+                    <label class="col-sm-3 control-label" for="resolutionType">Resolution type:</label>
+                    <div class="col-sm-6" id="resolutionType" style="margin-top: 8px;">
+                        <div id="resoultionType-select" ng-init="initResolutionType();">
+                            <select id="resoultionType-s" class="form-control" data-ng-model="walkin.resolutionType">
+                                <option ng-repeat="option in resolutionOptions" value="{{option}}" ng-selected="option == walkin.resolutionType">{{option}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" id="ResolutionFunctions" style="margin-top: 10px;">
+                        <button class="btn btn-sm btn-info" ng-click="toHouseCall();" ng-show="walkin.status != 'House call pending' && walkin.resolutionType == 'DooleyNet'">Save as House call</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal" ng-show="walkin.resolutionType==='Other'">
+                <div class="form-group" style="text-align: left;">
+                    <label class="col-sm-3 control-label" for="otherResolution">Resolution subject:</label>
+                    <div id='otherResolution' class="col-sm-9">
+                        <input type="text" class="form-control" data-ng-model="walkin.otherResolution">
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group" style="text-align: left;">
                     <label class="col-sm-3 control-label" for="resolution">Resolution:</label>
                     <div class="col-sm-9" id="resolution" style="margin-top: 8px;">
                         <div id="resolution-display" ng-show="!editResolution">

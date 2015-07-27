@@ -128,15 +128,18 @@ exports.delete = function(req, res) {
  */
 exports.queue = function(req, res){
     var d = new Date(), today = new Date(d.getFullYear()+','+(d.getMonth()+1)+','+d.getDate());
-    Walkin.find({ isActive : true, $or : [ {status : 'In queue'}, {status : 'Work in progress'} ], created : {$gt : today} }).sort('-created').exec(function(err, walkins) {
-        if (err) {
-            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-        } else {
-            Walkin.populate(walkins, popOpt, function(err, walkins){
+    Walkin.find({ isActive : true, $or : [ {status : 'In queue'}, {status : 'Work in progress'}], created : {$gt : today} }).sort('created').exec(function(err, walkins) {
+        if (err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+
+        Walkin.find({ isActive : true, status: 'House call pending'}).sort('created').exec(function(err, houseCalls) {
+            if(err)return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+
+            walkins = walkins.concat(houseCalls);
+            Walkin.populate(walkins, popOpt, function(err, response){
                 if(err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-                res.jsonp(walkins);
+                res.jsonp(response);
             });
-        }
+        });
     });
 };
 
@@ -177,6 +180,27 @@ exports.listUnresolved = function(req, res) {
     });
 };
 
+exports.listBySearch = function(req, res){
+    var query = req.body;
+    if(query.created){
+        var d = new Date(query.created), nd = new Date((new Date(d)).setDate(d.getDate() + 1));
+        query.created = { $gt : d, $lt: nd };
+        Walkin.find(query).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+            if (err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            res.jsonp(walkins);
+        });
+    }
+    else{
+        User.findOne(query, function(err, user){
+            if(err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            Walkin.find({user : user}).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+                if (err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+                res.jsonp(walkins);
+            });
+        });
+    }
+};
+
 /*
  * Walkin logs
  */
@@ -204,17 +228,16 @@ exports.logResolution = function(req, res){
     walkin.updated = Date.now();
     walkin.status = 'Completed';
 
-    servicenow.createWalkinIncident(walkin);
-
-    //walkin.save(function(err) {
-    //    if (err) {
-    //        return res.status(400).send({
-    //            message: errorHandler.getErrorMessage(err)
-    //        });
-    //    } else {
-    //        res.jsonp(servicenow.createWalkinIncident(walkin));
-    //    }
-    //});
+    //servicenow.createWalkinIncident(walkin);
+    walkin.save(function(err) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.jsonp(walkin);
+        }
+    });
 };
 
 /**
@@ -257,4 +280,7 @@ exports.getDeviceInfo = function (req, res) {
 };
 exports.getDeviceOS = function (req, res) {
     res.json(Walkin.schema.path('os').enumValues);
+};
+exports.getResolutionOptions = function(req, res){
+    res.json(Walkin.schema.path('resolutionType').enumValues);
 };

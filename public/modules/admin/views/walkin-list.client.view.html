@@ -5,14 +5,33 @@
     <div class="container">
         <div class="col-md-12" style="margin-top: 0.5em;">
         <h4>
-            Walkin Listings
+            <div class="form-inline">
+                <label class="col-sm-2" style="margin-top: 7px;">Walk-in Search:</label>
+                <div id="search">
+                    <div class="input-group col-sm-2">
+                        <select class="form-control" data-ng-model="search.field">
+                            <option ng-selected="true">Select a query field</option>
+                            <option value="username">NetID</option>
+                            <option value="displayName">Customer Full Name</option>
+                            <option value="created">Created Time</option>
+                        </select>
+                    </div>
+                    <div class="input-group col-sm-7" ng-switch on="search.field">
+                        <input ng-switch-default type="text" class="form-control" placeholder="Search for..." data-ng-model="search.query">
+                        <input ng-switch-when="created" type="date" class="form-control" data-ng-model="search.query" ng-init="search.query='';">
+                        <span class="input-group-btn"><button class="btn btn-default" type="button" ng-click="listBySearch()">Go!</button></span>
+                    </div>
+                </div>
+            </div>
+        </h4><hr/>
+        <h4>
+            Walk-in Listings
             <div class="pull-right">
-                <button style="width: 80px;" class="btn btn-sm btn-primary" ng-click="listToday()">View Today</button>
-                <button style="width: 80px;" class="btn btn-sm btn-warning" ng-click="listUnresolved()">Unresolved</button>
-                <button style="width: 80px;" class="btn btn-sm btn-default" ng-click="listAll()">View All</button>
+                <button class="btn btn-sm btn-warning" ng-click="listUnresolved()">View Unresolved</button>
+                <button class="btn btn-sm btn-primary" ng-click="listToday()">View Today</button>
             </div>
         </h4>
-        <div class="col-md-12" ng-init="listAll()" style="margin-top: 0.5em;">
+        <div class="col-md-12" ng-init="listToday()" style="margin-top: 0.5em;">
             <div style="height: 420px; overflow: auto">
                 <table class="table table-hover">
                     <tr>

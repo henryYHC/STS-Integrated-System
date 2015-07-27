@@ -9,7 +9,10 @@
                 <span class="label label-success" style="font-size: 13px; margin-left: 2.5em;" ng-show="walkin.isActive">Active</span>
                 <span class="label label-danger" style="font-size: 13px; margin-left: 2.5em;" ng-show="!walkin.isActive">Inactive</span>
                 <span class="label label-info" style="font-size: 13px; margin-left: 1em;">{{walkin.status}}</span>
-                <a class="pull-right" ng-click="deleteWalkin(walkin._id)"><span class="glyphicon glyphicon-trash" tooltip-placement="top" tooltip="Delete"></span></a>
+                <div class="pull-right" >
+                    <a ng-click="updateWalkin()"><span class="glyphicon glyphicon-floppy-disk" tooltip-placement="top" tooltip="Save"></span></a>
+                    <a ng-click="deleteWalkin(walkin._id)"><span class="glyphicon glyphicon-trash" tooltip-placement="top" tooltip="Delete"></span></a>
+                </div>
             </h3><hr/>
             <div class="col-md-6">
                 <div class="form-horizontal">
@@ -27,7 +30,7 @@
                                 <a ng-click="editDeviceType=!editDeviceType;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
                             </div>
                             <div id="deviceType-edit" ng-show="editDeviceType" ng-init="initDeviceType();">
-                                <select id="deviceT" class="form-control" data-ng-model="walkin.deviceCategory" ng-change="editDeviceType=!editDeviceType;updateDevice();">
+                                <select id="deviceT" class="form-control" data-ng-model="walkin.deviceCategory" ng-change="editDeviceType=!editDeviceType;">
                                     <option ng-repeat="option in deviceTypeOptions" value="{{option}}" ng-selected="option == walkin.deviceCategory;">{{option}}</option>
                                 </select>
                             </div>
@@ -44,7 +47,7 @@
                                 <a ng-click="editDeviceInfo=!editDeviceInfo;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
                             </div>
                             <div id="deviceInfo-edit" ng-show="editDeviceInfo" ng-init="initDeviceInfo();">
-                                <select id="deviceI" class="form-control" data-ng-model="walkin.deviceType" ng-change="editDeviceInfo=!editDeviceInfo;updateDevice();">
+                                <select id="deviceI" class="form-control" data-ng-model="walkin.deviceType" ng-change="editDeviceInfo=!editDeviceInfo; updateDevice();">
                                     <option ng-repeat="option in deviceInfoOptions" value="{{option}}" ng-selected="option == walkin.deviceType;">{{option}}</option>
                                 </select>
                             </div>
@@ -56,7 +59,7 @@
                                 <a ng-click="editDeviceOS=!editDeviceOS;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
                             </div>
                             <div id="deviceOS-edit" ng-show="editDeviceOS" ng-init="initDeviceOS();">
-                                <select id="deviceI" class="form-control" data-ng-model="walkin.os" ng-change="editDeviceOS=!editDeviceOS;updateDevice();">
+                                <select id="deviceI" class="form-control" data-ng-model="walkin.os" ng-change="editDeviceOS=!editDeviceOS; updateDevice();">
                                     <option ng-repeat="option in deviceOSOptions" value="{{option}}" ng-selected="option == walkin.os;">{{option}}</option>
                                 </select>
                             </div>
@@ -92,7 +95,7 @@
                             </div>
                             <div id="problem-edit" ng-show="editProblem">
                                 <textarea class="form-control" rows="2" data-ng-model="walkin.description"></textarea>
-                                <button ng-click="editProblem=!editProblem;updateWalkin();" class="btn btn-sm btn-primary pull-right">Done</button>
+                                <button ng-click="editProblem=!editProblem;" class="btn btn-sm btn-primary pull-right">Done</button>
                             </div>
                         </div>
                     </div>
@@ -110,7 +113,42 @@
                             </div>
                             <div id="workNote-edit" ng-show="editWorkNote">
                                 <textarea class="form-control" rows="2" data-ng-model="walkin.workNote"></textarea>
-                                <button ng-click="editWorkNote=!editWorkNote;updateWalkin();" class="btn btn-sm btn-primary pull-right">Done</button>
+                                <button ng-click="editWorkNote=!editWorkNote;" class="btn btn-sm btn-primary pull-right">Done</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left;">
+                        <label class="col-sm-3 control-label" for="resolutionType-display">Resolution type:</label>
+                        <div class="col-sm-9" id="resolutionT" style="margin-top: 8px;">
+                            <div id="resolutionType-display" ng-show="!editResolutionType">
+                                {{walkin.resolutionType}}
+                                <a ng-click="editResolutionType=!editResolutionType;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                            </div>
+                            <div id="resolutionType-edit" ng-show="editResolutionType" ng-init="initResolutionType();">
+                                <select id="resolutionT" class="form-control" data-ng-model="walkin.resolutionType" ng-change="editResolutionType=!editResolutionType;">
+                                    <option ng-repeat="option in resolutionOptions" value="{{option}}" ng-selected="option == walkin.resolutionType;">{{option}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal" ng-show="walkin.resolutionType == 'Other'">
+                    <div class="form-group" style="text-align: left;">
+                        <label class="col-sm-3 control-label" for="resolutionType-display">Resolution subject:</label>
+                        <div class="col-sm-9" id="otherResolution" style="margin-top: 8px;">
+                            <div id="otherResolution-display" ng-show="!editOtherResolution">
+                                {{walkin.otherResolution || 'N/A'}}
+                                <a ng-click="editOtherResolution=!editOtherResolution;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                            </div>
+                            <div id="otherResolution-edit" ng-show="editOtherResolution">
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-ng-model="walkin.otherResolution">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="button" ng-click="editOtherResolution=!editOtherResolution;">Done</button>
+                                    </span>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -125,7 +163,7 @@
                             </div>
                             <div id="resolution-edit" ng-show="editResolution">
                                 <textarea class="form-control" rows="2" data-ng-model="walkin.resolution"></textarea>
-                                <button ng-click="editResolution=!editResolution;updateWalkin();" class="btn btn-sm btn-primary pull-right">Done</button>
+                                <button ng-click="editResolution=!editResolution;" class="btn btn-sm btn-primary pull-right">Done</button>
                             </div>
                         </div>
                     </div>

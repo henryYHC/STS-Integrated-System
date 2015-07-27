@@ -28,9 +28,51 @@ var popOpt = [
 ];
 
 var getTemplateShortDescription = function(walkin){
-    var prefix = 'CR: ';
+    var subject = 'CR: ', os = walkin.os;
+    switch(walkin.resolutionType){
+        case 'DooleyNet':
+            subject += 'DN ' + walkin.deviceType;
+            if(walkin.deviceType === 'Other') subject += walkin.otherDevice;
+            break;
 
-    return prefix + 'Dummy Template';
+        case 'EmoryUnplugged':
+            subject += 'EU ';
+            if(os === 'N/A') os = walkin.otherDevice;
+            else if(os.indexOf('(') >= 0) os = os.substring(0, os.indexOf('(')).trim();
+
+            switch(walkin.deviceCategory){
+                case 'Computer':
+                    subject += os;
+                    break;
+
+                case 'Phone/Tablet':
+                    subject += 'Mobile ' + os;
+                    break;
+
+                default:
+                    subject += 'Unknown';
+            }
+            break;
+
+        case 'Hardware':
+            return subject + 'HW';
+        case 'Office365':
+            return subject + 'O365';
+        case 'OS Troubleshooting':
+            if(os === 'N/A') os = walkin.otherDevice;
+            else if(os.indexOf('(') >= 0) os = os.substring(0, os.indexOf('(')).trim();
+
+            subject += 'OS TblSh ' + os;
+            break;
+
+        case 'Password Resets':
+            return subject + 'PwdReset';
+        case 'Other':
+            return subject + 'O ' + walkin.otherResolution;
+        default:
+            return subject + 'Unknown Template';
+    }
+    return subject;
 };
 
 var formulateWalkin = function(walkin, soapAction){
@@ -47,17 +89,25 @@ var formulateWalkin = function(walkin, soapAction){
         urgency : '4 - Low',
 
         // Walk-in info
+        u_correlation_id : walkin._id,
         record_type:  'Incident',
         reported_source :  'Walk In',
+        u_customer : walkin.user.username,
+        u_problem : walkin.description,
+        u_liability_agreement : walkin.liabilityAgreement,
         short_description : getTemplateShortDescription(walkin),
+        u_resolution : walkin.resolution,
 
         // Assignment info
         u_assigned_to : walkin.serviceTechnician.username,
+        u_last_update_tech : walkin.resoluteTechnician.username,
         u_assignment_group : 'LITS: Student Digital Life',
 
         // Time log
         u_duration : walkin.resolutionTime.getTime() - walkin.created.getTime(),
-        u_time_worked : walkin.resolutionTime.getTime() - walkin.serviceStartTime.getTime()
+        u_time_worked : walkin.resolutionTime.getTime() - walkin.serviceStartTime.getTime(),
+        u_created : walkin.created.getTime(),
+        u_last_update : walkin.updated.getTime()
     };
 
     console.log(SNObj);
@@ -84,20 +134,20 @@ exports.createWalkinIncident = function(walkin){
         u_assignment_group : 'LITS: Student Digital Life'
     };
 
-    soap.createClient(credential.wsdl_url, function(err, client){
-        if(err) return console.log(err);
-        client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
-
-        client.getRecords({number : 'INC02201494'}, function(err, response){
-            if(err) return console.log(err);
-            console.log(response);
-        });
-    });
-
-    //Walkin.findOne({ _id : 15 }).populate(popOpt).exec(function(err, result){
+    //soap.createClient(credential.wsdl_url, function(err, client){
     //    if(err) return console.log(err);
-    //    formulateWalkin(result, 'CREATE');
+    //    client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
+    //
+    //    client.getRecords({number : 'INC02201494'}, function(err, response){
+    //        if(err) return console.log(err);
+    //        console.log(response);
+    //    });
     //});
+
+    Walkin.findOne({ _id : 29 }).populate(popOpt).exec(function(err, result){
+        if(err) return console.log(err);
+        formulateWalkin(result, 'CREATE');
+    });
 
     //soap.createClient(credential.wsdl_url, function(err, client){
     //    if(err) return console.log(err);

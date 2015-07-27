@@ -11,8 +11,12 @@
                         <th>Order</th>
                         <th>Customer</th>
                     </tr>
-                    <tr data-ng-repeat="queueItem in queueItems | orderBy: '-created' : true" ng-click="quickviewWalkin(queueItem._id);">
-                        <td>{{ $index + 1 }}   <span class="glyphicon glyphicon-cog pull-right" tooltip-placement="top" tooltip="helped by {{queueItem.serviceTechnician.displayName}}" ng-show="queueItem.status=='Work in progress'"/></td>
+                    <tr data-ng-repeat="queueItem in queueItems" ng-click="quickviewWalkin(queueItem._id);">
+                        <td>
+                            {{ $index + 1 }}
+                            <span class="glyphicon glyphicon-cog pull-right" tooltip-placement="top" tooltip="helped by {{queueItem.serviceTechnician.displayName}}" ng-show="queueItem.status=='Work in progress'"/>
+                            <span class="glyphicon glyphicon-home pull-right" tooltip-placement="top" tooltip="house call" ng-show="queueItem.status=='House call pending'"/>
+                        </td>
                         <td>{{queueItem.user.displayName}}<span class="glyphicon glyphicon-info-sign pull-right" tooltip-placement="top" tooltip="{{(queueItem.created | date:'shortTime') || 'N/A'}}"></span></td>
                     </tr>
                 </table>
@@ -26,6 +30,7 @@
                 Quick View &emsp;
                 <span class="label label-success" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='Work in progress'">Work in progress</span>
                 <span class="label label-info" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='In queue'">In queue</span>
+                <span class="label label-primary" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='House call pending'">House call pending</span>
                 <span class="label label-warning" style="font-size: 12px;" ng-show="quickWalkin && !quickWalkin.user.verified">User verification needed</span>
                 <div class="pull-right" ng-hide="!quickWalkin">
                     <button class="btn btn-md btn-primary" ng-click="serviceWalkin(quickWalkin._id)">Begin Service</button>
