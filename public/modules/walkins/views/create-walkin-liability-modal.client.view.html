@@ -21,8 +21,10 @@
     <script>
         $('#agreement').bind('scroll', checkScrollBottom);
 
+        var innerHeight = $('#agreement').innerHeight(), scrollHeight = $('#agreement').prop('scrollHeight') * 0.9;
+
         function checkScrollBottom(){
-            if($('#agreement').scrollTop() + $('#agreement').innerHeight() >= $('#agreement').prop('scrollHeight'))
+            if($('#agreement').scrollTop() + innerHeight >= scrollHeight)
                 $('#accept').attr("disabled", false);
             else    $('#accept').attr("disabled", true);
         }
