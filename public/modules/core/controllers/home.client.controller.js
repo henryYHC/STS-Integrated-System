@@ -3,8 +3,6 @@
 angular.module('core').controller('HomeController', ['$scope', '$http', 'Authentication',
 	function($scope, $http, Authentication) {
 		$scope.authentication = Authentication;
-
-        $http.get('/test/servicenow/createWalkin');
 	}
 ]).controller('HomeStaffController', ['$scope', '$http', '$location', 'Authentication',
     function($scope, $http, $location, Authentication) {
