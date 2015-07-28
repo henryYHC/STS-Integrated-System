@@ -10,13 +10,13 @@
                 <div id="search">
                     <div class="input-group col-sm-2">
                         <select class="form-control" data-ng-model="search.field">
-                            <option ng-selected="true">Select a query field</option>
+                            <option ng-selected="true">Query field</option>
                             <option value="username">NetID</option>
                             <option value="displayName">Customer Full Name</option>
                             <option value="created">Created Time</option>
                         </select>
                     </div>
-                    <div class="input-group col-sm-7" ng-switch on="search.field">
+                    <div class="input-group col-sm-7" ng-switch on="search.field" style="margin-top: 8px;">
                         <input ng-switch-default type="text" class="form-control" placeholder="Search for..." data-ng-model="search.query">
                         <input ng-switch-when="created" type="date" class="form-control" data-ng-model="search.query" ng-init="search.query='';">
                         <span class="input-group-btn"><button class="btn btn-default" type="button" ng-click="listBySearch()">Go!</button></span>
@@ -26,10 +26,10 @@
         </h4><hr/>
         <h4>
             Walk-in Listings
-            <div class="pull-right">
+            <span style="margin-left: 2em;">
                 <button class="btn btn-sm btn-warning" ng-click="listUnresolved()">View Unresolved</button>
                 <button class="btn btn-sm btn-primary" ng-click="listToday()">View Today</button>
-            </div>
+            </span>
         </h4>
         <div class="col-md-12" ng-init="listToday()" style="margin-top: 0.5em;">
             <div style="height: 420px; overflow: auto">
@@ -39,11 +39,11 @@
                         <th>ID</th>
                         <th>Customer</th>
                         <th>NetID</th>
-                        <th>Device Type</th>
-                        <th>Device Spec</th>
+                        <th>Type</th>
+                        <th>Spec</th>
                         <th>Status</th>
-                        <th>Last Update</th>
-                        <th>Created Time</th>
+                        <th>Updated</th>
+                        <th>Created</th>
                     </tr>
                     <tr data-ng-repeat="walkin in walkins | orderBy: '-created'" data-ng-href="#">
                         <td>
