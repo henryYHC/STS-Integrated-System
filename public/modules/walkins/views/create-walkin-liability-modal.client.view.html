@@ -18,5 +18,13 @@
         <button class="btn btn-default" ng-click="close()">Cancel</button>
     </div>
 
-    <script> $('#agreement').bind('scroll', function(){ if($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) $('#accept').attr("disabled", false); else $('#accept').attr("disabled", true); }); </script>
+    <script>
+        $('#agreement').bind('scroll', checkScrollBottom);
+
+        function checkScrollBottom(){
+            if($('#agreement').scrollTop() + $('#agreement').innerHeight() >= $('#agreement').prop('scrollHeight'))
+                $('#accept').attr("disabled", false);
+            else    $('#accept').attr("disabled", true);
+        }
+    </script>
 </section>
