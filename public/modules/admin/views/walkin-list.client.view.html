@@ -46,10 +46,12 @@
                         <th>Created</th>
                     </tr>
                     <tr data-ng-repeat="walkin in walkins | orderBy: '-created'" data-ng-href="#">
-                        <td>
-                            <a ng-click="viewWalkin(walkin._id)" data-toggle="modal" data-target="#WalkinView"><span class="glyphicon glyphicon-eye-open" tooltip-placement="top" tooltip="View"></span> </a>
-                            <a ng-click="editWalkin(walkin._id)"><span class="glyphicon glyphicon-edit" tooltip-placement="top" tooltip="Edit"></span>  </a>
-                            <a ng-click="deleteWalkin(walkin._id)"><span class="glyphicon glyphicon-trash" tooltip-placement="top" tooltip="Delete"></span></a>
+                        <td class="dropdown" dropdown on-toggle="toggled(open)" style="text-align:center;">
+                            <div class="dropdown-toggle" dropdown-toggle><b class="caret"></b></div>
+                            <ul class="dropdown-menu">
+                                <li><a ng-click="viewWalkin(walkin._id)" data-toggle="modal" data-target="#WalkinView">View</a></li>
+                                <li><a ng-click="editWalkin(walkin._id)" ">Edit</a></li>
+                            </ul>
                         </td>
                         <td data-ng-bind="walkin._id"></td>
                         <td data-ng-bind="walkin.user.displayName"></td>
