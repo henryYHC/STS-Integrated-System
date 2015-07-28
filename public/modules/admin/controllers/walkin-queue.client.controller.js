@@ -4,7 +4,6 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
     function($http, $scope, $modal, $location, Authentication, $interval, $rootScope){
 
         var user = Authentication.user;
-        var user = Authentication.user;
         if (!user)
             $location.path('/');
         else if(user.roles.indexOf('technician') < 0 && user.roles.indexOf('admin') < 0)
