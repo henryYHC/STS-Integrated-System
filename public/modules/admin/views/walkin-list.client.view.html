@@ -32,7 +32,7 @@
             </span>
         </h4>
         <div class="col-md-12" ng-init="listToday()" style="margin-top: 0.5em;">
-            <div style="height: 420px; overflow: auto">
+            <div style="overflow: auto">
                 <table class="table table-hover">
                     <tr>
                         <th>Actions</th>
@@ -48,7 +48,7 @@
                     <tr data-ng-repeat="walkin in walkins | orderBy: '-created'" data-ng-href="#">
                         <td>
                             <a ng-click="viewWalkin(walkin._id)" data-toggle="modal" data-target="#WalkinView"><span class="glyphicon glyphicon-eye-open" tooltip-placement="top" tooltip="View"></span> </a>
-                            <a ng-click="editWalkin(walkin._id)"<span class="glyphicon glyphicon-edit" tooltip-placement="top" tooltip="Edit"></span>  </a>
+                            <a ng-click="editWalkin(walkin._id)"><span class="glyphicon glyphicon-edit" tooltip-placement="top" tooltip="Edit"></span>  </a>
                             <a ng-click="deleteWalkin(walkin._id)"><span class="glyphicon glyphicon-trash" tooltip-placement="top" tooltip="Delete"></span></a>
                         </td>
                         <td data-ng-bind="walkin._id"></td>

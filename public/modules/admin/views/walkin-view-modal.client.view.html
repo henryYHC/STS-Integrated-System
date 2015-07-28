@@ -72,12 +72,6 @@
             </h4><hr/>
             <div class="form-horizontal">
                 <div class="form-group" style="text-align: left;">
-                    <label class="col-sm-3 control-label" for="workNote">Work Note:</label>
-                    <div class="col-sm-9" id="workNote" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;" data-ng-bind="walkin.workNote || 'None'"></p></div>
-                </div>
-            </div>
-            <div class="form-horizontal">
-                <div class="form-group" style="text-align: left;">
                     <label class="col-sm-3 control-label" for="resolutionType">Resolution type:</label>
                     <div class="col-sm-9" id="resolutionType" style="margin-top: 8px;">
                         {{walkin.resolutionType}}
@@ -99,6 +93,12 @@
                         <p style="height: 50px; overflow: auto;" data-ng-bind="walkin.resolution || 'None'"></p>
                         <h4 style="font-size: 14px;" class="pull-right" ng-show="walkin.resoluteTechnician">Resoved at {{(walkin.resolutionTime | date:'short') || 'N/A'}} by {{walkin.resoluteTechnician.displayName}}</h4>
                     </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group" style="text-align: left;">
+                    <label class="col-sm-3 control-label" for="workNote">Work Note:</label>
+                    <div class="col-sm-9" id="workNote" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;" data-ng-bind="walkin.workNote || 'None'"></p></div>
                 </div>
             </div>
         </div>

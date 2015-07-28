@@ -19,7 +19,7 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
         $scope.viewWalkin = function(id){
             $http.get('/walkins/'+id).success(function(response){
                 $modal.open({
-                    animation: true,
+                    animation: false,
                     templateUrl: 'modules/admin/views/walkin-view-modal.client.view.html',
                     controller: 'AdminWalkinViewModalCtrl',
                     size: 'lg',
