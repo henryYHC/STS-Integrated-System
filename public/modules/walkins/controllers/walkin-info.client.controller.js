@@ -28,20 +28,25 @@ angular.module('walkins').controller('WalkinInfoController', ['$scope', '$state'
 
         // Validation
         $scope.validateInfo = function(){
+            $scope.firstNameError = false;
+            $scope.lastNameError = false;
+            $scope.numberError = false;
+            $scope.locationError = false;
+
             var firstName = $scope.formData.user.firstName,
                 lastName = $scope.formData.user.lastName,
                 phone = $scope.formData.user.phone,
                 location = $scope.formData.user.location;
 
             // Validate first and last name
-            if      (!firstName){   $scope.$parent.$parent.error = 'Please put in your first name.'; return; }
-            else if (!lastName){    $scope.$parent.$parent.error = 'Please put in your last name.'; return; }
+            if      (!firstName){   $scope.$parent.$parent.error = 'Please put in your first name.'; $scope.firstNameError = true; return ; }
+            else if (!lastName){    $scope.$parent.$parent.error = 'Please put in your last name.'; $scope.lastNameError = true; return; }
 
             // Validate phone number
-            if(!phone){  $scope.$parent.$parent.error = 'Please put in your phone number in the correct format (All digtis).'; return; }
+            if(!phone){  $scope.$parent.$parent.error = 'Please put in your phone number in the correct format (All digtis).'; $scope.numberError = true; return; }
 
             // Validate location
-            if(!location){   $scope.$parent.$parent.error = 'Please select your residence hall or off campus.'; return; }
+            if(!location){   $scope.$parent.$parent.error = 'Please select your residence hall or off campus.'; $scope.locationError = true; return; }
 
             delete $scope.$parent.$parent.error;
             $scope.formStatus.info = true;

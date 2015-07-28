@@ -2,9 +2,9 @@
 
 module.exports = {
 	app: {
-		title: 'STS_IntegratedSystem',
-		description: 'An integrated system for STS walkin, checkin, and administraive affairs',
-		keywords: 'MongoDB, Express, AngularJS, Node.js'
+		title: 'Emory Student Tech Support',
+		description: 'An integrated system for STS walk-in, check-in, and administrative affairs',
+		keywords: 'Emory University, Student Digital Life, Student Technology Support, Woodruff Library'
 	},
 	port: process.env.PORT || 3000,
 	templateEngine: 'swig',
@@ -14,7 +14,10 @@ module.exports = {
 		lib: {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.css',
-				'public/lib/bootstrap/dist/css/bootstrap-theme.css'
+				//'public/lib/bootstrap/dist/css/bootstrap-theme.css',
+                'public/lib/bootstrap-material-design/dist/css/roboto.min.css',
+                'public/lib/bootstrap-material-design/dist/css/material.min.css',
+                'public/lib/bootstrap-material-design/dist/css/ripples.min.css'
 			],
 			js: [
                 'public/lib/jquery/dist/jquery.min.js',
@@ -26,7 +29,9 @@ module.exports = {
 				'public/lib/angular-sanitize/angular-sanitize.js', 
 				'public/lib/angular-ui-router/release/angular-ui-router.js',
 				'public/lib/angular-ui-utils/ui-utils.js',
-				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js'
+				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
+                'public/lib/bootstrap-material-design/dist/js/ripples.min.js',
+                'public/lib/bootstrap-material-design/dist/js/material.min.js'
 			]
 		},
 		css: [

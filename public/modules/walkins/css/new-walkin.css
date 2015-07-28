@@ -1,11 +1,43 @@
 /* numbered buttons */
-.status-buttons a               { color: black; width: 80px; display:inline-block; font-size:12px; margin-right:10px; text-align:center; text-transform:uppercase; }
-.status-buttons a span          { color: white }
-.status-buttons a:hover         { text-decoration:none; }
+.walkin-label{
+    font-size: 20px;
+}
+
+.reviewDisplay{
+    margin-top: 2px;
+    font-size: 28px;
+}
+
+.status-buttons{
+    text-align:center;
+    background-color:transparent;
+}
+.status-buttons a{
+    color: black;
+    width: 80px;
+    display:inline-block;
+    font-size:14px;
+    margin-right:20px;
+    text-align:center;
+    text-transform:uppercase;
+}
+.status-buttons a span{
+    color: white
+}
+.status-buttons a:hover{
+    text-decoration:none;
+}
 
 /* we will style the span as the circled number */
-.status-buttons span            { background:#080808; display:block; height:28px; margin:0 auto 10px; padding-top:5px; width:30px;
-    border-radius:50%; }
+.status-buttons span{
+    background:#080808;
+    display:block;
+    height:28px;
+    margin:0 auto 10px;
+    padding-top:5px;
+    width:30px;
+    border-radius:50%;
+}
 
 /* active buttons turn light green-blue*/
 .status-buttons a.active span   { background:#00BC8C; }
@@ -13,3 +45,5 @@
 .formFunctions button           { width: 100px; }
 
 .deviceOptions ul li            { margin-top: 0.5em; }
+
+.deviceOptions ul li a          { font-size: 28px; }

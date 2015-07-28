@@ -3,11 +3,12 @@
 angular.module('walkins').controller('WalkinNetidController', ['$scope', '$state', '$http',
     function($scope, $state, $http) {
         $scope.validateNetID = function(){
-            var netid = $scope.formData.user.username;
+            console.log($scope.formData);
+            var user = $scope.formData.user,  netid = user.username;
 
             $scope.formStatus.netid = false;
 
-            if(netid === undefined || netid === '') {
+            if(!user || !netid || netid === '') {
                 $scope.$parent.$parent.error = 'Please put in your NetID.';
             }
             else{

@@ -9,7 +9,9 @@ angular.module('walkins').controller('WalkinProblemController', ['$scope', '$sta
         $scope.formStatus.problem = false;
 
         $scope.validateProblem = function(){
+            $scope.problemError = false;
             if(!$scope.formData.description) {
+                $scope.problemError = true;
                 $scope.$parent.$parent.error = 'Please specify your problem.';
                 return;
             }

@@ -5,7 +5,10 @@ angular.module('admin').controller('AdminWalkinListingController', ['$http', '$s
 
         $scope.search = { field: '', query: ''};
         var user = Authentication.user;
-        if (!user || user.roles.indexOf('customer') >= 0) $location.path('/');
+        if (!user)
+            $location.path('/');
+        else if(user.roles.indexOf('technician') < 0 && user.roles.indexOf('admin') < 0)
+            $location.path('/');
 
         $scope.listAll = function(){ $http.get('/walkins/list/listAll').success(function(response){ $scope.walkins = response; }); };
         $scope.listToday = function(){ $http.get('/walkins/list/listToday').success(function(response){ $scope.walkins = response; console.log(response); }); };

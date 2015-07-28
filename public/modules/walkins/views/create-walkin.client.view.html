@@ -1,25 +1,22 @@
-<div class="col-md-3"></div>
-<section data-ng-controller="WalkinsController" class="col-md-6 conatiner">
+<section data-ng-controller="WalkinsController" class="conatiner" ng-init="init()">
     <div class="page-header" style="text-align: center; margin-top: 0px;">
-        <h1>New Walk-in Instance</h1>
+        <h1 style="font-size: 48px;">New Walk-in Instance</h1>
     </div>
 
     <form id="walkin-form" ng-submit="createWalkin()">
-        <div id="walkin-view" ui-view style="height: 420px;"></div>
-        <div data-ng-show="error" class="text-center text-danger" style="margin-bottom: 1em;">
+        <div id="walkin-view" ui-view style="height: 65vh;"></div>
+        <div class="text-center text-danger" style="margin-bottom: 1em;height: 20px;width: 100%;">
             <strong data-ng-bind="error"></strong>
         </div>
     </form>
 
     <pre class="hidden">{{ formData }}</pre>
 
-    <div class="status-buttons" class="text-center" style="margin-left: 3em;">
+    <div class="status-buttons" class="text-center" style="margin-top: 20px;">
         <a ui-sref-active="active" ui-sref=".netid"><span>1</span> NetID</a>
-        <a ui-sref-active="active" ui-sref=".info"><span>2</span> Information</a>
+        <a ui-sref-active="active" ui-sref=".info"><span>2</span> Info</a>
         <a ui-sref-active="active" ui-sref=".device"><span>3</span> Device</a>
         <a ui-sref-active="active" ui-sref=".problem"><span>4</span> Problem</a>
         <a ui-sref-active="active" ui-sref=".review"><span>5</span> Review</a>
     </div>
-
 </section>
-<div class="col-md-3"></div>

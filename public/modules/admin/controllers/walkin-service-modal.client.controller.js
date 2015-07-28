@@ -5,10 +5,13 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
         $scope.walkin = walkin;
 
         var user = Authentication.user;
-        if (!user || user.roles.indexOf('customer') >= 0)   $modalInstance.dismiss('cancel');
+        if (!user)
+            $modalInstance.dismiss('cancel');
+        else if(user.roles.indexOf('technician') < 0 && user.roles.indexOf('admin') < 0)
+            $modalInstance.dismiss('cancel');
 
         // log service start time
-        if(!walkin.serviceStartTime || walkin.status !== 'Work in progress'){
+        if(!walkin.serviceStartTime || walkin.status !== 'Work in progress' || walkin.status !== 'House call pending'){
             $http.put('/walkins/log/logService/'+walkin._id).success(function(response){
                 $scope.walkin = response;
             });

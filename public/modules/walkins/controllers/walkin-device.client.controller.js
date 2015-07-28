@@ -41,7 +41,11 @@ angular.module('walkins').controller('WalkinDeviceController', ['$scope', '$stat
 
         // Validate device
         $scope.validateOtherDevice = function(){
-            if(!$scope.formData.otherDevice)    $scope.$parent.$parent.error = 'Please specify your device information.';
+            $scope.otherDeviceError = false;
+            if(!$scope.formData.otherDevice)    {
+                $scope.otherDeviceError = true;
+                $scope.$parent.$parent.error = 'Please specify your device information.';
+            }
             else                                validateDevice();
         };
 

@@ -4,7 +4,11 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
     function($http, $scope, $modal, $location, Authentication, $interval, $rootScope){
 
         var user = Authentication.user;
-        if (!user || user.roles.indexOf('customer') >= 0) $location.path('/');
+        var user = Authentication.user;
+        if (!user)
+            $location.path('/');
+        else if(user.roles.indexOf('technician') < 0 && user.roles.indexOf('admin') < 0)
+            $location.path('/');
 
         $scope.initQueue = function(){ $http.get('/walkins/queue').success(function(response){ $scope.queueCount = 0; $scope.queueItems = response; }); };
         $scope.quickviewWalkin = function(id){ $http.get('/walkins/'+id).success(function(response){ $scope.quickWalkin = response; }); };

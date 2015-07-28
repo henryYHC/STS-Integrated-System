@@ -1,31 +1,31 @@
 <section data-ng-controller="WalkinInfoController">
-    <div id="firstName" name="firstName" class="form-group">
-        <label class="control-label" for="first-Name">Please enter your First name:</label>
+    <div id="firstName" name="firstName" class="form-group" ng-class="{'has-error' : firstNameError}">
+        <label class="control-label walkin-label" for="first-Name">Please enter your First name:</label>
         <div class="controls">
-            <input type="text" id="first-Name" class="form-control" placeholder="Enter first name here" data-ng-model="formData.user.firstName" required>
+            <input type="text" id="first-Name" class="form-control" placeholder="Enter first name here" data-ng-model="formData.user.firstName" style="font-size: 28px;height: 48px;" required>
         </div>
     </div>
-    <div id="lastName" name="lastName" class="form-group">
-        <label class="control-label" for="last-Name">Please enter your Last name:</label>
+    <div id="lastName" name="lastName" class="form-group" ng-class="{'has-error' : lastNameError}">
+        <label class="control-label walkin-label" for="last-Name">Please enter your Last name:</label>
         <div class="controls">
-            <input type="text" id="last-Name" class="form-control" placeholder="Enter last name here" data-ng-model="formData.user.lastName" required>
+            <input type="text" id="last-Name" class="form-control" placeholder="Enter last name here" data-ng-model="formData.user.lastName" style="font-size: 28px;height: 48px;"  required>
         </div>
     </div>
-    <div id="phone" name="phone" class="form-group">
-        <label class="control-label" for="phone-">Please enter your phone number:</label>
+    <div id="phone" name="phone" class="form-group" ng-class="{'has-error' : numberError}">
+        <label class="control-label walkin-label" for="phone-">Please enter your phone number:</label>
         <div class="controls">
-            <input type="text" id="phone-" class="form-control" placeholder="Enter phone number here" data-ng-model="formData.user.phone" ng-minlength="10" ng-maxlength="10" required>
+            <input type="text" id="phone-" class="form-control" placeholder="Enter phone number here" data-ng-model="formData.user.phone" ng-minlength="10" ng-maxlength="10" style="font-size: 28px;height: 48px;" required>
         </div>
     </div>
-    <div id="location" name="location" class="form-group">
-        <label class="control-label" for="location-">
+    <div id="location" name="location" class="form-group" ng-class="{'has-error' : locationError}">
+        <label class="control-label walkin-label" for="location-">
             Please enter your residence hall:
             <div class="pull-right" style="margin-left: 1em;">
-                <input type="checkbox" ng-click="offCampusChecked()" ng-checked="formData.user.location == 'Off Campus'"> Off Campus?<br>
+                <input type="checkbox" ng-click="offCampusChecked()" ng-checked="formData.user.location == 'Off Campus'" > Off Campus?<br>
             </div>
         </label>
         <div class="controls">
-            <select id="location-" class="form-control" data-ng-model="formData.user.location" ng-disabled="offCampus" required>
+            <select id="location-" class="form-control" data-ng-model="formData.user.location" ng-disabled="offCampus" style="font-size: 28px;height: 48px;" required>
                 <option value="" disabled selected>Select your residence hall</option>
                 <option ng-repeat="option in locationOptions" value="{{option}}" ng-selected="option == formData.user.location">{{option}}</option>
             </select>

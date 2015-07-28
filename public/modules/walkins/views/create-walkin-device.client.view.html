@@ -1,5 +1,5 @@
 <section data-ng-controller="WalkinDeviceController">
-    <label>Please select or input the information of your device:</label><a class="pull-right" ng-click="resetState()"><strong>Reset</strong></a>
+    <label class="walkin-label">Please select or input the information of your device:</label><a class="pull-right" ng-click="resetState()"><strong>Reset</strong></a>
 
     <div class="deviceOptions" id="deviceCategory" ng-show="state.deviceCategory">
         <ul style="list-style-type: none; margin-right: 3em;">
@@ -50,10 +50,10 @@
         </ul>
     </div>
 
-    <div class="form-group deviceOptions" id="otherDevice" ng-show="state.otherDevice" style="margin-top: 2em;">
+    <div class="form-group deviceOptions" id="otherDevice" ng-show="state.otherDevice" style="margin-top: 2em;" ng-class="{'has-error' : otherDeviceError}">
         <label class="control-label" for="other-Device">Please specify your device information:</label>
         <div class="controls">
-            <input type="text" id="other-Device" class="form-control" placeholder="Enter device information here" data-ng-model="formData.otherDevice">
+            <input type="text" id="other-Device" class="form-control" placeholder="Enter device information here" data-ng-model="formData.otherDevice" style="font-size: 28px;height: 48px;">
         </div>
     </div>
     <div class="pull-right" ng-show="state.otherDevice">

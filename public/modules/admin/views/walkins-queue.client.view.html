@@ -5,7 +5,7 @@
     <div class="container">
         <div class="col-md-3" ng-init="initQueue()" >
             <h4>Customers waiting<a class="pull-right" ng-click="initQueue()"><span class="glyphicon glyphicon-refresh" tooltip-placement="top" tooltip="Refresh"/></a></h4><hr/>
-            <div style="height: 420px; overflow: auto">
+            <div style="height: 20vh; overflow: auto">
                 <table class="table table-hover" data-ng-show="queueItems.length">
                     <tr>
                         <th>Order</th>
@@ -37,7 +37,7 @@
                 </div>
             </h4>
             <hr/>
-            <div class="col-md-6" style="font-size: 12px;" ng-hide="!quickWalkin">
+            <div class="col-md-5" style="font-size: 12px;" ng-hide="!quickWalkin">
                 <div class="form-horizontal">
                     <div class="form-group" style="text-align: left">
                         <label class="col-sm-3 control-label" for="1">NetID:</label>
@@ -70,7 +70,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6" style="font-size: 12px;" ng-hide="!quickWalkin">
+            <div class="col-md-7" style="font-size: 12px;" ng-hide="!quickWalkin">
                 <div class="form-horizontal">
                     <div class="form-group" style="text-align: left;">
                         <label class="col-sm-3 control-label" for="7">Problem:</label>

@@ -1,54 +1,54 @@
 <section data-ng-controller="WalkinReviewController">
         <div class="form-horizontal">
             <div class="form-group" style="text-align: left">
-                <label class="col-sm-3 control-label" for="netid">NetID:</label>
-                <div class="col-sm-9" id="netid" style="margin-top: 8px;">{{formData.user.username}}</div>
+                <label class="col-sm-3 control-label walkin-label" for="netid">NetID:</label>
+                <div class="col-sm-9 reviewDisplay" id="netid">{{formData.user.username}}</div>
             </div>
         </div>
         <div class="form-horizontal">
             <div class="form-group" style="text-align: left">
-                <label class="col-sm-3 control-label" for="name">Name:</label>
-                <div class="col-sm-9" id="name" style="margin-top: 8px;">{{formData.user.firstName}} {{formData.user.lastName}}</div>
+                <label class="col-sm-3 control-label walkin-label" for="name">Name:</label>
+                <div class="col-sm-9 reviewDisplay" id="name">{{formData.user.firstName}} {{formData.user.lastName}}</div>
             </div>
         </div>
         <div class="form-horizontal">
             <div class="form-group" style="text-align: left">
-                <label class="col-sm-3 control-label" for="phone">Phone:</label>
-                <div class="col-sm-9" id="phone" style="margin-top: 8px;">{{formData.user.phone}}</div>
+                <label class="col-sm-3 control-label walkin-label" for="phone">Phone:</label>
+                <div class="col-sm-9 reviewDisplay" id="phone">{{formData.user.phone}}</div>
             </div>
         </div>
         <div class="form-horizontal">
             <div class="form-group" style="text-align: left">
-                <label class="col-sm-3 control-label" for="location">Residence Hall:</label>
-                <div class="col-sm-9" id="location" style="margin-top: 8px;">{{formData.user.location}}</div>
+                <label class="col-sm-3 control-label walkin-label" for="location">Residence Hall:</label>
+                <div class="col-sm-9 reviewDisplay" id="location">{{formData.user.location}}</div>
             </div>
         </div>
         <div class="form-horizontal">
             <div class="form-group" style="text-align: left">
-                <label class="col-sm-3 control-label" for="deviceT">Device Type:</label>
-                <div class="col-sm-9" id="deviceT" style="margin-top: 8px;">{{formData.deviceCategory}}</div>
+                <label class="col-sm-3 control-label walkin-label" for="deviceT">Device Type:</label>
+                <div class="col-sm-9 reviewDisplay" id="deviceT">{{formData.deviceCategory}}</div>
             </div>
         </div>
         <div class="form-horizontal">
             <div class="form-group" style="text-align: left">
-                <label class="col-sm-3 control-label" for="deviceI">Device info:</label>
-                <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="formData.deviceType">{{formData.deviceType}}</div>
-                <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="formData.os">{{formData.os}}</div>
+                <label class="col-sm-3 control-label walkin-label" for="deviceI">Device info:</label>
+                <div class="col-sm-9 reviewDisplay" id="deviceI" ng-show="formData.deviceType">{{formData.deviceType}}</div>
+                <div class="col-sm-9 reviewDisplay" id="deviceI" ng-show="formData.os">{{formData.os}}</div>
             </div>
         </div>
         <div class="form-horizontal" ng-show="formData.otherDevice">
             <div class="form-group" style="text-align: left">
-                <label class="col-sm-3 control-label" for="other">Other info:</label>
-                <div class="col-sm-9" id="other" style="margin-top: 8px;">{{formData.otherDevice}}</div>
+                <label class="col-sm-3 control-label walkin-label" for="other">Other info:</label>
+                <div class="col-sm-9 reviewDisplay" id="other">{{formData.otherDevice}}</div>
             </div>
         </div>
         <div class="form-horizontal">
             <div class="form-group" style="text-align: left;">
-                <label class="col-sm-3 control-label" for="problem">Problem description:</label>
-                <div class="col-sm-9" id="problem" style="margin-top: 8px;"><p style="height: 25px; overflow: auto;">{{formData.description}}</p></div>
+                <label class="col-sm-3 control-label walkin-label" for="problem">Problem description:</label>
+                <div class="col-sm-9 reviewDisplay" id="problem"><p style="height: 18vh; overflow: auto;">{{formData.description}}</p></div>
             </div>
         </div>
-    <div class="formFunctions" style="bottom: 0;">
-        <a class="btn btn-lg btn-block btn-primary" ng-click="submitWalkin()">Submit</a>
+    <div class="formFunctions" style="bottom: 0; position: inherit; text-align: center;">
+        <a class="btn btn-lg btn-primary" ng-click="submitWalkin()" style="width: 55%">Submit</a>
     </div>
 </section>
