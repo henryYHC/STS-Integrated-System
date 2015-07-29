@@ -1,6 +1,6 @@
 # STS Integrated System
 
-### Current version: v0.6
+### Current version: [v0.6](https://github.com/henryYHC/STS-Integrated-System/releases/tag/0.6)
 
 ### Index
 
