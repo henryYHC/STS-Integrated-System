@@ -27,12 +27,18 @@ var popOpt = [
     { path : 'resoluteTechnician', model : 'User', select : 'username'}
 ];
 
-var getTemplateShortDescription = function(walkin){
+var getTemplateObj = function(walkin){
     var subject = 'CR: ', os = walkin.os;
+    var obj = { short_description: '', category1 : '', category2 : '', category3 : '' };
+
     switch(walkin.resolutionType){
         case 'DooleyNet':
             subject += 'DN ' + walkin.deviceType;
             if(walkin.deviceType === 'Other') subject += walkin.otherDevice;
+
+            obj.category1 = 'Application Management';
+            obj.category2 = 'Access';
+            obj.category3 = 'Inaccessible';
             break;
 
         case 'EmoryUnplugged':
@@ -52,51 +58,86 @@ var getTemplateShortDescription = function(walkin){
                 default:
                     subject += 'Unknown';
             }
+
+            obj.category1 = 'Desktop Management';
+            obj.category2 = 'Software';
+            obj.category3 = 'Error';
             break;
 
         case 'Hardware':
-            return subject + 'HW';
+            subject += 'HW';
+            obj.category1 = 'Desktop Management';
+            obj.category2 = 'Hardware';
+            obj.category3 = 'Failure';
+            break;
+
         case 'Office365':
-            return subject + 'O365';
+            subject += 'O365';
+            obj.category1 = 'Application Management';
+            obj.category2 = 'Software';
+            obj.category3 = 'Error';
+            break;
+
         case 'OS Troubleshooting':
             if(os === 'N/A') os = walkin.otherDevice;
             else if(os.indexOf('(') >= 0) os = os.substring(0, os.indexOf('(')).trim();
-
             subject += 'OS TblSh ' + os;
+
+            obj.category1 = 'Desktop Management';
+            obj.category2 = 'OS/Firmware';
+            obj.category3 = 'Error';
             break;
 
         case 'Password Resets':
-            return subject + 'PwdReset';
+            subject += 'PwdReset';
+
+            obj.category1 = 'Application Management';
+            obj.category2 = 'Access';
+            obj.category3 = 'Inaccessible';
+            break;
+
         case 'Other':
-            return subject + 'O ' + walkin.otherResolution;
+            subject += 'O ' + walkin.otherResolution;
+
+            obj.category1 = 'Desktop Management';
+            obj.category2 = 'Software';
+            obj.category3 = 'Error';
+            break;
+
         default:
-            return subject + 'Unknown Template';
+            subject += 'Unknown Template';
     }
-    return subject;
+
+    obj.short_description = subject;
+    return obj;
 };
 
 var formulateWalkin = function(walkin, soapAction){
-    var SNObj = {
+    var template = getTemplateObj(walkin);
+    return {
         // Request info
         u_soapaction : soapAction,
         u_incident_state : 'Resolved',
 
         // Static info
-        category_1 : 'Desktop Management',
-        configuration_item : 'Student Technology',
-        impact : '4 – Minor/Localized',
-        suppress_notification : 'Yes',
-        urgency : '4 - Low',
+        u_category_1 : template.category1,
+        u_category_2 : template.category2,
+        u_category_3 : template.category3,
+        u_configuration_item : 'Student Technology',
+        u_impact : '4 – Minor/Localized',
+        u_suppress_notification : 'Yes',
+        u_urgency : '4 - Low',
 
         // Walk-in info
         u_correlation_id : walkin._id,
-        record_type:  'Incident',
-        reported_source :  'Walk In',
+        u_record_type:  'Incident',
+        u_reported_source :  'Walk In',
         u_customer : walkin.user.username,
         u_problem : walkin.description,
         u_liability_agreement : walkin.liabilityAgreement,
-        short_description : getTemplateShortDescription(walkin),
+        u_short_description : template.short_description,
         u_resolution : walkin.resolution,
+        u_work_note : walkin.workNote,
 
         // Assignment info
         u_assigned_to : walkin.serviceTechnician.username,
@@ -109,9 +150,6 @@ var formulateWalkin = function(walkin, soapAction){
         u_created : walkin.created.getTime(),
         u_last_update : walkin.updated.getTime()
     };
-
-    console.log(SNObj);
-    return SNObj;
 };
 
 exports.getWalkinIncident = function(id){
@@ -119,54 +157,45 @@ exports.getWalkinIncident = function(id){
         if(err) return console.log(err);
         client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
 
-        client.getRecords({number : id}, function(err, response){
+        client.getRecords({u_correlation_id : 36}, function(err, response){
             if(err) return console.log(err);
-            console.log(response);
+            console.log(response.getRecordsResult[0]);
         });
     });
 };
 
 exports.createWalkinIncident = function(walkin){
-    var data = {
-        u_soapaction : 'CREATE',
-        u_record_type : 'Test Incident',
-        u_short_description : 'This is a test incident submitted by STS MEAN stack application',
-        u_assignment_group : 'LITS: Student Digital Life'
-    };
+    var data = formulateWalkin(walkin, 'CREATE');
 
-    //soap.createClient(credential.wsdl_url, function(err, client){
-    //    if(err) return console.log(err);
-    //    client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
-    //
-    //    client.getRecords({number : 'INC02201494'}, function(err, response){
-    //        if(err) return console.log(err);
-    //        console.log(response);
-    //    });
-    //});
-
-    Walkin.findOne({ _id : 29 }).populate(popOpt).exec(function(err, result){
+    soap.createClient(credential.wsdl_url, function(err, client){
         if(err) return console.log(err);
-        formulateWalkin(result, 'CREATE');
-    });
+        client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
 
-    //soap.createClient(credential.wsdl_url, function(err, client){
-    //    if(err) return console.log(err);
-    //    client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
-    //
-    //    client.insert(data, function(err, response){
-    //        if(err) return console.log(err);
-    //        console.log(response);
-    //
-    //        walkin.snSysId = response.sys_id;
-    //        walkin.snValue = response.display_name;
-    //        walkin.save(function(err, updatedWalkin){
-    //            if(err) return console.log(err);
-    //            return updatedWalkin;
-    //        });
-    //    });
-    //});
+        client.insert(data, function(err, response){
+            if(err) return console.log(err);
+
+            walkin.snSysId = response.sys_id;
+            walkin.snValue = response.display_value;
+
+            walkin.save(function(err, updatedWalkin){
+                if(err) return console.log(err);
+                return updatedWalkin;
+            });
+        });
+    });
 };
 
 exports.updateWalkinIncident = function(walkin){
+    var data = formulateWalkin(walkin, 'UPDATE');
+    data.sys_id = walkin.snSysId;
+    data.u_last_update_tech = walkin.lastUpdateTechnician.username;
 
+    soap.createClient(credential.wsdl_url, function(err, client){
+        if(err) return console.log(err);
+        client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
+
+        client.update(data, function(err, response){
+            if(err) return console.log(err);
+        });
+    });
 };

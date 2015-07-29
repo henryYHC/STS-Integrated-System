@@ -12,9 +12,9 @@ var mongoose = require('mongoose'),
 
 var popOpt = [
     { path : 'user', model : 'User', select : 'displayName username phone location verified'},
-    { path : 'lastUpdateTechnician', model : 'User', select : 'displayName'},
-    { path : 'serviceTechnician', model : 'User', select : 'displayName'},
-    { path : 'resoluteTechnician', model : 'User', select : 'displayName'}
+    { path : 'lastUpdateTechnician', model : 'User', select : 'displayName username'},
+    { path : 'serviceTechnician', model : 'User', select : 'displayName username'},
+    { path : 'resoluteTechnician', model : 'User', select : 'displayName username'}
 ];
 
 /**
@@ -97,6 +97,8 @@ exports.update = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+            if(walkin.snSysId)
+                servicenow.updateWalkinIncident(walkin);
 			res.jsonp(walkin);
 		}
 	});
@@ -228,13 +230,14 @@ exports.logResolution = function(req, res){
     walkin.updated = Date.now();
     walkin.status = 'Completed';
 
-    //servicenow.createWalkinIncident(walkin);
     walkin.save(function(err) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
+            console.log(walkin);
+            servicenow.createWalkinIncident(walkin);
             res.jsonp(walkin);
         }
     });
@@ -244,7 +247,7 @@ exports.logResolution = function(req, res){
  * Walkin middleware
  */
 exports.walkinByID = function(req, res, next, id) {
-	Walkin.findById(id).populate('user', 'displayName username phone location').exec(function(err, walkin) {
+	Walkin.findById(id).exec(function(err, walkin) {
 		if (err) return next(err);
 		if (! walkin) return next(new Error('Failed to load Walkin ' + id));
 

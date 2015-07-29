@@ -20,32 +20,40 @@ exports.signup = function(req, res) {
     if(!user.username || !user.password)
         return res.status(400).send({ message: 'Invalid username or passowrd.' });
 
-	// Add missing user fields
-	user.provider = 'local';
-	user.displayName = user.firstName + ' ' + user.lastName;
-    user.phone = '0000000000';
-    user.location = 'Off Campus';
+    User.findOne({username : user.username}, function(err, existingUser){
+        if(err) return res.status(400).send({ message : err });
 
-	// Then save the user 
-	user.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			// Remove sensitive data before login
-			user.password = undefined;
-			user.salt = undefined;
+        if(existingUser){
+            existingUser.verified = true;
+            existingUser.firstName = user.firstName;
+            existingUser.lastName = user.lastName;
+            existingUser.displayName = user.firstName + ' ' + user.lastName;
+            existingUser.password = user.password;
+            existingUser.roles = existingUser.roles.concat(user.roles);
+            user = existingUser;
+        }
+        else {
+            user.verified = true;
+            user.provider = 'local';
+            user.displayName = user.firstName + ' ' + user.lastName;
+            user.phone = '0000000000';
+            user.location = 'Off Campus';
+        }
 
-			req.login(user, function(err) {
-				if (err) {
-					res.status(400).send(err);
-				} else {
-					res.json(user);
-				}
-			});
-		}
-	});
+        // Save the user
+        user.save(function(err) {
+        	if (err) {
+        		return res.status(400).send({
+        			message: errorHandler.getErrorMessage(err)
+        		});
+        	} else {
+        		// Remove sensitive data before login
+        		user.password = undefined;
+        		user.salt = undefined;
+                res.json(user);
+        	}
+        });
+    });
 };
 
 /**
