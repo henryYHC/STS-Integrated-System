@@ -19,6 +19,7 @@ exports.signup = function(req, res) {
 
     if(!user.username || !user.password)
         return res.status(400).send({ message: 'Invalid username or passowrd.' });
+    user.username = user.username.toLowerCase();
 
     User.findOne({username : user.username}, function(err, existingUser){
         if(err) return res.status(400).send({ message : err });

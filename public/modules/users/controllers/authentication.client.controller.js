@@ -22,6 +22,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 		};
 
 		$scope.signin = function() {
+            if($scope.credentials.username) $scope.credentials.username.toLowerCase();
 			$http.post('/auth/signin', $scope.credentials).success(function(response) {
 				$scope.authentication.user = response;
 				$location.path('/admin');
