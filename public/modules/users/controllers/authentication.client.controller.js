@@ -14,6 +14,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
         };
 
 		$scope.signup = function() {
+            if($scope.credentials.username)
+                $scope.credentials.username = $scope.credentials.username.toLowerCase();
 			$http.post('/auth/signup', $scope.credentials).success(function(response) {
 				$location.path('/admin');
 			}).error(function(response) {
@@ -22,7 +24,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 		};
 
 		$scope.signin = function() {
-            if($scope.credentials.username) $scope.credentials.username.toLowerCase();
+            if($scope.credentials.username)
+                $scope.credentials.username = $scope.credentials.username.toLowerCase();
 			$http.post('/auth/signin', $scope.credentials).success(function(response) {
 				$scope.authentication.user = response;
 				$location.path('/admin');
