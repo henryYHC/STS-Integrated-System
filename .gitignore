@@ -11,3 +11,4 @@ app/tests/coverage/
 app/credentials/
 !ExampleCredential.json
 !angular-touch.js
+logistic/figures/figure_design.pptx
