@@ -152,12 +152,12 @@ var formulateWalkin = function(walkin, soapAction){
     };
 };
 
-exports.getWalkinIncident = function(id){
+exports.getWalkinIncident = function(snSysId){
     soap.createClient(credential.wsdl_url, function(err, client){
         if(err) return console.log(err);
         client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
 
-        client.getRecords({u_correlation_id : 36}, function(err, response){
+        client.getRecords({sys_target_sys_id : snSysId}, function(err, response){
             if(err) return console.log(err);
             console.log(response.getRecordsResult[0]);
         });
@@ -187,7 +187,7 @@ exports.createWalkinIncident = function(walkin){
 
 exports.updateWalkinIncident = function(walkin){
     var data = formulateWalkin(walkin, 'UPDATE');
-    data.sys_id = walkin.snSysId;
+    data.sys_target_sys_id = walkin.snSysId;
     data.u_last_update_tech = walkin.lastUpdateTechnician.username;
 
     soap.createClient(credential.wsdl_url, function(err, client){
