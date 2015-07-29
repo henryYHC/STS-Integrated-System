@@ -12,7 +12,7 @@
 
 This is a mobile-friendly web application that servese as an integrated system for customer instance handling at Emory Student Technology Support (STS). The system is four different sub-components, walk-in instance, check-in instance, Emory ServiceNow integration, and backend administrative panel for instance processing. The goal of this system is to replace the existing manually inputed paperworks and to provide customers as well as technician a cleaner and more friendly UI design and simpler experience at Emory STS. (Detail introductions see [components](logistic/md/components.md))
 
-License: [MIT licene](LICENSE)
+License: [MIT license](LICENSE)
 
 Author: Yu-Hsin (Henry) Chen [henry.chen at emory.edu]
 
