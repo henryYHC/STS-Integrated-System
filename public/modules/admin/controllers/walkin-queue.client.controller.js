@@ -13,7 +13,7 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
         $scope.quickviewWalkin = function(id){ $http.get('/walkins/'+id).success(function(response){ $scope.quickWalkin = response; }); };
 
         // Auto refresh
-        $scope.autoRefresher = $interval(function(){ $scope.initQueue(); }, 5000);
+        $scope.autoRefresher = $interval(function(){ $scope.initQueue(); }, 20000);
         $rootScope.$on('$locationChangeSuccess', function() { $interval.cancel($scope.autoRefresher); });
 
         $scope.viewWalkin = function(id){

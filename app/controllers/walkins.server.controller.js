@@ -236,7 +236,6 @@ exports.logResolution = function(req, res){
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
-            console.log(walkin);
             servicenow.createWalkinIncident(walkin);
             res.jsonp(walkin);
         }
