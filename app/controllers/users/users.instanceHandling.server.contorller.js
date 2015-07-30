@@ -10,7 +10,7 @@ var _ = require('lodash'),
  */
 exports.userByNetId = function(req, res, next, username) {
     User.findOne({
-        username: username
+        username: username.toLowerCase()
     }).exec(function(err, user) {
         if (err) return next(err);
 
