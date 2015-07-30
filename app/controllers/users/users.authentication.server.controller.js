@@ -18,7 +18,7 @@ exports.signup = function(req, res) {
 	var message = null;
 
     if(!user.username || !user.password)
-        return res.status(400).send({ message: 'Invalid username or passowrd.' });
+        return res.status(400).send({ message: 'Invalid username or password.' });
     user.username = user.username.toLowerCase();
 
     User.findOne({username : user.username}, function(err, existingUser){
@@ -64,6 +64,8 @@ exports.signin = function(req, res, next) {
     if(req.body.username) req.body.username = req.body.username.toLowerCase();
 	passport.authenticate('local', function(err, user, info) {
 		if (err || !user) {
+            console.log(err);
+            console.log(info);
 			res.status(400).send(info);
 		} else {
 			// Remove sensitive data before login
