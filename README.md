@@ -14,7 +14,7 @@ This is a mobile-friendly web application that servese as an integrated system f
 
 License: [MIT license](LICENSE)
 
-Author: Yu-Hsin (Henry) Chen [henry.chen at emory.edu]
+Author: [Yu-Hsin (Henry) Chen](http://yuhsinchen.info) [henry.chen at emory.edu]
 
 Framework: MEAN stack (MongoDb, Express.js, Angular.js, and Node.js)
 
