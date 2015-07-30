@@ -64,8 +64,6 @@ exports.signin = function(req, res, next) {
     if(req.body.username) req.body.username = req.body.username.toLowerCase();
 	passport.authenticate('local', function(err, user, info) {
 		if (err || !user) {
-            console.log(err);
-            console.log(info);
 			res.status(400).send(info);
 		} else {
 			// Remove sensitive data before login
