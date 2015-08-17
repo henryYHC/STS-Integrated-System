@@ -14,11 +14,11 @@ This is a mobile-friendly web application that servese as an integrated system f
 
 License: [MIT license](LICENSE)
 
-Author: Yu-Hsin (Henry) Chen [henry.chen at emory.edu]
+Author: [Yu-Hsin (Henry) Chen](http://yuhsinchen.info) [henry.chen at emory.edu]
 
 Framework: MEAN stack (MongoDb, Express.js, Angular.js, and Node.js)
 
-Deployed at: Emory University Student Technology Support (Coming Fall 2015)
+Deployed at: Emory University [Student Technology Support](http://it.emory.edu/studentdigitallife/support/student-technology-support/) (Coming Fall 2015)
 
 ### Updates
 
