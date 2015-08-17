@@ -8,6 +8,8 @@ angular.module('admin').controller('WalkinviewController', ['$http', '$scope', '
             $location.path('/');
         else if(user.roles.indexOf('technician') < 0 && user.roles.indexOf('admin') < 0)
             $location.path('/');
+        else if(user.roles.indexOf('admin') >= 0)
+            $scope.isAdmin = true;
 
         $scope.walkin = {};
         $scope.status = {

@@ -22,6 +22,7 @@ module.exports = function(app) {
     app.route('/auth/initAdmin').post(users.hasAdmin, users.signup);
 	app.route('/auth/signup').post(users.hasAdminPermission, users.signup);
 	app.route('/auth/signin').post(users.signin);
+    app.route('/auth/authenticate').post(users.authenticate);
 	app.route('/auth/signout').get(users.signout);
 
     // Walkin

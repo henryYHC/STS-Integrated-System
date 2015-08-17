@@ -10,8 +10,8 @@
                 <span class="label label-danger" style="font-size: 13px; margin-left: 2.5em;" ng-show="!walkin.isActive">Inactive</span>
                 <span class="label label-info" style="font-size: 13px; margin-left: 1em;">{{walkin.status}}</span>
                 <div class="pull-right" >
-                    <a ng-click="updateWalkin()"><span class="glyphicon glyphicon-floppy-disk" tooltip-placement="top" tooltip="Save"></span></a>
-                    <a ng-click="deleteWalkin(walkin._id)"><span class="glyphicon glyphicon-trash" tooltip-placement="top" tooltip="Delete"></span></a>
+                    <a ng-click="updateWalkin()"><span class="glyphicon glyphicon-floppy-disk"></span></a>
+                    <a ng-show="isAdmin" ng-click="deleteWalkin(walkin._id)"><span class="glyphicon glyphicon-trash"></span></a>
                 </div>
             </h3><hr/>
             <div class="col-md-6">
@@ -27,7 +27,7 @@
                         <div class="col-sm-9" id="deviceT" style="margin-top: 8px;">
                             <div id="deviceType-display" ng-show="!editDeviceType">
                                 {{walkin.deviceCategory}}
-                                <a ng-click="editDeviceType=!editDeviceType;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                                <a ng-click="editDeviceType=!editDeviceType;"><span class="glyphicon glyphicon-pencil pull-right"></span></a>
                             </div>
                             <div id="deviceType-edit" ng-show="editDeviceType" ng-init="initDeviceType();">
                                 <select id="deviceT" class="form-control" data-ng-model="walkin.deviceCategory" ng-change="editDeviceType=!editDeviceType;">
@@ -44,7 +44,7 @@
                         <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="walkin.deviceCategory!='Other' && (walkin.deviceCategory == 'Gaming System' || walkin.deviceCategory == 'TV/Media Device')">
                             <div id="deviceInfo-display" ng-show="!editDeviceInfo">
                                 {{walkin.deviceType}}
-                                <a ng-click="editDeviceInfo=!editDeviceInfo;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                                <a ng-click="editDeviceInfo=!editDeviceInfo;"><span class="glyphicon glyphicon-pencil pull-right"></span></a>
                             </div>
                             <div id="deviceInfo-edit" ng-show="editDeviceInfo" ng-init="initDeviceInfo();">
                                 <select id="deviceI" class="form-control" data-ng-model="walkin.deviceType" ng-change="editDeviceInfo=!editDeviceInfo; updateDevice();">
@@ -56,7 +56,7 @@
                         <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="walkin.deviceCategory!='Other' && (walkin.deviceCategory == 'Computer' || walkin.deviceCategory == 'Phone/Tablet')">
                             <div id="deviceOS-display" ng-show="!editDeviceOS">
                                 {{walkin.os}}
-                                <a ng-click="editDeviceOS=!editDeviceOS;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                                <a ng-click="editDeviceOS=!editDeviceOS;"><span class="glyphicon glyphicon-pencil pull-right"></span></a>
                             </div>
                             <div id="deviceOS-edit" ng-show="editDeviceOS" ng-init="initDeviceOS();">
                                 <select id="deviceI" class="form-control" data-ng-model="walkin.os" ng-change="editDeviceOS=!editDeviceOS; updateDevice();">
@@ -72,7 +72,7 @@
                         <div class="col-sm-9" id="other" style="margin-top: 8px;">
                             <div id="other-display" ng-show="!editDeviceOther">
                                 {{walkin.otherDevice || 'None'}}
-                                <a ng-click="editDeviceOther=!editDeviceOther;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                                <a ng-click="editDeviceOther=!editDeviceOther;"><span class="glyphicon glyphicon-pencil pull-right"></span></a>
                             </div>
                             <div id="other-edit" ng-show="editDeviceOther">
                                 <div class="input-group">
@@ -91,7 +91,7 @@
                         <div class="col-sm-9" id="problem" style="margin-top: 8px;">
                             <div id="problem-display" ng-show="!editProblem">
                                 <p style="height: 75px; overflow: auto;">{{walkin.description}}</p>
-                                <a ng-click="editProblem=!editProblem;  "><span class="glyphicon glyphicon-pencil pull-right" style="margin-top: -75px;" tooltip-placement="left" tooltip="Edit"></span></a>
+                                <a ng-click="editProblem=!editProblem;  "><span class="glyphicon glyphicon-pencil pull-right" style="margin-top: -75px;"></span></a>
                             </div>
                             <div id="problem-edit" ng-show="editProblem">
                                 <textarea class="form-control" rows="2" data-ng-model="walkin.description"></textarea>
@@ -109,7 +109,7 @@
                         <div class="col-sm-9" id="workNote" style="margin-top: 8px;">
                             <div id="workNote-display" ng-show="!editWorkNote">
                                 <p style="height: 75px; overflow: auto;" data-ng-bind="walkin.workNote || 'None'"></p>
-                                <a ng-click="editWorkNote=!editWorkNote;"><span class="glyphicon glyphicon-pencil pull-right" style="margin-top: -75px;" tooltip-placement="left" tooltip="Edit"></span></a>
+                                <a ng-click="editWorkNote=!editWorkNote;"><span class="glyphicon glyphicon-pencil pull-right" style="margin-top: -75px;"></span></a>
                             </div>
                             <div id="workNote-edit" ng-show="editWorkNote">
                                 <textarea class="form-control" rows="2" data-ng-model="walkin.workNote"></textarea>
@@ -124,7 +124,7 @@
                         <div class="col-sm-9" id="resolutionT" style="margin-top: 8px;">
                             <div id="resolutionType-display" ng-show="!editResolutionType">
                                 {{walkin.resolutionType}}
-                                <a ng-click="editResolutionType=!editResolutionType;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                                <a ng-click="editResolutionType=!editResolutionType;"><span class="glyphicon glyphicon-pencil pull-right"></span></a>
                             </div>
                             <div id="resolutionType-edit" ng-show="editResolutionType" ng-init="initResolutionType();">
                                 <select id="resolutionT" class="form-control" data-ng-model="walkin.resolutionType" ng-change="editResolutionType=!editResolutionType;">
@@ -140,7 +140,7 @@
                         <div class="col-sm-9" id="otherResolution" style="margin-top: 8px;">
                             <div id="otherResolution-display" ng-show="!editOtherResolution">
                                 {{walkin.otherResolution || 'N/A'}}
-                                <a ng-click="editOtherResolution=!editOtherResolution;"><span class="glyphicon glyphicon-pencil pull-right" tooltip-placement="left" tooltip="Edit"></span></a>
+                                <a ng-click="editOtherResolution=!editOtherResolution;"><span class="glyphicon glyphicon-pencil pull-right"></span></a>
                             </div>
                             <div id="otherResolution-edit" ng-show="editOtherResolution">
                             <div class="input-group">

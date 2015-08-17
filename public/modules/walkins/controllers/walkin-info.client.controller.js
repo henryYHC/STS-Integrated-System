@@ -38,12 +38,17 @@ angular.module('walkins').controller('WalkinInfoController', ['$scope', '$state'
                 phone = $scope.formData.user.phone,
                 location = $scope.formData.user.location;
 
+            // Remove phone format
+            console.log($scope.formData.user.phone);
+            if(phone){ phone = phone.replace(/\D/g, ''); $scope.formData.user.phone = phone; }
+            console.log(phone);
+
             // Validate first and last name
             if      (!firstName){   $scope.$parent.$parent.error = 'Please put in your first name.'; $scope.firstNameError = true; return ; }
             else if (!lastName){    $scope.$parent.$parent.error = 'Please put in your last name.'; $scope.lastNameError = true; return; }
 
             // Validate phone number
-            if(!phone){  $scope.$parent.$parent.error = 'Please put in your phone number in the correct format (All digtis).'; $scope.numberError = true; return; }
+            if(!phone || phone.length !== 10){  $scope.$parent.$parent.error = 'Please put in your phone number in the correct format (All digtis).'; $scope.numberError = true; return; }
 
             // Validate location
             if(!location){   $scope.$parent.$parent.error = 'Please select your residence hall or off campus.'; $scope.locationError = true; return; }

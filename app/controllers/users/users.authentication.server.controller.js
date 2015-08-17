@@ -7,6 +7,7 @@ var _ = require('lodash'),
 	errorHandler = require('../errors.server.controller'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
+    localStrategy = require('passport-local').Strategy,
 	User = mongoose.model('User');
 
 /**
@@ -79,6 +80,17 @@ exports.signin = function(req, res, next) {
 			});
 		}
 	})(req, res, next);
+};
+
+exports.authenticate = function(req, res){
+    if(!req.user.username) return res.status(400).send('No user data found.');
+    User.findOne({username : req.user.username}, function(err, user){
+        if(err) return res.status(400).send(err);
+        if(!user.authenticate(req.body.password))
+            res.status(403).send('Invalid password');
+        else
+            res.status(200).send('User authenticated');
+    });
 };
 
 /**
