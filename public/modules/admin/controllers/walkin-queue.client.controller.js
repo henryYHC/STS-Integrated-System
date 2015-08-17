@@ -9,12 +9,33 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
         else if(user.roles.indexOf('technician') < 0 && user.roles.indexOf('admin') < 0)
             $location.path('/');
 
-        $scope.initQueue = function(){ $http.get('/walkins/queue').success(function(response){ $scope.queueCount = 0; $scope.queueItems = response; }); };
-        $scope.quickviewWalkin = function(id){ $http.get('/walkins/'+id).success(function(response){ $scope.quickWalkin = response; }); };
+        $scope.initQueue = function(){
+            $http.get('/walkins/queue').success(function(response){
+                $scope.queueCount = 0;
+                $scope.queueItems = response.incidents;
+                $scope.queueInterval = response.interval;
 
-        // Auto refresh
-        $scope.autoRefresher = $interval(function(){ $scope.initQueue(); }, 20000);
-        $rootScope.$on('$locationChangeSuccess', function() { $interval.cancel($scope.autoRefresher); });
+                $scope.autoRefresher = $interval(function(){ $scope.refreshQueue(); }, $scope.queueInterval);
+                $rootScope.$on('$locationChangeSuccess', function() { $interval.cancel($scope.autoRefresher); });
+            });
+        };
+
+        $scope.refreshQueue = function(){
+            $http.get('/walkins/queue').success(function(response){
+                $scope.queueCount = 0;
+                $scope.queueItems = response.incidents;
+                $scope.queueInterval = response.interval;
+
+                $interval.cancel($scope.autoRefresher);
+                $scope.autoRefresher = $interval(function(){ $scope.refreshQueue(); }, $scope.queueInterval);
+            });
+        };
+
+        $scope.quickviewWalkin = function(id){
+            $http.get('/walkins/'+id).success(function(response){
+                $scope.quickWalkin = response;
+            });
+        };
 
         $scope.viewWalkin = function(id){
             $http.get('/walkins/'+id).success(function(response){
@@ -36,6 +57,7 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
                         templateUrl: 'modules/admin/views/walkin-service-modal.client.view.html',
                         controller: 'AdminWalkinServiceModalCtrl',
                         size: 'lg',
+                        backdrop: 'static',
                         resolve: { walkin : function() { return response; } }
                     });
                     service.result.then(function(result){

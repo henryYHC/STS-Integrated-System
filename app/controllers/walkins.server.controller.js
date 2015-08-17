@@ -26,6 +26,7 @@ exports.create = function(req, res) {
     if(!data.userExisted){
         data.user.provider = 'local';
         data.user.displayName = data.user.firstName + ' ' + data.user.lastName;
+        data.user.username = data.user.username.toLowerCase();
         data.user.lastWalkin = Date.now();
         user = new User(data.user);
 
@@ -129,8 +130,19 @@ exports.delete = function(req, res) {
  * List of Walkins
  */
 exports.queue = function(req, res){
+
+
     Walkin.find({ isActive : true, $or : [ {status : 'In queue'}, {status : 'Work in progress'}] }).sort('created').exec(function(err, walkins) {
         if (err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+
+        // Dynamic refresh interval ( 10s - 5min )
+        var i, walkin, waitingCount = 0, totalCount = walkins.length;
+        for(i = 0; i < totalCount; i++){
+            walkin = walkins[i];
+            if(walkin.status === 'In queue')
+                waitingCount++;
+        }
+        var interval = ( 10 + 290 * (1 - waitingCount / totalCount)) * 1000;
 
         Walkin.find({ isActive : true, status: 'House call pending'}).sort('created').exec(function(err, houseCalls) {
             if(err)return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
@@ -138,7 +150,7 @@ exports.queue = function(req, res){
             walkins = walkins.concat(houseCalls);
             Walkin.populate(walkins, popOpt, function(err, response){
                 if(err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-                res.jsonp(response);
+                res.jsonp({incidents : response, interval : interval});
             });
         });
     });
@@ -192,9 +204,13 @@ exports.listBySearch = function(req, res){
         });
     }
     else{
-        User.findOne(query, function(err, user){
+        User.find(query, function(err, users){
             if(err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-            Walkin.find({user : user}).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+
+            var ids = [];
+            for(var i in users) ids.push(users[i]._id);
+
+            Walkin.find({user : { $in : ids } }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
                 if (err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
                 res.jsonp(walkins);
             });

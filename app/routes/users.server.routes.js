@@ -28,6 +28,7 @@ module.exports = function(app) {
     // Walkin
     app.route('/user/validate/:userNetId').get(users.validateNetId);
     app.route('/user/verify/:userNetId').put(users.verifyNetId);
+    app.route('/user/update/:userNetId').put(users.updateUser);
 
 	// Finish by binding the user middleware
 	app.param('userId', users.userByID);

@@ -26,16 +26,13 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
         $scope.initDeviceOS = function(){ $http.get('/walkins/util/loadDeviceOS').success(function(response){ $scope.deviceOSOptions = response; }); };
         $scope.initResolutionType = function(){ $http.get('/walkins/util/loadResolutionOptions').success(function(response){ $scope.resolutionOptions = response; }); };
 
-        $scope.verify = function(){
-            $http.put('/user/verify/'+$scope.walkin.user.username).success(function(response){ $scope.walkin.user = response; });
-        };
 
         $scope.toHouseCall = function(){
             var walkin = $scope.walkin;
 
             if(walkin.workNote){
                 walkin.status = 'House call pending';
-                walkin.resolution = 'House call technician: ';
+                walkin.resolution = 'House call technician: , MAC address: .';
                 $http.put('/walkins/'+$scope.walkin._id, walkin).success(function(){ $modalInstance.close('saved'); });
             }
             else
@@ -59,6 +56,7 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
                     $scope.walkin.deviceType = 'N/A';
                     $scope.walkin.os = 'N/A';
             }
+            $http.put('/user/update/'+$scope.walkin.user).success(function(response){ $scope.walkin.user = response; });
             $http.put('/walkins/'+$scope.walkin._id, $scope.walkin).success(function(response){ $modalInstance.close('saved'); });
         };
 
@@ -92,7 +90,7 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
                 $scope.error = 'Resolution has to be at least 25 characters (excluding space)';
             else{
                 $http.put('/walkins/'+walkin._id, walkin).success(function(){
-
+                    $http.put('/user/update/'+$scope.walkin.user).success(function(response){ $scope.walkin.user = response; });
                     $http.put('/walkins/log/logResolution/'+walkin._id).success(function(){
                         $modalInstance.close('resolved');
                     });

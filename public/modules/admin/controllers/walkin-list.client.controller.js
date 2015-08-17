@@ -19,15 +19,19 @@ angular.module('admin').controller('AdminWalkinListingController', ['$http', '$s
 
             switch ($scope.search.field){
                 case 'username':
-                    query.username = $scope.search.query;
+                    query.username = { '$regex' : $scope.search.query.toLowerCase(), '$options': 'i' };
                     break;
 
                 case 'displayName':
-                    query.displayName = $scope.search.query;
+                    query.displayName = { '$regex' : $scope.search.query, '$options': 'i' };
                     break;
 
                 case 'created':
                     query.created = $scope.search.query;
+                    break;
+
+                case 'incidentId':
+                    query.snValue = { '$regex' : $scope.search.query, '$options': 'i' };
                     break;
 
                 default :

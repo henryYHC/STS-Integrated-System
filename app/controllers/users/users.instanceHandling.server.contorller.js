@@ -20,6 +20,17 @@ exports.userByNetId = function(req, res, next, username) {
     });
 };
 
+exports.updateUser = function(req, res){
+    var user = _.extend(req.profile, req.body);
+    user.updated = Date.now();
+    user.displayName = user.firstName + ' ' + user.lastName;
+
+    user.save(function(err){
+        if(err) return res.status(400).send('Cannot save user object.');
+        res.json(user);
+    });
+};
+
 /*
  * Validation
  */
@@ -42,7 +53,9 @@ exports.verifyNetId = function(req, res){
         user.verified = true;
         user.save(function(err) {
             if (err)    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            res.jsonp(user);
         });
     }
-    res.jsonp(user);
+    else
+        res.jsonp(user);
 };

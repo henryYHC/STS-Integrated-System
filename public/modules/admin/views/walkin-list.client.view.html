@@ -12,13 +12,14 @@
                         <select class="form-control" data-ng-model="search.field">
                             <option ng-selected="true">Query field</option>
                             <option value="username">NetID</option>
-                            <option value="displayName">Customer Full Name</option>
+                            <option value="displayName">Customer Name</option>
+                            <option value="incidentId">Incident Id</option>
                             <option value="created">Created Time</option>
                         </select>
                     </div>
                     <div class="input-group col-sm-7" ng-switch on="search.field" style="margin-top: 8px;">
-                        <input ng-switch-default type="text" class="form-control" placeholder="Search for..." data-ng-model="search.query">
-                        <input ng-switch-when="created" type="date" class="form-control" data-ng-model="search.query" ng-init="search.query='';">
+                        <input ng-switch-default type="text" class="form-control" placeholder="Search for..." data-ng-model="search.query" ng-init="search.query='';" style="width:320px;">
+                        <input ng-switch-when="created" type="date" class="form-control" data-ng-model="search.query" ng-init="search.query='';" style="width:320px;">
                         <span class="input-group-btn"><button class="btn btn-default" type="button" ng-click="listBySearch()">Go!</button></span>
                     </div>
                 </div>
