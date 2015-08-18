@@ -14,7 +14,6 @@ angular.module('walkins').controller('WalkinNetidController', ['$scope', '$state
                 $scope.$parent.$parent.error = 'Please put in your NetID correctly.';
             }
             else{
-
                 $http.get('/user/validate/'+netid)
                     .success(function(response){
                         delete $scope.$parent.$parent.error;

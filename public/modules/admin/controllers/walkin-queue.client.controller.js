@@ -21,6 +21,7 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
         };
 
         $scope.refreshQueue = function(){
+            $scope.queueItems = undefined;
             $http.get('/walkins/queue').success(function(response){
                 $scope.queueCount = 0;
                 $scope.queueItems = response.incidents;

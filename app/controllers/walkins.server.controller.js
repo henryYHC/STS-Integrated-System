@@ -195,9 +195,16 @@ exports.listUnresolved = function(req, res) {
 
 exports.listBySearch = function(req, res){
     var query = req.body;
+
     if(query.created){
         var d = new Date(query.created), nd = new Date((new Date(d)).setDate(d.getDate() + 1));
         query.created = { $gt : d, $lt: nd };
+        Walkin.find(query).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+            if (err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            res.jsonp(walkins);
+        });
+    }
+    else if(query.snValue){
         Walkin.find(query).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
             if (err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
             res.jsonp(walkins);
