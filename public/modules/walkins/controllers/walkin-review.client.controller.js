@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('walkins').controller('WalkinReviewController', ['$scope', '$state', '$http', '$location', '$modal',
-    function($scope, $state, $http, $location, $modal){
+angular.module('walkins').controller('WalkinReviewController', ['$scope', '$state', '$http', '$location', '$modal', '$timeout',
+    function($scope, $state, $http, $location, $modal, $timeout){
         if(!$scope.formStatus.problem)     $state.go('createWalkin.problem');
         if(!$scope.formStatus.device)     $state.go('createWalkin.device');
         if(!$scope.formStatus.info)     $state.go('createWalkin.info');
@@ -24,6 +24,7 @@ angular.module('walkins').controller('WalkinReviewController', ['$scope', '$stat
                         $scope.formData.liabilityAgreement = response;
                         $http.post('/walkins', $scope.formData)
                             .success(function(response){
+                                $timeout(function(){ $location.path('/'); }, 5000);
                                 $location.path('/success');
                             })
                             .error(function(err){ $scope.error = err.message; });
