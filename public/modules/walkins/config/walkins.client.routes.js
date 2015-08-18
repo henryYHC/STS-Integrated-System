@@ -5,9 +5,9 @@ angular.module('walkins').config(['$stateProvider',
 	function($stateProvider) {
 		// Walkins state routing
 		$stateProvider.
-		state('walkin-netid-confirm', {
-			url: '/walkin-netid-confirm',
-			templateUrl: 'modules/walkins/views/create-walkin-netid-confirm.client.view.html'
+		state('create-walkin-success', {
+			url: '/success',
+			templateUrl: 'modules/walkins/views/create-walkin-success.client.view.html'
 		}).
         state('createWalkin', {
             abstract: true,
