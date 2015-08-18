@@ -56,7 +56,9 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
                     $scope.walkin.deviceType = 'N/A';
                     $scope.walkin.os = 'N/A';
             }
-            $http.put('/user/update/'+$scope.walkin.user).success(function(response){ $scope.walkin.user = response; });
+
+            if($scope.walkin.user.verified)
+                $http.put('/user/verify/'+$scope.walkin.user.username);
             $http.put('/walkins/'+$scope.walkin._id, $scope.walkin).success(function(response){ $modalInstance.close('saved'); });
         };
 
@@ -88,9 +90,11 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
                 $scope.error = 'Resolution subject has more than 20 characters.';
             else if(!resolution || resolution.replace(/ /g,'').length < 25)
                 $scope.error = 'Resolution has to be at least 25 characters (excluding space)';
+            else if(!$scope.walkin.user.verified)
+                $scope.error = 'Please verify customer\'s identity.';
             else{
                 $http.put('/walkins/'+walkin._id, walkin).success(function(){
-                    $http.put('/user/update/'+$scope.walkin.user).success(function(response){ $scope.walkin.user = response; });
+                    $http.put('/user/verify/'+$scope.walkin.user.username);
                     $http.put('/walkins/log/logResolution/'+walkin._id).success(function(){
                         $modalInstance.close('resolved');
                     });

@@ -14,8 +14,8 @@
                     <tr data-ng-repeat="queueItem in queueItems" ng-click="quickviewWalkin(queueItem._id);">
                         <td>
                             {{ $index + 1 }}
-                            <span class="glyphicon glyphicon-cog pull-right" tooltip-placement="top" tooltip="helped by {{queueItem.serviceTechnician.displayName}}" ng-show="queueItem.status=='Work in progress'"/>
-                            <span class="glyphicon glyphicon-home pull-right" tooltip-placement="top" tooltip="house call" ng-show="queueItem.status=='House call pending'"/>
+                            <span class="glyphicon glyphicon-cog pull-right" tooltip-placement="top" tooltip="helped by {{queueItem.serviceTechnician.displayName}}" ng-show="queueItem.status=='Work in progress'"></span>
+                            <span class="glyphicon glyphicon-home pull-right" tooltip-placement="top" tooltip="house call" ng-show="queueItem.status=='House call pending'"></span>
                         </td>
                         <td>{{queueItem.user.displayName}}<span class="glyphicon glyphicon-info-sign pull-right" tooltip-placement="top" tooltip="{{(queueItem.created | date:'shortTime') || 'N/A'}}"></span></td>
                     </tr>

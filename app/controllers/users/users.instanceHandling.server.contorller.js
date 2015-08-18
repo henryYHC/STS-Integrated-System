@@ -49,7 +49,8 @@ exports.validateNetId = function(req, res){
 
 exports.verifyNetId = function(req, res){
     var user = req.profile;
-    if(user){
+
+    if(user && !user.verified){
         user.verified = true;
         user.save(function(err) {
             if (err)    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });

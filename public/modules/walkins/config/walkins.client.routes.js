@@ -5,6 +5,10 @@ angular.module('walkins').config(['$stateProvider',
 	function($stateProvider) {
 		// Walkins state routing
 		$stateProvider.
+		state('walkin-netid-confirm', {
+			url: '/walkin-netid-confirm',
+			templateUrl: 'modules/walkins/views/create-walkin-netid-confirm.client.view.html'
+		}).
         state('createWalkin', {
             abstract: true,
             url: '/walkins',
@@ -15,7 +19,11 @@ angular.module('walkins').config(['$stateProvider',
         // Multi-page walkin form route
         state('createWalkin.netid', {
             url: '',
-            templateUrl: 'modules/walkins/views/create-walkin-netid.client.view.html',
+            templateUrl: 'modules/walkins/views/create-walkin-netid.client.view.html'
+        }).
+        state('createWalkin.confirmNetId', {
+            url: '/confirmNetId',
+            templateUrl: 'modules/walkins/views/create-walkin-netid-confirm.client.view.html'
         }).
         state('createWalkin.info', {
             url: '/info',
