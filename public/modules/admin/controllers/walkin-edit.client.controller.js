@@ -15,14 +15,15 @@ angular.module('admin').controller('WalkinviewController', ['$http', '$scope', '
         $scope.status = {
             editDeviceType : false, editDeviceInfo: false, editDeviceOS: false, editDeviceOther: false,
             editProblem: false, editWorkNote: false, editResolution: false, editResolutionType: false,
-            editOtherResolution: false
+            editOtherResolution: false, editName: false, editPhone: false, editLocation: false
         };
 
-        $scope.initWalkin = function(){ $http.get('/walkins/'+$stateParams.walkinId).success(function(response){ $scope.walkin = response; console.log(response); }); };
+        $scope.initWalkin = function(){ $http.get('/walkins/'+$stateParams.walkinId).success(function(response){ $scope.walkin = response; }); };
         $scope.initDeviceType = function(){ $http.get('/walkins/util/loadDeviceType').success(function(response){ $scope.deviceTypeOptions = response; }); };
         $scope.initDeviceInfo = function(){ $http.get('/walkins/util/loadDeviceInfo').success(function(response){ $scope.deviceInfoOptions = response; }); };
         $scope.initDeviceOS = function(){ $http.get('/walkins/util/loadDeviceOS').success(function(response){ $scope.deviceOSOptions = response; }); };
         $scope.initResolutionType = function(){ $http.get('/walkins/util/loadResolutionOptions').success(function(response){ $scope.resolutionOptions = response; }); };
+        $scope.initLocation = function(){ $http.get('/walkins/util/loadLocationOptions').success(function(response){ $scope.locationOptions = response; }); };
 
         $scope.updateDevice = function(){
             switch($scope.walkin.deviceCategory){
@@ -47,12 +48,24 @@ angular.module('admin').controller('WalkinviewController', ['$http', '$scope', '
             }
         };
 
-        $scope.updateWalkin = function(){
-            console.log($scope.walkin);
+        $scope.updateName = function(){
+            $scope.walkin.user.displayName = $scope.walkin.user.firstName + ' ' + $scope.walkin.user.lastName;
+        };
 
+        $scope.updatePhone = function(){
+            $scope.walkin.user.phone = $scope.walkin.user.phone.replace(/\D/g, '');
+        };
+
+        $scope.updateUser = function(){
+            $http.put('/user/update/'+$scope.walkin.user.username, $scope.walkin.user).success(function(response){
+                alert('User information updated');
+            });
+        };
+
+        $scope.updateWalkin = function(){
             if($scope.walkin.resolutionType !== 'Other') $scope.walkin.otherResolution = '';
             $http.put('/walkins/'+$scope.walkin._id, $scope.walkin).success(function(){
-                alert('Walk-in updated');
+                alert('Walk-in information updated');
             });
         };
 

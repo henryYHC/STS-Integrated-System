@@ -39,9 +39,7 @@ angular.module('walkins').controller('WalkinInfoController', ['$scope', '$state'
                 location = $scope.formData.user.location;
 
             // Remove phone format
-            console.log($scope.formData.user.phone);
             if(phone){ phone = phone.replace(/\D/g, ''); $scope.formData.user.phone = phone; }
-            console.log(phone);
 
             // Validate first and last name
             if      (!firstName){   $scope.$parent.$parent.error = 'Please put in your first name.'; $scope.firstNameError = true; return ; }

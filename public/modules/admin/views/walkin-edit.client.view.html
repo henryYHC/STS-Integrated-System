@@ -1,6 +1,6 @@
 <section data-ng-controller="WalkinviewController"  ng-init="initWalkin()">
     <div>
-        <h2>STS Admin Panel - Walk-in Edit<a href="/#!/admin" class="btn btn-sm btn-default pull-right">Back</a></h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
+        <h2>STS Admin Panel - Walk-in Edit<a href="/#!/admin/walkins-list" class="btn btn-sm btn-default pull-right">Back</a></h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
     </div>
     <div class="container">
         <div class="col-md-12">
@@ -171,7 +171,11 @@
             </div>
         </div>
         <div class="col-md-12">
-            <h3>Customer information</h3><hr/>
+            <h3>Customer information
+                <div class="pull-right" >
+                    <a ng-click="updateUser();"><span class="glyphicon glyphicon-floppy-disk"></span></a>
+                </div>
+            </h3><hr/>
             <div class="col-md-6">
                 <div class="form-horizontal">
                     <div class="form-group" style="text-align: left">
@@ -185,7 +189,23 @@
                     <div class="form-group" style="text-align: left">
                         <label class="col-sm-3 control-label" for="name">Name:</label>
                         <div class="col-sm-9" id="name" style="margin-top: 8px;">
-                            {{walkin.user.displayName}}
+                            <div id="name-display" ng-show="!editName">
+                                {{walkin.user.displayName}}
+                                <a ng-click="editName=!editName;"><span class="glyphicon glyphicon-pencil pull-right"></span></a>
+                            </div>
+                            <div id="name-edit" ng-show="editName">
+                                <div class="input-group">
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control col-sm-6" data-ng-model="walkin.user.firstName" style="width: 50%">
+                                        <input type="text" class="form-control col-sm-6" data-ng-model="walkin.user.lastName" style="width: 50%">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <span class="input-group-btn">
+                                        <button class="btn btn-sm btn-primary" type="button" ng-click="editName=!editName;updateName();">Done</button>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -195,7 +215,18 @@
                     <div class="form-group" style="text-align: left">
                         <label class="col-sm-3 control-label" for="phone">Phone:</label>
                         <div class="col-sm-9" id="phone" style="margin-top: 8px;">
-                            {{walkin.user.phone}}
+                            <div id="phone-display" ng-show="!editPhone">
+                                {{walkin.user.phone}}
+                                <a ng-click="editPhone=!editPhone;"><span class="glyphicon glyphicon-pencil pull-right"></span></a>
+                            </div>
+                            <div id="phone-edit" ng-show="editPhone">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-ng-model="walkin.user.phone">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="button" ng-click="editPhone=!editPhone;updatePhone();">Done</button>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -203,7 +234,15 @@
                     <div class="form-group" style="text-align: left">
                         <label class="col-sm-3 control-label" for="location">Residence Hall:</label>
                         <div class="col-sm-9" id="location" style="margin-top: 8px;">
-                            {{walkin.user.location}}
+                            <div id="location-display" ng-show="!editLocation">
+                                {{walkin.user.location}}
+                                <a ng-click="editLocation=!editLocation;"><span class="glyphicon glyphicon-pencil pull-right"></span></a>
+                            </div>
+                            <div id="location-edit" ng-show="editLocation" ng-init="initLocation();">
+                                <select id="locationI" class="form-control" data-ng-model="walkin.user.location" ng-change="editLocation=!editLocation;">
+                                    <option ng-repeat="option in locationOptions" value="{{option}}" ng-selected="option == walkin.user.location;">{{option}}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>

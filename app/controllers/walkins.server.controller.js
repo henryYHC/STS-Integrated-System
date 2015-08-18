@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
     servicenow = require('../../app/controllers/servicenow-requestor.server.controller');
 
 var popOpt = [
-    { path : 'user', model : 'User', select : 'displayName username phone location verified'},
+    { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified'},
     { path : 'lastUpdateTechnician', model : 'User', select : 'displayName username'},
     { path : 'serviceTechnician', model : 'User', select : 'displayName username'},
     { path : 'resoluteTechnician', model : 'User', select : 'displayName username'}

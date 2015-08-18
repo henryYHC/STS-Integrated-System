@@ -17,15 +17,16 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
             });
         }
 
-        $scope.status = {
-            editDeviceType : false, editDeviceInfo: false, editDeviceOS: false, editDeviceOther: false,
-            editProblem: false, editWorkNote: false, editResolution: false, editOtherResolution: false
-        };
+        $scope.userUpdated = false; $scope.userVerified = $scope.walkin.user.verified;
         $scope.initDeviceType = function(){ $http.get('/walkins/util/loadDeviceType').success(function(response){ $scope.deviceTypeOptions = response; }); };
         $scope.initDeviceInfo = function(){ $http.get('/walkins/util/loadDeviceInfo').success(function(response){ $scope.deviceInfoOptions = response; }); };
         $scope.initDeviceOS = function(){ $http.get('/walkins/util/loadDeviceOS').success(function(response){ $scope.deviceOSOptions = response; }); };
         $scope.initResolutionType = function(){ $http.get('/walkins/util/loadResolutionOptions').success(function(response){ $scope.resolutionOptions = response; }); };
+        $scope.initLocation = function(){ $http.get('/walkins/util/loadLocationOptions').success(function(response){ $scope.locationOptions = response; }); };
 
+        $scope.updateName = function(){ $scope.walkin.user.displayName = $scope.walkin.user.firstName + ' ' + $scope.walkin.user.lastName; };
+        $scope.updatePhone = function(){ $scope.walkin.user.phone = $scope.walkin.user.phone.replace(/\D/g, ''); };
+        $scope.updateUser = function(){ $scope.updateName(); $scope.updatePhone(); $scope.userUpdated = true; };
 
         $scope.toHouseCall = function(){
             var walkin = $scope.walkin;
@@ -57,8 +58,11 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
                     $scope.walkin.os = 'N/A';
             }
 
-            if($scope.walkin.user.verified)
+            if($scope.userUpdated)
+                $http.put('/user/update/'+$scope.walkin.user.username, $scope.walkin.user);
+            if(!$scope.userVerified && $scope.walkin.user.verified)
                 $http.put('/user/verify/'+$scope.walkin.user.username);
+
             $http.put('/walkins/'+$scope.walkin._id, $scope.walkin).success(function(response){ $modalInstance.close('saved'); });
         };
 
@@ -94,7 +98,8 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
                 $scope.error = 'Please verify customer\'s identity.';
             else{
                 $http.put('/walkins/'+walkin._id, walkin).success(function(){
-                    $http.put('/user/verify/'+$scope.walkin.user.username);
+                    if($scope.userUpdated) $http.put('/user/update/'+$scope.walkin.user.username, $scope.walkin.user);
+                    if(!$scope.userVerified && $scope.walkin.user.verified) $http.put('/user/verify/'+$scope.walkin.user.username);
                     $http.put('/walkins/log/logResolution/'+walkin._id).success(function(){
                         $modalInstance.close('resolved');
                     });
