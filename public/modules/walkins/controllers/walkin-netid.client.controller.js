@@ -14,6 +14,7 @@ angular.module('walkins').controller('WalkinNetidController', ['$scope', '$state
                 $scope.$parent.$parent.error = 'Please put in your NetID correctly.';
             }
             else{
+                $scope.formData.user.username = netid = netid.toLowerCase();
                 $http.get('/user/validate/'+netid)
                     .success(function(response){
                         delete $scope.$parent.$parent.error;

@@ -39,7 +39,7 @@ exports.validateNetId = function(req, res){
     var user = req.profile;
 
     if(!user){
-        var netid = req.netid;
+        var netid = req.netid.toLowerCase();
         UserEntry.findOne({netid : netid}, function(err, entry){
             if(err) return res.status(400).send(err);
 
