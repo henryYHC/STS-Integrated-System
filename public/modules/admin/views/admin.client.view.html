@@ -8,13 +8,11 @@
             <ul style="list-style-type: none;">
                 <li><a href="/#!/admin/walkins" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">View Walk-in Queue</a></li>
                 <li><a href="/#!/admin/walkins-list" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">View Walk-in Listing</a></li>
-                <li ng-click="verifyAdmin()" ng-show="isAdmin" class="dropdown function btn btn-primary btn-lg btn-block" dropdown on-toggle="toggled(open)" style="margin-left: -20px;">
-                    <div class="dropdown-toggle" dropdown-toggle>User Handling for Admin <b class="caret"></b></div>
-                    <ul ng-show="adminVerified" class="dropdown-menu" style="width: 100%;">
-                        <li><a href="/#!/signup">Register New User</a></li>
-                        <li><a href="/#!/password/reset">Reset user password</a></li>
-                    </ul>
+                <li ng-click="verifyAdmin()" ng-show="isAdmin&&!adminVerified" class="dropdown function btn btn-primary btn-lg btn-block" dropdown on-toggle="toggled(open)" style="margin-left: -20px;">
+                    <div>User Handling for Admin <b class="caret"></b></div>
                 </li>
+                <li><a href="/#!/signup" ng-show="isAdmin&&adminVerified" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">Register New User</a></li>
+                <li><a href="/#!/password/reset" ng-show="isAdmin&&adminVerified" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">Reset user password</a></li>
             </ul>
         </div>
     </div>
