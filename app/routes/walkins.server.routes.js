@@ -7,22 +7,22 @@ module.exports = function(app) {
 	// Walkins Routes
 	app.route('/walkins').post(walkins.create);
 
-    app.route('/walkins/queue').get(walkins.queue);
+    app.route('/walkins/queue').get(users.hasPermission, walkins.queue);
 
 	app.route('/walkins/:walkinId')
-		.get(walkins.read)
-		.put(walkins.update)
-		.delete(walkins.delete);
+		.get(users.hasPermission, walkins.read)
+		.put(users.hasPermission, walkins.update)
+		.delete(users.hasAdminPermission, walkins.delete);
 
     // Walkins list
-    app.route('/walkins/list/listAll').get(walkins.listAll);
-    app.route('/walkins/list/listToday').get(walkins.listToday);
-    app.route('/walkins/list/listUnresolved').get(walkins.listUnresolved);
-    app.route('/walkins/list/listBySearch').post(walkins.listBySearch);
+    app.route('/walkins/list/listAll').get(users.hasPermission, walkins.listAll);
+    app.route('/walkins/list/listToday').get(users.hasPermission, walkins.listToday);
+    app.route('/walkins/list/listUnresolved').get(users.hasPermission, walkins.listUnresolved);
+    app.route('/walkins/list/listBySearch').post(users.hasPermission, walkins.listBySearch);
 
     // Walkins logs
-    app.route('/walkins/log/logService/:walkinId').put(users.hasAuthorization(['admin', 'technician']), walkins.logService);
-    app.route('/walkins/log/logResolution/:walkinId').put(users.hasAuthorization(['admin', 'technician']), walkins.logResolution);
+    app.route('/walkins/log/logService/:walkinId').put(users.hasPermission, walkins.logService);
+    app.route('/walkins/log/logResolution/:walkinId').put(users.hasPermission, walkins.logResolution);
 
     // Walkin util routes
     app.route('/walkins/util/loadLocationOptions').get(walkins.getLocationOptions);

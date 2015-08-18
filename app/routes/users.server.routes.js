@@ -22,13 +22,13 @@ module.exports = function(app) {
     app.route('/auth/initAdmin').post(users.hasAdmin, users.signup);
 	app.route('/auth/signup').post(users.hasAdminPermission, users.signup);
 	app.route('/auth/signin').post(users.signin);
-    app.route('/auth/authenticate').post(users.authenticate);
+    app.route('/auth/authenticate').post(users.hasPermission, users.authenticate);
 	app.route('/auth/signout').get(users.signout);
 
     // Walkin
     app.route('/user/validate/:userNetId').get(users.validateNetId);
-    app.route('/user/verify/:userNetId').put(users.verifyNetId);
-    app.route('/user/update/:userNetId').put(users.updateUser);
+    app.route('/user/verify/:userNetId').put(users.hasPermission, users.verifyNetId);
+    app.route('/user/update/:userNetId').put(users.hasPermission, users.updateUser);
 
 	// Finish by binding the user middleware
 	app.param('userId', users.userByID);
