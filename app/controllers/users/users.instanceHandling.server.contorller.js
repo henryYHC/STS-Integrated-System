@@ -3,7 +3,8 @@
 var _ = require('lodash'),
     errorHandler = require('../errors.server.controller'),
     mongoose = require('mongoose'),
-    User = mongoose.model('User');
+    User = mongoose.model('User'),
+    UserEntry = mongoose.model('UserEntry');
 
 /*
  * User-Instance middleware
@@ -14,8 +15,8 @@ exports.userByNetId = function(req, res, next, username) {
     }).exec(function(err, user) {
         if (err) return next(err);
 
-        if (!user) req.profile = null;
-        else       req.profile = user;
+        if (!user)  req.netid = username;
+        else        req.profile = user;
         next();
     });
 };
@@ -37,8 +38,18 @@ exports.updateUser = function(req, res){
 exports.validateNetId = function(req, res){
     var user = req.profile;
 
-    if(!user)
-        res.jsonp( { status : 'Not found', user : user });
+    if(!user){
+        var netid = req.netid;
+        UserEntry.findOne({netid : netid}, function(err, entry){
+            if(err) return res.status(400).send(err);
+
+            if(entry){
+                user = { username: netid, firstName: entry.firstName, lastName: entry.lastName, verified: true };
+                res.jsonp( { status : 'Valid', user : user });
+            }
+            else res.jsonp( { status : 'Not found', user : user });
+        });
+    }
     else{
         user.provider = undefined;
         user.password = undefined;

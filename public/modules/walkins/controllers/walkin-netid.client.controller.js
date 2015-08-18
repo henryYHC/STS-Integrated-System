@@ -26,16 +26,18 @@ angular.module('walkins').controller('WalkinNetidController', ['$scope', '$state
                                 $scope.formData.user = response.user;
                                 $state.go('createWalkin.info');
                                 break;
+                            // User NetId valid
+                            case 'Valid':
+                                $scope.formData.userExisted = false;
+                                $scope.formData.user = response.user;
+                                $state.go('createWalkin.info');
+                                break;
                             // User record not found
                             case 'Not found':
                                 $scope.formData.userExisted = false;
-                                $scope.formData.user = {'username' : netid};
+                                $scope.formData.user = { 'username' : netid };
                                 $state.go('createWalkin.confirmNetId');
                                 break;
-                            // User NetId invalid
-                            case 'Invalid':
-                                $scope.$parent.$parent.error = 'User NetId is invalid';
-                                return;
                             default:
                                 $scope.$parent.$parent.error = 'Something is wrong with user record query.';
                                 return;

@@ -7,6 +7,10 @@ angular.module('admin').config(['$stateProvider', '$urlRouterProvider',
 
 		// Admin state routing
 		$stateProvider.
+		state('import-netid-entries', {
+			url: '/admin/importNetIdEntries',
+			templateUrl: 'modules/admin/views/import-netid-entries.client.view.html'
+		}).
 		state('walkin-view', {
 			url: '/admin/walkins/:walkinId',
 			templateUrl: 'modules/admin/views/walkin-edit.client.view.html'

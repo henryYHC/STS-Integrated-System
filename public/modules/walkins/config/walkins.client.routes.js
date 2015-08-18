@@ -5,6 +5,14 @@ angular.module('walkins').config(['$stateProvider',
 	function($stateProvider) {
 		// Walkins state routing
 		$stateProvider.
+		state('walkins-test', {
+			url: '/test',
+			templateUrl: 'modules/walkins/views/walkins-test.client.view.html'
+		}).
+		state('create-walkin-failed', {
+			url: '/notSupported',
+			templateUrl: 'modules/walkins/views/create-walkin-failed.client.view.html'
+		}).
 		state('create-walkin-success', {
 			url: '/success',
 			templateUrl: 'modules/walkins/views/create-walkin-success.client.view.html'
