@@ -21,7 +21,9 @@ module.exports = {
 				'public/lib/angular-ui-utils/ui-utils.min.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js',
                 'public/lib/bootstrap-material-design/dist/js/ripples.min.js',
-                'public/lib/bootstrap-material-design/dist/js/material.min.js'
+                'public/lib/bootstrap-material-design/dist/js/material.min.js',
+                'public/lib/ng-file-upload/ng-file-upload.min.js',
+                'public/lib/ng-file-upload/ng-file-upload-shim.min.js'
 			]
 		},
 		css: 'public/dist/application.min.css',
