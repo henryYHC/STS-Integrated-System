@@ -7,6 +7,10 @@ angular.module('admin').config(['$stateProvider', '$urlRouterProvider',
 
 		// Admin state routing
 		$stateProvider.
+		state('servicenow-sync', {
+			url: '/servicenowSync',
+			templateUrl: 'modules/admin/views/servicenow-sync.client.view.html'
+		}).
 		state('import-netid-entries', {
 			url: '/admin/importNetIdEntries',
 			templateUrl: 'modules/admin/views/import-netid-entries.client.view.html'

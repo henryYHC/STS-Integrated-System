@@ -18,7 +18,11 @@ module.exports = function(app) {
     app.route('/walkins/list/listAll').get(users.hasPermission, walkins.listAll);
     app.route('/walkins/list/listToday').get(users.hasPermission, walkins.listToday);
     app.route('/walkins/list/listUnresolved').get(users.hasPermission, walkins.listUnresolved);
+    app.route('/walkins/list/listUnSynced').get(users.hasAdminPermission, walkins.listUnSynced);
     app.route('/walkins/list/listBySearch').post(users.hasPermission, walkins.listBySearch);
+
+    // ServiceNow
+    app.route('/walkins/sync/:walkinId').put(users.hasAdminPermission, walkins.syncWalkin);
 
     // Walkins logs
     app.route('/walkins/log/logService/:walkinId').put(users.hasPermission, walkins.logService);

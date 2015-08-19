@@ -98,11 +98,23 @@ exports.update = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-            if(walkin.snSysId)
-                servicenow.updateWalkinIncident(walkin);
+            if(walkin.snSysId) servicenow.updateWalkinIncident(walkin);
 			res.jsonp(walkin);
 		}
 	});
+};
+
+exports.syncWalkin = function(req, res){
+    var walkin = req.walkin;
+    walkin.updated = Date.now();
+
+    walkin.save(function(err) {
+        if (err)    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        else {
+            servicenow.createWalkinIncident(walkin);
+            res.jsonp(walkin);
+        }
+    });
 };
 
 /**
@@ -191,6 +203,18 @@ exports.listUnresolved = function(req, res) {
     });
 };
 
+exports.listUnSynced = function(req, res) {
+    Walkin.find({ isActive : true, snValue : null, snSysId : null, status : 'Completed' }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.jsonp(walkins);
+        }
+    });
+};
+
 exports.listBySearch = function(req, res){
     var query = req.body;
 
@@ -256,7 +280,7 @@ exports.logResolution = function(req, res){
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
-            servicenow.createWalkinIncident(walkin);
+            //servicenow.createWalkinIncident(walkin);
             res.jsonp(walkin);
         }
     });

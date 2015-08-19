@@ -16,7 +16,7 @@
         Loading...
     </button>
     <button ng-show="summary.count && !summary.error" type="button" class="btn btn-lg btn-danger pull-right" ng-click="import();">Import!</button>
-    <div class="progress" ng-show="summary.count && !summary.error" style="height: 20px;">
+    <div class="progress" ng-show="summary.importCount && summary.count && !summary.error" style="height: 20px;">
         <div class="progress-bar" role="progressbar" aria-valuenow="{{summary.importCount}}" aria-valuemin="0" aria-valuemax="{{summary.count}}"
              style="width: {{summary.importCount/summary.count*100}}%;">
             <span ng-show="summary.importCount !=0 &&summary.importCount != summary.count">{{summary.importCount}} / {{summary.count}}</span>

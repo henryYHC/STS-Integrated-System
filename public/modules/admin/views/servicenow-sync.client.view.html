@@ -1,0 +1,67 @@
+<section data-ng-controller="ServicenowSyncController">
+    <h1>Ticket Sync with ServiceNow
+        <button ng-show="summary.count && !summary.error" class="btn btn-lg btn-danger pull-right"
+                style="font-size:13px;margin-top: 5px;" ng-click="syncTickets();">Sync!</button>
+        <button type="button" class="btn btn-lg btn-primary pull-right"
+                style="font-size:13px;margin-top: 5px;" ng-click="getTickets();">
+            <div ng-show="!loading">Find un-synced tickets</div>
+            <div ng-show="loading&&!entries"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</div>
+        </button>
+    </h1><hr/>
+
+    <div ng-show="summary&&entries">
+        <p ng-show="summary.count && !summary.error" class="alert alert-info">
+            <strong>Success! </strong>Entry detected: {{summary.count}}
+        </p>
+        <p ng-show="summary.error" class="alert alert-danger"><strong>Error! </strong>{{summary.error}}</p>
+    </div>
+
+    <div class="progress" ng-show="summary.syncCount && summary.count && !summary.error" style="height: 20px;">
+        <div class="progress-bar" role="progressbar" aria-valuenow="{{summary.syncCount}}" aria-valuemin="0" aria-valuemax="{{summary.count}}"
+             style="width: {{summary.syncCount/summary.count*100}}%;">
+            <span ng-show="summary.syncCount !=0 &&summary.syncCount != summary.count">{{summary.syncCount}} / {{summary.count}}</span>
+            <span ng-show="summary.syncCount == summary.count">Success!</span>
+        </div>
+    </div>
+
+    <table class="table table-hover" style="max-height: 80vh; overflow: auto;">
+        <tr>
+            <th>ID</th>
+            <th>Customer</th>
+            <th>NetID</th>
+            <th>Type</th>
+            <th>Spec</th>
+            <th>Status</th>
+            <th>Updated</th>
+            <th>Created</th>
+        </tr>
+        <tr data-ng-repeat="entry in walkins | orderBy: '-created' : true" data-ng-href="#">
+            <td data-ng-bind="entry._id"></td>
+            <td data-ng-bind="entry.user.displayName"></td>
+            <td data-ng-bind="entry.user.username"></td>
+            <td data-ng-bind="entry.deviceCategory"></td>
+            <td data-ng-bind="entry.deviceType" ng-hide="entry.deviceType=='N/A'"></td>
+            <td data-ng-bind="entry.os" ng-hide="entry.os=='N/A'"></td>
+            <td data-ng-bind="entry.status"></td>
+            <td data-ng-bind="(entry.updated | date:'short') || 'N/A'"></td>
+            <td data-ng-bind="(entry.created | date:'short') || 'N/A'"></td>
+        </tr>
+    </table>
+</section>
+
+<style>
+    .glyphicon-refresh-animate {
+        -animation: spin .7s infinite linear;
+        -webkit-animation: spin2 .7s infinite linear;
+    }
+
+    @-webkit-keyframes spin2 {
+        from { -webkit-transform: rotate(0deg);}
+        to { -webkit-transform: rotate(360deg);}
+    }
+
+    @keyframes spin {
+        from { transform: scale(1) rotate(0deg);}
+        to { transform: scale(1) rotate(360deg);}
+    }
+</style>

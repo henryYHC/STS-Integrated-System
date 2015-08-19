@@ -114,6 +114,7 @@ var getTemplateObj = function(walkin){
 
 var formulateWalkin = function(walkin, soapAction){
     var template = getTemplateObj(walkin);
+
     return {
         // Request info
         u_soapaction : soapAction,
