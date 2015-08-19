@@ -98,7 +98,7 @@ exports.authenticate = function(req, res){
  */
 exports.signout = function(req, res) {
 	req.logout();
-	res.redirect('/staff');
+	res.redirect('/#!/staff');
 };
 
 /**
