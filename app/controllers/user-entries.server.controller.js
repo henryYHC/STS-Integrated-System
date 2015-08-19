@@ -13,7 +13,7 @@ var mongoose = require('mongoose'),
  */
 exports.create = function(req, res) {
     var entry = req.body;
-
+    entry.netid = entry.netid.toLowerCase();
     UserEntry.findOne({netid:entry.netid}, function(err, response){
         if(err) return res.status(400).send(err);
         if(response){

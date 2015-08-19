@@ -1,3 +1,43 @@
 <section data-ng-controller="ImportNetIdEntriesController">
-	This is the Import netid entries
+    <h1>User entry (NetId) Importation</h1>
+    <p>Format(for each line):&emsp;NetID,FirstName,LastName,Type</p><hr/>
+
+    <div ng-show="summary&&entries">
+        <p ng-show="summary.count && !summary.error" class="alert alert-info"><strong>Success! </strong>Entry detected: {{summary.count}}</p>
+        <p ng-show="summary.error" class="alert alert-danger"><strong>Error! </strong>{{summary.error}}</p>
+    </div>
+
+    <button type="file" class="function btn btn-lg btn-primary" style="text-align: center;"
+            ngf-select data-ng-model="file" accept=".txt, .csv">
+        <span class="glyphicon glyphicon-upload"> Upload user entry file (.txt, .csv)</span>
+    </button>
+    <button ng-show="loading&&!entries" class="function btn btn-lg btn-default" style="text-align: center;" disabled>
+        <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+        Loading...
+    </button>
+    <button ng-show="summary.count && !summary.error" type="button" class="btn btn-lg btn-danger pull-right" ng-click="import();">Import!</button>
+    <div class="progress" ng-show="summary.count && !summary.error" style="height: 20px;">
+        <div class="progress-bar" role="progressbar" aria-valuenow="{{summary.importCount}}" aria-valuemin="0" aria-valuemax="{{summary.count}}"
+             style="width: {{summary.importCount/summary.count*100}}%;">
+            <span ng-show="summary.importCount !=0 &&summary.importCount != summary.count">{{summary.importCount}} / {{summary.count}}</span>
+            <span ng-show="summary.importCount == summary.count">Success!</span>
+        </div>
+    </div>
 </section>
+
+<style>
+    .glyphicon-refresh-animate {
+        -animation: spin .7s infinite linear;
+        -webkit-animation: spin2 .7s infinite linear;
+    }
+
+    @-webkit-keyframes spin2 {
+        from { -webkit-transform: rotate(0deg);}
+        to { -webkit-transform: rotate(360deg);}
+    }
+
+    @keyframes spin {
+        from { transform: scale(1) rotate(0deg);}
+        to { transform: scale(1) rotate(360deg);}
+    }
+</style>
