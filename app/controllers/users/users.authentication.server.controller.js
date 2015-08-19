@@ -63,7 +63,10 @@ exports.signup = function(req, res) {
  */
 exports.signin = function(req, res, next) {
     if(req.body.username) req.body.username = req.body.username.toLowerCase();
+
+    console.log(req.body);
 	passport.authenticate('local', function(err, user, info) {
+        console.log(err);
 		if (err || !user) {
 			res.status(400).send(info);
 		} else {

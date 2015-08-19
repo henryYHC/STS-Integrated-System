@@ -175,7 +175,9 @@ exports.createWalkinIncident = function(walkin){
         client.insert(data, function(err, response){
             if(err) return console.log(err);
 
-            if(response.sys_id && response.display_value){
+            console.log(response);
+
+            if(response.status === 'Inserted' && response.sys_id && response.display_value){
                 walkin.snSysId = response.sys_id;
                 walkin.snValue = response.display_value;
 
