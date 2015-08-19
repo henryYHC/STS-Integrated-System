@@ -11,6 +11,8 @@ angular.module('admin').controller('ServicenowSyncController', ['$scope', '$http
             $http.get('/walkins/list/listUnSynced').success(function(entries){
                 $scope.loading = false;
                 $scope.summary.count += entries.length;
+
+                console.log(entries);
                 $scope.walkins = entries;
             }).error(function(err){ $scope.summary.error = err; });
         };

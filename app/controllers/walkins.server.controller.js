@@ -204,7 +204,7 @@ exports.listUnresolved = function(req, res) {
 };
 
 exports.listUnSynced = function(req, res) {
-    Walkin.find({ isActive : true, snValue : null, snSysId : null, status : 'Completed' }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+    Walkin.find({ isActive : true, snValue : '', snSysId : '', status : 'Completed' }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)

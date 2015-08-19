@@ -175,13 +175,15 @@ exports.createWalkinIncident = function(walkin){
         client.insert(data, function(err, response){
             if(err) return console.log(err);
 
-            walkin.snSysId = response.sys_id;
-            walkin.snValue = response.display_value;
+            if(response.sys_id && response.display_value){
+                walkin.snSysId = response.sys_id;
+                walkin.snValue = response.display_value;
 
-            walkin.save(function(err, updatedWalkin){
-                if(err) return console.log(err);
-                return updatedWalkin;
-            });
+                walkin.save(function(err, updatedWalkin){
+                    if(err) return console.log(err);
+                    return updatedWalkin;
+                });
+            }
         });
     });
 };
