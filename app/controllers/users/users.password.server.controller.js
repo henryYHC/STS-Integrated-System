@@ -29,6 +29,16 @@ exports.resetPassword = function(req, res) {
     });
 };
 
+exports.forceResetPassword = function(req, res){
+    var user = req.profile;
+    if(!user) return res.status(400).send({ message: 'Not such username exists.'});
+    user.password = 'password';
+    user.save(function(err){
+        if(err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        res.status(200).send('Success');
+    });
+};
+
 /**
  * Change Password
  */

@@ -5,6 +5,10 @@ angular.module('users').config(['$stateProvider',
 	function($stateProvider) {
 		// Users state routing
 		$stateProvider.
+		state('pwd-reset', {
+			url: '/password/reset/:netid',
+			templateUrl: 'modules/users/views/password/pwd-reset.client.view.html'
+		}).
 		state('init-admin', {
 			url: '/initadmin',
 			templateUrl: 'modules/users/views/authentication/init-admin.client.view.html'
