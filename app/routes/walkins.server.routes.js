@@ -6,13 +6,12 @@ module.exports = function(app) {
 
 	// Walkins Routes
 	app.route('/walkins').post(walkins.create);
+    app.route('/walkins/queue').get(users.hasPermission, walkins.queue);
 
     app.route('/walkins/:walkinId')
         .get(users.hasPermission, walkins.read)
         .put(users.hasPermission, walkins.update)
         .delete(users.hasAdminPermission, walkins.delete);
-
-    app.route('/walkins/queue').get(users.hasPermission, walkins.queue);
 
     // Walkins list
     app.route('/walkins/list/listAll').get(users.hasPermission, walkins.listAll);
