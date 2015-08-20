@@ -28,48 +28,48 @@ exports.create = function(req, res) {
         data.user.displayName = data.user.firstName + ' ' + data.user.lastName;
         data.user.username = data.user.username.toLowerCase();
         data.user.lastWalkin = Date.now();
+
         user = new User(data.user);
+        user.lastWalkin = Date.now();
 
         user.save(function(err){
             if (err) return res.status(400).send({   message: errorHandler.getErrorMessage(err) });
 
-            delete data.user;   delete data.userExisted;
+            delete data.user;
+            delete data.userExisted;
+
             var walkin = new Walkin(data);
             walkin.user = user._id;
-            user.lastWalkin = walkin;
-
             if(!walkin.deviceType) walkin.deviceType = 'N/A';
             if(!walkin.os)         walkin.os = 'N/A';
 
             walkin.save(function(err) {
-                if (err){ return res.status(400).send({ message: errorHandler.getErrorMessage(err) }); }
-                else     res.jsonp(walkin);
+                if (err){   return res.status(400).send({ message: errorHandler.getErrorMessage(err) }); }
+                else        res.jsonp(walkin);
             });
         });
     }
     else{
         data.user.lastWalkin = Date.now();
-        User.findOne({
-            _id: data.user._id
-        }).exec(function(err, foundUser) {
+
+        User.findOne({_id: data.user._id}).exec(function(err, foundUser) {
             if (!foundUser) return res.status(400).send({ message: 'Failed to load User ' + data.user._id });
             foundUser = _.extend(foundUser, data.user);
 
             foundUser.save(function(err){
                 if (err) return res.status(400).send({   message: errorHandler.getErrorMessage(err) });
 
-                delete data.user;   delete data.userExisted;
+                delete data.user;
+                delete data.userExisted;
+
                 var walkin = new Walkin(data);
                 walkin.user = foundUser._id;
-
                 if(!walkin.deviceType) walkin.deviceType = 'N/A';
                 if(!walkin.os)         walkin.os = 'N/A';
 
                 walkin.save(function(err) {
-                    if (err){ return res.status(400).send({ message: errorHandler.getErrorMessage(err) }); }
-                    else{
-                        res.jsonp(walkin);
-                    }
+                    if (err){   return res.status(400).send({ message: errorHandler.getErrorMessage(err) }); }
+                    else{       res.jsonp(walkin); }
                 });
             });
         });
@@ -215,6 +215,15 @@ exports.listUnSynced = function(req, res) {
     });
 };
 
+exports.listByNetId = function(req, res){
+    var user = req.profile;
+
+    Walkin.find({user : user}).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+        if (err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        res.jsonp(walkins);
+    });
+};
+
 exports.listBySearch = function(req, res){
     var query = req.body;
 
@@ -258,13 +267,8 @@ exports.logService = function(req, res){
     walkin.status = 'Work in progress';
 
     walkin.save(function(err) {
-        if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
-        } else {
-            res.jsonp(walkin);
-        }
+        if (err)    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        else        res.jsonp(walkin);
     });
 };
 
@@ -275,11 +279,8 @@ exports.logResolution = function(req, res){
     walkin.status = 'Completed';
 
     walkin.save(function(err) {
-        if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
-        } else {
+        if (err)    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        else {
             //servicenow.createWalkinIncident(walkin);
             res.jsonp(walkin);
         }

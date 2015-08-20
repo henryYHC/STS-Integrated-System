@@ -6,21 +6,6 @@ var _ = require('lodash'),
     User = mongoose.model('User'),
     UserEntry = mongoose.model('UserEntry');
 
-/*
- * User-Instance middleware
- */
-exports.userByNetId = function(req, res, next, username) {
-    User.findOne({
-        username: username.toLowerCase()
-    }).exec(function(err, user) {
-        if (err) return next(err);
-
-        if (!user)  req.netid = username;
-        else        req.profile = user;
-        next();
-    });
-};
-
 exports.updateUser = function(req, res){
     var user = _.extend(req.profile, req.body);
     user.updated = Date.now();
@@ -44,16 +29,16 @@ exports.validateNetId = function(req, res){
             if(err) return res.status(400).send(err);
 
             if(entry){
-                user = { username: netid, firstName: entry.firstName, lastName: entry.lastName, verified: true };
+                user = { username: entry.netid, firstName: entry.firstName, lastName: entry.lastName, verified: true };
                 res.jsonp( { status : 'Valid', user : user });
             }
             else res.jsonp( { status : 'Not found', user : user });
         });
     }
     else{
+        user.roles = undefined;
         user.provider = undefined;
         user.password = undefined;
-        user.roles = undefined;
         res.jsonp( { status : 'Found', user : user });
     }
 };

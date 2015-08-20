@@ -84,7 +84,7 @@ exports.signin = function(req, res, next) {
 
 exports.authenticate = function(req, res){
     if(!req.user.username) return res.status(400).send('No user data found.');
-    User.findOne({username : req.user.username}, function(err, user){
+    User.findOne({username : req.user.username.toLowerCase()}, function(err, user){
         if(err) return res.status(400).send(err);
         if(!user.authenticate(req.body.password))
             res.status(403).send('Invalid password');
