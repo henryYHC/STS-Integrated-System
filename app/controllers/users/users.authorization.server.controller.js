@@ -27,9 +27,8 @@ exports.userByNetId = function(req, res, next, username) {
         username: username.toLowerCase()
     }).exec(function(err, user) {
         if (err)    return next(err);
-        if (!user)  return req.netid = username;
-
-        req.profile = user;
+        if (!user)  req.netid = username;
+        else        req.profile = user;
         next();
     });
 };
