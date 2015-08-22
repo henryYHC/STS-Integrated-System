@@ -57,8 +57,8 @@ var UserSchema = new Schema({
                 'Delta Phi Lambda', 'Dobbs', 'Evans', 'Few', 'Gamma Phi Beta', 'Hamilton',
                 'Harris', 'Hopkins', 'Kappa Alpha Theta', 'Kappa Kappa Gamma', 'Kappa Sigma',
                 'Longstreet', 'Pi Kappa Alpha', 'Raoul', 'Sigma Alpha Epsilon', 'Sigma Chi',
-                'Sigma Delta Tau', 'Smith', 'Thomas', 'Turman', 'Woodruff', 'Xi Kappa',
-                'Zeta Beta Tau', 'Off Campus'],
+                'Sigma Delta Tau', 'Smith', 'Spanish House', 'Thomas', 'Turman', 'Woodruff',
+                'Xi Kappa', 'Zeta Beta Tau', 'Off Campus'],
         required: 'Please fill in your residence hall (or off-campus)'
     },
     verified: {
@@ -69,16 +69,20 @@ var UserSchema = new Schema({
     updated: {
         type: Date
     },
+    created: {
+        type: Date,
+        default: Date.now
+    },
     lastWalkin: {
         type: Date
     },
     lastCheckin: {
         type: Date
     },
-    created: {
-        type: Date,
-        default: Date.now
-    },
+    //messages: {
+    //    type: Schema.ObjectId,
+    //    ref: 'Message'
+    //},
 
     //System log information
 	salt: {
