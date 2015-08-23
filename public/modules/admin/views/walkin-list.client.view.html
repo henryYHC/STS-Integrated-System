@@ -30,6 +30,7 @@
             <span style="margin-left: 2em;">
                 <button class="btn btn-sm btn-warning" ng-click="listUnresolved()">View Unresolved</button>
                 <button class="btn btn-sm btn-primary" ng-click="listToday()">View Today</button>
+                <p class="pull-right" style="margin-top: 20px;">Count: {{walkins.length || 0}}</p>
             </span>
         </h4>
         <div class="col-md-12" ng-init="listToday()" style="margin-top: 0.5em;">
