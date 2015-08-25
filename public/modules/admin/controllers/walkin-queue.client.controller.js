@@ -67,6 +67,7 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
                                 $scope.quickviewWalkin(id);
                                 break;
                             case 'resolved':
+                                $scope.quickWalkin = undefined;
                                 break;
                             case 'transfer':
                                 alert('Function under development.');
@@ -77,5 +78,20 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
                 });
             }
         };
+
+        $scope.setUnresolved = function(id){
+            if(id !== undefined){
+                var note = prompt('Please input unresolved reason (as work note) of the incident.', '');
+                if(note){
+                    $http.post('/walkins/setUnresolved/'+id, {workNote : note}).success(function(){
+                        $scope.quickWalkin = undefined;
+                        $scope.initQueue();
+                    });
+                }
+                else
+                    alert('Invalid input.');
+            }
+        };
+
     }
 ]);

@@ -11,7 +11,8 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
             $modalInstance.dismiss('cancel');
 
         // log service start time
-        if(!walkin.serviceStartTime || walkin.status !== 'Work in progress' || walkin.status !== 'House call pending'){
+        if(!walkin.serviceTechnician || !walkin.serviceStartTime ||
+            walkin.status !== 'Work in progress' || walkin.status !== 'House call pending'){
             $http.put('/walkins/log/logService/'+walkin._id).success(function(response){
                 $scope.walkin = response;
             });
@@ -107,7 +108,11 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
             }
         };
 
-        $scope.transfer = function () { $modalInstance.close('transfer'); };
+        $scope.transfer = function () {
+            alert('Function under development.');
+            return false;
+            //$modalInstance.close('transfer');
+        };
         $scope.close = function () { $modalInstance.dismiss('cancel'); };
     }
 ]);

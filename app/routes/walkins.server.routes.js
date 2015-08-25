@@ -25,6 +25,7 @@ module.exports = function(app) {
     app.route('/walkins/sync/:walkinId').put(users.hasAdminPermission, walkins.syncWalkin);
 
     // Walkins logs
+    app.route('/walkins/setUnresolved/:walkinId').post(users.hasPermission, walkins.setUnresolved);
     app.route('/walkins/log/logService/:walkinId').put(users.hasPermission, walkins.logService);
     app.route('/walkins/log/logResolution/:walkinId').put(users.hasPermission, walkins.logResolution);
 

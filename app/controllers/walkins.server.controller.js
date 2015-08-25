@@ -138,6 +138,27 @@ exports.delete = function(req, res) {
     });
 };
 
+exports.setUnresolved = function(req, res){
+    var walkin = req.walkin, workNote = req.body.workNote;
+
+    if(walkin && workNote){
+        walkin = _.extend(walkin ,
+            {   resoluteTechnician : req.user,
+                resolutionTime : Date.now(),
+                workNote : workNote,
+                updated : Date.now(),
+                status : 'Unresolved' }
+        );
+
+        walkin.save(function(err) {
+            if (err)    return res.status(400).send({message: errorHandler.getErrorMessage(err)});
+            else        return res.jsonp(walkin);
+        });
+    }
+    else
+        res.status(400).send('Insufficient information to set incident to unresolved.');
+};
+
 /**
  * List of Walkins
  */
@@ -262,29 +283,39 @@ exports.listBySearch = function(req, res){
 
 exports.logService = function(req, res){
     var walkin = req.walkin ;
-    walkin = _.extend(walkin , {serviceTechnician : req.user, serviceStartTime : Date.now() });
-    walkin.updated = Date.now();
-    walkin.status = 'Work in progress';
 
-    walkin.save(function(err) {
-        if (err)    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-        else        res.jsonp(walkin);
-    });
+    if(!walkin.serviceTechnician && ! walkin.serviceStartTime){
+        walkin = _.extend(walkin ,
+            {serviceTechnician : req.user, serviceStartTime : Date.now(), updated : Date.now(), status : 'Work in progress' }
+        );
+
+        walkin.save(function(err) {
+            if (err)    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            else        return res.jsonp(walkin);
+        });
+    }
+    else
+        res.jsonp(walkin);
 };
 
 exports.logResolution = function(req, res){
     var walkin = req.walkin ;
-    walkin = _.extend(walkin , {resoluteTechnician : req.user, resolutionTime : Date.now() });
-    walkin.updated = Date.now();
-    walkin.status = 'Completed';
 
-    walkin.save(function(err) {
-        if (err)    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-        else {
-            //servicenow.createWalkinIncident(walkin);
-            res.jsonp(walkin);
-        }
-    });
+    if(!walkin.resoluteTechnician && !walkin.resolutionTime){
+        walkin = _.extend(walkin ,
+            {resoluteTechnician : req.user, resolutionTime : Date.now(), updated : Date.now(), status : 'Completed' }
+        );
+
+        walkin.save(function(err) {
+            if (err)    return res.status(400).send({message: errorHandler.getErrorMessage(err)});
+            else {
+                //servicenow.createWalkinIncident(walkin);
+                return res.jsonp(walkin);
+            }
+        });
+    }
+    else
+        res.jsonp(walkin);
 };
 
 /**
