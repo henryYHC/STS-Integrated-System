@@ -174,7 +174,7 @@ exports.queue = function(req, res){
                 waitingCount++;
         }
 
-        var interval = 36000;
+        var interval = 360000;
         //if(totalCount > 0)  interval -= 350 * (waitingCount / totalCount) * 1000;
 
         Walkin.find({ isActive : true, status: 'House call pending'}).sort('created').exec(function(err, houseCalls) {
