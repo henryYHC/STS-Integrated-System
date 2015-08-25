@@ -286,38 +286,36 @@ exports.listBySearch = function(req, res){
 exports.logService = function(req, res){
     var walkin = req.walkin ;
 
-    if(!walkin.serviceTechnician && ! walkin.serviceStartTime){
+    walkin.status = 'Work in progress';
+    if(!walkin.serviceTechnician || ! walkin.serviceStartTime){
         walkin = _.extend(walkin ,
-            {serviceTechnician : req.user, serviceStartTime : Date.now(), updated : Date.now(), status : 'Work in progress' }
+            {serviceTechnician : req.user, serviceStartTime : Date.now(), updated : Date.now() }
         );
-
-        walkin.save(function(err) {
-            if (err)    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-            else        return res.jsonp(walkin);
-        });
     }
-    else
-        res.jsonp(walkin);
+
+    walkin.save(function(err) {
+        if (err)    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        else        return res.jsonp(walkin);
+    });
 };
 
 exports.logResolution = function(req, res){
     var walkin = req.walkin ;
 
-    if(!walkin.resoluteTechnician && !walkin.resolutionTime){
+    walkin.status = 'Completed';
+    if(!walkin.resoluteTechnician || !walkin.resolutionTime){
         walkin = _.extend(walkin ,
-            {resoluteTechnician : req.user, resolutionTime : Date.now(), updated : Date.now(), status : 'Completed' }
+            {resoluteTechnician : req.user, resolutionTime : Date.now(), updated : Date.now() }
         );
-
-        walkin.save(function(err) {
-            if (err)    return res.status(400).send({message: errorHandler.getErrorMessage(err)});
-            else {
-                //servicenow.createWalkinIncident(walkin);
-                return res.jsonp(walkin);
-            }
-        });
     }
-    else
-        res.jsonp(walkin);
+
+    walkin.save(function(err) {
+        if (err)    return res.status(400).send({message: errorHandler.getErrorMessage(err)});
+        else {
+            //servicenow.createWalkinIncident(walkin);
+            return res.jsonp(walkin);
+        }
+    });
 };
 
 /**
