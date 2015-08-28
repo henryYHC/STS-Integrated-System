@@ -215,7 +215,7 @@ exports.listToday = function(req, res) {
 };
 
 exports.listUnresolved = function(req, res) {
-    Walkin.find({ isActive : true, status : { $ne : 'Completed' } }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+    Walkin.find({ isActive : true, $or : [ {status : 'In queue'}, {status : 'Work in progress'}, {status : 'House call pending'}] }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)

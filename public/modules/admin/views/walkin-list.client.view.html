@@ -61,7 +61,7 @@
                         <td data-ng-bind="walkin.deviceCategory"></td>
                         <td data-ng-bind="walkin.deviceType" ng-hide="walkin.deviceType=='N/A'||walkin.deviceType=='Other'"></td>
                         <td data-ng-bind="walkin.os" ng-hide="walkin.os=='N/A'||walkin.os=='Other'"></td>
-                        <td data-ng-bind="walkin.otherDevice" ng-show="walkin.deviceType=='N/A'&&walkin.os=='N/A'"></td>
+                        <td data-ng-bind="walkin.otherDevice" ng-show="walkin.deviceType=='Other'||walkin.os=='Other'"></td>
                         <td data-ng-bind="walkin.status"></td>
                         <td data-ng-bind="(walkin.updated | date:'short') || 'N/A'"></td>
                         <td data-ng-bind="(walkin.created | date:'short') || 'N/A'"></td>
