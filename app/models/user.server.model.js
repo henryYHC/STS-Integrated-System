@@ -51,8 +51,8 @@ var UserSchema = new Schema({
     },
     location: {
         type: String,
-        enum: ['Alabama', 'Alpha Delta Pi', 'Alpha Epsilon Pi', 'Alpha Kappa Alpha',
-                'Alpha Tau Omega', 'Beta Theta Pi', 'Clairmont CRC', 'Clairmont Towers',
+        enum: [ 'Alabama', 'Alpha Delta Pi', 'Alpha Epsilon Pi', 'Alpha Kappa Alpha', 'Art/Lit./Media House',
+                'Alpha Tau Omega', 'Black Student Allience', 'Beta Theta Pi', 'Clairmont CRC', 'Clairmont Towers',
                 'Clairmont URC', 'Clifton', 'Delta Delta Delta', 'Delta Phi Epsilon',
                 'Delta Phi Lambda', 'Dobbs', 'Evans', 'Few', 'Gamma Phi Beta', 'German Hall',
                 'Hamilton', 'Harris', 'Hopkins', 'Kappa Alpha Theta', 'Kappa Kappa Gamma',
