@@ -17,7 +17,7 @@ var DeskTaskSchema = new Schema({
     task: {
         type: String,
         required: true,
-        enum: ['Task 1', 'Task 2', 'Task 3', 'Task 4', 'Task 5']
+        enum: ['Directions', 'Microform', 'Printer Error', 'Workstations', 'Other']
     },
     created: {
         type: Date,

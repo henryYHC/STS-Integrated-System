@@ -19,7 +19,7 @@
                     </div>
                     <div class="input-group col-sm-7" ng-switch on="search.field" style="margin-top: 8px;">
                         <input ng-switch-default type="text" class="form-control" placeholder="Search for..." data-ng-model="search.query" ng-init="search.query='';" style="width:320px;">
-                        <input ng-switch-when="created" type="date" class="form-control" data-ng-model="search.query" ng-init="search.query='';" style="width:320px;">
+                        <input ng-switch-when="created" type="date" class="form-control" data-ng-model="search.query" ng-init="search.query='';" style="width:320px;" placeholder="yyyy-mm-dd">
                         <span class="input-group-btn"><button class="btn btn-default" type="button" ng-click="listBySearch()">Go!</button></span>
                     </div>
                 </div>
@@ -30,6 +30,7 @@
             <span style="margin-left: 2em;">
                 <button class="btn btn-sm btn-warning" ng-click="listUnresolved()">View Unresolved</button>
                 <button class="btn btn-sm btn-primary" ng-click="listToday()">View Today</button>
+                <button class="btn btn-sm btn-primary" ng-click="listPastMonth()">View Past Month</button>
                 <p class="pull-right" style="margin-top: 20px;">Count: {{walkins.length || 0}}</p>
             </span>
         </h4>
