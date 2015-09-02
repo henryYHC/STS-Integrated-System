@@ -42,7 +42,7 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
             $http.get('/walkins/'+id).success(function(response){
                 $modal.open({
                     animation: false,
-                    templateUrl: 'modules/admin/views/walkin-view-modal.client.view.html',
+                    templateUrl: 'modules/admin/views/walkin/walkin-view-modal.client.view.html',
                     controller: 'AdminWalkinViewModalCtrl',
                     size: 'lg',
                     resolve: { walkin : function() { return response; } }
@@ -55,7 +55,7 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
                 $http.get('/walkins/'+id).success(function(response){
                     var service = $modal.open({
                         animation: true,
-                        templateUrl: 'modules/admin/views/walkin-service-modal.client.view.html',
+                        templateUrl: 'modules/admin/views/walkin/walkin-service-modal.client.view.html',
                         controller: 'AdminWalkinServiceModalCtrl',
                         size: 'lg',
                         backdrop: 'static',

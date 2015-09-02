@@ -48,7 +48,7 @@ angular.module('admin').controller('AdminWalkinListingController', ['$http', '$s
             $http.get('/walkins/'+id).success(function(response){
                 $modal.open({
                     animation: true,
-                    templateUrl: 'modules/admin/views/walkin-view-modal.client.view.html',
+                    templateUrl: 'modules/admin/views/walkin/walkin-view-modal.client.view.html',
                     controller: 'AdminWalkinViewModalCtrl',
                     size: 'lg',
                     resolve: { walkin : function() { return response; } }
