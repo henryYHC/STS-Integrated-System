@@ -4,5 +4,22 @@
 		<span class="pull-right" style="font-size: 18px;">From {{(stats.from | date:'longDate') || 'N/A'}} to Present</span>
 	</h1><hr/>
 
+	<table class="table table-hover">
+		<tr>
+			<th>Month</th>
+			<th ng-repeat="name in stats.names">{{name}}</th>
+			<th>Total</th>
+		</tr>
 
+		<tr ng-repeat="month in stats.counts">
+			<td>{{ $index + 1 }}</td>
+			<td ng-repeat="count in month track by $index">{{count}}</td>
+		</tr>
+
+		<tr>
+			<td>Total</td>
+			<td ng-repeat="count in stats.totalCounts track by $index">{{count}}</td>
+			<td>{{stats.total}}</td>
+		</tr>
+	</table>
 </section>

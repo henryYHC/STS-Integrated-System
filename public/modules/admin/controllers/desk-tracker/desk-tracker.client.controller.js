@@ -1,7 +1,10 @@
 'use strict';
 
-angular.module('admin').controller('DeskTrackerController', ['$scope', '$http', '$timeout',
-	function($scope, $http, $timeout) {
+angular.module('admin').controller('DeskTrackerController', ['$scope', '$http', '$timeout', 'Authentication',
+	function($scope, $http, $timeout, Authentication) {
+        if (Authentication.user.roles.indexOf('admin') >= 0)
+            $scope.isAdmin = true;
+
         $scope.initTaskOptions = function(){
             $http.get('/task/util/loadTaskOptions').success(function(response){
                 $scope.tasks = response;

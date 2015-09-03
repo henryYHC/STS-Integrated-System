@@ -41,13 +41,14 @@ exports.list = function(req, res) {
 exports.stats = function(req, res){
     var since = Date.now(),
         taskNames = DeskTask.schema.path('task').enumValues,
-        counts = DSUtil.initArray(12, DSUtil.initArray(taskNames.length, 0));
+        i, j, size = taskNames.length,
+        counts = DSUtil.initArray(12, DSUtil.initArray(size+1, 0));
 
     DeskTask.find({}, function(err, tasks){
         if(err) return res.status(400).send(err);
 
         var task, taskIndex;
-        for(var i in tasks){
+        for(i in tasks){
             task = tasks[i];
             taskIndex = taskNames.indexOf(task.task);
 
@@ -55,16 +56,19 @@ exports.stats = function(req, res){
             if(task.created < since) since = task.created;
 
             // Update stats
-            if(taskIndex >= 0) counts[task.created.getMonth()][taskIndex]++;
+            if(taskIndex >= 0){
+                counts[task.created.getMonth()][taskIndex]++;
+                counts[task.created.getMonth()][size]++;
+            }
         }
 
         // Get total count of tasks
-        var totalCount = 0, totalCounts =  DSUtil.initArray(taskNames.length, 0);
-        for(var i in counts){
-            for(var j in counts[i]){
-                totalCounts[j] += counts[i][j];
-                totalCount += counts[i][j];
-            }
+        var month, totalCount = 0, totalCounts =  DSUtil.initArray(size, 0);
+        for(i in counts){
+            month = counts[i];
+            for(j in month)
+                if(j < size) totalCounts[j] += month[j];
+            totalCount += counts[i][size];
         }
 
         res.json({names : taskNames, from : since, counts : counts, totalCounts : totalCounts, total : totalCount});
