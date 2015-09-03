@@ -1,10 +1,11 @@
 <section class="container" data-ng-controller="DeskTrackerStatsController">
 	<h1>
 		Library Guidance Statistics
+		<span style="font-size: 14px;"><a ng-click="resetStats()">Reset statistics</a></span>
 		<span class="pull-right" style="font-size: 18px;">From {{(stats.from | date:'longDate') || 'N/A'}} to Present</span>
 	</h1><hr/>
 
-	<table class="table table-hover">
+	<table class="table table-hover" ng-show="stats&&stats.total">
 		<tr>
 			<th>Month</th>
 			<th ng-repeat="name in stats.names">{{name}}</th>
@@ -22,4 +23,8 @@
 			<td>{{stats.total}}</td>
 		</tr>
 	</table>
+
+	<div class="alert alert-info text-center" ng-hide="stats&&stats.total != 0">
+		<span class="glyphicon glyphicon-exclamation-sign"/> No stats currently!
+	</div>
 </section>

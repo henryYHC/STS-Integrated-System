@@ -6,5 +6,10 @@ angular.module('admin').controller('DeskTrackerStatsController', ['$scope', '$ht
 		if (Authentication.user && Authentication.user.roles.indexOf('admin') < 0)
 			$location.path('/');
 		$http.get('/task/stats').success(function(response){ $scope.stats = response; });
+
+		$scope.resetStats = function(){
+			if(confirm('Are you sure you want to reset the statistics?'))
+				$http.delete('/task/reset').success(function(){ $scope.stats = undefined; });
+		};
 	}
 ]);

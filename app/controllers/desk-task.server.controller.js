@@ -75,6 +75,13 @@ exports.stats = function(req, res){
     });
 };
 
+exports.reset = function(req, res){
+    DeskTask.remove({}, function(err){
+        if(err) return res.status(400).send(err);
+        res.status(200).send('success');
+    });
+};
+
 /**
  * Desk Task utils
  */

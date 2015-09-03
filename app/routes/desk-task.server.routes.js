@@ -6,6 +6,7 @@ module.exports = function(app) {
 
     app.route('/task').post(user.hasPermission, task.create);
     app.route('/task/stats').get(user.hasAdminPermission, task.stats);
+    app.route('/task/reset').delete(user.hasAdminPermission, task.reset);
 
     // Desk Task util routes
     app.route('/task/util/loadTaskOptions').get(task.getTaskOptions);
