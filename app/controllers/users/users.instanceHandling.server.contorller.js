@@ -39,7 +39,11 @@ exports.validateNetId = function(req, res){
         user.roles = undefined;
         user.provider = undefined;
         user.password = undefined;
-        res.jsonp( { status : 'Found', user : user });
+
+        if(!user.isActive)
+            res.jsonp( { status : 'Invalid', user : user });
+        else
+            res.jsonp( { status : 'Found', user : user });
     }
 };
 

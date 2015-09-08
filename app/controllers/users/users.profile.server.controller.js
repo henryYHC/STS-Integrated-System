@@ -54,3 +54,14 @@ exports.update = function(req, res) {
 exports.me = function(req, res) {
 	res.json(req.user || null);
 };
+
+exports.setInactive = function(req, res){
+	var user = req.profile;
+	user.isActive = false;
+	user.updated = Date.now();
+
+	user.save(function(err){
+		if(err) return res.status(400).send(err);
+		res.json(user);
+	});
+};

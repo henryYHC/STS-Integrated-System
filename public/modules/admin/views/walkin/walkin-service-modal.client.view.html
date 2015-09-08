@@ -4,9 +4,12 @@
             Walk-in Information
             <span class="label label-success" style="font-size: 13px; margin-left: 1em;" ng-show="walkin.isActive">Active</span>
             <span class="label label-danger" style="font-size: 13px; margin-left: 1em;" ng-show="!walkin.isActive">Inactive</span>
+            <span class="btn btn-xs btn-info" style="margin-top: 20px;" ng-click="duplicate()">Duplicate</span>
             <span class="pull-right" style="font-size: 14px; font-weight: 500;">
-                <font style="font-weight: 300;">Created at </font>{{(walkin.created | date:'short') || 'N/A'}} <br>
-                <font style="font-weight: 300;">Updated at </font>{{(walkin.updated | date:'short') || 'N/A'}}
+                <span>
+                    <font style="font-weight: 300;">Created at </font>{{(walkin.created | date:'short') || 'N/A'}} <br>
+                    <font style="font-weight: 300;">Updated at </font>{{(walkin.updated | date:'short') || 'N/A'}}
+                </span>
             </span>
         </h2>
     </div>
@@ -25,7 +28,10 @@
             <div class="form-horizontal">
                 <div class="form-group" style="text-align: left">
                     <label class="col-sm-3 control-label" for="netid">NetID:</label>
-                    <div class="col-sm-9" id="netid" style="margin-top: 8px;">{{walkin.user.username}}</div>
+                    <div class="col-sm-9" id="netid" style="margin-top: 8px;">
+                        {{walkin.user.username}}
+                        <span class="pull-right btn btn-xs btn-warning" style="margin-top: -10px;" ng-click="invalidUser()">Invalid?</span>
+                    </div>
                 </div>
             </div>
 

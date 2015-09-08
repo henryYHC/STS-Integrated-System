@@ -76,6 +76,46 @@ exports.create = function(req, res) {
     }
 };
 
+exports.duplicate = function(req, res){
+    var walkin = req.body;
+
+    // Log information
+    delete walkin._id; walkin.status = 'Duplicate';
+    walkin = _.extend(walkin , { created : Date.now(), updated : Date.now() });
+
+    // Empty fields
+    delete walkin.lastUpdateTechnician;
+    delete walkin.snValue; delete walkin.snSysId;
+    delete walkin.resolution; delete walkin.otherResolution;
+    delete walkin.workNote; delete walkin.resolutionType;
+
+    walkin = new Walkin(walkin);
+    walkin.save(function(err){
+        if(err) return res.status(400).send(err);
+        res.json(walkin);
+    });
+};
+
+exports.duplicateFromId = function(req, res){
+    var walkin = req.walkin;
+
+    // Log information
+    delete walkin._id; walkin.status = 'Duplicate';
+    walkin = _.extend(walkin , { created : Date.now(), updated : Date.now() });
+
+    // Empty fields
+    delete walkin.lastUpdateTechnician;
+    delete walkin.snValue; delete walkin.snSysId;
+    delete walkin.resolution; delete walkin.otherResolution;
+    delete walkin.workNote; delete walkin.resolutionType;
+
+    walkin = new Walkin(walkin);
+    walkin.save(function(err){
+        if(err) return res.status(400).send(err);
+        res.json(walkin);
+    });
+};
+
 /**
  * Show the current Walkin
  */
@@ -163,7 +203,7 @@ exports.setUnresolved = function(req, res){
  * List of Walkins
  */
 exports.queue = function(req, res){
-    Walkin.find({ isActive : true, $or : [ {status : 'In queue'}, {status : 'Work in progress'}] }).sort('created').exec(function(err, walkins) {
+    Walkin.find({ isActive : true, $or : [ {status : 'In queue'}, {status : 'Work in progress'}, {status : 'Duplicate'}] }).sort('created').exec(function(err, walkins) {
         if (err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
 
         // Dynamic refresh interval ( 10s - 5min )
@@ -215,7 +255,7 @@ exports.listToday = function(req, res) {
 };
 
 exports.listUnresolved = function(req, res) {
-    Walkin.find({ isActive : true, $or : [ {status : 'In queue'}, {status : 'Work in progress'}, {status : 'House call pending'}] }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+    Walkin.find({ isActive : true, $or : [ {status : 'In queue'}, {status : 'Work in progress'}, {status : 'House call pending'}, {status: 'Duplicate'}] }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)

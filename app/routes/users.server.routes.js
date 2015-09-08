@@ -13,6 +13,7 @@ module.exports = function(app) {
 	app.route('/users/me').get(users.me);
 	app.route('/users').put(users.hasAdminPermission, users.update);
 	app.route('/users/accounts').delete(users.hasAdminPermission, users.removeOAuthProvider);
+	app.route('/users/setInactive/:userNetId').delete(users.hasPermission, users.setInactive);
 
 	// Setting up the users password api
 	app.route('/users/password').post(users.hasPermission, users.changePassword);

@@ -30,7 +30,7 @@
             <span style="margin-left: 2em;">
                 <button class="btn btn-sm btn-warning" ng-click="listUnresolved()">View Unresolved</button>
                 <button class="btn btn-sm btn-primary" ng-click="listToday()">View Today</button>
-                <button class="btn btn-sm btn-primary" ng-click="listPastMonth()">View Past Month</button>
+                <!--<button class="btn btn-sm btn-primary" ng-click="listPastMonth()">View Past Month</button>-->
                 <p class="pull-right" style="margin-top: 20px;">Count: {{walkins.length || 0}}</p>
             </span>
         </h4>
@@ -60,9 +60,9 @@
                         <td data-ng-bind="walkin.user.displayName"></td>
                         <td data-ng-bind="walkin.user.username"></td>
                         <td data-ng-bind="walkin.deviceCategory"></td>
-                        <td data-ng-bind="walkin.deviceType" ng-hide="walkin.deviceType=='N/A'||walkin.deviceType=='Other'"></td>
-                        <td data-ng-bind="walkin.os" ng-hide="walkin.os=='N/A'||walkin.os=='Other'"></td>
-                        <td data-ng-bind="walkin.otherDevice" ng-show="walkin.deviceType=='Other'||walkin.os=='Other'"></td>
+                        <td data-ng-bind="walkin.deviceType" ng-hide="!walkin.deviceType||walkin.deviceType=='N/A'||walkin.deviceType=='Other'"></td>
+                        <td data-ng-bind="walkin.os" ng-hide="!walkin.os||walkin.os=='N/A'||walkin.os=='Other'"></td>
+                        <td data-ng-bind="walkin.otherDevice" ng-show="walkin.otherDevice"></td>
                         <td data-ng-bind="walkin.status"></td>
                         <td data-ng-bind="(walkin.updated | date:'short') || 'N/A'"></td>
                         <td data-ng-bind="(walkin.created | date:'short') || 'N/A'"></td>

@@ -29,6 +29,46 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
         $scope.updatePhone = function(){ $scope.walkin.user.phone = $scope.walkin.user.phone.replace(/\D/g, ''); };
         $scope.updateUser = function(){ $scope.updateName(); $scope.updatePhone(); $scope.userUpdated = true; };
 
+        $scope.duplicate = function(){
+            if(confirm('Are you sure you want to duplicate this instance?')){
+                $http.post('/walkins/duplicate', $scope.walkin).success(function(){
+                    alert('Instance duplicated');
+                }).error(function(){ alert('Duplication failed.'); });
+            }
+        };
+
+        console.log($scope.walkin);
+        $scope.invalidUser = function(){
+            var netid = prompt('Please enter the new NetID that this instance belong to:', $scope.walkin.user.username);
+            $http.get('/user/validate/'+ netid).success(function(response){
+                switch(response.status){
+                    case 'Valid':
+                    case 'Found':
+                        if(confirm('User information found! Do you want to reassign NetID to this instance?')){
+
+                            if(confirm('Do you want to set the current user as invalid')){
+                                $http.delete('/users/setInactive/' + $scope.walkin.user.username).error(function(){
+                                    alert('Something is wrong with setting user to inactive.');
+                                })
+                            }
+                        }
+                        break;
+                    case 'Not found':
+                        if(confirm('User information NOT found! Are you sure the customer is eligible for assistance?')){
+
+                            if(confirm('Do you want to set the current user as invalid')){
+                                $http.delete('/users/setInactive/' + $scope.walkin.user.username).error(function(){
+                                    alert('Something is wrong with setting user to inactive.');
+                                })
+                            }
+                        }
+                        break;
+                    default:
+                        alert('Invalid user NetID.');
+                }
+            }).error(function(){ alert('User assignment failed.'); });
+        };
+
         $scope.toHouseCall = function(){
             var walkin = $scope.walkin;
 

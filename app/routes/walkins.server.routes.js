@@ -8,6 +8,9 @@ module.exports = function(app) {
 	app.route('/walkins').post(walkins.create);
     app.route('/walkins/queue').get(users.hasPermission, walkins.queue);
 
+    app.route('/walkins/duplicate').post(users.hasPermission, walkins.duplicate);
+    app.route('/walkins/duplicate/:walkinId').post(users.hasPermission, walkins.duplicateFromId);
+
     app.route('/walkins/:walkinId')
         .get(users.hasPermission, walkins.read)
         .put(users.hasPermission, walkins.update)

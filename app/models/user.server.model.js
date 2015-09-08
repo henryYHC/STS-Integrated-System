@@ -85,6 +85,10 @@ var UserSchema = new Schema({
     //},
 
     //System log information
+	isActive: {
+		type: Boolean,
+		default: true
+	},
 	salt: {
 		type: String
 	},
