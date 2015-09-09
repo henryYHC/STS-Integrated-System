@@ -76,6 +76,54 @@ exports.create = function(req, res) {
     }
 };
 
+exports.reassignNetId = function(req, res){
+    var user = req.body.user, walkin = req.walkin;
+
+    if(req.body.create){
+        user = new User(user);
+        user.provider = 'local';
+        user.lastWalkin = walkin._id;
+        user.update = Date.now();
+
+        user.save(function(err){
+
+            console.log(user);
+            console.log(err);
+
+
+            if(err) return res.status(400).send(err);
+
+            walkin.user = user;
+            walkin.updated = Date.now();
+
+            walkin.save(function(err){
+                if(err) res.status(400).send(err);
+                res.json(walkin);
+            });
+        });
+    }
+    else {
+        User.findOne({username : user.username}, function(err, user){
+            if(!user || err) if(err) return res.status(400).send(err);
+
+            user.lastWalkin = walkin._id;
+            user.update = Date.now();
+
+            user.save(function(err){
+                if(err) return res.status(400).send(err);
+
+                walkin.user = user;
+                walkin.updated = Date.now();
+
+                walkin.save(function(err){
+                    if(err) res.status(400).send(err);
+                    res.json(walkin);
+                });
+            });
+        });
+    }
+};
+
 exports.duplicate = function(req, res){
     var walkin = req.body;
 
@@ -151,8 +199,9 @@ exports.syncWalkin = function(req, res){
     walkin.save(function(err) {
         if (err)    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
         else {
-            servicenow.createWalkinIncident(walkin);
-            res.jsonp(walkin);
+            servicenow.createWalkinIncident(walkin, function(updatedWalkin){
+                res.jsonp(updatedWalkin);
+            });
         }
     });
 };

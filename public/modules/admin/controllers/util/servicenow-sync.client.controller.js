@@ -18,9 +18,14 @@ angular.module('admin').controller('ServicenowSyncController', ['$scope', '$http
         };
 
         var logError = function(err){ console.log(err); };
+
         var syncWalkinTicketsAux = function(index, walkinIds){
+            console.log(walkinIds);
+
             $http.put('/walkins/sync/' + walkinIds[index]).success(function(){
                 $scope.summary.syncCount++;
+
+                console.log(index + ' -> Success');
                 if(++index < walkinIds.length)
                     syncWalkinTicketsAux(index, walkinIds);
             }).error(logError);

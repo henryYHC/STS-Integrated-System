@@ -40,7 +40,7 @@ angular.module('walkins').controller('WalkinNetidController', ['$scope', '$state
                                 $state.go('createWalkin.confirmNetId');
                                 break;
                             default:
-                                $scope.$parent.$parent.error = 'Something is wrong with user record query.';
+                                $scope.$parent.$parent.error = 'User MyNetID is invalid.';
                                 return;
                         }
                     })

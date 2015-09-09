@@ -37,34 +37,67 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
             }
         };
 
-        console.log($scope.walkin);
         $scope.invalidUser = function(){
             var netid = prompt('Please enter the new NetID that this instance belong to:', $scope.walkin.user.username);
             $http.get('/user/validate/'+ netid).success(function(response){
+
+                var user, data;
                 switch(response.status){
                     case 'Valid':
+                        if(confirm('User information found! Do you want to reassign NetID to this instance?')){
+                            user = $scope.walkin.user;
+                            data = { create : true, user: response.user };
+                            data.user.location = user.location;
+                            data.user.phone = user.phone;
+                            data.user.displayName = response.user.firstName + ' ' + response.user.lastName;
+
+                            $http.post('/walkins/reassign/netid/' + $scope.walkin._id, data).success(function(walkin){
+                                if(confirm('Do you want to set the current user as invalid')){
+                                    $http.delete('/users/setInactive/' + $scope.walkin.user.username).error(function(){
+                                        alert('Something is wrong with setting user to inactive.');
+                                    });
+                                }
+                                $scope.walkin = walkin;
+                                alert('Update successfully.');
+                            });
+                        }
+                        break;
                     case 'Found':
                         if(confirm('User information found! Do you want to reassign NetID to this instance?')){
+                            user = $scope.walkin.user;
+                            data = { create : false, user : response.user };
 
-                            if(confirm('Do you want to set the current user as invalid')){
-                                $http.delete('/users/setInactive/' + $scope.walkin.user.username).error(function(){
-                                    alert('Something is wrong with setting user to inactive.');
-                                })
-                            }
+                            $http.post('/walkins/reassign/netid/' + $scope.walkin._id, data).success(function(walkin){
+                                if(confirm('Do you want to set the current user as invalid')){
+                                    $http.delete('/users/setInactive/' + $scope.walkin.user.username).error(function(){
+                                        alert('Something is wrong with setting user to inactive.');
+                                    });
+                                }
+                                $scope.walkin = walkin;
+                                alert('Update successfully.');
+                            });
                         }
                         break;
                     case 'Not found':
                         if(confirm('User information NOT found! Are you sure the customer is eligible for assistance?')){
+                            user = $scope.walkin.user; delete user._id;
+                            user.username = netid; user.verified = true;
+                            data = { create : true, user : user };
 
-                            if(confirm('Do you want to set the current user as invalid')){
-                                $http.delete('/users/setInactive/' + $scope.walkin.user.username).error(function(){
-                                    alert('Something is wrong with setting user to inactive.');
-                                })
-                            }
+                            $http.post('/walkins/reassign/netid/' + $scope.walkin._id, data).success(function(walkin){
+                                if(confirm('Do you want to set the current user as invalid')){
+                                    $http.delete('/users/setInactive/' + $scope.walkin.user.username).error(function(){
+                                        alert('Something is wrong with setting user to inactive.');
+                                    });
+                                }
+                                $scope.walkin = walkin;
+                                alert('Update successfully.');
+                            });
                         }
                         break;
                     default:
                         alert('Invalid user NetID.');
+                        return false;
                 }
             }).error(function(){ alert('User assignment failed.'); });
         };

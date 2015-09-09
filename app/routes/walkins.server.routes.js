@@ -11,6 +11,8 @@ module.exports = function(app) {
     app.route('/walkins/duplicate').post(users.hasPermission, walkins.duplicate);
     app.route('/walkins/duplicate/:walkinId').post(users.hasPermission, walkins.duplicateFromId);
 
+    app.route('/walkins/reassign/netid/:walkinId').post(users.hasPermission, walkins.reassignNetId);
+
     app.route('/walkins/:walkinId')
         .get(users.hasPermission, walkins.read)
         .put(users.hasPermission, walkins.update)

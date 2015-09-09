@@ -131,25 +131,25 @@ var formulateWalkin = function(walkin, soapAction){
 
         // Walk-in info
         u_correlation_id : walkin._id,
-        //u_record_type:  'Incident',
-        //u_reported_source :  'Walk In',
+        u_record_type:  'Incident',
+        u_reported_source :  'Walk In',
         u_customer : walkin.user.username,
-        //u_problem : walkin.description,
-        //u_liability_agreement : walkin.liabilityAgreement,
+        u_problem : walkin.description,
+        u_liability_agreement : walkin.liabilityAgreement,
         u_short_description : template.short_description,
         u_resolution : walkin.resolution,
         u_work_note : walkin.workNote,
 
         // Assignment info
         u_assigned_to : walkin.serviceTechnician.username,
-        //u_last_update_tech : walkin.resoluteTechnician.username,
+        u_last_update_tech : walkin.resoluteTechnician.username,
         u_assignment_group : 'LITS: Student Digital Life',
 
         // Time log
         u_duration : walkin.resolutionTime.getTime() - walkin.created.getTime(),
         u_time_worked : walkin.resolutionTime.getTime() - walkin.serviceStartTime.getTime(),
         u_created : walkin.created.getTime(),
-        //u_last_update : walkin.updated.getTime()
+        u_last_update : walkin.updated.getTime()
     };
 };
 
@@ -165,7 +165,7 @@ exports.getWalkinIncident = function(snSysId){
     });
 };
 
-exports.createWalkinIncident = function(walkin){
+exports.createWalkinIncident = function(walkin, next){
     var data = formulateWalkin(walkin, 'CREATE');
 
     soap.createClient(credential.wsdl_url, function(err, client){
@@ -181,16 +181,16 @@ exports.createWalkinIncident = function(walkin){
                 walkin.snSysId = response.sys_id;
                 walkin.snValue = response.display_value;
 
-                walkin.save(function(err, updatedWalkin){
-                    if(err) return console.log(err);
-                    return updatedWalkin;
-                });
+                walkin.save(function(err){ if(err) return console.log(err); });
             }
+
+            if(next) return next(walkin);
+            else     return walkin;
         });
     });
 };
 
-exports.updateWalkinIncident = function(walkin){
+exports.updateWalkinIncident = function(walkin, next){
     var data = formulateWalkin(walkin, 'UPDATE');
     data.sys_target_sys_id = walkin.snSysId;
     data.u_last_update_tech = walkin.lastUpdateTechnician.username;
