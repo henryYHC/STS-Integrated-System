@@ -7,8 +7,12 @@ angular.module('admin').config(['$stateProvider', '$urlRouterProvider',
 
 		// Admin state routing
 		$stateProvider.
+		state('user-list', {
+			url: '/admin/users-list',
+			templateUrl: 'modules/admin/views/user/user-list.client.view.html'
+		}).
 		state('desk-tracker-stats', {
-			url: '/desktask/stats',
+			url: '/admin/desktask/stats',
 			templateUrl: 'modules/admin/views/desk-tracker/desk-tracker-stats.client.view.html'
 		}).
 		state('servicenow-sync', {

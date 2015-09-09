@@ -13,7 +13,7 @@
                     </span>
                 </div>
                 <ul class="dropdown-menu" role="menu" style="font-size: 16px;">
-                    <li ng-show="isAdmin"><a href="/#!/desktask/stats">Statistics</a></li>
+                    <li ng-show="isAdmin"><a href="/#!/admin/desktask/stats">Statistics</a></li>
                     <li class="divider" ng-show="isAdmin"></li>
                     <li ng-repeat="task in tasks"><a ng-click="submitTask(task)" style="padding: 10px 20px;">{{task}}</a></li>
                 </ul>
