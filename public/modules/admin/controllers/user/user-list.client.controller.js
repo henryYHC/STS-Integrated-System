@@ -29,9 +29,9 @@ angular.module('admin').controller('AdminUserListingController', ['$scope', '$ht
 			var username = user.username;
 
 			if(user.isActive)
-				$http.delete('/users/setInactive/'+username).error(function(){ alert('Action failed.')});
+				$http.delete('/users/setInactive/'+username).error(function(){ alert('Action failed.'); });
 			else
-				$http.post('/users/setActive/'+username).error(function(){ alert('Action failed.')});
+				$http.post('/users/setActive/'+username).error(function(){ alert('Action failed.'); });
 
 			user.isActive = !user.isActive;
 		};
