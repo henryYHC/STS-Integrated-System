@@ -82,7 +82,7 @@ exports.reassignNetId = function(req, res){
     if(req.body.create){
         user = new User(user);
         user.provider = 'local';
-        user.lastWalkin = walkin._id;
+        user.lastWalkin = walkin.created;
         user.update = Date.now();
 
         user.save(function(err){
@@ -106,7 +106,7 @@ exports.reassignNetId = function(req, res){
         User.findOne({username : user.username}, function(err, user){
             if(!user || err) if(err) return res.status(400).send(err);
 
-            user.lastWalkin = walkin._id;
+            user.lastWalkin = walkin.created;
             user.update = Date.now();
 
             user.save(function(err){

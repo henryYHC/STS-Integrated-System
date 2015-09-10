@@ -14,6 +14,7 @@ module.exports = function(app) {
 	app.route('/users').put(users.hasAdminPermission, users.update);
 	app.route('/users/accounts').delete(users.hasAdminPermission, users.removeOAuthProvider);
 	app.route('/users/setInactive/:userNetId').delete(users.hasPermission, users.setInactive);
+	app.route('/users/setActive/:userNetId').post(users.hasPermission, users.setActive);
 
 	// Setting up the users password api
 	app.route('/users/password').post(users.hasPermission, users.changePassword);
@@ -31,6 +32,10 @@ module.exports = function(app) {
     app.route('/user/validate/:userNetId').get(users.validateNetId);
     app.route('/user/verify/:userNetId').put(users.hasPermission, users.verifyNetId);
     app.route('/user/update/:userNetId').put(users.hasPermission, users.updateUser);
+
+	// Search
+	app.route('/user/list/invalid').get(users.hasPermission, users.listInvalid);
+	app.route('/user/list/listBySearch').post(users.hasPermission, users.listBySearch);
 
 	// Finish by binding the user middleware
 	app.param('userId', users.userByID);

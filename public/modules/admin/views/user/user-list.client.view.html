@@ -1,7 +1,62 @@
-<section class="container" data-ng-controller="UserlistController">
+<section class="container" data-ng-controller="AdminUserListingController">
 	<div>
 		<h2>STS Technician Panel - User Listing<a href="/#!/admin" class="btn btn-sm btn-default pull-right">Back</a></h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
 	</div>
 
-	Under development...
+	<div class="container">
+		<div class="col-md-12" style="margin-top: 0.5em;">
+			<h4>
+				<div class="form-inline">
+					<label class="col-sm-2" style="margin-top: 7px;">User Search:</label>
+					<div class="input-group col-sm-9" style="margin-top: 5px;">
+						<input type="text" class="form-control" placeholder="User NetID / Name" data-ng-model="search.query" ng-init="search.query='';" style="width:320px;">
+						<span class="input-group-btn"><button class="btn btn-default" type="button" ng-click="listBySearch()">Go!</button></span>
+					</div>
+				</div>
+			</h4><hr/>
+			<h4>
+				Walk-in Listings
+            <span style="margin-left: 2em;">
+                <button class="btn btn-sm btn-warning" ng-click="listInactive()">View Invalid</button>
+                <p class="pull-right" style="margin-top: 20px;">Count: {{users.length || 0}}</p>
+            </span>
+			</h4>
+			<div class="col-md-12" style="margin-top: 0.5em;">
+				<div>
+					<table class="table table-hover" style="max-height: 80vh; overflow: auto;">
+						<tr>
+							<th>Actions</th>
+							<th>NetID</th>
+							<th>Customer Name</th>
+							<th>Phone</th>
+							<th>Location</th>
+							<th>Status</th>
+							<th>Last Walk-in</th>
+							<th>Last Check-in</th>
+						</tr>
+						<tr data-ng-repeat="user in users | orderBy: '-created'" data-ng-href="#">
+							<td class="dropdown" dropdown on-toggle="toggled(open)" style="text-align:center;">
+								<div class="dropdown-toggle" dropdown-toggle><b class="caret"></b></div>
+								<ul class="dropdown-menu" style="min-width: 0px; margin: 2px 5px 0;">
+									<li><a ng-show="user.isActive" ng-click="setActivity(user)">Set Inactive</a></li>
+									<li><a ng-hide="user.isActive" ng-click="setActivity(user)">Set Active</a></li>
+								</ul>
+							</td>
+							<td data-ng-bind="user.username"></td>
+							<td data-ng-bind="user.displayName"></td>
+							<td data-ng-bind="user.phone"></td>
+							<td data-ng-bind="user.location"></td>
+							<td ng-show="user.isActive">Active</td><td ng-hide="user.isActive">Inactive</td>
+							<td data-ng-bind="(user.lastWalkin | date:'short') || 'N/A'"></td>
+							<td data-ng-bind="(user.lastCheckin | date:'short') || 'N/A'"></td>
+						</tr>
+					</table>
+					<div class="alert alert-info text-center" data-ng-hide="users.length > 0">
+						<span class="glyphicon glyphicon-exclamation-sign"/> No Walk ins!
+					</div>
+				</div>
+			</div>
+		</div>
 </section>
+
+<section data-ng-include="'/modules/admin/views/desk-tracker/desk-tracker.client.view.html'"></section>
