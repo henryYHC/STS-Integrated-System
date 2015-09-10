@@ -72,8 +72,19 @@ exports.setInactive = function(req, res){
 	user.updated = Date.now();
 
 	user.save(function(err){
-		console.log(err);
 		if(err) return res.status(400).send(err);
 		res.json(user);
 	});
+};
+
+exports.removeTechnician = function(req, res){
+	var user = req.profile, index = user.roles.indexOf('technician');
+
+	if(index > -1){
+		user.roles.splice(index, 1);
+		user.save(function(err){
+			if(err) return res.status(400).send(err);
+			res.json(user);
+		});
+	}
 };

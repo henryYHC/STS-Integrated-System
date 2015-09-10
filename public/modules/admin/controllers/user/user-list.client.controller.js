@@ -35,5 +35,11 @@ angular.module('admin').controller('AdminUserListingController', ['$scope', '$ht
 
 			user.isActive = !user.isActive;
 		};
+
+		$scope.removeTechnician = function(user){
+			$http.delete('/users/removeTechnician/' + user.username).success(function(response){
+				user.roles = response.roles;
+			}).error(function(){ alert('Action failed.'); });
+		};
 	}
 ]);

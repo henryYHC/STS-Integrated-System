@@ -27,12 +27,13 @@
 						<tr>
 							<th>Actions</th>
 							<th>NetID</th>
-							<th>Customer Name</th>
+							<th>Name</th>
 							<th>Phone</th>
 							<th>Location</th>
 							<th>Status</th>
+							<th>Role</th>
 							<th>Last Walk-in</th>
-							<th>Last Check-in</th>
+							<!--<th>Last Check-in</th>-->
 						</tr>
 						<tr data-ng-repeat="user in users | orderBy: '-created'" data-ng-href="#">
 							<td class="dropdown" dropdown on-toggle="toggled(open)" style="text-align:center;">
@@ -40,6 +41,7 @@
 								<ul class="dropdown-menu" style="min-width: 0px; margin: 2px 5px 0;">
 									<li><a ng-show="user.isActive" ng-click="setActivity(user)">Set Inactive</a></li>
 									<li><a ng-hide="user.isActive" ng-click="setActivity(user)">Set Active</a></li>
+									<li><a ng-show="isAdmin&&user.roles.indexOf('technician')>=0" ng-click="removeTechnician(user)">Remove technician</a></li>
 								</ul>
 							</td>
 							<td data-ng-bind="user.username"></td>
@@ -47,12 +49,13 @@
 							<td data-ng-bind="user.phone"></td>
 							<td data-ng-bind="user.location"></td>
 							<td ng-show="user.isActive">Active</td><td ng-hide="user.isActive">Inactive</td>
+							<td ng-show="user.roles.length" data-ng-bind="user.roles"></td><td ng-hide="user.roles.length">None</td>
 							<td data-ng-bind="(user.lastWalkin | date:'short') || 'N/A'"></td>
-							<td data-ng-bind="(user.lastCheckin | date:'short') || 'N/A'"></td>
+							<!--<td data-ng-bind="(user.lastCheckin | date:'short') || 'N/A'"></td>-->
 						</tr>
 					</table>
 					<div class="alert alert-info text-center" data-ng-hide="users.length > 0">
-						<span class="glyphicon glyphicon-exclamation-sign"/> No Walk ins!
+						<span class="glyphicon glyphicon-exclamation-sign"/> No Users!
 					</div>
 				</div>
 			</div>
