@@ -56,11 +56,6 @@ exports.create = function(req, res) {
             if (!foundUser) return res.status(400).send({ message: 'Failed to load User ' + data.user._id });
             foundUser = _.extend(foundUser, data.user);
 
-            console.log(foundUser);
-            console.log(foundUser.roles.indexOf('customer'));
-            if(foundUser.roles.indexOf('customer') < 0)
-                foundUser.roles.push('customer');
-
             foundUser.save(function(err){
                 if (err) return res.status(400).send({   message: errorHandler.getErrorMessage(err) });
 

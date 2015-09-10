@@ -40,6 +40,7 @@ exports.signup = function(req, res) {
             user.displayName = user.firstName + ' ' + user.lastName;
             user.phone = '0000000000';
             user.location = 'Off Campus';
+			user.roles = user.roles.concat(['customer']);
         }
 
         // Save the user
