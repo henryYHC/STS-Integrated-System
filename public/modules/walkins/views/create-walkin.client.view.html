@@ -1,22 +1,24 @@
 <section data-ng-controller="WalkinsController" class="container" ng-init="init()">
     <div class="page-header" style="text-align: center;">
-        <h1 style="font-size: 48px;margin-top: 2em;">New Walk-in Instance</h1>
+        <h1 style="font-size: 48px;">New Walk-in Instance</h1>
     </div>
 
-    <form id="walkin-form" ng-submit="createWalkin()">
-        <div id="walkin-view" ui-view style="height: 65vh;"></div>
-        <div class="text-center text-danger" style="margin-bottom: 1em;height: 20px;width: 100%;">
-            <strong data-ng-bind="error"></strong>
+    <div id="walkin-content" style="vertical-align: middle">
+        <form id="walkin-form" ng-submit="createWalkin()">
+            <div id="walkin-view" ui-view style="height: 60vh;"></div>
+            <div class="text-center text-danger" style="margin-bottom: 4em;height: 16px;width: 100%;">
+                <strong data-ng-bind="error"></strong>
+            </div>
+        </form>
+
+        <pre class="hidden">{{ formData }}</pre>
+
+        <div class="status-buttons" class="text-center" style="margin-top: -36px;">
+            <a ui-sref-active="active" ui-sref=".netid"><span>1</span> NetID</a>
+            <a ui-sref-active="active" ui-sref=".info"><span>2</span> Info</a>
+            <a ui-sref-active="active" ui-sref=".device"><span>3</span> Device</a>
+            <a ui-sref-active="active" ui-sref=".problem"><span>4</span> Problem</a>
+            <a ui-sref-active="active" ui-sref=".review"><span>5</span> Review</a>
         </div>
-    </form>
-
-    <pre class="hidden">{{ formData }}</pre>
-
-    <div class="status-buttons" class="text-center" style="margin-top: -12px;">
-        <a ui-sref-active="active" ui-sref=".netid"><span>1</span> NetID</a>
-        <a ui-sref-active="active" ui-sref=".info"><span>2</span> Info</a>
-        <a ui-sref-active="active" ui-sref=".device"><span>3</span> Device</a>
-        <a ui-sref-active="active" ui-sref=".problem"><span>4</span> Problem</a>
-        <a ui-sref-active="active" ui-sref=".review"><span>5</span> Review</a>
     </div>
 </section>
