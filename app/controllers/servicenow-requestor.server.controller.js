@@ -149,7 +149,9 @@ var formulateWalkin = function(walkin, soapAction){
         u_duration : walkin.resolutionTime.getTime() - walkin.created.getTime(),
         u_time_worked : walkin.resolutionTime.getTime() - walkin.serviceStartTime.getTime(),
         u_created : walkin.created.getTime(),
-        u_last_update : walkin.updated.getTime()
+        u_last_update : walkin.updated.getTime(),
+        u_actual_resolve_at_ : walkin.resolutionTime.getTime(),
+        u_time_of_incident : walkin.created.getTime()
     };
 };
 
@@ -177,7 +179,7 @@ exports.createWalkinIncident = function(walkin, next){
 
             console.log(response);
 
-            if(response.status === 'Inserted' && response.sys_id && response.display_value){
+            if(response.status === 'inserted' && response.sys_id && response.display_value){
                 walkin.snSysId = response.sys_id;
                 walkin.snValue = response.display_value;
 
