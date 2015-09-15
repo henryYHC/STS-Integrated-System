@@ -87,10 +87,6 @@ exports.reassignNetId = function(req, res){
 
         user.save(function(err){
 
-            console.log(user);
-            console.log(err);
-
-
             if(err) return res.status(400).send(err);
 
             walkin.user = user;

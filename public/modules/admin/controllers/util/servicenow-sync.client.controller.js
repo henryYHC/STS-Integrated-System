@@ -10,9 +10,7 @@ angular.module('admin').controller('ServicenowSyncController', ['$scope', '$http
             $scope.loading = true; $scope.walkins = undefined;
             $http.get('/walkins/list/listUnSynced').success(function(entries){
                 $scope.loading = false;
-                $scope.summary.count += entries.length;
-
-                console.log(entries);
+                $scope.summary.count = entries.length;
                 $scope.walkins = entries;
             }).error(function(err){ $scope.summary.error = err; });
         };
@@ -20,8 +18,6 @@ angular.module('admin').controller('ServicenowSyncController', ['$scope', '$http
         var logError = function(err){ console.log(err); };
 
         var syncWalkinTicketsAux = function(index, walkinIds){
-            console.log(walkinIds);
-
             $http.put('/walkins/sync/' + walkinIds[index]).success(function(){
                 $scope.summary.syncCount++;
 

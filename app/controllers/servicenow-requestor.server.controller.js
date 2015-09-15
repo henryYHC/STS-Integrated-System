@@ -182,7 +182,6 @@ exports.createWalkinIncident = function(walkin, next){
             if(response.status === 'inserted' && response.sys_id && response.display_value){
                 walkin.snSysId = response.sys_id;
                 walkin.snValue = response.display_value;
-
                 walkin.save(function(err){ if(err) return console.log(err); });
             }
 

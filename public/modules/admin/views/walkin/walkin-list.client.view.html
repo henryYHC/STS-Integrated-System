@@ -36,7 +36,7 @@
         </h4>
         <div class="col-md-12" ng-init="listToday()" style="margin-top: 0.5em;">
             <div>
-                <table class="table table-hover" style="max-height: 80vh; overflow: auto;">
+                <table class="table table-hover" style="max-height: 80vh; overflow: auto; font-size: 12px;">
                     <tr>
                         <th>Actions</th>
                         <th>ID</th>
@@ -45,6 +45,7 @@
                         <th>Type</th>
                         <th>Spec</th>
                         <th>Status</th>
+                        <th>Resolution</th>
                         <th>Updated</th>
                         <th>Created</th>
                     </tr>
@@ -60,10 +61,11 @@
                         <td data-ng-bind="walkin.user.displayName"></td>
                         <td data-ng-bind="walkin.user.username"></td>
                         <td data-ng-bind="walkin.deviceCategory"></td>
-                        <td data-ng-bind="walkin.deviceType" ng-hide="!walkin.deviceType||walkin.deviceType=='N/A'||walkin.deviceType=='Other'"></td>
-                        <td data-ng-bind="walkin.os" ng-hide="!walkin.os||walkin.os=='N/A'||walkin.os=='Other'"></td>
-                        <td data-ng-bind="walkin.otherDevice" ng-show="walkin.otherDevice"></td>
+                        <td ng-hide="!walkin.deviceType||walkin.deviceType=='N/A'||walkin.deviceType=='Other'">{{walkin.deviceType | limitTo: 13}}</td>
+                        <td ng-hide="!walkin.os||walkin.os=='N/A'||walkin.os=='Other'">{{walkin.os | limitTo: 13}}</td>
+                        <td ng-show="walkin.otherDevice">{{walkin.otherDevice | limitTo: 13 }}</td>
                         <td data-ng-bind="walkin.status"></td>
+                        <td data-ng-bind="walkin.resolutionType"></td>
                         <td data-ng-bind="(walkin.updated | date:'short') || 'N/A'"></td>
                         <td data-ng-bind="(walkin.created | date:'short') || 'N/A'"></td>
                     </tr>

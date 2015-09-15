@@ -33,7 +33,6 @@ angular.module('admin').controller('AdminWalkinListingController', ['$http', '$s
                 case 'incidentId':
                     $scope.search.query = 'INC' + $scope.search.query.replace(/\D/g, '');
                     query.snValue = { '$regex' : $scope.search.query, '$options': 'i' };
-                    console.log(query);
                     break;
 
                 default :
