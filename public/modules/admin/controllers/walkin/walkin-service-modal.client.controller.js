@@ -182,9 +182,12 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
         };
 
         $scope.transfer = function () {
-            alert('Function under development.');
-            return false;
-            //$modalInstance.close('transfer');
+            if(!$scope.walkin.user.verified)
+                $scope.error = 'Please verify customer\'s identity.';
+            else {
+                $scope.save();
+                $modalInstance.close('transfer');
+            }
         };
         $scope.close = function () { $modalInstance.dismiss('cancel'); };
     }

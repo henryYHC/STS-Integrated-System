@@ -70,7 +70,7 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
                                 $scope.quickWalkin = undefined;
                                 break;
                             case 'transfer':
-                                alert('Function under development.');
+                                $location.path('/admin/walkins/transfer/'+id);
                         }
                         // Re-init queue
                         $scope.initQueue();

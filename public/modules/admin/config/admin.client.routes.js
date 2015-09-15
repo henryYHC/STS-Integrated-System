@@ -7,6 +7,10 @@ angular.module('admin').config(['$stateProvider', '$urlRouterProvider',
 
 		// Admin state routing
 		$stateProvider.
+		state('checkin-create', {
+			url: '/admin/walkins/transfer/:walkinId',
+			templateUrl: 'modules/admin/views/checkin/checkin-create.client.view.html'
+		}).
 		state('user-list', {
 			url: '/admin/users-list',
 			templateUrl: 'modules/admin/views/user/user-list.client.view.html'
