@@ -4,11 +4,11 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-	errorHandler = require('./errors.server.controller'),
+	errorHandler = require('./errors.server.controller.js'),
 	User = mongoose.model('User'),
     Walkin = mongoose.model('Walkin'),
 	_ = require('lodash'),
-    servicenow = require('../../app/controllers/servicenow-requestor.server.controller');
+    servicenow = require('./utils/servicenow-requestor.server.controller.js');
 
 var popOpt = [
     { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified'},

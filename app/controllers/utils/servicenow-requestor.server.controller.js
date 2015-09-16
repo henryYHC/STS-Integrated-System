@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
     Walkin = mongoose.model('Walkin');
 
 // Get credentials (& reformat wsdl url)
-var credentialFilePath = __dirname + '/../credentials/ServiceNow.json',
+var credentialFilePath = __dirname + '/../../credentials/ServiceNow.json',
     credentialFile = fs.readFileSync(credentialFilePath, 'utf8'),
     credential = JSON.parse(credentialFile);
 
