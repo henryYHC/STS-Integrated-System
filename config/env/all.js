@@ -14,9 +14,8 @@ module.exports = {
 		lib: {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.css',
-				//'public/lib/bootstrap/dist/css/bootstrap-theme.css',
                 'public/lib/bootstrap-material-design/dist/css/roboto.min.css',
-                'public/lib/bootstrap-material-design/dist/css/material.min.css',
+                'public/lib/bootstrap-material-design/dist/css/material-dev.css',
                 'public/lib/bootstrap-material-design/dist/css/ripples.min.css'
 			],
 			js: [

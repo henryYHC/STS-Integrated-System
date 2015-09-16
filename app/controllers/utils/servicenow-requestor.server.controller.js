@@ -119,6 +119,7 @@ var formulateWalkin = function(walkin, soapAction){
         // Request info
         u_soapaction : soapAction,
         u_incident_state : 'Resolved',
+        u_resolution_code : 'Configure',
 
         // Static info
         u_category_1 : template.category1,
@@ -148,7 +149,6 @@ var formulateWalkin = function(walkin, soapAction){
         // Time log
         u_duration : walkin.resolutionTime.getTime() - walkin.created.getTime(),
         u_time_worked : walkin.resolutionTime.getTime() - walkin.serviceStartTime.getTime(),
-        u_created : walkin.created.getTime(),
         u_last_update : walkin.updated.getTime(),
         u_actual_resolve_at_ : walkin.resolutionTime.getTime(),
         u_time_of_incident : walkin.created.getTime()
