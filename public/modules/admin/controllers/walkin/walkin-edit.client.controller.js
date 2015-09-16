@@ -25,6 +25,13 @@ angular.module('admin').controller('WalkinviewController', ['$http', '$scope', '
         $scope.initResolutionType = function(){ $http.get('/walkins/util/loadResolutionOptions').success(function(response){ $scope.resolutionOptions = response; }); };
         $scope.initLocation = function(){ $http.get('/walkins/util/loadLocationOptions').success(function(response){ $scope.locationOptions = response; }); };
 
+        $scope.initTransferWalkinInfo = function(){
+            $http.get('/walkins/'+$stateParams.walkinId).success(function(response){
+                $scope.walkin = response;
+                $scope.$parent.walkinInfo = $scope.walkin;
+            });
+        };
+
         $scope.updateDevice = function(){
             switch($scope.walkin.deviceCategory){
                 case 'Computer':

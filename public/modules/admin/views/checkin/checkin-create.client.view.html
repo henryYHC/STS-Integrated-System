@@ -1,9 +1,9 @@
-<section class="container" data-ng-controller="CheckinCreateController" ng-init="initInfo()">
+<section class="container" data-ng-controller="CheckinCreateController">
 	<div style="text-align: center;">
 		<h1 style="font-size: 48px;">New Check-in Instance</h1>
 	</div>
 
-	<section data-ng-controller="WalkinviewController" ng-init="initWalkin();">
+	<section data-ng-controller="WalkinviewController" ng-init="initTransferWalkinInfo()">
 		<div class="col-md-12">
 			<h3><strong>Customer information</strong>
 				<div class="pull-right" >
@@ -30,8 +30,8 @@
 							<div id="name-edit" ng-show="editName">
 								<div class="input-group">
 									<div class="col-sm-10">
-										<input type="text" class="form-control col-sm-6" data-ng-model="walkin.user.firstName" style="width: 50%">
-										<input type="text" class="form-control col-sm-6" data-ng-model="walkin.user.lastName" style="width: 50%">
+										<input type="text" class="form-control col-sm-6" ng-model="walkin.user.firstName" style="width: 50%">
+										<input type="text" class="form-control col-sm-6" ng-model="walkin.user.lastName" style="width: 50%">
 									</div>
 									<div class="col-sm-2">
                                         <span class="input-group-btn">
@@ -55,7 +55,7 @@
 							</div>
 							<div id="phone-edit" ng-show="editPhone">
 								<div class="input-group">
-									<input type="text" class="form-control" data-ng-model="walkin.user.phone">
+									<input type="text" class="form-control" ng-model="walkin.user.phone">
                                     <span class="input-group-btn">
                                         <button class="btn btn-primary" type="button" ng-click="editPhone=!editPhone;updatePhone();">Done</button>
                                     </span>
@@ -73,7 +73,7 @@
 								<a ng-click="editLocation=!editLocation;"><span class="glyphicon glyphicon-pencil pull-right"></span></a>
 							</div>
 							<div id="location-edit" ng-show="editLocation" ng-init="initLocation();">
-								<select id="locationI" class="form-control" data-ng-model="walkin.user.location" ng-change="editLocation=!editLocation;">
+								<select id="locationI" class="form-control" ng-model="walkin.user.location" ng-change="editLocation=!editLocation;">
 									<option ng-repeat="option in locationOptions" value="{{option}}" ng-selected="option == walkin.user.location;">{{option}}</option>
 								</select>
 							</div>
@@ -104,7 +104,7 @@
 								<a ng-click="editProblem=!editProblem;  "><span class="glyphicon glyphicon-pencil pull-right" style="margin-top: -80px;"></span></a>
 							</div>
 							<div id="problem-edit" ng-show="editProblem">
-								<textarea class="form-control" rows="2" data-ng-model="walkin.description"></textarea>
+								<textarea class="form-control" rows="2" ng-model="walkin.description"></textarea>
 								<button ng-click="editProblem=!editProblem;" class="btn btn-sm btn-primary pull-right">Done</button>
 							</div>
 						</div>
@@ -121,7 +121,7 @@
 								<a ng-click="editDeviceType=!editDeviceType;"><span class="glyphicon glyphicon-pencil pull-right"></span></a>
 							</div>
 							<div id="deviceType-edit" ng-show="editDeviceType" ng-init="initDeviceType();">
-								<select id="deviceT" class="form-control" data-ng-model="walkin.deviceCategory" ng-change="editDeviceType=!editDeviceType;">
+								<select id="deviceT" class="form-control" ng-model="walkin.deviceCategory" ng-change="editDeviceType=!editDeviceType;">
 									<option ng-repeat="option in deviceTypeOptions" value="{{option}}" ng-selected="option == walkin.deviceCategory;">{{option}}</option>
 								</select>
 							</div>
@@ -138,7 +138,7 @@
 								<a ng-click="editDeviceInfo=!editDeviceInfo;"><span class="glyphicon glyphicon-pencil pull-right"></span></a>
 							</div>
 							<div id="deviceInfo-edit" ng-show="editDeviceInfo" ng-init="initDeviceInfo();">
-								<select id="deviceI" class="form-control" data-ng-model="walkin.deviceType" ng-change="editDeviceInfo=!editDeviceInfo; updateDevice();">
+								<select id="deviceI" class="form-control" ng-model="walkin.deviceType" ng-change="editDeviceInfo=!editDeviceInfo; updateDevice();">
 									<option ng-repeat="option in deviceInfoOptions" value="{{option}}" ng-selected="option == walkin.deviceType;">{{option}}</option>
 								</select>
 							</div>
@@ -149,7 +149,7 @@
 								<a ng-click="editDeviceOS=!editDeviceOS;"><span class="glyphicon glyphicon-pencil pull-right"></span></a>
 							</div>
 							<div id="deviceOS-edit" ng-show="editDeviceOS" ng-init="initDeviceOS();">
-								<select id="deviceI" class="form-control" data-ng-model="walkin.os" ng-change="editDeviceOS=!editDeviceOS; updateDevice();">
+								<select id="deviceI" class="form-control" ng-model="walkin.os" ng-change="editDeviceOS=!editDeviceOS; updateDevice();">
 									<option ng-repeat="option in deviceOSOptions" value="{{option}}" ng-selected="option == walkin.os;">{{option}}</option>
 								</select>
 							</div>
@@ -166,7 +166,7 @@
 							</div>
 							<div id="other-edit" ng-show="editDeviceOther">
 								<div class="input-group">
-									<input type="text" class="form-control" data-ng-model="walkin.otherDevice">
+									<input type="text" class="form-control" ng-model="walkin.otherDevice">
 										<span class="input-group-btn">
 											<button class="btn btn-primary" type="button" ng-click="editDeviceOther=!editDeviceOther;updateDevice();">Done</button>
 										</span>
@@ -179,48 +179,73 @@
 		</div>
 	</section>
 
-	<div class="col-md-12">
+	<form class="col-md-12">
 		<h3><strong>Check-in information</strong></h3>
-		<h4>Preliminary Diagnostic / Suggested Actions</h4>
-		<textarea class="col-sm-offset-1 form-control" rows="4" data-ng-model="checkinInfo.description" placeholder="Enter preliminary diagnostic or suggested actions here" style="width: 80%;"></textarea>
+		<h4>Preliminary Diagnostic</h4>
+		<textarea class="col-sm-offset-1 form-control" rows="4" ng-model="checkinInfo.preDiagnostic" placeholder="Enter preliminary diagnostic here" style="width: 80%;"></textarea>
+		<h4>Suggested Actions</h4>
+		<textarea class="col-sm-offset-1 form-control" rows="4" ng-model="checkinInfo.sugggestedAction" placeholder="Enter suggested actions here" style="width: 80%;"></textarea>
 		<h4>Additional Device Information</h4>
 		<div class="form-horizontal">
 			<div class="form-group" style="text-align: left">
 				<label class="col-sm-2 control-label" for="manufacturer">Manufacturer:</label>
 				<div class="col-sm-9" style="margin-top: 4px;">
-					<input type="text" id="manufacturer" class="form-control" placeholder="Enter device manufacturer here" data-ng-model="checkinInfo.deviceManufacturer" required>
+					<input type="text" id="manufacturer" class="form-control" placeholder="Enter device manufacturer here" ng-model="checkinInfo.deviceManufacturer" required>
 				</div>
 			</div>
 			<div class="form-group" style="text-align: left">
 				<label class="col-sm-2 control-label" for="model">Model:</label>
 				<div class="col-sm-9" style="margin-top: 4px;">
-					<input type="text" id="model" class="form-control" placeholder="Enter device model here" data-ng-model="checkinInfo.deviceModel" required>
+					<input type="text" id="model" class="form-control" placeholder="Enter device model here" ng-model="checkinInfo.deviceModel" required>
 				</div>
 			</div>
 			<div class="form-group" style="text-align: left">
-				<label class="col-sm-2 control-label" for="info">Info(Pwd):</label>
+				<label class="col-sm-2 control-label" for="pwd">Info(Pwd):</label>
 				<div class="col-sm-9" style="margin-top: 4px;">
-					<input type="text" id="info" class="form-control" placeholder="Enter device info(pwd) here" data-ng-model="checkinInfo.deviceInfo" required>
+					<input type="text" id="pwd" class="form-control" placeholder="Enter device info(pwd) here" ng-model="checkinInfo.deviceInfoPwd" required>
+				</div>
+			</div>
+			<div class="form-group" style="text-align: left" ng-show="walkinInfo.os.indexOf('Windows')>=0">
+				<label class="col-sm-2 control-label" for="os">Info(OS):</label>
+				<div id="os" class="col-sm-9" style="margin-top: 4px;">
+					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOS['32bit']"> 32bit &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOS['64bit']"> 64bit &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOS['Home Basic']"> Home Basic &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOS['Home Premium']"> Home Premium &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOS['Professional']"> Professional &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOS['Enterprise']"> Enterprise &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOS['Ultimate']"> Ultimate &emsp;</label>
 				</div>
 			</div>
 			<div class="form-group" style="text-align: left">
 				<label class="col-sm-2 control-label" for="item">Item Received:</label>
 				<div id="item" class="col-sm-9" style="margin-top: 4px;">
-					<label><input type="checkbox"> Item 1 </label>&emsp;
-					<label><input type="checkbox"> Item 2 </label>&emsp;
-					<label><input type="checkbox"> Item 3 </label>&emsp;
-					<label><input type="checkbox"> Item 4 </label>&emsp;
-					<label><input type="checkbox"> Item 5 </label>&emsp;
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['Laptop']"> Laptop &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['Desktop']"> Desktop &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['Power Cord']"> Power Cord &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['Internal HDD']"> Internal HDD &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['External HDD']"> External HDD &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['HDD Cable']"> HDD Cable &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['USB drive/Disc']"> USB drive/Disc &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['Other']"> Other &emsp;</label>
+				</div>
+			</div>
+			<div class="form-group" style="text-align: left" ng-show="checkinInfo.itemReceived['Other']">
+				<label class="col-sm-2 control-label" for="otherItem">Other Item:</label>
+				<div class="col-sm-9" style="margin-top: 4px;">
+					<input type="text" id="otherItem" class="form-control" placeholder="Enter other item received here" ng-model="checkinInfo.otherItem">
 				</div>
 			</div>
 			<div class="form-group" style="text-align: left">
 				<label class="col-sm-2 control-label" for="reformat">Reformat?</label>
 				<div id="reformat" class="col-sm-9" style="margin-top: 4px;">
-					...
+					<label><input type="radio" name="reformatConsent" ng-model="checkinInfo.reformatConsent" ng-value="true">Yes</label>&emsp;
+					<label><input type="radio" name="reformatConsent" ng-model="checkinInfo.reformatConsent" ng-value="false">No</label>&emsp;
 				</div>
 			</div>
 		</div>
-	</div>
 
-	{{walkinInfo}}
+		<button class="btn btn-lg btn-primary pull-right">Submit</button>
+	</form>
+	{{checkinInfo}}
 </section>
