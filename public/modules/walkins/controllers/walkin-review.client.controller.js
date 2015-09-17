@@ -7,8 +7,6 @@ angular.module('walkins').controller('WalkinReviewController', ['$scope', '$stat
         if(!$scope.formStatus.info)     $state.go('createWalkin.info');
         if(!$scope.formStatus.netid)    $state.go('createWalkin.netid');
 
-
-        console.log($scope.formData);
         $scope.submitWalkin = function(){
             var viewLibaility = $modal.open({
                 animation: true,

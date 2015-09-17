@@ -13,7 +13,9 @@ var mongoose = require('mongoose'),
  * Create a Checkin
  */
 exports.create = function(req, res) {
+    var checkin = new Checkin(req.body);
 
+    console.log(checkin);
 };
 
 /**
@@ -42,14 +44,4 @@ exports.delete = function(req, res) {
  */
 exports.list = function(req, res) {
 
-};
-
-/*
- * Checkin util
- */
-exports.getDeviceInfoOSOptions = function (req, res) {
-    res.json(Checkin.schema.path('deviceInfoOS').enumValues);
-};
-exports.getItemReceivedOptions = function (req, res) {
-    res.json(Checkin.schema.path('itemReceived').enumValues);
 };

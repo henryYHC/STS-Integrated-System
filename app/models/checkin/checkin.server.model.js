@@ -22,27 +22,32 @@ var CheckinSchema = new Schema({
 	preDiagnostic:{
 		type: String,
 		trim: true,
-		required: true
+		required: 'Preliminary diagnostic information is required.'
 	},
 	sugggestedAction:{
 		type: String,
 		trim: true,
-		required: true
+		required: 'Suggested action information is required.'
 	},
 	deviceManufacturer:{
 		type: String,
 		trim: true,
-		default: ''
+		required: 'Device manufacturer information is required'
 	},
 	deviceModel:{
 		type: String,
 		trim: true,
-		default: ''
+		required: 'Device model information is required'
+	},
+	deviceInfoUser:{
+		type: String,
+		trim: true,
+		required: 'Device user information is required'
 	},
 	deviceInfoPwd:{
 		type: String,
 		trim: true,
-		default: ''
+		required: 'Device password information is required'
 	},
 	deviceInfoOS:{
 		type: [String],
@@ -63,6 +68,16 @@ var CheckinSchema = new Schema({
 	reformatConsent:{
 		type: Boolean,
 		required: true
+	},
+	liabilitySig:{
+		type: String,
+		trim: true,
+		default: ''
+	},
+	pickupSig:{
+		type: String,
+		trim: true,
+		default: ''
 	},
 
 	//Walkin information
@@ -112,8 +127,8 @@ var CheckinSchema = new Schema({
 	// Service log
 	status: {
 		type: String,
-		enum: ['In queue', 'Duplicate', 'House call pending', 'Work in progress', 'Completed', 'Unresolved'],
-		default: ['In queue']
+		enum: ['Checkout pending', 'Verification pending', 'Work in progress', 'Completed', 'User action pending'],
+		default: ['Work in progress']
 	},
 	serviceDuetTime: {
 		type: Date
@@ -133,6 +148,11 @@ var CheckinSchema = new Schema({
 		trim: true,
 		default: ''
 	}
+});
+
+CheckinSchema.pre('save', function(next) {
+	this.updated = Date.now();
+	next();
 });
 
 CheckinSchema.plugin(autoIncrement.plugin, 'Checkin');

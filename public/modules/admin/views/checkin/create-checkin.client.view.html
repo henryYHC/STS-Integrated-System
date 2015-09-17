@@ -181,62 +181,79 @@
 
 	<form class="col-md-12">
 		<h3><strong>Check-in information</strong></h3>
-		<h4>Preliminary Diagnostic</h4>
-		<textarea class="col-sm-offset-1 form-control" rows="4" ng-model="checkinInfo.preDiagnostic" placeholder="Enter preliminary diagnostic here" style="width: 80%;"></textarea>
-		<h4>Suggested Actions</h4>
-		<textarea class="col-sm-offset-1 form-control" rows="4" ng-model="checkinInfo.sugggestedAction" placeholder="Enter suggested actions here" style="width: 80%;"></textarea>
+		<div class="form-group" style="text-align: left" ng-class="{'has-error' : error.preDiagnosticError}">
+			<h4 class="control-label">Preliminary Diagnostic</h4>
+			<textarea class="col-sm-offset-1 form-control" rows="4" ng-model="checkinInfo.preDiagnostic" placeholder="Enter preliminary diagnostic here" style="width: 80%;"></textarea>
+		</div>
+		<div class="form-group" style="text-align: left" ng-class="{'has-error' : error.suggestedActionError}">
+			<h4 class="control-label">Suggested Actions</h4>
+			<textarea class="col-sm-offset-1 form-control" rows="4" ng-model="checkinInfo.sugggestedAction" placeholder="Enter suggested actions here" style="width: 80%;"></textarea>
+		</div>
 		<h4>Additional Device Information</h4>
 		<div class="form-horizontal">
-			<div class="form-group" style="text-align: left">
-				<label class="col-sm-2 control-label" for="manufacturer">Manufacturer:</label>
-				<div class="col-sm-9" style="margin-top: 4px;">
-					<input type="text" id="manufacturer" class="form-control" placeholder="Enter device manufacturer here" ng-model="checkinInfo.deviceManufacturer" required>
+			<div class="col-sm-12" style="margin-bottom: 1em;">
+				<div class="col-sm-6">
+					<div class="form-group" style="text-align: left" ng-class="{'has-error' : error.manufacturerError}">
+						<label class="col-sm-3 control-label" for="manufacturer">Manufacturer:</label>
+						<div class="col-sm-9" style="margin-top: 4px;">
+							<input type="text" id="manufacturer" class="form-control" placeholder="Enter device manufacturer here" ng-model="checkinInfo.deviceManufacturer" >
+						</div>
+					</div>
+					<div class="form-group" style="text-align: left" ng-class="{'has-error' : error.modelError}">
+						<label class="col-sm-3 control-label" for="model">Model:</label>
+						<div class="col-sm-9" style="margin-top: 4px;">
+							<input type="text" id="model" class="form-control" placeholder="Enter device model here" ng-model="checkinInfo.deviceModel" >
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group" style="text-align: left" ng-class="{'has-error' : error.usernameError}">
+						<label class="col-sm-3 control-label" for="model">Username:</label>
+						<div class="col-sm-9" style="margin-top: 4px;">
+							<input type="text" id="user" class="form-control" placeholder="Enter device info(username) here" ng-model="checkinInfo.deviceInfoUser" >
+						</div>
+					</div>
+					<div class="form-group" style="text-align: left" ng-class="{'has-error' : error.passwordError}">
+						<label class="col-sm-3 control-label" for="pwd">Password:</label>
+						<div class="col-sm-9" style="margin-top: 4px;">
+							<input type="text" id="pwd" class="form-control" placeholder="Enter device info(pwd) here" ng-model="checkinInfo.deviceInfoPwd" >
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="form-group" style="text-align: left">
-				<label class="col-sm-2 control-label" for="model">Model:</label>
-				<div class="col-sm-9" style="margin-top: 4px;">
-					<input type="text" id="model" class="form-control" placeholder="Enter device model here" ng-model="checkinInfo.deviceModel" required>
-				</div>
-			</div>
-			<div class="form-group" style="text-align: left">
-				<label class="col-sm-2 control-label" for="pwd">Info(Pwd):</label>
-				<div class="col-sm-9" style="margin-top: 4px;">
-					<input type="text" id="pwd" class="form-control" placeholder="Enter device info(pwd) here" ng-model="checkinInfo.deviceInfoPwd" required>
-				</div>
-			</div>
-			<div class="form-group" style="text-align: left" ng-show="walkinInfo.os.indexOf('Windows')>=0">
+			<div class="form-group" style="text-align: left" ng-show="walkinInfo.os.indexOf('Windows')>=0" ng-class="{'has-error' : error.osError}">
 				<label class="col-sm-2 control-label" for="os">Info(OS):</label>
 				<div id="os" class="col-sm-9" style="margin-top: 4px;">
-					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOS['32bit']"> 32bit &emsp;</label>
-					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOS['64bit']"> 64bit &emsp;</label>
-					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOS['Home Basic']"> Home Basic &emsp;</label>
-					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOS['Home Premium']"> Home Premium &emsp;</label>
-					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOS['Professional']"> Professional &emsp;</label>
-					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOS['Enterprise']"> Enterprise &emsp;</label>
-					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOS['Ultimate']"> Ultimate &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOSAux['32bit']"> 32bit &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOSAux['64bit']"> 64bit &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOSAux['Home Basic']"> Home Basic &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOSAux['Home Premium']"> Home Premium &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOSAux['Professional']"> Professional &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOSAux['Enterprise']"> Enterprise &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.deviceInfoOSAux['Ultimate']"> Ultimate &emsp;</label>
 				</div>
 			</div>
-			<div class="form-group" style="text-align: left">
+			<div class="form-group" style="text-align: left" ng-class="{'has-error' : error.itemError}">
 				<label class="col-sm-2 control-label" for="item">Item Received:</label>
 				<div id="item" class="col-sm-9" style="margin-top: 4px;">
-					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['Laptop']"> Laptop &emsp;</label>
-					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['Desktop']"> Desktop &emsp;</label>
-					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['Power Cord']"> Power Cord &emsp;</label>
-					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['Internal HDD']"> Internal HDD &emsp;</label>
-					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['External HDD']"> External HDD &emsp;</label>
-					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['HDD Cable']"> HDD Cable &emsp;</label>
-					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['USB drive/Disc']"> USB drive/Disc &emsp;</label>
-					<label><input type="checkbox" ng-model="checkinInfo.itemReceived['Other']"> Other &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceivedAux['Laptop']"> Laptop &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceivedAux['Desktop']"> Desktop &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceivedAux['Power Cord']"> Power Cord &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceivedAux['Internal HDD']"> Internal HDD &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceivedAux['External HDD']"> External HDD &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceivedAux['HDD Cable']"> HDD Cable &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceivedAux['USB drive/Disc']"> USB drive/Disc &emsp;</label>
+					<label><input type="checkbox" ng-model="checkinInfo.itemReceivedAux['Other']"> Other &emsp;</label>
 				</div>
 			</div>
-			<div class="form-group" style="text-align: left" ng-show="checkinInfo.itemReceived['Other']">
+			<div class="form-group" style="text-align: left" ng-show="checkinInfo.itemReceivedAux['Other']" ng-class="{'has-error' : error.otherItemError}">
 				<label class="col-sm-2 control-label" for="otherItem">Other Item:</label>
 				<div class="col-sm-9" style="margin-top: 4px;">
 					<input type="text" id="otherItem" class="form-control" placeholder="Enter other item received here" ng-model="checkinInfo.otherItem">
 				</div>
 			</div>
-			<div class="form-group" style="text-align: left">
+
+			<div class="form-group" style="text-align: left; margin-top: 1em;">
 				<label class="col-sm-2 control-label" for="reformat">Reformat?</label>
 				<div id="reformat" class="col-sm-9" style="margin-top: 4px;">
 					<label><input type="radio" name="reformatConsent" ng-model="checkinInfo.reformatConsent" ng-value="true">Yes</label>&emsp;
@@ -245,7 +262,9 @@
 			</div>
 		</div>
 
-		<button class="btn btn-lg btn-primary pull-right">Submit</button>
+		<div class="text-center text-danger" style="margin-bottom: 4em;height: 16px;width: 100%;">
+			<strong ng-show="error">{{error.message || 'Missing  required information' }}</strong>
+		</div>
+		<button class="btn btn-lg btn-primary pull-right" ng-click="createCheckin()">Submit</button>
 	</form>
-	{{checkinInfo}}
 </section>
