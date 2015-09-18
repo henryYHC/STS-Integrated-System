@@ -67,9 +67,10 @@ angular.module('admin').controller('CheckinCreateController', ['$http', '$scope'
 			delete $scope.error;
 			var viewLibaility = $modal.open({
 				animation: true,
-				templateUrl: 'modules/admin/views/checkin/create-checkin-liability-modal.client.view.html',
+				templateUrl: 'modules/admin/views/checkin/checkin-create-liability-modal.client.view.html',
 				controller: 'LiabilityModalCtrl',
-				size: 'lg'
+				size: 'lg',
+				resolve: { walkinInfo : function() { return walkinInfo; } }
 			});
 
 			viewLibaility.result.then(
@@ -77,8 +78,8 @@ angular.module('admin').controller('CheckinCreateController', ['$http', '$scope'
 					if(response){
 						// Create instance
 						checkinInfo.liabilitySig = response;
-						$http.post('/checkins', checkinInfo)
-							.success(function(response){ })
+						$http.post('/checkins/'+walkinInfo._id, checkinInfo)
+							.success(function(){ $location.path('/admin/checkins'); })
 							.error(function(err){ $scope.error.message = err.message; });
 					}
 				}

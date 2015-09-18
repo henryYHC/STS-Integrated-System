@@ -1,0 +1,111 @@
+<section class="container" data-ng-controller="AdminCheckinQueueController">
+	<div>
+		<h2>STS Technician Panel - Check-in<a href="/#!/admin" class="btn btn-sm btn-default pull-right">Back</a></h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
+	</div>
+	<div class="container">
+		<div class="col-md-3" ng-init="initQueue()" >
+			<h4>Work in Progress
+				<a class="btn btn-xs btn-info pull-right" ng-click="refreshQueue()" style="margin-top: 0px;"><span class="glyphicon glyphicon-refresh"></span></a>
+			</h4><hr/>
+			<div style="height: 40vh; overflow: auto">
+				<table class="table table-hover" data-ng-show="queueItems.length">
+					<tr>
+						<th>Order</th>
+						<th>Customer</th>
+					</tr>
+					<tr data-ng-repeat="queueItem in queueItems" ng-click="quickviewWalkin(queueItem._id);">
+						<td>
+							{{ $index + 1 }}
+							<span class="glyphicon glyphicon-duplicate pull-right" tooltip-placement="top" tooltip="Duplicate" ng-show="queueItem.status=='Duplicate'"></span>
+							<span class="glyphicon glyphicon-cog pull-right" tooltip-placement="top" tooltip="helped by {{queueItem.serviceTechnician.displayName}}" ng-show="queueItem.status=='Work in progress'"></span>
+							<span class="glyphicon glyphicon-home pull-right" tooltip-placement="top" tooltip="House call" ng-show="queueItem.status=='House call pending'"></span>
+						</td>
+						<td>{{queueItem.user.displayName}}<span class="glyphicon glyphicon-info-sign pull-right" tooltip-placement="top" tooltip="{{(queueItem.created | date:'shortTime') || 'N/A'}}"></span></td>
+					</tr>
+				</table>
+				<div class="alert alert-info text-center" data-ng-hide="queueItems.length">
+					<span class="glyphicon glyphicon-exclamation-sign"/> Nothing in queue!
+				</div>
+			</div>
+		</div>
+		<div class="col-md-9" style="height:60vh;">
+			<h4>
+				Quick View &emsp;
+				<span class="label label-success" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='Work in progress'">Work in progress</span>
+				<span class="label label-info" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='In queue'">In queue</span>
+				<span class="label label-info" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='Duplicate'">Duplicate</span>
+				<span class="label label-primary" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='House call pending'">House call pending</span>
+				<span class="label label-warning" style="font-size: 12px;" ng-show="quickWalkin && !quickWalkin.user.verified">User verification needed</span>
+
+				<div class="pull-right" ng-hide="!quickWalkin">
+					<button class="btn btn-md btn-danger" ng-click="setUnresolved(quickWalkin._id)">Unresolved</button>
+					<button class="btn btn-md btn-primary" ng-click="serviceWalkin(quickWalkin._id)">Begin Service</button>
+				</div>
+			</h4>
+			<hr/>
+			<div class="col-md-5" style="font-size: 12px;" ng-hide="!quickWalkin">
+				<div class="form-horizontal">
+					<div class="form-group" style="text-align: left">
+						<label class="col-sm-3 control-label" for="1">NetID:</label>
+						<div class="col-sm-9" id="1" style="margin-top: 8px;">{{quickWalkin.user.username || 'N/A'}}</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group" style="text-align: left">
+						<label class="col-sm-3 control-label" for="2">Name:</label>
+						<div class="col-sm-9" id="2" style="margin-top: 8px;">{{quickWalkin.user.displayName || 'N/A'}}</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group" style="text-align: left">
+						<label class="col-sm-3 control-label" for="2.5">Phone:</label>
+						<div class="col-sm-9" id="2.5" style="margin-top: 8px;">{{quickWalkin.user.phone || 'N/A'}}</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group" style="text-align: left">
+						<label class="col-sm-3 control-label" for="2.8">Location:</label>
+						<div class="col-sm-9" id="2.8" style="margin-top: 8px;">{{quickWalkin.user.location || 'N/A'}}</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group" style="text-align: left">
+						<label class="col-sm-3 control-label" for="3">Device type:</label>
+						<div class="col-sm-9" id="3" style="margin-top: 8px;">{{quickWalkin.deviceCategory || 'N/A'}}</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group" style="text-align: left">
+						<label class="col-sm-3 control-label" for="4">Device info:</label>
+						<div class="col-sm-9" id="4" style="margin-top: 8px;" ng-show="quickWalkin.deviceType!='N/A'">{{quickWalkin.deviceType || 'N/A'}}</div>
+						<div class="col-sm-9" id="4" style="margin-top: 8px;" ng-show="quickWalkin.os!='N/A'">{{quickWalkin.os}}</div>
+					</div>
+				</div>
+				<div class="form-horizontal" ng-show="quickWalkin.otherDevice">
+					<div class="form-group" style="text-align: left">
+						<label class="col-sm-3 control-label" for="5">Other info:</label>
+						<div class="col-sm-9" id="5" style="margin-top: 8px;">{{quickWalkin.otherDevice || 'N/A'}}</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-7" style="font-size: 12px;" ng-hide="!quickWalkin">
+				<div class="form-horizontal">
+					<div class="form-group" style="text-align: left;">
+						<label class="col-sm-3 control-label" for="7">Problem:</label>
+						<div class="col-sm-9" id="7" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;">{{quickWalkin.description || 'N/A'}}</p></div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group" style="text-align: left;">
+						<label class="col-sm-3 control-label" for="8">Work note:</label>
+						<div class="col-sm-9" id="8" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;">{{quickWalkin.workNote || 'N/A'}}</p></div>
+					</div>
+				</div>
+			</div>
+			<div class="alert alert-info text-center" ng-show="!queueIquickWalkin" ng-hide="quickWalkin">
+				<span class="glyphicon glyphicon-exclamation-sign"/> Please click any queue item to view
+			</div>
+		</div>
+</section>
+
+<section data-ng-include="'/modules/admin/views/desk-tracker/desk-tracker.client.view.html'"></section>

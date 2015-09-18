@@ -13,9 +13,24 @@ var mongoose = require('mongoose'),
  * Create a Checkin
  */
 exports.create = function(req, res) {
-    var checkin = new Checkin(req.body);
+    var checkin = new Checkin(req.body), walkin = req.walkin;
 
-    console.log(checkin);
+    checkin.save(function(err, response){
+        if(err) return res.status(400).send(err);
+
+        // Resolve walkin
+        walkin.status = 'Completed';
+        walkin.resolutionType = 'Other';
+        walkin.otherResolution = 'Check-in';
+        if(!walkin.resoluteTechnician || !walkin.resolutionTime){
+            walkin = _.extend(walkin , {resoluteTechnician : req.user, resolutionTime : Date.now() });
+        }
+
+        walkin.save(function(err){
+            if(err) return res.status(400).send(err);
+            res.json(response);
+        });
+    });
 };
 
 /**

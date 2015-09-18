@@ -186,7 +186,8 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
                 $scope.error = 'Please verify customer\'s identity.';
             else {
                 $scope.save();
-                $modalInstance.close('transfer');
+                $scope.error = 'Function under development.';
+                //$modalInstance.close('transfer');
             }
         };
         $scope.close = function () { $modalInstance.dismiss('cancel'); };

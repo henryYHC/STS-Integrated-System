@@ -49,7 +49,7 @@ var WalkinSchema = new Schema({
     },
     os: {
         type: String,
-        enum: ['N/A', 'Windows 10', 'Windows 8/8.1', 'Windows 7', 'Mac OSX 10.10 (Yosemite)', 'Mac OSX 10.9 (Mavericks)', 'Mac OSX 10.8 (Mountain Lion)', 'Mac OSX 10.7 (Lion)', 'iOS', 'Android', 'Windows', 'Other'],
+        enum: ['N/A', 'Windows 10', 'Windows 8/8.1', 'Windows 7', 'Mac OSX 10.10 (Yosemite)', 'Mac OSX 10.9 (Mavericks)', 'Mac OSX 10.8 (Mountain Lion)', 'Mac OSX 10.7 (Lion)', 'iOS', 'Android', 'Windows Mobile', 'Other'],
         default: 'N/A',
         validate: [validateDevice, 'Please fill in the operating system type of your device']
     },

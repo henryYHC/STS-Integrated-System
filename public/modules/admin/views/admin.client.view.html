@@ -1,21 +1,40 @@
-<section data-ng-controller="AdminController">
+<section data-ng-controller="AdminController" style="margin-bottom: 50px;">
     <div class="container">
-        <div class="title" style="text-align: center; margin-top: 4em; margin-bottom: 4em;">
+        <div class="title" style="text-align: center; margin-top: 2.5em; margin-bottom: 2.5em;">
             <h1>STS Technician Panel</h1>
             <h4>Customers come first!</h4>
         </div>
         <div class="functions" style="text-align: center;">
             <ul style="list-style-type: none;">
-                <li><a href="/#!/admin/walkins" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">View Walk-in Queue</a></li>
-                <li><a href="/#!/admin/walkins-list" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">View Walk-in Listing</a></li>
+
+                <div class="col-md-6">
+                    <h4 style="text-align: left">Walk-ins</h4>
+                    <li><a href="/#!/admin/walkins" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">View Walk-in Queue</a></li>
+                    <li><a href="/#!/admin/walkins-list" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">View Walk-in Listing</a></li>
+                </div>
+
+                <div class="col-md-6">
+                    <h4 style="text-align: left">Check-ins (Coming soon)</h4>
+                    <li><a href="/#!/admin/checkins" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block" disabled="disabled" onclick="return false;">View Check-in Queue</a></li>
+                    <li><a href="/#!/admin/checkins-list" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block" disabled="disabled" onclick="return false;">View Check-in Listing</a></li>
+                </div>
+
+                <h4 style="text-align: left">Users</h4>
                 <li><a href="/#!/admin/users-list" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">View User Listing</a></li>
+
+
+                <h4 ng-show="isAdmin" style="text-align: left">Admin</h4>
                 <li ng-click="verifyAdmin()" ng-show="isAdmin&&!adminVerified" class="dropdown function btn btn-primary btn-lg btn-block" dropdown on-toggle="toggled(open)" style="margin-left: -20px;">
                     <div>User Handling for Admin <b class="caret"></b></div>
                 </li>
-                <li><a href="/#!/signup" ng-show="isAdmin&&adminVerified" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">Register New User</a></li>
-                <li><a href="/#!/password/reset" ng-show="isAdmin&&adminVerified" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">Reset user password</a></li>
-                <li><a href="/#!/admin/importNetIdEntries" ng-show="isAdmin&&adminVerified" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">Import NetId Entries</a></li>
-                <li><a href="/#!/admin/servicenowSync" ng-show="isAdmin&&adminVerified" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">Sync ticket with ServiceNow</a></li>
+                <div class="col-md-6">
+                    <li><a href="/#!/signup" ng-show="isAdmin&&adminVerified" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">Register New User</a></li>
+                    <li><a href="/#!/password/reset" ng-show="isAdmin&&adminVerified" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">Reset user password</a></li>
+                </div>
+                <div class="col-md-6">
+                    <li><a href="/#!/admin/importNetIdEntries" ng-show="isAdmin&&adminVerified" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">Import NetId Entries</a></li>
+                    <li><a href="/#!/admin/servicenowSync" ng-show="isAdmin&&adminVerified" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">Sync ticket with ServiceNow</a></li>
+                </div>
             </ul>
         </div>
     </div>
