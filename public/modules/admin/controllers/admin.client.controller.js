@@ -22,6 +22,7 @@ angular.module('admin').controller('AdminController', ['$http', '$scope', '$loca
                 $http.post('/auth/authenticate', {password: pwd})
                     .success(function () {
                         $scope.adminVerified = true;
+                        $scope.popover.adminPwd = '';
                         $timeout(function(){ $scope.adminVerified = false;}, 20000);
                     })
                     .error(function (err) { $scope.adminError = err; });
