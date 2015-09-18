@@ -10,15 +10,21 @@ angular.module('admin').controller('AdminController', ['$http', '$scope', '$loca
         else if (user.roles.indexOf('admin') >= 0)
             $scope.isAdmin = true;
 
+        $scope.popover = {
+            templateUrl: 'popoverTemplate.html',
+            adminPwd:''
+        };
+
         $scope.verifyAdmin = function () {
+            $scope.adminError = undefined;
             if (!$scope.adminVerified) {
-                var pwd = prompt('Please input your password again for verification:', '');
+                var pwd = $scope.popover.adminPwd;
                 $http.post('/auth/authenticate', {password: pwd})
                     .success(function () {
                         $scope.adminVerified = true;
                         $timeout(function(){ $scope.adminVerified = false;}, 20000);
                     })
-                    .error(function (err) { alert(err); });
+                    .error(function (err) { $scope.adminError = err; });
             }
         };
     }
