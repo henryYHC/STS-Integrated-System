@@ -15,18 +15,18 @@
 
                 <div class="col-md-6">
                     <h4 style="text-align: left">Check-ins (Coming soon)</h4>
-                    <li><a href="/#!/admin/checkins" style="margin-left:-20px;" class="function btn btn-danger btn-lg btn-block" disabled="disabled" onclick="return false;">View Check-in Queue</a></li>
-                    <li><a href="/#!/admin/checkins-list" style="margin-left:-20px;" class="function btn btn-danger btn-lg btn-block" disabled="disabled" onclick="return false;">View Check-in Listing</a></li>
+                    <li><a href="/#!/admin/checkins" style="margin-left:-20px;" class="function btn btn-info btn-lg btn-block" disabled="disabled" onclick="return false;">View Check-in Queue</a></li>
+                    <li><a href="/#!/admin/checkins-list" style="margin-left:-20px;" class="function btn btn-info btn-lg btn-block" disabled="disabled" onclick="return false;">View Check-in Listing</a></li>
                 </div>
 
                 <div class="col-md-12">
                     <h4 style="text-align: left">Users</h4>
-                    <li><a href="/#!/admin/users-list" style="margin-left:-20px;" class="function btn btn-primary btn-lg btn-block">View User Listing</a></li>
+                    <li><a href="/#!/admin/users-list" style="margin-left:-20px;" class="function btn btn-warning btn-lg btn-block">View User Listing</a></li>
                 </div>
 
                 <div class="col-md-12">
                     <h4 ng-show="isAdmin" style="text-align: left">Admin</h4>
-                    <li ng-click="verifyAdmin()" ng-show="isAdmin&&!adminVerified" class="dropdown function btn btn-primary btn-lg btn-block" dropdown on-toggle="toggled(open)" style="margin-left: -20px;">
+                    <li ng-click="verifyAdmin()" ng-show="isAdmin&&!adminVerified" class="dropdown function btn btn-danger btn-lg btn-block" dropdown on-toggle="toggled(open)" style="margin-left: -20px;">
                         <div>User Handling for Admin <b class="caret"></b></div>
                     </li>
                     <div class="col-md-6">
