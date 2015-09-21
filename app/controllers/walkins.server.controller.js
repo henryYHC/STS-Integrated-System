@@ -371,7 +371,7 @@ exports.listBySearch = function(req, res){
 exports.logService = function(req, res){
     var walkin = req.walkin ;
 
-    if(walkin.status !== 'Work in progress') {
+    if(walkin.status !== 'Work in progress' && walkin.status !== 'Completed') {
         walkin.status = 'Work in progress';
         if (!walkin.serviceTechnician || !walkin.serviceStartTime) {
             walkin = _.extend(walkin,
