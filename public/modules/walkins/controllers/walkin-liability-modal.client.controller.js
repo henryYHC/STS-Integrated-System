@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('walkins').controller('LiabilityModalCtrl', ['$scope', '$modalInstance', 'walkinInfo',
-    function ($scope, $modalInstance, walkinInfo) {
-    $scope.walkinInfo = walkinInfo;
+angular.module('walkins').controller('LiabilityModalCtrl', ['$scope', '$modalInstance',
+    function ($scope, $modalInstance) {
+
+    //if(walkinInfo)  $scope.walkinInfo = walkinInfo;
 
     $scope.accept = function (response) {
         $modalInstance.close(response);

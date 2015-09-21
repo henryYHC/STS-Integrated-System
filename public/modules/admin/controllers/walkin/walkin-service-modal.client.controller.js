@@ -187,6 +187,7 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
             else {
                 $scope.save();
                 $scope.error = 'Function under development.';
+                return false;
                 //$modalInstance.close('transfer');
             }
         };
