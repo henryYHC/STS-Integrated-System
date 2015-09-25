@@ -316,8 +316,8 @@ exports.listUnSynced = function(req, res) {
         if (err) {
             return res.status(400).send({message: errorHandler.getErrorMessage(err) });
         } else {
-            for(var i = walkins.length; i >= 0; i--){
-                if(!walkins[i].isActive || !walkins[i].verified)
+            for(var i = walkins.length-1; i >= 0; i--){
+                if(walkins[i].isActive || walkins[i].verified)
                     walkins.splice(i, 1);
             }
             res.jsonp(walkins);
