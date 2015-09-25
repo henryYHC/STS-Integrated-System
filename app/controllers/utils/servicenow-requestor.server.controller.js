@@ -96,6 +96,14 @@ var getTemplateObj = function(walkin){
             obj.category3 = 'Inaccessible';
             break;
 
+        case 'Check-in':
+            subject += 'Check-in';
+
+            obj.category1 = 'Desktop Management';
+            obj.category2 = 'OS/Firmware';
+            obj.category3 = 'Error';
+            break;
+
         case 'Other':
             subject += 'O ' + walkin.otherResolution;
 

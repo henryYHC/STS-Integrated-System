@@ -37,18 +37,10 @@ angular.module('admin').controller('CheckinCreateController', ['$http', '$scope'
 			for(var j in temp) if(checkinInfo.itemReceivedAux[temp[j]]) itemReceived.push(temp[j]);
 			checkinInfo.deviceInfoOS = deviceInfoOS;
 			checkinInfo.itemReceived = itemReceived;
-
-			// Formulate data
-			checkinInfo.walkinId = walkinInfo._id;
-			checkinInfo.deviceCategory = walkinInfo.deviceCategory;
-			checkinInfo.deviceType = walkinInfo.deviceType;
-			checkinInfo.os = walkinInfo.os;
-			checkinInfo.otherDevice = walkinInfo.otherDevice;
-			checkinInfo.problem = walkinInfo.description;
-
+			
 			// Validation
 			if(!checkinInfo.preDiagnostic){ 		$scope.error.preDiagnosticError = true;	return false; }
-			if(!checkinInfo.sugggestedAction){ 		$scope.error.suggestedActionError = true;	return false; }
+			if(!checkinInfo.suggestedAction){ 		$scope.error.suggestedActionError = true;	return false; }
 			if(!checkinInfo.deviceManufacturer){ 	$scope.error.manufacturerError = true;	return false; }
 			if(!checkinInfo.deviceModel){ 			$scope.error.modelError = true;			return false; }
 			if(!checkinInfo.deviceInfoUser){ 		$scope.error.usernameError = true; 		return false; }

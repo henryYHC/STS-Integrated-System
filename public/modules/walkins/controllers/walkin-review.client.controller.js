@@ -12,7 +12,8 @@ angular.module('walkins').controller('WalkinReviewController', ['$scope', '$stat
                 animation: true,
                 templateUrl: 'modules/walkins/views/create-walkin-liability-modal.client.view.html',
                 controller: 'LiabilityModalCtrl',
-                size: 'lg'
+                size: 'lg',
+                resolve: { walkinInfo : function() { return null; } }
             });
 
             viewLibaility.result.then(

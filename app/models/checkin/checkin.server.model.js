@@ -17,14 +17,15 @@ var CheckinSchema = new Schema({
 	//Basic instance information
 	user: {
 		type: Schema.ObjectId,
-		ref: 'User'
+		ref: 'User',
+		required: true
 	},
 	preDiagnostic:{
 		type: String,
 		trim: true,
 		required: 'Preliminary diagnostic information is required.'
 	},
-	sugggestedAction:{
+	suggestedAction:{
 		type: String,
 		trim: true,
 		required: 'Suggested action information is required.'
@@ -55,9 +56,8 @@ var CheckinSchema = new Schema({
 		default: ['64bit']
 	},
 	itemReceived:{
-		type: String,
+		type: [String],
 		trim: true,
-		enum: [],
 		required: true
 	},
 	otherItem:{
@@ -81,38 +81,10 @@ var CheckinSchema = new Schema({
 	},
 
 	//Walkin information
-	walkinId: {
+	walkin: {
 		type: Number,
+		ref: 'Walkin',
 		required: true
-	},
-	deviceCategory: {
-		type: String,
-		required: true,
-		enum: ['Computer', 'Phone/Tablet', 'Gaming System', 'TV/Media Device', 'Other']
-	},
-	deviceType: {
-		type: String,
-		required: true,
-		enum: ['N/A', 'TV', 'Roku', 'Apple TV', 'Fire Stick', 'Xbox', 'Playstation', 'Nintendo', 'Other']
-	},
-	os: {
-		type: String,
-		required: true,
-		enum: ['N/A', 'Windows 10', 'Windows 8/8.1', 'Windows 7', 'Mac OSX 10.10 (Yosemite)', 'Mac OSX 10.9 (Mavericks)', 'Mac OSX 10.8 (Mountain Lion)', 'Mac OSX 10.7 (Lion)', 'iOS', 'Android', 'Windows', 'Other']
-	},
-	otherDevice: {
-		type: String,
-		default: '',
-		trim: true
-	},
-	problem: {
-		type: String,
-		required: true,
-		trim: true
-	},
-	isActive: {
-		type: Boolean,
-		default: true
 	},
 
 	// Instance log
@@ -123,6 +95,10 @@ var CheckinSchema = new Schema({
 	updated: {
 		type: Date
 	},
+	isActive: {
+		type: Boolean,
+		default: true
+	},
 
 	// Service log
 	status: {
@@ -130,11 +106,22 @@ var CheckinSchema = new Schema({
 		enum: ['Checkout pending', 'Verification pending', 'Work in progress', 'Completed', 'User action pending'],
 		default: ['Work in progress']
 	},
-	serviceDuetTime: {
-		type: Date
+	serviceLog: {
+		type: [Schema.ObjectId],
+		ref: 'ServiceEntry',
+		default: []
 	},
-	resolutionTime: {
-		type: Date
+	completionTechnician: {
+		type: Schema.ObjectId,
+		ref: 'User'
+	},
+	verificationTechnician: {
+		type: Schema.ObjectId,
+		ref: 'User'
+	},
+	checkoutTechnician: {
+		type: Schema.ObjectId,
+		ref: 'User'
 	},
 
 	// Service Now information

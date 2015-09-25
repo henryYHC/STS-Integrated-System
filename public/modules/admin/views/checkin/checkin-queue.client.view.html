@@ -3,103 +3,182 @@
 		<h2>STS Technician Panel - Check-in<a href="/#!/admin" class="btn btn-sm btn-default pull-right">Back</a></h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
 	</div>
 	<div class="container">
-		<div class="col-md-3" ng-init="initQueue()" >
+		<div class="col-md-3" >
 			<h4>Work in Progress
-				<a class="btn btn-xs btn-info pull-right" ng-click="refreshQueue()" style="margin-top: 0px;"><span class="glyphicon glyphicon-refresh"></span></a>
-			</h4><hr/>
-			<div style="height: 40vh; overflow: auto">
-				<table class="table table-hover" data-ng-show="queueItems.length">
+				<a class="btn btn-xs btn-info pull-right" ng-click="initWorkQueue()" style="margin-top: -2px;"><span class="glyphicon glyphicon-refresh"></span></a>
+			</h4>
+			<div style="height: 30vh; overflow: auto; margin-top: 1em;" ng-init="initWorkQueue()">
+				<table class="table table-hover" data-ng-show="workQueueItems.length">
 					<tr>
-						<th>Order</th>
-						<th>Customer</th>
+						<th>Order</th> <th>Customer</th>
 					</tr>
-					<tr data-ng-repeat="workQueueItem in workQueueItems" ng-click="viewCheckin(workQueueItem._id);">
+					<tr data-ng-repeat="workQueueItem in workQueueItems" ng-click="viewCheckin(workQueueItem);">
 						<td>
 							{{ $index + 1 }}
+							<span class="glyphicon glyphicon-cog pull-right" tooltip-placement="top" tooltip="Work in progress" ng-show="workQueueItem.status=='Work in progress'"></span>
+							<span class="glyphicon glyphicon-search pull-right" tooltip-placement="top" tooltip="Verification pending" ng-show="workQueueItem.status=='Verification pending'"></span>
 						</td>
 						<td>{{workQueueItem.user.displayName}}<span class="glyphicon glyphicon-info-sign pull-right" tooltip-placement="top" tooltip="{{(workQueueItem.created | date:'short') || 'N/A'}}"></span></td>
 					</tr>
 				</table>
-				<div class="alert alert-info text-center" data-ng-hide="workQueueItem.length">
+				<div class="alert alert-info text-center" data-ng-hide="workQueueItems.length">
+					<span class="glyphicon glyphicon-exclamation-sign"/> Nothing in queue!
+				</div>
+			</div>
+			<h4>Pending
+				<a class="btn btn-xs btn-info pull-right" ng-click="initPendingQueue()" style="margin-top: -2px;"><span class="glyphicon glyphicon-refresh"></span></a>
+			</h4>
+			<div style="height: 30vh; overflow: auto; margin-top: 1em;">
+				<table class="table table-hover" data-ng-show="pendingQueueItems.length" ng-init="initPendingQueue()">
+					<tr>
+						<th>Order</th> <th>Customer</th>
+					</tr>
+					<tr data-ng-repeat="pendingQueueItem in pendingQueueItems" ng-click="viewCheckin(pendingQueueItem);">
+						<td>
+							{{ $index + 1 }}
+							<span class="glyphicon glyphicon-time pull-right" tooltip-placement="top" tooltip="User action pending" ng-show="pendingQueueItem.status=='User action pending'"></span>
+							<span class="glyphicon glyphicon-ok pull-right" tooltip-placement="top" tooltip="Checkout pending" ng-show="pendingQueueItem.status=='Checkout pending'"></span>
+						</td>
+						<td>{{pendingQueueItem.user.displayName}}<span class="glyphicon glyphicon-info-sign pull-right" tooltip-placement="top" tooltip="{{(pendingQueueItem.created | date:'short') || 'N/A'}}"></span></td>
+					</tr>
+				</table>
+				<div class="alert alert-info text-center" data-ng-hide="pendingQueueItems.length">
 					<span class="glyphicon glyphicon-exclamation-sign"/> Nothing in queue!
 				</div>
 			</div>
 		</div>
 		<div class="col-md-9" style="height:60vh;">
 			<h4>
-				Quick View &emsp;
-				<span class="label label-success" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='Work in progress'">Work in progress</span>
-				<span class="label label-info" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='In queue'">In queue</span>
-				<span class="label label-info" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='Duplicate'">Duplicate</span>
-				<span class="label label-primary" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='House call pending'">House call pending</span>
-				<span class="label label-warning" style="font-size: 12px;" ng-show="quickWalkin && !quickWalkin.user.verified">User verification needed</span>
+				Check-in Information &emsp;
+				<span class="label label-success" style="font-size: 12px;" ng-show="checkin && checkin.status=='Work in progress'">Work in progress</span>
+				<span class="label label-info" style="font-size: 12px;" ng-show="checkin && checkin.status=='User action pending'">User action pending</span>
+				<span class="label label-warning" style="font-size: 12px;" ng-show="checkin && checkin.status=='Verification pending'">Verification pending</span>
+				<span class="label label-primary" style="font-size: 12px;" ng-show="checkin && checkin.status=='Checkout pending'">Checkout pending</span>
 
-				<div class="pull-right" ng-hide="!quickWalkin">
-					<button class="btn btn-md btn-danger" ng-click="setUnresolved(quickWalkin._id)">Unresolved</button>
-					<button class="btn btn-md btn-primary" ng-click="serviceWalkin(quickWalkin._id)">Begin Service</button>
+				<div class="pull-right" ng-hide="!checkin" style="margin-top: -16px;">
+					<button class="dropdown btn btn-sm btn-primary" dropdown dropdown-toggle on-toggle="toggled(open)">
+						<span class="dropdown-toggle">Change Status <b class="caret"></b></span>
+						<ul class="dropdown-menu">
+							<li><a ng-show="checkin.status=='Work in progress'" 	ng-click="setStatus('User action pending')">Pending</a></li>
+							<li><a ng-show="checkin.status=='User action pending'" 	ng-click="setStatus('Work in progress')">In Progress</a></li>
+							<li><a ng-show="checkin.status=='Work in progress'" 	ng-click="setStatus('Verification pending')">Completed</a></li>
+							<li><a ng-show="checkin.status=='Verification pending'&&technician.username != checkin.completionTechnician.username"
+								   ng-click="setStatus('Checkout pending')">Verified</a></li>
+							<li><a ng-show="checkin.status=='Checkout pending'"		ng-click="setStatus('Completed')">Checkout</a></li>
+						</ul>
+					</button>
 				</div>
-			</h4>
-			<hr/>
-			<div class="col-md-5" style="font-size: 12px;" ng-hide="!quickWalkin">
-				<div class="form-horizontal">
-					<div class="form-group" style="text-align: left">
-						<label class="col-sm-3 control-label" for="1">NetID:</label>
-						<div class="col-sm-9" id="1" style="margin-top: 8px;">{{quickWalkin.user.username || 'N/A'}}</div>
+			</h4><hr style="margin-top: 10px; margin-bottom: 10px;">
+			<div class="col-sm-5" ng-show="checkin" justified="true">
+				<tabset type="pills" class="navbar-warning">
+					<tab heading="User">
+						<div class="form-group" style="text-align: left; margin-top: 1em;">
+							<label for="netid">NetID:</label>
+							<div id="netid" style="margin-top: 8px;">{{checkin.user.username || 'N/A'}}</div>
+						</div>
+						<div class="form-group" style="text-align: left;">
+							<label for="name">Name:</label>
+							<div id="name" style="margin-top: 8px;">{{checkin.user.displayName || 'N/A'}}</div>
+						</div>
+						<div class="form-group" style="text-align: left;">
+							<label for="phone">Phone:</label>
+							<div id="phone" style="margin-top: 8px;">{{checkin.user.phone || 'N/A'}}</div>
+						</div>
+						<div class="form-group" style="text-align: left;">
+							<label for="location">Location:</label>
+							<div id="location" style="margin-top: 8px;">{{checkin.user.location || 'N/A'}}</div>
+						</div>
+					</tab>
+					<tab heading="Device">
+						<div class="form-group" style="text-align: left; margin-top: 1em;">
+							<label for="device">Device:</label>
+							<div id="device" style="margin-top: 8px;">
+								{{checkin.walkin.deviceCategory || 'N/A'}}
+							</div>
+						</div>
+						<div class="form-group" style="text-align: left;">
+							<label for="spec">Spec:</label>
+							<div id="spec" style="margin-top: 8px;">{{checkin.deviceManufacturer}} {{checkin.deviceModel}}</div>
+						</div>
+						<div class="form-group" style="text-align: left;">
+							<label for="OSInfo">OS Info:</label>
+							<div id="OSInfo" style="margin-top: 8px;">
+								{{checkin.walkin.os}} ({{checkin.deviceInfoOS.join() || 'N/A'}})
+							</div>
+						</div>
+						<div class="form-group" style="text-align: left;">
+							<label for="items">Item Received:</label>
+							<div id="items" style="margin-top: 8px;">{{checkin.itemReceived.join() || 'N/A'}}</div>
+						</div>
+						<div class="form-group" style="text-align: left;" ng-show="checkin.itemReceived.indexOf('Other')>=0">
+							<label for="otherItem">Other item:</label>
+							<div id="otherItem" style="margin-top: 8px;">{{checkin.otherItem || 'N/A'}}</div>
+						</div>
+					</tab>
+					<tab heading="Info">
+						<div class="form-group" style="text-align: left; margin-top: 1em;">
+							<label for="walkinId">Walk-in Id:</label>
+							<div id="walkinId" style="margin-top: 8px;">
+								{{checkin.walkin._id || 'N/A'}}
+								(<a ng-show="checkin.walkin" ng-click="viewWalkin(checkin.walkin._id)">View</a>)
+							</div>
+						</div>
+						<div class="form-group" style="text-align: left;">
+							<label for="username">Username:</label>
+							<div id="username" style="margin-top: 8px;">{{checkin.deviceInfoUser|| 'N/A'}}</div>
+						</div>
+						<div class="form-group" style="text-align: left;">
+							<label for="password">Password:</label>
+							<div id="password" style="margin-top: 8px;">{{checkin.deviceInfoPwd || 'N/A'}}</div>
+						</div>
+					</tab>
+					<tab heading="Tasks" active="true">
+						<div class="form-group" style="text-align: left; margin-top: 1em;">
+							<label for="reformat">Reformat?:</label>
+							<p id="reformat"><strong>{{checkin.reformatConsent || 'N/A'}}</strong></p>
+						</div>
+						<div class="form-group" style="text-align: left;">
+							<label for="suggestedActions">Suggested Actions:</label>
+							<p id="suggestedActions">{{checkin.suggestedAction || 'N/A'}}</p>
+						</div>
+						<div class="form-group" style="text-align: left;">
+							<label for="preDiagnostic">Preliminary Diagnostics:</label>
+							<p id="preDiagnostic">{{checkin.preDiagnostic || 'N/A'}}</p>
+						</div>
+					</tab>
+				</tabset>
+			</div>
+			<div class="col-sm-7" ng-show="checkin">
+				<h4>Service Worksheet</h4>
+				<div class="panel panel-default">
+					<div class="panel-body" style="height:40vh; overflow: auto;">
+						<div ng-repeat="log in checkin.serviceLog">
+							<span ng-style="setLogStyle(log.type)">
+								<span ng-show="log.type=='Important'">***</span>{{log.description}}
+							</span>
+							<span class="pull-right">
+								<span class="glyphicon glyphicon-user" tooltip-placement="top" tooltip="{{log.createdBy.displayName}}"></span>&nbsp;
+								<span class="glyphicon glyphicon-time" tooltip-placement="top" tooltip="{{log.createdAt | date : 'short' }}"></span>
+							</span>
+						</div>
 					</div>
 				</div>
-				<div class="form-horizontal">
-					<div class="form-group" style="text-align: left">
-						<label class="col-sm-3 control-label" for="2">Name:</label>
-						<div class="col-sm-9" id="2" style="margin-top: 8px;">{{quickWalkin.user.displayName || 'N/A'}}</div>
-					</div>
-				</div>
-				<div class="form-horizontal">
-					<div class="form-group" style="text-align: left">
-						<label class="col-sm-3 control-label" for="2.5">Phone:</label>
-						<div class="col-sm-9" id="2.5" style="margin-top: 8px;">{{quickWalkin.user.phone || 'N/A'}}</div>
-					</div>
-				</div>
-				<div class="form-horizontal">
-					<div class="form-group" style="text-align: left">
-						<label class="col-sm-3 control-label" for="2.8">Location:</label>
-						<div class="col-sm-9" id="2.8" style="margin-top: 8px;">{{quickWalkin.user.location || 'N/A'}}</div>
-					</div>
-				</div>
-				<div class="form-horizontal">
-					<div class="form-group" style="text-align: left">
-						<label class="col-sm-3 control-label" for="3">Device type:</label>
-						<div class="col-sm-9" id="3" style="margin-top: 8px;">{{quickWalkin.deviceCategory || 'N/A'}}</div>
-					</div>
-				</div>
-				<div class="form-horizontal">
-					<div class="form-group" style="text-align: left">
-						<label class="col-sm-3 control-label" for="4">Device info:</label>
-						<div class="col-sm-9" id="4" style="margin-top: 8px;" ng-show="quickWalkin.deviceType!='N/A'">{{quickWalkin.deviceType || 'N/A'}}</div>
-						<div class="col-sm-9" id="4" style="margin-top: 8px;" ng-show="quickWalkin.os!='N/A'">{{quickWalkin.os}}</div>
-					</div>
-				</div>
-				<div class="form-horizontal" ng-show="quickWalkin.otherDevice">
-					<div class="form-group" style="text-align: left">
-						<label class="col-sm-3 control-label" for="5">Other info:</label>
-						<div class="col-sm-9" id="5" style="margin-top: 8px;">{{quickWalkin.otherDevice || 'N/A'}}</div>
-					</div>
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Log work done here" ng-model="serviceLog">
+					<span class="input-group-btn">
+        				<button class="btn btn-sm btn-success" type="button" style="margin-top: -2px;margin-right: 2px;" ng-click="logService(serviceLog, 'Normal');">LOG</button>
+						<button class="dropdown btn btn-sm btn-success" dropdown dropdown-toggle on-toggle="toggled(open)" style="margin-top: -2px;">
+							<span class="dropdown-toggle"><b class="caret"></b></span>
+							<ul class="dropdown-menu" style="min-width: 0px; margin: 2px -55px 0;">
+								<li><a ng-click="logService(serviceLog, 'Important');">Important</a></li>
+								<li><a ng-click="logService(serviceLog, 'Note');">Note</a></li>
+							</ul>
+						</button>
+      				</span>
 				</div>
 			</div>
-			<div class="col-md-7" style="font-size: 12px;" ng-hide="!quickWalkin">
-				<div class="form-horizontal">
-					<div class="form-group" style="text-align: left;">
-						<label class="col-sm-3 control-label" for="7">Problem:</label>
-						<div class="col-sm-9" id="7" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;">{{quickWalkin.description || 'N/A'}}</p></div>
-					</div>
-				</div>
-				<div class="form-horizontal">
-					<div class="form-group" style="text-align: left;">
-						<label class="col-sm-3 control-label" for="8">Work note:</label>
-						<div class="col-sm-9" id="8" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;">{{quickWalkin.workNote || 'N/A'}}</p></div>
-					</div>
-				</div>
-			</div>
-			<div class="alert alert-info text-center" ng-show="!queueIquickWalkin" ng-hide="quickWalkin">
+
+			<div class="alert alert-info text-center" ng-hide="checkin">
 				<span class="glyphicon glyphicon-exclamation-sign"/> Please click any queue item to view
 			</div>
 		</div>
