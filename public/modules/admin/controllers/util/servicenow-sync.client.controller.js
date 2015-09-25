@@ -20,8 +20,6 @@ angular.module('admin').controller('ServicenowSyncController', ['$scope', '$http
         var syncWalkinTicketsAux = function(index, walkinIds){
             $http.put('/walkins/sync/' + walkinIds[index]).success(function(){
                 $scope.summary.syncCount++;
-
-                console.log(index + ' -> Success');
                 if(++index < walkinIds.length)
                     syncWalkinTicketsAux(index, walkinIds);
             }).error(logError);

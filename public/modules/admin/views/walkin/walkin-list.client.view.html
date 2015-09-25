@@ -61,8 +61,8 @@
                         <td data-ng-bind="walkin.user.displayName"></td>
                         <td data-ng-bind="walkin.user.username"></td>
                         <td data-ng-bind="walkin.deviceCategory"></td>
-                        <td ng-hide="!walkin.deviceType||walkin.deviceType=='N/A'||walkin.deviceType=='Other'">{{walkin.deviceType | limitTo: 13}}</td>
-                        <td ng-hide="!walkin.os||walkin.os=='N/A'||walkin.os=='Other'">{{walkin.os | limitTo: 13}}</td>
+                        <td ng-hide="walkin.otherDevice||!walkin.deviceType||walkin.deviceType=='N/A'||walkin.deviceType=='Other'">{{walkin.deviceType | limitTo: 13}}</td>
+                        <td ng-hide="walkin.otherDevice||!walkin.os||walkin.os=='N/A'||walkin.os=='Other'">{{walkin.os | limitTo: 13}}</td>
                         <td ng-show="walkin.otherDevice">{{walkin.otherDevice | limitTo: 13 }}</td>
                         <td data-ng-bind="walkin.status"></td>
                         <td data-ng-bind="walkin.resolutionType"></td>
