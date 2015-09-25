@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
 var selectedFields = '-password -salt -provider -providerData -resetPasswordToken -resetPasswordExpires';
 
 exports.listInvalid = function(req, res){
-    User.find({isActive : false})
+    User.find({$or : [{isActive : false},{verified:false}])
         .select(selectedFields)
         .exec(function(err, users){
             if(err) return res.status(400).send(err);
@@ -21,6 +21,8 @@ exports.listInvalid = function(req, res){
 
 exports.listBySearch = function(req, res){
     var query = req.body;
+    query.isActive = true;
+    query.verified = true;
 
     User.find(query).select(selectedFields)
         .exec(function(err, users){
