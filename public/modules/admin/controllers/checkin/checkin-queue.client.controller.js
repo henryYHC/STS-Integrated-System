@@ -64,7 +64,7 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 
 		$scope.setStatus = function(status){
 			if(confirm('Are you sure you want to set the status to ' + status)){
-				if(status == 'User action pending'){
+				if(status === 'User action pending'){
 					var note = prompt('Reason for setting the status to pending', '');
 					if(!note) return false;
 
@@ -79,7 +79,7 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 							$scope.initWorkQueue();
 							$scope.initPendingQueue();
 							$scope.checkin = checkin;
-							if(status == 'Completed')	$scope.checkin = undefined;
+							if(status === 'Completed')	$scope.checkin = undefined;
 							else						$scope.checkin = checkin;
 						});
 					}
