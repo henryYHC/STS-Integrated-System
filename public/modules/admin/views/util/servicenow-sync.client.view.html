@@ -32,19 +32,22 @@
             <th>Type</th>
             <th>Spec</th>
             <th>Status</th>
+            <th>Resolution</th>
             <th>Updated</th>
             <th>Created</th>
         </tr>
-        <tr data-ng-repeat="entry in walkins | orderBy: '-created' : true" data-ng-href="#">
-            <td data-ng-bind="entry._id"></td>
-            <td data-ng-bind="entry.user.displayName"></td>
-            <td data-ng-bind="entry.user.username"></td>
-            <td data-ng-bind="entry.deviceCategory"></td>
-            <td data-ng-bind="entry.deviceType" ng-hide="entry.deviceType=='N/A'"></td>
-            <td data-ng-bind="entry.os" ng-hide="entry.os=='N/A'"></td>
-            <td data-ng-bind="entry.status"></td>
-            <td data-ng-bind="(entry.updated | date:'short') || 'N/A'"></td>
-            <td data-ng-bind="(entry.created | date:'short') || 'N/A'"></td>
+        <tr data-ng-repeat="walkin in walkins | orderBy: '-created' : true" data-ng-href="#">
+            <td data-ng-bind="walkin._id"></td>
+            <td data-ng-bind="walkin.user.displayName"></td>
+            <td data-ng-bind="walkin.user.username"></td>
+            <td data-ng-bind="walkin.deviceCategory"></td>
+            <td ng-hide="!walkin.deviceType||walkin.deviceType=='N/A'||walkin.deviceType=='Other'">{{walkin.deviceType | limitTo: 13}}</td>
+            <td ng-hide="!walkin.os||walkin.os=='N/A'||walkin.os=='Other'">{{walkin.os | limitTo: 13}}</td>
+            <td ng-show="walkin.otherDevice">{{walkin.otherDevice | limitTo: 13 }}</td>
+            <td data-ng-bind="walkin.status"></td>
+            <td data-ng-bind="walkin.resolutionType"></td>
+            <td data-ng-bind="(walkin.updated | date:'short') || 'N/A'"></td>
+            <td data-ng-bind="(walkin.created | date:'short') || 'N/A'"></td>
         </tr>
     </table>
 </section>
