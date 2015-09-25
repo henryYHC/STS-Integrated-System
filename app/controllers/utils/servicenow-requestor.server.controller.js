@@ -28,7 +28,7 @@ var popOpt = [
 ];
 
 var getTemplateObj = function(walkin){
-    var subject = 'CR: ', os = walkin.os;
+    var subject = 'STS: ', os = walkin.os;
     var obj = { short_description: '', category1 : '', category2 : '', category3 : '' };
 
     switch(walkin.resolutionType){

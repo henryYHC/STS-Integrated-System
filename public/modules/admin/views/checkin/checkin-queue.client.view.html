@@ -15,8 +15,8 @@
 					<tr data-ng-repeat="workQueueItem in workQueueItems" ng-click="viewCheckin(workQueueItem);">
 						<td>
 							{{ $index + 1 }}
-							<span class="glyphicon glyphicon-cog pull-right" tooltip-placement="top" tooltip="Work in progress" ng-show="workQueueItem.status=='Work in progress'"></span>
-							<span class="glyphicon glyphicon-search pull-right" tooltip-placement="top" tooltip="Verification pending" ng-show="workQueueItem.status=='Verification pending'"></span>
+							<span class="glyphicon glyphicon-wrench pull-right" tooltip-placement="top" tooltip="Work in progress" ng-show="workQueueItem.status=='Work in progress'"></span>
+							<span class="glyphicon glyphicon-eye-open pull-right" tooltip-placement="top" tooltip="Verification pending" ng-show="workQueueItem.status=='Verification pending'"></span>
 						</td>
 						<td>{{workQueueItem.user.displayName}}<span class="glyphicon glyphicon-info-sign pull-right" tooltip-placement="top" tooltip="{{(workQueueItem.created | date:'short') || 'N/A'}}"></span></td>
 					</tr>
@@ -36,7 +36,7 @@
 					<tr data-ng-repeat="pendingQueueItem in pendingQueueItems" ng-click="viewCheckin(pendingQueueItem);">
 						<td>
 							{{ $index + 1 }}
-							<span class="glyphicon glyphicon-time pull-right" tooltip-placement="top" tooltip="User action pending" ng-show="pendingQueueItem.status=='User action pending'"></span>
+							<span class="glyphicon glyphicon-hourglass pull-right" tooltip-placement="top" tooltip="User action pending" ng-show="pendingQueueItem.status=='User action pending'"></span>
 							<span class="glyphicon glyphicon-ok pull-right" tooltip-placement="top" tooltip="Checkout pending" ng-show="pendingQueueItem.status=='Checkout pending'"></span>
 						</td>
 						<td>{{pendingQueueItem.user.displayName}}<span class="glyphicon glyphicon-info-sign pull-right" tooltip-placement="top" tooltip="{{(pendingQueueItem.created | date:'short') || 'N/A'}}"></span></td>
