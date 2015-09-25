@@ -40,7 +40,7 @@ exports.validateNetId = function(req, res){
         user.provider = undefined;
         user.password = undefined;
 
-        if(!user.isActive)  res.jsonp( { status : 'Invalid', user : user });
+        if(!user.isActive || !user.verified)  res.jsonp( { status : 'Invalid', user : user });
         else                res.jsonp( { status : 'Found', user : user });
     }
 };
