@@ -189,7 +189,7 @@
                     <div class="col-sm-6" id="resolutionType" style="margin-top: 8px;">
                         <div id="resoultionType-select" ng-init="initResolutionType();">
                             <select id="resoultionType-s" class="form-control" data-ng-model="walkin.resolutionType">
-                                <option ng-repeat="option in resolutionOptions" value="{{option}}" ng-selected="option == walkin.resolutionType">{{option}}</option>
+                                <option ng-repeat="option in resolutionOptions" value="{{option}}" ng-selected="option == walkin.resolutionType" ng-hide="option=='Check-in'">{{option}}</option>
                             </select>
                         </div>
                     </div>

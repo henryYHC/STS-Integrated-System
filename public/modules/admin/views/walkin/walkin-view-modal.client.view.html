@@ -57,6 +57,7 @@
                     <label class="col-sm-3 control-label" for="deviceI">Device info:</label>
                     <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="walkin.deviceType!='N/A'">{{walkin.deviceType}}</div>
                     <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="walkin.os!='N/A'">{{walkin.os}}</div>
+                    <div class="col-sm-9" id="deviceI" style="margin-top: 8px;" ng-show="walkin.os=='N/A'&&walkin.deviceType=='N/A'">'N/A'</div>
                 </div>
             </div>
             <div class="form-horizontal" ng-show="walkin.otherDevice">
