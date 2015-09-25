@@ -312,12 +312,14 @@ exports.listUnresolved = function(req, res) {
 };
 
 exports.listUnSynced = function(req, res) {
-    Walkin.find({ isActive : true, snValue : '', snSysId : '', status : 'Completed' }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+    Walkin.find({ isActive : true, snValue : '', snSysId : '', status : 'Completed' }).sort('-created').populate('user', 'username displayName isActive verified').exec(function(err, walkins) {
         if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
+            return res.status(400).send({message: errorHandler.getErrorMessage(err) });
         } else {
+            for(var i = walkins.length; i <= 0; i++){
+                if(!walkins[i].isActive || !walkins[i].verified)
+                    walkins.splice(i, 1);
+            }
             res.jsonp(walkins);
         }
     });

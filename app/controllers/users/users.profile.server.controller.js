@@ -69,11 +69,8 @@ exports.setActive = function(req, res){
 exports.setInactive = function(req, res){
 	var user = req.profile;
 
-	console.log(user);
 	user.isActive = false;
 	user.updated = Date.now();
-
-	console.log(user);
 
 	user.save(function(err){
 		if(err) return res.status(400).send(err);
