@@ -80,7 +80,15 @@ exports.pendingQueue = function(req, res) {
  * Update a Checkin
  */
 exports.update = function(req, res) {
+    var checkin = req.checkin ;
+    checkin = _.extend(checkin , req.body);
 
+    checkin.save(function(err) {
+        if (err)
+            return res.status(400).send(err);
+        else
+            res.jsonp(checkin);
+    });
 };
 
 exports.logService = function(req, res){

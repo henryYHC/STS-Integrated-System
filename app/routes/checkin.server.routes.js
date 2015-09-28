@@ -10,7 +10,9 @@ module.exports = function(app) {
     app.route('/checkins/log/:checkinId').post(users.hasPermission, checkins.logService);
     app.route('/checkins/setStatus/:checkinId').post(users.hasPermission, checkins.setStatus);
 
-    app.route('/checkins/:checkinId').get(users.hasPermission, checkins.view);
+    app.route('/checkins/:checkinId')
+        .get(users.hasPermission, checkins.view)
+        .put(users.hasPermission, checkins.update);
     app.route('/checkins/:walkinId').post(users.hasPermission, checkins.create);
 
     app.param('walkinId', walkins.walkinByID);

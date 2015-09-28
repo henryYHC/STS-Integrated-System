@@ -10,6 +10,13 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 
 		$scope.technician = user;
 
+		$scope.initQueues = function(){
+			$scope.workQueueItems = undefined;
+			$scope.pendingQueueItems = undefined;
+			$scope.initWorkQueue();
+			$scope.initPendingQueue();
+		};
+
 		$scope.initWorkQueue = function(){
 			$http.get('/checkins/workQueue').success(function(workQueueItems){
 				$scope.workQueueItems = workQueueItems;
@@ -38,7 +45,7 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 			});
 		};
 
-		$scope.logService = function(log, type){
+		$scope.logService = function(log, type, callback){
 			if(log){
 				$http.post('/checkins/log/'+$scope.checkin._id, {checkin : $scope.checkin, log : {description : log, type: type}})
 					.success(function(){
@@ -46,6 +53,7 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 							$scope.workQueueItems[$scope.workQueueItems.indexOf($scope.checkin)] = checkin;
 							$scope.checkin = checkin;
 							$scope.serviceLog = undefined;
+							if(callback) callback();
 						});
 					}
 				);
@@ -63,7 +71,9 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 		};
 
 		$scope.setStatus = function(status){
-			if(confirm('Are you sure you want to set the status to ' + status)){
+			if(status === 'Completed')
+				$scope.checkout();
+			else if(confirm('Are you sure you want to set the status to ' + status)){
 				if(status === 'User action pending'){
 					var note = prompt('Reason for setting the status to pending', '');
 					if(!note) return false;
@@ -76,15 +86,37 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 				$http.post('/checkins/setStatus/'+$scope.checkin._id, {status: status})
 					.success(function(){
 						$http.get('/checkins/'+$scope.checkin._id).success(function(checkin){
-							$scope.initWorkQueue();
-							$scope.initPendingQueue();
+							$scope.initQueues();
 							$scope.checkin = checkin;
-							if(status === 'Completed')	$scope.checkin = undefined;
-							else						$scope.checkin = checkin;
+							$scope.checkin = checkin;
 						});
 					}
 				);
 			}
+		};
+
+		$scope.checkout = function(){
+			var viewLibaility = $modal.open({
+				animation: true,
+				templateUrl: 'modules/admin/views/checkin/checkin-pickup-liability-modal.client.view.html',
+				controller: 'LiabilityModalCtrl',
+				size: 'lg',
+				resolve: { walkinInfo : function() { return $scope.checkin.user.displayName; } }
+			});
+
+			viewLibaility.result.then(
+				function(response){
+					if(response){
+						$http.put('/checkins/'+$scope.checkin._id, {pickupSig: response, status : 'Completed'})
+							.success(function(){
+								$scope.logService('Status changed to Completed', 'Note',
+								function(){ $scope.checkin = undefined; $scope.initQueues(); });
+							})
+							.error(function(err){ alert('Action failed.'); });
+					}
+				}
+			);
+
 		};
 	}
 ]);

@@ -5,7 +5,7 @@
 	<div class="container">
 		<div class="col-md-3" >
 			<h4>Work in Progress
-				<a class="btn btn-xs btn-info pull-right" ng-click="initWorkQueue()" style="margin-top: -2px;"><span class="glyphicon glyphicon-refresh"></span></a>
+				<a class="btn btn-xs btn-info pull-right" ng-click="initQueues()" style="margin-top: -2px;"><span class="glyphicon glyphicon-refresh"></span></a>
 			</h4>
 			<div style="height: 30vh; overflow: auto; margin-top: 1em;" ng-init="initWorkQueue()">
 				<table class="table table-hover" data-ng-show="workQueueItems.length">
@@ -25,9 +25,7 @@
 					<span class="glyphicon glyphicon-exclamation-sign"/> Nothing in queue!
 				</div>
 			</div>
-			<h4>Pending
-				<a class="btn btn-xs btn-info pull-right" ng-click="initPendingQueue()" style="margin-top: -2px;"><span class="glyphicon glyphicon-refresh"></span></a>
-			</h4>
+			<h4>Pending</h4>
 			<div style="height: 30vh; overflow: auto; margin-top: 1em;">
 				<table class="table table-hover" data-ng-show="pendingQueueItems.length" ng-init="initPendingQueue()">
 					<tr>
