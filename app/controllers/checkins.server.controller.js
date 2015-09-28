@@ -102,8 +102,6 @@ exports.logService = function(req, res){
 
         checkin.serviceLog.push(entry);
 
-        console.log(checkin);
-
         checkin.save(function(err){
             if(err) return res.status(400).send(err);
             res.json(entry);

@@ -8,6 +8,7 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 		else if(user.roles.indexOf('technician') < 0 && user.roles.indexOf('admin') < 0)
 			$location.path('/');
 
+		$scope.template = '';
 		$scope.technician = user;
 
 		$scope.initQueues = function(){
@@ -26,6 +27,13 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 		$scope.initPendingQueue = function(){
 			$http.get('/checkins/pendingQueue').success(function(pendingQueueItems){
 				$scope.pendingQueueItems = pendingQueueItems;
+			});
+		};
+
+		$scope.initTemplates = function(){
+			$http.get('/checkins/getTemplates').success(function(templates){
+				console.log(templates);
+				$scope.templates = templates;
 			});
 		};
 

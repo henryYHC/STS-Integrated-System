@@ -70,78 +70,103 @@
 			<div class="col-sm-5" ng-show="checkin" justified="true">
 				<tabset type="pills" class="navbar-warning">
 					<tab heading="User">
-						<div class="form-group" style="text-align: left; margin-top: 1em;">
-							<label for="netid">NetID:</label>
-							<div id="netid" style="margin-top: 8px;">{{checkin.user.username || 'N/A'}}</div>
+						<div class="col-sm-6">
+							<div class="form-group" style="text-align: left; margin-top: 1em;">
+								<label for="netid">NetID:</label>
+								<div id="netid" style="margin-top: 8px;">{{checkin.user.username || 'N/A'}}</div>
+							</div>
+							<div class="form-group" style="text-align: left;">
+								<label for="name">Name:</label>
+								<div id="name" style="margin-top: 8px;">{{checkin.user.displayName || 'N/A'}}</div>
+							</div>
+							<div class="form-group" style="text-align: left;">
+								<label for="phone">Phone:</label>
+								<div id="phone" style="margin-top: 8px;">{{checkin.user.phone || 'N/A'}}</div>
+							</div>
+							<div class="form-group" style="text-align: left;">
+								<label for="location">Location:</label>
+								<div id="location" style="margin-top: 8px;">{{checkin.user.location || 'N/A'}}</div>
+							</div>
 						</div>
-						<div class="form-group" style="text-align: left;">
-							<label for="name">Name:</label>
-							<div id="name" style="margin-top: 8px;">{{checkin.user.displayName || 'N/A'}}</div>
-						</div>
-						<div class="form-group" style="text-align: left;">
-							<label for="phone">Phone:</label>
-							<div id="phone" style="margin-top: 8px;">{{checkin.user.phone || 'N/A'}}</div>
-						</div>
-						<div class="form-group" style="text-align: left;">
-							<label for="location">Location:</label>
-							<div id="location" style="margin-top: 8px;">{{checkin.user.location || 'N/A'}}</div>
+						<div class="col-sm-6">
+							<div class="form-group" style="text-align: left; margin-top: 1em;">
+								<label for="username">Username:</label>
+								<div id="username" style="margin-top: 8px;">{{checkin.deviceInfoUser|| 'N/A'}}</div>
+							</div>
+							<div class="form-group" style="text-align: left;">
+								<label for="password">Password:</label>
+								<div id="password" style="margin-top: 8px;">{{checkin.deviceInfoPwd || 'N/A'}}</div>
+							</div>
 						</div>
 					</tab>
 					<tab heading="Device">
-						<div class="form-group" style="text-align: left; margin-top: 1em;">
-							<label for="device">Device:</label>
-							<div id="device" style="margin-top: 8px;">
-								{{checkin.walkin.deviceCategory || 'N/A'}}
+						<div class="col-sm-6">
+							<div class="form-group" style="text-align: left; margin-top: 1em;">
+								<label for="device">Device:</label>
+								<div id="device" style="margin-top: 8px;">
+									{{checkin.walkin.deviceCategory || 'N/A'}}
+								</div>
+							</div>
+							<div class="form-group" style="text-align: left;">
+								<label for="spec">Spec:</label>
+								<div id="spec" style="margin-top: 8px;">{{checkin.deviceManufacturer}} {{checkin.deviceModel}}</div>
+							</div>
+							<div class="form-group" style="text-align: left;">
+								<label for="OSInfo">OS Info:</label>
+								<div id="OSInfo" style="margin-top: 8px;">
+									{{checkin.walkin.os}} ({{checkin.deviceInfoOS.join() || 'N/A'}})
+								</div>
+							</div>
+							<div class="form-group" style="text-align: left;">
+								<label for="items">Item Received:</label>
+								<div id="items" style="margin-top: 8px;">{{checkin.itemReceived.join() || 'N/A'}}</div>
+							</div>
+							<div class="form-group" style="text-align: left;" ng-show="checkin.itemReceived.indexOf('Other')>=0">
+								<label for="otherItem">Other item:</label>
+								<div id="otherItem" style="margin-top: 8px;">{{checkin.otherItem || 'N/A'}}</div>
 							</div>
 						</div>
-						<div class="form-group" style="text-align: left;">
-							<label for="spec">Spec:</label>
-							<div id="spec" style="margin-top: 8px;">{{checkin.deviceManufacturer}} {{checkin.deviceModel}}</div>
-						</div>
-						<div class="form-group" style="text-align: left;">
-							<label for="OSInfo">OS Info:</label>
-							<div id="OSInfo" style="margin-top: 8px;">
-								{{checkin.walkin.os}} ({{checkin.deviceInfoOS.join() || 'N/A'}})
-							</div>
-						</div>
-						<div class="form-group" style="text-align: left;">
-							<label for="items">Item Received:</label>
-							<div id="items" style="margin-top: 8px;">{{checkin.itemReceived.join() || 'N/A'}}</div>
-						</div>
-						<div class="form-group" style="text-align: left;" ng-show="checkin.itemReceived.indexOf('Other')>=0">
-							<label for="otherItem">Other item:</label>
-							<div id="otherItem" style="margin-top: 8px;">{{checkin.otherItem || 'N/A'}}</div>
-						</div>
-					</tab>
-					<tab heading="Info">
-						<div class="form-group" style="text-align: left; margin-top: 1em;">
-							<label for="walkinId">Walk-in Id:</label>
-							<div id="walkinId" style="margin-top: 8px;">
-								{{checkin.walkin._id || 'N/A'}}
-								(<a ng-show="checkin.walkin" ng-click="viewWalkin(checkin.walkin._id)">View</a>)
-							</div>
-						</div>
-						<div class="form-group" style="text-align: left;">
-							<label for="username">Username:</label>
-							<div id="username" style="margin-top: 8px;">{{checkin.deviceInfoUser|| 'N/A'}}</div>
-						</div>
-						<div class="form-group" style="text-align: left;">
-							<label for="password">Password:</label>
-							<div id="password" style="margin-top: 8px;">{{checkin.deviceInfoPwd || 'N/A'}}</div>
-						</div>
+
 					</tab>
 					<tab heading="Tasks" active="true">
-						<div class="form-group" style="text-align: left; margin-top: 1em;">
-							<label for="reformat">Reformat?:</label>
-							<p id="reformat"><strong>{{checkin.reformatConsent || 'N/A'}}</strong></p>
+						<div class="col-sm-6">
+							<div class="form-group" style="text-align: left; margin-top: 1em;">
+								<label for="reformat">Reformat?:</label>
+								<p id="reformat" style="color: red;">{{checkin.reformatConsent.toString().toUpperCase() || 'N/A'}}</p>
+							</div>
 						</div>
-						<div class="form-group" style="text-align: left;">
-							<label for="suggestedActions">Suggested Actions:</label>
-							<p id="suggestedActions">{{checkin.suggestedAction || 'N/A'}}</p>
+						<div class="col-sm-6">
+							<div class="form-group" style="text-align: left; margin-top: 1em;">
+								<label for="walkinId">Walk-in Id:</label>
+								<div id="walkinId">
+									{{checkin.walkin._id || 'N/A'}}
+									(<a ng-show="checkin.walkin" ng-click="viewWalkin(checkin.walkin._id)">View</a>)
+								</div>
+							</div>
 						</div>
-						<div class="form-group" style="text-align: left;">
-							<label for="preDiagnostic">Preliminary Diagnostics:</label>
-							<p id="preDiagnostic">{{checkin.preDiagnostic || 'N/A'}}</p>
+						<div class="col-sm-12">
+							<div class="form-group" style="text-align: left;">
+								<label for="suggestedActions">Suggested Actions:</label>
+								<p id="suggestedActions">{{checkin.suggestedAction || 'N/A'}}</p>
+							</div>
+							<div class="form-group" style="text-align: left;">
+								<label for="preDiagnostic">Preliminary Diagnostics:</label>
+								<p id="preDiagnostic">{{checkin.preDiagnostic || 'N/A'}}</p>
+							</div>
+						</div>
+					</tab>
+					<tab heading="Template" ng-init="initTemplates()">
+						<div class="col-sm-12">
+							<select id="template" class="form-control" ng-model="template" style="margin: 1em 0 1em;">
+								<option value="" disabled selected="selected">Select a template</option>
+								<option ng-repeat="temp in templates" valeu="{{temp.name}}">{{temp.name}}</option>
+							</select>
+							<ul class="list-group" ng-show="template">
+								<li class="list-group-item" style="margin: 5px 0 5px;" ng-repeat="item in templates[template].items">
+									{{item}}
+									<span class="btn btn-xs btn-primary pull-right" ng-click="logService(item, 'Note');" style="margin: 0 0 0; padding: 1px 5px 1px 5px; max-width: 20%;">log</span>
+								</li>
+							</ul>
 						</div>
 					</tab>
 				</tabset>
