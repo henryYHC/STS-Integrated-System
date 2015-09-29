@@ -1,7 +1,7 @@
 # STS Integrated System
 
 ### Current version: [v0.8.1](https://github.com/henryYHC/STS-Integrated-System/releases/tag/0.8.1)
-### Pre-release version: [v1.4.0](https://github.com/henryYHC/STS-Integrated-System/releases/tag/1.40)
+##### Pre-release version: [v1.4.0](https://github.com/henryYHC/STS-Integrated-System/releases/tag/1.40)
 
 ### Index
 
