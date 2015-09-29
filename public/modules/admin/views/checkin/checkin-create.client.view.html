@@ -266,6 +266,9 @@
 		<div class="text-center text-danger" style="margin-bottom: 4em;height: 16px;width: 100%;">
 			<strong ng-show="error">{{error.message || 'Missing  required information' }}</strong>
 		</div>
-		<button class="btn btn-lg btn-primary pull-right" ng-click="createCheckin()">Submit</button>
+		<span class="pull-right">
+			<button class="btn btn-lg btn-primary" ng-click="createCheckin()">Submit</button>
+			<a href="/#!/admin/walkins" class="btn btn-lg btn-default pull-right">Back</a>
+		</span>
 	</form>
 </section>
