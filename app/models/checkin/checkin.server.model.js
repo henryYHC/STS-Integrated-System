@@ -123,6 +123,11 @@ var CheckinSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'User'
 	},
+	templateApplied: {
+		type: String,
+		trim: true,
+		default: ''
+	},
 
 	// Service Now information
 	snSysId: {

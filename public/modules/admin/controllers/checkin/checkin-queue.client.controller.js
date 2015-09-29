@@ -8,7 +8,6 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 		else if(user.roles.indexOf('technician') < 0 && user.roles.indexOf('admin') < 0)
 			$location.path('/');
 
-		$scope.template = '';
 		$scope.technician = user;
 
 		$scope.initQueues = function(){
@@ -39,6 +38,8 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 
 		$scope.viewCheckin = function(checkin){
 			$scope.checkin = checkin;
+			$scope.template = checkin.templateApplied;
+			console.log(checkin);
 		};
 
 		$scope.viewWalkin = function(id){
@@ -53,6 +54,14 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 			});
 		};
 
+		$scope.findLogWithAttr = function(attr, value) {
+			var items = $scope.checkin.serviceLog;
+			for(var i = 0; i < items.length; i ++) {
+				if(items[i][attr] === value)	return i;
+			}
+			return -1;
+		};
+
 		$scope.logService = function(log, type, callback){
 			if(log){
 				$http.post('/checkins/log/'+$scope.checkin._id, {checkin : $scope.checkin, log : {description : log, type: type}})
@@ -61,11 +70,20 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 							$scope.workQueueItems[$scope.workQueueItems.indexOf($scope.checkin)] = checkin;
 							$scope.checkin = checkin;
 							$scope.serviceLog = undefined;
-							if(callback) callback();
+							if(callback) callback(checkin);
 						});
 					}
 				);
 			}
+		};
+
+		$scope.applyTemplate = function(templateName){
+			$http.put('/checkins/'+$scope.checkin._id, {templateApplied : templateName})
+				.success(function(response){
+					$scope.logService('Template (' + templateName + ') applied', 'Note', function(checkin){
+						$scope.checkin = checkin;
+					});
+				});
 		};
 
 		$scope.setLogStyle = function(type){

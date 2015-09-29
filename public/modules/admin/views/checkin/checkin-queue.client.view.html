@@ -156,18 +156,25 @@
 						</div>
 					</tab>
 					<tab heading="Template" ng-init="initTemplates()">
-						<div class="col-sm-12">
+						<div class="input-group">
 							<select id="template" class="form-control" ng-model="template" style="margin: 1em 0 1em;">
 								<option value="" disabled selected="selected">Select a template</option>
 								<option ng-repeat="temp in templates" valeu="{{temp.name}}">{{temp.name}}</option>
 							</select>
-							<ul class="list-group" ng-show="template">
-								<li class="list-group-item" style="margin: 5px 0 5px;" ng-repeat="item in templates[template].items">
-									{{item}}
-									<span class="btn btn-xs btn-primary pull-right" ng-click="logService(item, 'Note');" style="margin: 0 0 0; padding: 1px 5px 1px 5px; max-width: 20%;">log</span>
-								</li>
-							</ul>
+      							<span class="input-group-btn">
+									<button class="btn btn-sm btn-warning" ng-disabled="template == checkin.templateApplied" ng-click="applyTemplate(template);">Apply</button>
+      							</span>
 						</div>
+
+						<ul class="list-group" ng-show="template" style="height: 40vh;overflow: auto;">
+							<li class="list-group-item" style="margin: 5px 0 5px;" ng-repeat="item in templates[template].items">
+								{{item}}
+									<span class="pull-right" ng-switch="findLogWithAttr('description', item)">
+										<span ng-switch-default class="label label-success">Done</span>
+										<span ng-switch-when="-1" class="btn btn-xs btn-primary" ng-click="logService(item, 'Normal');" style="margin: 0 0 0; padding: 1px 5px 1px 5px;">log</span>
+									</span>
+							</li>
+						</ul>
 					</tab>
 				</tabset>
 			</div>

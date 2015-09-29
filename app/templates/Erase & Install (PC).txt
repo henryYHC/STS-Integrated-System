@@ -1,0 +1,16 @@
+​Permission to reinstall
+Obtain Windows CD Key
+Verify CD key is non-pirated version
+Formatting of drive necessary for fix (optional)
+Used Recovery Drive to perform install
+Used Install Disc/Drive to perform install
+Create User account for student
+Uninstall any AntiVirus software
+Update drivers via Ethernet
+Perform system updates
+Copy StimPak to desktop
+Run CCleaner
+Install McAfee AV
+Install Bradford Agent
+Connect to EmoryUnplugged, verify, then remove your NetID
+Update Notes and contact Customer informing them machine is RFP
