@@ -11,6 +11,7 @@ module.exports = function(app) {
     app.route('/checkins/pendingQueue').get(users.hasPermission, checkins.pendingQueue);
     app.route('/checkins/log/:checkinId').post(users.hasPermission, checkins.logService);
     app.route('/checkins/setStatus/:checkinId').post(users.hasPermission, checkins.setStatus);
+    app.route('/checkins/printLabel/:checkinId').get(users.hasPermission, checkins.printLabel);
 
     app.route('/checkins/:checkinId')
         .get(users.hasPermission, checkins.view)

@@ -86,6 +86,11 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 				});
 		};
 
+		$scope.reprintLabel = function(){
+			if(confirm('Are you sure you want to reprint label for this instance?'))
+				$http.get('/checkins/printLabel/' + $scope.checkin._id);
+		};
+
 		$scope.setLogStyle = function(type){
 			switch(type){
 				case 'Important':

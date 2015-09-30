@@ -8,7 +8,8 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Walkin = mongoose.model('Walkin'),
     ServiceEntry = mongoose.model('ServiceEntry'),
-    Checkin = mongoose.model('Checkin');
+    Checkin = mongoose.model('Checkin'),
+    label = require('./utils/label-util.server.controller.js');
 
 var popOpt = [
     { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified'},
@@ -34,6 +35,10 @@ exports.create = function(req, res) {
 
     checkin.save(function(err, response){
         if(err) return res.status(400).send(err);
+        label.printCheckinLabel(checkin.itemReceived.length,
+            walkin.user.displayName,
+            walkin.user.username,
+            checkin.created.toDateString());
 
         // Resolve walkin
         walkin.status = 'Completed';
@@ -129,6 +134,14 @@ exports.setStatus = function(req, res){
         if(err) return res.status(400).send(err);
         res.json(checkin);
     });
+};
+
+exports.printLabel = function(req, res){
+    var checkin = req.checkin;
+    label.printCheckinLabel(checkin.itemReceived.length,
+        checkin.user.displayName,
+        checkin.user.username,
+        checkin.created.toDateString());
 };
 
 /**
