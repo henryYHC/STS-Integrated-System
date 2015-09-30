@@ -138,10 +138,11 @@ exports.setStatus = function(req, res){
 
 exports.printLabel = function(req, res){
     var checkin = req.checkin;
-    label.printCheckinLabel(checkin.itemReceived.length,
+    label.printCheckinLabel(1,
         checkin.user.displayName,
         checkin.user.username,
         checkin.created.toDateString());
+    res.status(200).send('Printed.');
 };
 
 /**
