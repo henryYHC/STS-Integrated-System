@@ -4,7 +4,9 @@ angular.module('admin').controller('ServicenowSyncController', ['$scope', '$http
 	function($scope, $http) {
 
         $scope.summary = { count : 0 };
+        $scope.walkinIds = {};
         $scope.loading = false;
+        $scope.syncing = false;
 
         $scope.getTickets = function(){
             $scope.loading = true; $scope.walkins = undefined;
@@ -22,14 +24,29 @@ angular.module('admin').controller('ServicenowSyncController', ['$scope', '$http
                 $scope.summary.syncCount++;
                 if(++index < walkinIds.length)
                     syncWalkinTicketsAux(index, walkinIds);
+                else {
+                    $scope.syncing = false;
+                }
             }).error(logError);
         };
 
         $scope.syncTickets = function(){
             $scope.summary.syncCount = 0;
-            var walkinIds = [], walkins = $scope.walkins;
-            for(var i in walkins)   walkinIds.push(walkins[i]._id);
-            syncWalkinTicketsAux(0, walkinIds);
+            var i, selectedIds = $scope.walkinIds;
+            var ids = [], walkins = $scope.walkins;
+
+            if(selectedIds){
+                var key, keys = Object.keys(selectedIds);
+                for(i in keys){
+                    key = keys[i];
+                    if(selectedIds[key]) ids.push(key);
+                }
+                $scope.summary.count = ids.length;
+            }
+            else    for(i in walkins)   ids.push(walkins[i]._id);
+
+            $scope.syncing = true;
+            syncWalkinTicketsAux(0, ids);
         };
 	}
 ]);

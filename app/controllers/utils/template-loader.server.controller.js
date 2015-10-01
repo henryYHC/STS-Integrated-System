@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
     _ = require('lodash'),
     fs = require('fs');
 
-var templateDirPath = __dirname + '/../../templates/';
+var templateDirPath = __dirname + '/../../templates/checkin';
 
 exports.getTemplateNames = function(){
     return fs.readdirSync(templateDirPath);
