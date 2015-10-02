@@ -52,7 +52,7 @@ angular.module('admin').controller('CheckinCreateController', ['$http', '$scope'
 			if(checkinInfo.itemReceived.length <= 0){
 				$scope.error.itemError = true; return false;
 			}
-			if(checkinInfo.itemReceived.indexOf('Other')>= 0){
+			if(checkinInfo.itemReceived.indexOf('Other')>= 0 && !checkinInfo.otherItem){
 				$scope.error.otherItemError = true; return false;
 			}
 
