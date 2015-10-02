@@ -101,12 +101,15 @@
 						</div>
 					</tab>
 					<tab heading="Device">
-						<div class="col-sm-6">
-							<div class="form-group" style="text-align: left; margin-top: 1em;">
-								<label for="device">Device:</label>
-								<div id="device" style="margin-top: 8px;">
-									{{checkin.walkin.deviceCategory || 'N/A'}}
+						<div class="col-sm-12">
+							<div class="col-sm-12" style="padding-left: 0px;">
+								<div class="form-group col-sm-6" style="text-align: left; margin-top: 1em; padding-left: 0px;">
+									<label for="device">Device:</label>
+									<div id="device" style="margin-top: 8px;">
+										{{checkin.walkin.deviceCategory || 'N/A'}}
+									</div>
 								</div>
+								<div class="col-sm-6"><button class="btn btn-sm btn-info pull-right" ng-click="reprintLabel();">Reprint Label</button></div>
 							</div>
 							<div class="form-group" style="text-align: left;">
 								<label for="spec">Spec:</label>
@@ -118,16 +121,18 @@
 									{{checkin.walkin.os}} ({{checkin.deviceInfoOS.join() || 'N/A'}})
 								</div>
 							</div>
-							<div class="form-group" style="text-align: left;">
-								<label for="items">Item Received: </label>
-								<div id="items" style="margin-top: 8px;">{{checkin.itemReceived.join() || 'N/A'}}</div>
+							<div class="col-sm-12" style="padding-left: 0px;">
+								<div class="form-group col-sm-6" style="text-align: left; padding-left: 0px;">
+									<label for="items">Item Received: </label>
+									<div id="items" style="margin-top: 8px;">{{checkin.itemReceived.join() || 'N/A'}}</div>
+								</div>
+								<div class="col-sm-6"><button class="btn btn-xs btn-primary pull-right" ng-click="editItemReceived();" style="margin-top: 0px;">Add</button></div>
 							</div>
 							<div class="form-group" style="text-align: left;" ng-show="checkin.itemReceived.indexOf('Other')>=0">
 								<label for="otherItem">Other item:</label>
 								<div id="otherItem" style="margin-top: 8px;">{{checkin.otherItem || 'N/A'}}</div>
 							</div>
 						</div>
-						<button class="btn btn-sm btn-info" ng-click="reprintLabel();">Reprint Label</button>
 					</tab>
 					<tab heading="Tasks" active="true">
 						<div class="col-sm-6">

@@ -149,5 +149,37 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 			);
 
 		};
+
+		$scope.editItemReceived = function(){
+			// Formulate current item received
+			var itemReceived = {}, itemReceivedAux = {}, temp = $scope.checkin.itemReceived;
+			for(var i in temp)	itemReceivedAux[temp[i]] = true;
+			itemReceived.itemReceivedAux = itemReceivedAux;
+			if($scope.checkin.otherItem) itemReceived.otherItem = $scope.checkin.otherItem;
+
+			var updatedItems = $modal.open({
+				animation: true,
+				templateUrl: 'modules/admin/views/checkin/checkin-edit-itemReceived-modal.client.view.html',
+				controller: 'LiabilityModalCtrl',
+				size: 'sm',
+				resolve: { walkinInfo : function() { return itemReceived; } }
+			});
+
+			updatedItems.result.then(
+				function(response){
+					var temp, obj = {itemReceived : []};
+					temp = Object.keys(response.itemReceivedAux);
+					for(var j in temp) if(response.itemReceivedAux[temp[j]]) obj.itemReceived.push(temp[j]);
+					if(response.otherItem) obj.otherItem = response.otherItem;
+
+					$http.put('/checkins/'+$scope.checkin._id, obj)
+						.success(function(){
+							$scope.logService('Item received updated.', 'Note', function(checkin){
+								$scope.checkin = checkin;
+							});
+						});
+				}
+			);
+		};
 	}
 ]);

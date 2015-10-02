@@ -1,0 +1,33 @@
+<section>
+	<div class="modal-header">
+		<h2 class="modal-title" style="font-size: 16px;">
+			<strong>Edit Items Received for Check-in</strong>
+		</h2>
+	</div>
+	<hr/>
+	<div class="modal-body" style="overflow: auto; font-size: 14px;">
+		<div class="form-group" style="text-align: left">
+			<label class="control-label">Item Received:</label>
+			<div style="margin-top: 4px;">
+				<div><input type="checkbox" ng-model="walkinInfo.itemReceivedAux['Laptop']"> Laptop</div>
+				<div><input type="checkbox" ng-model="walkinInfo.itemReceivedAux['Desktop']"> Desktop</div>
+				<div><input type="checkbox" ng-model="walkinInfo.itemReceivedAux['Power Cord']"> Power Cord</div>
+				<div><input type="checkbox" ng-model="walkinInfo.itemReceivedAux['USB drive/Disc']"> USB drive/Disc</div>
+				<div><input type="checkbox" ng-model="walkinInfo.itemReceivedAux['Internal HDD']"> Internal HDD</div>
+				<div><input type="checkbox" ng-model="walkinInfo.itemReceivedAux['External HDD']"> External HDD</div>
+				<div><input type="checkbox" ng-model="walkinInfo.itemReceivedAux['HDD Cable']"> HDD Cable</div>
+				<div><input type="checkbox" ng-model="walkinInfo.itemReceivedAux['Other']"> Other</div>
+			</div>
+		</div>
+		<div class="form-group" style="text-align: left" ng-show="walkinInfo.itemReceivedAux['Other']">
+			<label class="control-label" for="otherItem">Other Item:</label>
+			<div style="margin-top: 4px;">
+				<input type="text" id="otherItem" class="form-control" placeholder="Enter other item received here" ng-model="walkinInfo.otherItem">
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button id="Sign" class=" btn btn-primary" ng-click="accept(walkinInfo)">Update</button>
+		<button class="btn btn-default" ng-click="close()" style="margin-left: 1em;">Cancel</button>
+	</div>
+</section>

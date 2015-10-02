@@ -17,7 +17,7 @@
                         <td>
                             {{ $index + 1 }}
                             <span class="glyphicon glyphicon-duplicate pull-right" tooltip-placement="top" tooltip="Duplicate" ng-show="queueItem.status=='Duplicate'"></span>
-                            <span class="glyphicon glyphicon-cog pull-right" tooltip-placement="top" tooltip="helped by {{queueItem.serviceTechnician.displayName}}" ng-show="queueItem.status=='Work in progress'"></span>
+                            <span class="glyphicon glyphicon-wrench pull-right" tooltip-placement="top" tooltip="helped by {{queueItem.serviceTechnician.displayName}}" ng-show="queueItem.status=='Work in progress'"></span>
                             <span class="glyphicon glyphicon-home pull-right" tooltip-placement="top" tooltip="House call" ng-show="queueItem.status=='House call pending'"></span>
                         </td>
                         <td>{{queueItem.user.displayName}}<span class="glyphicon glyphicon-info-sign pull-right" tooltip-placement="top" tooltip="{{(queueItem.created | date:'shortTime') || 'N/A'}}"></span></td>
