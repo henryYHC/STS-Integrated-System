@@ -37,7 +37,7 @@ angular.module('admin').controller('CheckinCreateController', ['$http', '$scope'
 			for(var j in temp) if(checkinInfo.itemReceivedAux[temp[j]]) itemReceived.push(temp[j]);
 			checkinInfo.deviceInfoOS = deviceInfoOS;
 			checkinInfo.itemReceived = itemReceived;
-			
+
 			// Validation
 			if(!checkinInfo.preDiagnostic){ 		$scope.error.preDiagnosticError = true;	return false; }
 			if(!checkinInfo.suggestedAction){ 		$scope.error.suggestedActionError = true;	return false; }
@@ -48,7 +48,7 @@ angular.module('admin').controller('CheckinCreateController', ['$http', '$scope'
 			if(!checkinInfo.deviceInfoUser){ 		$scope.error.usernameError = true; 		return false; }
 			if(walkinInfo.os.indexOf('Windows')>=0 && checkinInfo.deviceInfoOS.length <= 1){
 				$scope.error.osError = true; return false;
-			}else{checkinInfo.deviceInfoOS = undefined;}
+			}
 			if(checkinInfo.itemReceived.length <= 0){
 				$scope.error.itemError = true; return false;
 			}
