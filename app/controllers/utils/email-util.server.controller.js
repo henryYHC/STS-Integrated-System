@@ -42,7 +42,35 @@ exports.sendCheckinReceipt = function(email, id, items, name){
         if(info.accepted.length > 0)
             Checkin.findById(id, function(err, checkin){
                 if(err) return console.log(err);
-                checkin.emailSent = true;
+                checkin.receiptEmailSent = true;
+                checkin.save(function(err, response){
+                    if(err) return console.log(err);
+                });
+            });
+    });
+};
+
+exports.sendPickupReceipt = function(email, id, items, name){
+    var temp = fs.readFileSync(templateDirPath+'PickupReceipt.json', 'utf8');
+    var template = JSON.parse(temp);
+
+    template.to = email;
+
+    var itemsString = items.join(', ');
+    template.text = template.text.replace('<ID>', id);
+    template.text = template.text.replace('<ITEMS>', itemsString);
+    template.text = template.text.replace('<NAME>', name);
+
+    template.html = template.html.replace('<ID>', id);
+    template.html = template.html.replace('<ITEMS>', itemsString);
+    template.html = template.html.replace('<NAME>', name);
+
+    transporter.sendMail(template, function(err, info){
+        if(err) return console.log(err);
+        if(info.accepted.length > 0)
+            Checkin.findById(id, function(err, checkin){
+                if(err) return console.log(err);
+                checkin.pickupEmailSent = true;
                 checkin.save(function(err, response){
                     if(err) return console.log(err);
                 });

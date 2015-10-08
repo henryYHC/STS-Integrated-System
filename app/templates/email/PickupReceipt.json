@@ -1,7 +1,7 @@
 {
   "from": "Emory STS <cstaff2@emory.edu>",
   "to": "",
-  "subject": "Student Technology Support Receipt for Check-in",
-  "text": "Reference Number: <ID>\nItems Received: <ITEMS>\n\nHello <NAME>,\n\nThis email is to acknowledge that we have received your items and will make every effort to return them to you in 3-5 business days\n\nPlease bring a valid picture ID upon pickup so that we may release your system back to you. No items can be returned without providing a valid picture ID.\n\nThank you,\nStudent Technology Support Staf",
-  "html": "<b>Reference Number: <ID></b><br></b><b>Items Received: <ITEMS></b><br><br>Hello <NAME>,<br><p>This email is to acknowledge that we have received your items and will make every effort to return them to you in 3-5 business days.</p><p>Please bring a valid picture ID upon pickup so that we may release your system back to you. No items can be returned without providing a valid picture ID.</p>Thank you,<br>Student Technology Support Staff"
+  "subject": "Your Repair is Complete",
+  "text": "Reference Number: <ID>\nItems Received: <ITEMS>\n\nHello <NAME>,\n\nWe are happy to let you know that your system has been repaired and ready for pickup. Please visit us anytime Monday - Friday, 9am - 5pm to pick up your items.\n\nRemember to bring a valid picture ID, as we require one to release your system back to you. No items can be returned without providing a valid picture ID.\n\nThank you,\nStudent Technology Support Staf",
+  "html": "<b>Reference Number: <ID></b><br></b><b>Items Received: <ITEMS></b><br><br>Hello <NAME>,<br><p>We are happy to let you know that your system has been repaired and ready for pickup. Please visit us anytime Monday - Friday, 9am - 5pm to pick up your items.</p><p>Remember to bring a valid picture ID, as we require one to release your system back to you. No items can be returned without providing a valid picture ID.</p>Thank you,<br>Student Technology Support Staff"
 }

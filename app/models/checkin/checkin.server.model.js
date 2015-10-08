@@ -79,7 +79,11 @@ var CheckinSchema = new Schema({
 		trim: true,
 		default: ''
 	},
-	emailSent:{
+	receiptEmailSent:{
+		type: Boolean,
+		default: false
+	},
+	pickupEmailSent:{
 		type: Boolean,
 		default: false
 	},

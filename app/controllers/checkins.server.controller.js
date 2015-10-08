@@ -127,6 +127,8 @@ exports.setStatus = function(req, res){
             break;
         case 'Checkout pending':
             checkin.verificationTechnician = req.user;
+            var user = checkin.user;
+            Email.sendPickupReceipt(user.username+'@emory.edu', checkin._id, checkin.itemReceived, user.displayName);
             break;
         case 'Completed':
             checkin.checkoutTechnician = req.user;
