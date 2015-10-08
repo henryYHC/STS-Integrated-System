@@ -12,16 +12,6 @@ angular.module('admin').controller('CheckinCreateController', ['$http', '$scope'
 			$scope.isAdmin = true;
 
 		$scope.checkinInfo = { reformatConsent : true, deviceInfoOSAux : {'64bit': true}, itemReceivedAux : {'Laptop':true}};
-		//$scope.loadDeviceInfoOSOptions = function(){
-		//	$http.get('/checkins/util/loadDeviceInfoOSOptions').success(function(response){
-		//		$scope.deviceInfoOSOptions = response;
-		//	});
-		//};
-		//$scope.loadItemReceivedOptions = function(){
-		//	$http.get('/checkins/util/loadItemReceivedOptions').success(function(response){
-		//		$scope.itemReceivedOptions = response;
-		//	});
-		//};
 
 		$scope.createCheckin= function(){
 			$scope.error = {};

@@ -9,7 +9,8 @@ var mongoose = require('mongoose'),
     Walkin = mongoose.model('Walkin'),
     ServiceEntry = mongoose.model('ServiceEntry'),
     Checkin = mongoose.model('Checkin'),
-    label = require('./utils/label-util.server.controller.js');
+    label = require('./utils/label-util.server.controller.js'),
+    Email = require('./utils/email-util.server.controller.js');
 
 var popOpt = [
     { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified'},
@@ -47,6 +48,8 @@ exports.create = function(req, res) {
         if(!walkin.resoluteTechnician || !walkin.resolutionTime){
             walkin = _.extend(walkin , {resoluteTechnician : req.user, resolutionTime : Date.now() });
         }
+
+        Email.sendCheckinReceipt(walkin.user.username+'@emory.edu', checkin._id, checkin.itemReceived, walkin.user.displayName);
 
         walkin.save(function(err){
             if(err) return res.status(400).send(err);

@@ -59,7 +59,7 @@
 						<span class="dropdown-toggle">Change Status <b class="caret"></b></span>
 						<ul class="dropdown-menu">
 							<li><a ng-show="checkin.status=='Work in progress'" 	ng-click="setStatus('User action pending')">Pending</a></li>
-							<li><a ng-show="checkin.status=='User action pending'" 	ng-click="setStatus('Work in progress')">In Progress</a></li>
+							<li><a ng-show="checkin.status=='User action pending' || checkin.status=='Verification pending'" 	ng-click="setStatus('Work in progress')">In Progress</a></li>
 							<li><a ng-show="checkin.status=='Work in progress'" 	ng-click="setStatus('Verification pending')">Completed</a></li>
 							<li><a ng-show="checkin.status=='Verification pending'&&technician.username != checkin.completionTechnician.username"
 								   ng-click="setStatus('Checkout pending')">Verified</a></li>
