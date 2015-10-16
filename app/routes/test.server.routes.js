@@ -5,6 +5,4 @@ module.exports = function(app) {
     var servicenow = require('../controllers/utils/servicenow-requestor.server.controller.js');
     var label = require('../controllers/utils/label-util.server.controller.js');
     var email = require('../controllers/utils/email-util.server.controller.js');
-
-    app.route('/email').get(email.test);
 };

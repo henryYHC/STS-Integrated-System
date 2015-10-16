@@ -111,7 +111,7 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
                 $http.put('/walkins/'+$scope.walkin._id, walkin).success(function(){ $modalInstance.close('saved'); });
             }
             else
-                $scope.error = 'Please enter house call appointment detail in Work Note.';
+                $scope.error = 'Please enter house call appointment date/time in Work Note.';
         };
 
         $scope.save = function(){

@@ -93,5 +93,26 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
             }
         };
 
+        $scope.sendEmail = function(id){
+            if(id !== undefined){
+                var service = $modal.open({
+                    animation: true,
+                    templateUrl: 'modules/admin/views/email/email-send-modal.client.view.html',
+                    controller: 'LiabilityModalCtrl',
+                    size: 'lg',
+                    backdrop: 'static',
+                    resolve: { walkinInfo : function() { return $scope.quickWalkin; } }
+                });
+
+                service.result.then(function(email){
+                    email.email = $scope.quickWalkin.user.username + '@emory.edu';
+                    email.name = $scope.quickWalkin.user.displayName;
+
+                    $http.post('/email', email).error(function(){
+                        alert('Failed to send the email');
+                    });
+                });
+            }
+        };
     }
 ]);

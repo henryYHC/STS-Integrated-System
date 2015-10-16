@@ -17,8 +17,46 @@ var credentialFilePath = __dirname + '/../../credentials/EmailConfig.json',
 var transporter = nodemailer.createTransport(smtpTransport(credential));
 var templateDirPath = __dirname + '/../../templates/email/';
 
-exports.test = function(req, res){
-    res.status(200);
+exports.sendEmail_REST = function(req, res){
+    var email = req.body;
+
+    var temp = fs.readFileSync(templateDirPath+'DefaultTemplate.json', 'utf8');
+    var template = JSON.parse(temp);
+
+    template.to = email.email;
+    template.subject = email.subject;
+
+    template.text = template.text.replace('<NAME>', email.name);
+    template.html = template.html.replace('<NAME>', email.name);
+    template.text = template.text.replace('<BODY>', email.body);
+    template.html = template.html.replace('<BODY>', email.body);
+
+    transporter.sendMail(template, function(err, info){
+        if(err || info.accepted.length <= 0)
+            res.status(400).send('Failed to send the email.');
+        else res.status(200).send('Email sent successfully');
+    });
+
+
+};
+
+exports.sendEmail = function(email, subject, name, body){
+    var temp = fs.readFileSync(templateDirPath+'DefaultTemplate.json', 'utf8');
+    var template = JSON.parse(temp);
+
+    template.to = email;
+    template.subject = subject;
+
+    template.text = template.text.replace('<NAME>', name);
+    template.html = template.html.replace('<NAME>', name);
+    template.text = template.text.replace('<BODY>', body);
+    template.html = template.html.replace('<BODY>', body);
+
+    transporter.sendMail(template, function(err, info){
+        if(err) return console.log(err);
+        if(info.accepted.length <= 0)
+            console.log('Email failed to send.');
+    });
 };
 
 exports.sendCheckinReceipt = function(email, id, items, name){

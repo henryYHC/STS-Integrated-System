@@ -20,7 +20,10 @@
                             <span class="glyphicon glyphicon-wrench pull-right" tooltip-placement="top" tooltip="helped by {{queueItem.serviceTechnician.displayName}}" ng-show="queueItem.status=='Work in progress'"></span>
                             <span class="glyphicon glyphicon-home pull-right" tooltip-placement="top" tooltip="House call" ng-show="queueItem.status=='House call pending'"></span>
                         </td>
-                        <td>{{queueItem.user.displayName}}<span class="glyphicon glyphicon-info-sign pull-right" tooltip-placement="top" tooltip="{{(queueItem.created | date:'shortTime') || 'N/A'}}"></span></td>
+                        <td>{{queueItem.user.displayName}}
+                            <span class="glyphicon glyphicon-info-sign pull-right" ng-hide="queueItem.status=='House call pending'" tooltip-placement="top" tooltip="{{(queueItem.created | date:'shortTime') || 'N/A'}}"></span>
+                            <span class="glyphicon glyphicon-info-sign pull-right" ng-show="queueItem.status=='House call pending'" tooltip-placement="top" tooltip="{{(queueItem.created | date:'short') || 'N/A'}}"></span>
+                        </td>
                     </tr>
                 </table>
                 <div class="alert alert-info text-center" data-ng-hide="queueItems.length">
@@ -38,15 +41,16 @@
                 <span class="label label-warning" style="font-size: 12px;" ng-show="quickWalkin && !quickWalkin.user.verified">User verification needed</span>
 
                 <div class="pull-right" ng-hide="!quickWalkin">
-                    <button class="btn btn-md btn-danger" ng-click="setUnresolved(quickWalkin._id)">Unresolved</button>
-                    <button class="btn btn-md btn-primary" ng-click="serviceWalkin(quickWalkin._id)">Begin Service</button>
+                    <button class="btn btn-sm btn-danger" ng-click="setUnresolved(quickWalkin._id)">Unresolved</button>
+                    <button class="btn btn-sm btn-primary" ng-click="serviceWalkin(quickWalkin._id)">Begin Service</button>
                 </div>
             </h4><hr style="margin-top: 10px; margin-bottom: 10px;"/>
             <div class="col-md-5" style="font-size: 12px;" ng-hide="!quickWalkin">
                 <div class="form-horizontal">
                     <div class="form-group" style="text-align: left">
                         <label class="col-sm-3 control-label" for="1">NetID:</label>
-                        <div class="col-sm-9" id="1" style="margin-top: 8px;">{{quickWalkin.user.username || 'N/A'}}</div>
+                        <div class="col-sm-9" id="1" style="margin-top: 8px;">{{quickWalkin.user.username || 'N/A'}}<span class="btn btn-xs btn-info pull-right" style="margin-top: -4px;" ng-click="sendEmail(quickWalkin._id)"><span class="glyphicon glyphicon-envelope" style="top:2px;"></span></span></div>
+
                     </div>
                 </div>
                 <div class="form-horizontal">

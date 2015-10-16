@@ -54,7 +54,7 @@
 				<span class="label label-primary" style="font-size: 12px;" ng-show="checkin && checkin.status=='Checkout pending'">Checkout pending</span>
 
 				<div class="pull-right" ng-hide="!checkin" style="margin-top: -16px;">
-					<!--<buton class="btn btn-sm btn-info">Edit Check-in</buton>-->
+					<button class="btn btn-sm btn-info" ng-click="sendEmail();"><span class="glyphicon glyphicon-envelope" style="top:2px;"></span></button>
 					<button class="dropdown btn btn-sm btn-primary" dropdown dropdown-toggle on-toggle="toggled(open)">
 						<span class="dropdown-toggle">Change Status <b class="caret"></b></span>
 						<ul class="dropdown-menu">

@@ -181,5 +181,25 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 				}
 			);
 		};
+
+		$scope.sendEmail = function(){
+			var service = $modal.open({
+				animation: true,
+				templateUrl: 'modules/admin/views/email/email-send-modal.client.view.html',
+				controller: 'LiabilityModalCtrl',
+				size: 'lg',
+				backdrop: 'static',
+				resolve: { walkinInfo : function() { return $scope.checkin; } }
+			});
+
+			service.result.then(function(email){
+				email.email = $scope.checkin.user.username + '@emory.edu';
+				email.name = $scope.checkin.user.displayName;
+
+				$http.post('/email', email).error(function(){
+					alert('Failed to send the email');
+				});
+			});
+		};
 	}
 ]);
