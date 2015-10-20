@@ -1,0 +1,32 @@
+<section>
+    <div class="modal-header">
+        <h2 class="modal-title">
+            Send Email
+        </h2>
+    </div>
+
+    <div class="modal-body" style="overflow: auto;">
+        <div class="form-group col-md-6" style="text-align: left">
+            <h4 class="control-label"><strong>To</strong></h4>
+            <input type="text" class="form-control" ng-model="email.email" placeholder="Enter receiver of the email">
+        </div>
+        <div class="form-group col-md-6" style="text-align: left">
+            <h4 class="control-label"><strong>Name</strong></h4>
+            <input type="text" class="form-control" ng-model="email.name" placeholder="Enter name of the receiver">
+        </div>
+        <div class="form-group" style="text-align: left">
+            <h4 class="control-label"><strong>Subject</strong></h4>
+            <input type="text" class="form-control" ng-model="email.subject" placeholder="Enter subject of the email">
+        </div>
+        <div class="form-group" style="text-align: left">
+            <h4 class="control-label"><strong>Body</strong></h4>
+            Hello {{email.name}},
+            <textarea class="form-control" rows="8" data-ng-model="email.body" placeholder="Enter body of the email"></textarea>
+            Thank you,<br>Student Technology Support Staff
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="accept(email)" ng-disabled="!email.email || !email.name || !email.subject || !email.body"><span class="glyphicon glyphicon-send"></span> Send</button>
+        <button class="btn btn-default" ng-click="close()">Cancel</button>
+    </div>
+</section>
