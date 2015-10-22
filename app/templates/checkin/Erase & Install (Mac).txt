@@ -9,6 +9,7 @@ Install Bradford Agent and McAfee
 Reboot machine into Single User Mode
 Mount HD using "/sbin/mount -uw /"​
 Remove User Folder "rm -rf /Users/"
+Remove Preference plist "rm /var/db/dslocal/nodes/Default/users/sts.plist"
 Restore Setup using "rm /var/db/.applesetupdone" followed by "reboot"
 Verify unit asks to create new account
 Update Notes and contact Customer informing them machine is RFP
