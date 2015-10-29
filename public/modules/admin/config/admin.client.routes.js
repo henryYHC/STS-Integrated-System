@@ -7,9 +7,9 @@ angular.module('admin').config(['$stateProvider', '$urlRouterProvider',
 
 		// Admin state routing
 		$stateProvider.
-		state('checkin-edit', {
-			url: '/checkin-edit',
-			templateUrl: 'modules/admin/views/checkin-edit.client.view.html'
+		state('checkin-view', {
+			url: '/admin/checkins/:checkinId',
+			templateUrl: 'modules/admin/views/checkin/checkin-view.client.view.html'
 		}).
 		state('checkin-queue', {
 			url: '/admin/checkins',
@@ -18,6 +18,10 @@ angular.module('admin').config(['$stateProvider', '$urlRouterProvider',
 		state('checkin-create', {
 			url: '/admin/walkins/transfer/:walkinId',
 			templateUrl: 'modules/admin/views/checkin/checkin-create.client.view.html'
+		}).
+		state('checkin-list', {
+			url: '/admin/checkins-list',
+			templateUrl: 'modules/admin/views/checkin/checkin-list.client.view.html'
 		}).
 		state('user-list', {
 			url: '/admin/users-list',

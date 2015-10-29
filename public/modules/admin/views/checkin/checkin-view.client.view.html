@@ -1,0 +1,191 @@
+<section class="container" data-ng-controller="CheckinViewController"  ng-init="initCheckin()">
+	<div>
+		<h2>STS Technician Panel - Check-in View
+			<a href="/#!/admin/checkins-list" class="btn btn-sm btn-default pull-right">Back</a>
+		</h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
+	</div>
+	<div class="container">
+		<div class="col-md-12">
+			<h3>
+				Instance information
+				<span class="label label-success" style="font-size: 13px; margin-left: 2.5em;" ng-show="checkin.isActive">Active</span>
+				<span class="label label-danger" style="font-size: 13px; margin-left: 2.5em;" ng-show="!checkin.isActive">Inactive</span>
+				<span class="label label-info" style="font-size: 13px; margin-left: 1em;">{{checkin.status}}</span>
+				<span class="pull-right" style="font-size: 15px; font-weight: 400;">
+                	<font style="font-weight: 300;">Created at </font>{{(checkin.created | date:'short') || 'N/A'}} <br>
+                	<font style="font-weight: 300;">Updated at </font>{{(checkin.updated | date:'short') || 'N/A'}}
+            	</span>
+			</h3><hr/>
+			<div class="col-md-6">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="instanceId">Instance ID:</label>
+						<div class="col-sm-9" id="instanceId" style="margin-top: 8px;">{{checkin._id}}</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="device">Device Info:</label>
+						<div class="col-sm-9" id="device" style="margin-top: 8px;">{{checkin.deviceManufacturer}} {{checkin.deviceModel}}</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="item">Item Received:</label>
+						<div class="col-sm-9" id="item" style="margin-top: 8px;">{{checkin.itemReceived.join(', ') || 'N/A'}}</div>
+					</div>
+				</div>
+				<div class="form-horizontal" ng-show="checkin.otherItem">
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="otherItem">Other Item:</label>
+						<div class="col-sm-9" id="otherItem" style="margin-top: 8px;">{{checkin.otherItem}}</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="OSType">OS Type:</label>
+						<div class="col-sm-9" id="OSType" style="margin-top: 8px;">{{checkin.walkin.os}}</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="OSInfo">OS Onfo:</label>
+						<div class="col-sm-9" id="OSInfo" style="margin-top: 8px;">{{checkin.deviceInfoOS.join(', ') || 'N/A'}}</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div class="form-horizontal">
+					<div class="form-group" style="text-align: left; margin-top: 1em;">
+						<label class="col-sm-4 control-label" for="walkinId">Walk-in Id:</label>
+						<div class="col-sm-8" id="walkinId" style="margin-top: 8px;">
+							{{checkin.walkin._id || 'N/A'}}
+							(<a ng-show="checkin.walkin" ng-click="viewWalkin(checkin.walkin._id)">View</a>)
+						</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-4 control-label" for="DeviceUser">Device Username:</label>
+						<div class="col-sm-8" id="DeviceUser" style="margin-top: 8px;">{{checkin.deviceInfoUser}}</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-4 control-label" for="DevicePwd">Device Password:</label>
+						<div class="col-sm-8" id="DevicePwd" style="margin-top: 8px;">{{checkin.deviceInfoPwd}}</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-4 control-label" for="reformat">Reformat?:</label>
+						<div class="col-sm-8" id="reformat" style="margin-top: 8px;">{{(checkin.reformatConsent)? 'TRUE' : 'False'}}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-12">
+			<h3>Service Information
+				<span class="label label-success" style="font-size: 13px; margin-left: 2.5em;" ng-show="checkin.receiptEmailSent">Receipt Sent</span>
+				<span class="label label-info" style="font-size: 13px; margin-left: 1em;" ng-show="checkin.pickupEmailSent">Pickup Notified</span>
+			</h3><hr/>
+			<div class="col-md-5">
+				<div class="form-group" style="text-align: left">
+					<h4 class="control-label">Preliminary Diagnostic</h4>
+					<p class="form-control" style="width: 80%; height:15vh; overflow:auto;">{{checkin.preDiagnostic}}</p>
+				</div>
+				<div class="form-group" style="text-align: left">
+					<h4 class="control-label">Suggested Actions</h4>
+					<p class="form-control" style="width: 80%; height:15vh; overflow:auto">{{checkin.suggestedAction}}</p>
+				</div>
+			</div>
+			<div class="col-md-7">
+				<div class="panel panel-default">
+					<div class="panel-body" style="height:40vh; overflow: auto;">
+						<div ng-repeat="log in checkin.serviceLog">
+							<span ng-style="setLogStyle(log.type)">
+								<span ng-show="log.type=='Important'">***</span>{{log.description}}
+							</span>
+							<span class="pull-right">
+								<span class="glyphicon glyphicon-user" tooltip-placement="top" tooltip="{{log.createdBy.displayName}}"></span>&nbsp;
+								<span class="glyphicon glyphicon-time" tooltip-placement="top" tooltip="{{log.createdAt | date : 'short' }}"></span>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="col-md-6">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-5 control-label" for="checkinTech">Checked-in by:</label>
+						<div class="col-sm-7" id="checkinTech" style="margin-top: 8px;">{{checkin.walkin.resoluteTechnician.displayName || 'N/A'}}</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-5 control-label" for="checkoutTech">Check-out by:</label>
+						<div class="col-sm-7" id="checkoutTech" style="margin-top: 8px;">{{checkin.checkoutTechnician.displayName || 'N/A'}}</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-5 control-label" for="completionTech">Completed by:</label>
+						<div class="col-sm-7" id="completionTech" style="margin-top: 8px;">{{checkin.completionTechnician.displayName || 'N/A'}}</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-5 control-label" for="verificationTech">Verified by:</label>
+						<div class="col-sm-7" id="verificationTech" style="margin-top: 8px;">{{checkin.verificationTechnician.displayName || 'N/A'}}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-12">
+			<h3>Customer information</h3><hr/>
+			<div class="col-md-6">
+				<div class="form-horizontal">
+					<div class="form-group" style="text-align: left">
+						<label class="col-sm-3 control-label" for="netid">NetID:</label>
+						<div class="col-sm-9" id="netid" style="margin-top: 8px;">
+							{{checkin.user.username}}
+						</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group" style="text-align: left">
+						<label class="col-sm-3 control-label" for="name">Name:</label>
+						<div class="col-sm-9" id="name" style="margin-top: 8px;">
+							<div id="name-display">{{checkin.user.displayName}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-horizontal">
+					<div class="form-group" style="text-align: left">
+						<label class="col-sm-3 control-label" for="phone">Phone:</label>
+						<div class="col-sm-9" id="phone" style="margin-top: 8px;">
+							<div id="phone-display">{{checkin.user.phone}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group" style="text-align: left">
+						<label class="col-sm-3 control-label" for="location">Residence Hall:</label>
+						<div class="col-sm-9" id="location" style="margin-top: 8px;">
+							<div id="location-display">{{checkin.user.location}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

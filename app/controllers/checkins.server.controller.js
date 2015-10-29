@@ -14,7 +14,7 @@ var mongoose = require('mongoose'),
 
 var popOpt = [
     { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified'},
-    { path : 'walkin', model : 'Walkin', select : 'deviceCategory deviceType os otherDevice problem'},
+    { path : 'walkin', model : 'Walkin', select : 'description resoluteTechnician deviceCategory deviceType os otherDevice'},
     { path : 'serviceLog', model : 'ServiceEntry', select : 'type description createdBy createdAt'},
     { path : 'completionTechnician', model : 'User', select : 'username displayName'},
     { path : 'verificationTechnician', model : 'User', select : 'username displayName'},
@@ -23,6 +23,9 @@ var popOpt = [
 
 var popOpt_entry = [
     { path : 'serviceLog.createdBy', model : 'User', select : 'displayName'}
+],
+    popOpt_walkin = [
+    { path : 'walkin.resoluteTechnician',  model : 'User', select : 'username displayName'}
 ];
 
 /**
@@ -150,6 +153,18 @@ exports.printLabel = function(req, res){
     res.status(200).send('Printed.');
 };
 
+exports.listByMonth = function(req, res){
+    var range = req.range;
+    Checkin.find({ created : {$gte: range.start, $lt: range.end}},
+        function(err, checkins){
+            if(err) return res.status(400).send('Failed to retrieved checkins');
+            Checkin.populate(checkins, popOpt, function(err, checkins){
+                if (err) return res.status(400).send('Failed to populate checkins');
+                res.jsonp(checkins);
+            });
+    });
+};
+
 /**
  * Delete an Checkin
  */
@@ -170,8 +185,31 @@ exports.checkinByID = function(req, res, next, id) {
         if (!checkin) return next(new Error('Failed to load Checkin ' + id));
         Checkin.populate(checkin, popOpt, function(err, checkin){
             if (err) return next(err);
-            req.checkin = checkin;
-            next();
+            Walkin.populate(checkin, popOpt_walkin, function(err, checkin){
+                if (err) return next(err);
+                req.checkin = checkin; next();
+            });
         });
     });
+};
+
+exports.parseMonthRange = function(req, res, next, target){
+    var time1 = new Date(Date.now()); target--;
+    var year = time1.getFullYear(), month = time1.getMonth();
+
+    for(var i = 0; i < 11; i++) {
+        if (month === target) break;
+        else if (month === 0) {
+            month = 11;
+            year--;
+        }
+        else month--;
+    }
+
+    time1 = new Date(year, month, 1);
+    if(month++ === 12){ year++; month = 0; }
+    var time2 = new Date(year, month, 1);
+
+    req.range = {start : time1, end : time2};
+    next();
 };

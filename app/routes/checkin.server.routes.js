@@ -13,6 +13,8 @@ module.exports = function(app) {
     app.route('/checkins/setStatus/:checkinId').post(users.hasPermission, checkins.setStatus);
     app.route('/checkins/printLabel/:checkinId').get(users.hasPermission, checkins.printLabel);
 
+    app.route('/checkins/list/:month').get(users.hasPermission, checkins.listByMonth);
+
     app.route('/checkins/:checkinId')
         .get(users.hasPermission, checkins.view)
         .put(users.hasPermission, checkins.update);
@@ -20,4 +22,6 @@ module.exports = function(app) {
 
     app.param('walkinId', walkins.walkinByID);
     app.param('checkinId', checkins.checkinByID);
+
+    app.param('month', checkins.parseMonthRange);
 };

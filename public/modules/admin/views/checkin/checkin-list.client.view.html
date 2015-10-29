@@ -1,77 +1,50 @@
-<section class="container" data-ng-controller="AdminWalkinListingController" style="margin-bottom: 50px;">
+<section class="container" data-ng-controller="AdminCheckinListingController" style="margin-bottom: 50px;">
     <div>
-        <h2>STS Technician Panel - Walk-in Listing<a href="/#!/admin" class="btn btn-sm btn-default pull-right">Back</a></h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
+        <h2>STS Technician Panel - Check-in Listing<a href="/#!/admin" class="btn btn-sm btn-default pull-right">Back</a></h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
     </div>
     <div class="container">
-        <div class="col-md-12" style="margin-top: 0.5em;">
-        <h4>
-            <div class="form-inline">
-                <label class="col-sm-2" style="margin-top: 7px;">Walk-in Search:</label>
-                <div id="search">
-                    <div class="input-group col-sm-2">
-                        <select class="form-control" data-ng-model="search.field">
-                            <option ng-selected="true">Query field</option>
-                            <option value="username">NetID</option>
-                            <option value="displayName">Customer Name</option>
-                            <option value="incidentId">Incident Id</option>
-                            <option value="created">Created Time</option>
-                        </select>
-                    </div>
-                    <div class="input-group col-sm-7" ng-switch on="search.field" style="margin-top: 8px;">
-                        <input ng-switch-default type="text" class="form-control" placeholder="Search for..." data-ng-model="search.query" ng-init="search.query='';" style="width:320px;">
-                        <input ng-switch-when="created" type="date" class="form-control" data-ng-model="search.query" ng-init="search.query='';" style="width:320px;" placeholder="yyyy-mm-dd">
-                        <span class="input-group-btn"><button class="btn btn-default" type="button" ng-click="listBySearch()">Go!</button></span>
-                    </div>
-                </div>
+        <div class="col-md-12" ng-init="init()" style="margin-top: 0.5em;">
+            <div class="btn-group" style="margin-left:2.5em;">
+                <button class="btn btn-sm btn-primary" ng-click="month=1">January</button>
+                <button class="btn btn-sm btn-primary" ng-click="month=2">February</button>
+                <button class="btn btn-sm btn-primary" ng-click="month=3">March</button>
+                <button class="btn btn-sm btn-primary" ng-click="month=4">April</button>
+                <button class="btn btn-sm btn-primary" ng-click="month=5">May</button>
+                <button class="btn btn-sm btn-primary" ng-click="month=6">June</button>
+                <button class="btn btn-sm btn-primary" ng-click="month=7">July</button>
+                <button class="btn btn-sm btn-primary" ng-click="month=8">August</button>
+                <button class="btn btn-sm btn-primary" ng-click="month=9">September</button>
+                <button class="btn btn-sm btn-primary" ng-click="month=10">October</button>
+                <button class="btn btn-sm btn-primary" ng-click="month=11">November</button>
+                <button class="btn btn-sm btn-primary" ng-click="month=12">December</button>
             </div>
-        </h4><hr/>
-        <h4>
-            Walk-in Listings
-            <span style="margin-left: 2em;">
-                <button class="btn btn-sm btn-warning" ng-click="listUnresolved()">View Unresolved</button>
-                <button class="btn btn-sm btn-primary" ng-click="listToday()">View Today</button>
-                <!--<button class="btn btn-sm btn-primary" ng-click="listPastMonth()">View Past Month</button>-->
-                <p class="pull-right" style="margin-top: 20px;">Count: {{walkins.length || 0}}</p>
-            </span>
-        </h4>
-        <div class="col-md-12" ng-init="listToday()" style="margin-top: 0.5em;">
+            <h3>Check-ins in {{monthNames[month-1]}}, {{(currentDate.getMonth() >= month-1)? currentDate.getFullYear() : currentDate.getFullYear()-1}}</h3>
+            <span class="pull-right">Count: {{checkins.length}}</span>
             <div>
                 <table class="table table-hover" style="max-height: 80vh; overflow: auto; font-size: 12px;">
                     <tr>
-                        <th>Actions</th>
+                        <th>Action</th>
                         <th>ID</th>
                         <th>Customer</th>
                         <th>NetID</th>
                         <th>Type</th>
-                        <th>Spec</th>
                         <th>Status</th>
-                        <th>Resolution</th>
                         <th>Updated</th>
                         <th>Created</th>
                     </tr>
-                    <tr data-ng-repeat="walkin in walkins | orderBy: '-created'" data-ng-href="#">
-                        <td class="dropdown" dropdown on-toggle="toggled(open)" style="text-align:center;">
-                            <div class="dropdown-toggle" dropdown-toggle><b class="caret"></b></div>
-                            <ul class="dropdown-menu" style="min-width: 0px; margin: 2px 5px 0;">
-                                <li><a ng-click="viewWalkin(walkin._id)" data-toggle="modal" data-target="#WalkinView">View</a></li>
-                                <li><a ng-click="editWalkin(walkin._id)">Edit</a></li>
-                            </ul>
-                        </td>
-                        <td data-ng-bind="walkin._id"></td>
-                        <td data-ng-bind="walkin.user.displayName"></td>
-                        <td data-ng-bind="walkin.user.username"></td>
-                        <td data-ng-bind="walkin.deviceCategory"></td>
-                        <td ng-hide="walkin.otherDevice||!walkin.deviceType||walkin.deviceType=='N/A'||walkin.deviceType=='Other'">{{walkin.deviceType | limitTo: 13}}</td>
-                        <td ng-hide="walkin.otherDevice||!walkin.os||walkin.os=='N/A'||walkin.os=='Other'">{{walkin.os | limitTo: 13}}</td>
-                        <td ng-show="walkin.otherDevice">{{walkin.otherDevice | limitTo: 13 }}</td>
-                        <td data-ng-bind="walkin.status"></td>
-                        <td data-ng-bind="walkin.resolutionType"></td>
-                        <td data-ng-bind="(walkin.updated | date:'short') || 'N/A'"></td>
-                        <td data-ng-bind="(walkin.created | date:'short') || 'N/A'"></td>
+                    <tr data-ng-repeat="checkin in checkins | orderBy: '-created'" data-ng-href="#">
+                        <td><a href="#!/admin/checkins/{{checkin._id}}">View</a></td>
+                        <td data-ng-bind="checkin._id"></td>
+                        <td data-ng-bind="checkin.user.displayName"></td>
+                        <td data-ng-bind="checkin.user.username"></td>
+                        <td>{{checkin.deviceManufacturer}} {{checkin.deviceModel}}</td>
+                        <td data-ng-bind="checkin.status"></td>
+                        <td data-ng-bind="(checkin.updated | date:'short') || 'N/A'"></td>
+                        <td data-ng-bind="(checkin.created | date:'short') || 'N/A'"></td>
                     </tr>
                 </table>
-                <div class="alert alert-info text-center" data-ng-hide="walkins.length > 0">
-                    <span class="glyphicon glyphicon-exclamation-sign"/> No Walk ins!
+                <div class="alert alert-info text-center" data-ng-hide="checkins.length > 0">
+                    <span class="glyphicon glyphicon-exclamation-sign"/> No Checks ins!
                 </div>
             </div>
         </div>
