@@ -140,8 +140,11 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 					if(response){
 						$http.put('/checkins/'+$scope.checkin._id, {pickupSig: response, status : 'Completed'})
 							.success(function(){
-								$scope.logService('Status changed to Completed', 'Note',
-								function(){ $scope.checkin = undefined; $scope.initQueues(); });
+								$http.post('/checkins/setStatus/'+$scope.checkin._id, {status: 'Completed'})
+									.success(function(){
+										$scope.logService('Status changed to Completed', 'Note',
+											function(){ $scope.checkin = undefined; $scope.initQueues(); });
+								});
 							})
 							.error(function(err){ alert('Action failed.'); });
 					}
