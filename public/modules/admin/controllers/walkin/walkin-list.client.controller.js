@@ -49,7 +49,6 @@ angular.module('admin').controller('AdminWalkinListingController', ['$http', '$s
                     animation: true,
                     templateUrl: 'modules/admin/views/walkin/walkin-view-modal.client.view.html',
                     controller: 'AdminWalkinViewModalCtrl',
-                    size: 'lg',
                     resolve: { walkin : function() { return response; } }
                 });
             });
