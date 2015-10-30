@@ -288,7 +288,7 @@ exports.listAll = function(req, res) {
 
 exports.listToday = function(req, res) {
     var d = new Date(), today = new Date(d.getFullYear()+','+(d.getMonth()+1)+','+d.getDate());
-    Walkin.find({ isActive : true, created : {$gt : today}, updated : {$gt : today} }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
+    Walkin.find({ isActive : true, $or : [ {created : {$gt : today}}, {updated : {$gt : today}}] }).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
