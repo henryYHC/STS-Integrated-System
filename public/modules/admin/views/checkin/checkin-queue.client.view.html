@@ -10,11 +10,11 @@
 			<div style="height: 30vh; overflow: auto; margin-top: 1em;" ng-init="initWorkQueue()">
 				<table class="table table-hover" data-ng-show="workQueueItems.length">
 					<tr>
-						<th>Order</th> <th>Customer</th>
+						<th>CI #</th> <th>Customer</th>
 					</tr>
 					<tr data-ng-repeat="workQueueItem in workQueueItems" ng-click="viewCheckin(workQueueItem);">
 						<td>
-							{{ $index + 1 }}
+							{{ workQueueItem._id }}
 							<span class="glyphicon glyphicon-wrench pull-right" tooltip-placement="top" tooltip="Work in progress" ng-show="workQueueItem.status=='Work in progress'"></span>
 							<span class="glyphicon glyphicon-eye-open pull-right" tooltip-placement="top" tooltip="Verification pending" ng-show="workQueueItem.status=='Verification pending'"></span>
 						</td>
@@ -29,11 +29,11 @@
 			<div style="height: 30vh; overflow: auto; margin-top: 1em;">
 				<table class="table table-hover" data-ng-show="pendingQueueItems.length" ng-init="initPendingQueue()">
 					<tr>
-						<th>Order</th> <th>Customer</th>
+						<th>CI #</th> <th>Customer</th>
 					</tr>
 					<tr data-ng-repeat="pendingQueueItem in pendingQueueItems" ng-click="viewCheckin(pendingQueueItem);">
 						<td>
-							{{ $index + 1 }}
+							{{ pendingQueueItem._id }}
 							<span class="glyphicon glyphicon-hourglass pull-right" tooltip-placement="top" tooltip="User action pending" ng-show="pendingQueueItem.status=='User action pending'"></span>
 							<span class="glyphicon glyphicon-ok pull-right" tooltip-placement="top" tooltip="Checkout pending" ng-show="pendingQueueItem.status=='Checkout pending'"></span>
 						</td>

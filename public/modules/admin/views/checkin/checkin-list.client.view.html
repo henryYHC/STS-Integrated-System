@@ -24,7 +24,7 @@
                 <table class="table table-hover" style="max-height: 80vh; overflow: auto; font-size: 12px;">
                     <tr>
                         <th>Action</th>
-                        <th>ID</th>
+                        <th>CI #</th>
                         <th>Customer</th>
                         <th>NetID</th>
                         <th>Type</th>
@@ -34,7 +34,7 @@
                     </tr>
                     <tr data-ng-repeat="checkin in checkins | orderBy: '-created'" data-ng-href="#">
                         <td><a href="#!/admin/checkins/{{checkin._id}}">View</a></td>
-                        <td data-ng-bind="checkin._id"></td>
+                        <td>CI {{checkin._id}}</td>
                         <td data-ng-bind="checkin.user.displayName"></td>
                         <td data-ng-bind="checkin.user.username"></td>
                         <td>{{checkin.deviceManufacturer}} {{checkin.deviceModel}}</td>
