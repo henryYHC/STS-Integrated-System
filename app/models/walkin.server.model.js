@@ -125,6 +125,11 @@ var WalkinSchema = new Schema({
     resolutionTime: {
       type: Date
     },
+    contactLog: {
+        type: [Schema.ObjectId],
+        ref: 'ContactLog',
+        default: []
+    },
 
     // Service Now information
     snSysId: {

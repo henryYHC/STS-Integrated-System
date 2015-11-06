@@ -209,9 +209,13 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 				email.email = $scope.checkin.user.username + '@emory.edu';
 				email.name = $scope.checkin.user.displayName;
 
-				$http.post('/email', email).error(function(){
-					alert('Failed to send the email');
-				});
+				$http.post('/email', email)
+					.success(function(){
+						$http.post('/checkins/log/logContact/'+$scope.checkin._id, { type : 'email', detail : email.body })
+							.error(function(){ alert('Failed to log contact instance'); });
+					})
+					.error(function(){ alert('Failed to send the email'); }
+				);
 			});
 		};
 	}

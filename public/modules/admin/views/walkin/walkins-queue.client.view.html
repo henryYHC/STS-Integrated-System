@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-9" style="height:60vh;">
+        <div class="col-md-9" style="height:70vh;">
             <h4>
                 Quick View &emsp;
                 <span class="label label-success" style="font-size: 12px;" ng-show="quickWalkin && quickWalkin.status=='Work in progress'">Work in progress</span>
@@ -103,6 +103,15 @@
                     <div class="form-group" style="text-align: left;">
                         <label class="col-sm-3 control-label" for="8">Work note:</label>
                         <div class="col-sm-9" id="8" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;">{{quickWalkin.workNote || 'N/A'}}</p></div>
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group" style="text-align: left;">
+                        <label class="col-sm-3 control-label" for="9">Last Contacted:<span class="btn btn-xs btn-primary pull-right" style="margin-top:0px;font-size:10px;" ng-click="logContact(quickWalkin._id)">Log Call</span></label>
+                        <div class="col-sm-9" id="9" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;">{{ quickWalkin.contactInfo.log || 'N/A'}}
+                            <span class="glyphicon glyphicon-time" tooltip-placement="top" tooltip="{{(quickWalkin.contactInfo.at | date:'short') || 'N/A'}}"></span>
+
+                        </p></div>
                     </div>
                 </div>
             </div>

@@ -3,6 +3,7 @@
 module.exports = function(app) {
 	var users = require('../../app/controllers/users.server.controller');
 	var walkins = require('../../app/controllers/walkins.server.controller');
+    var contactLogs = require('../../app/controllers/contact-log.server.controller');
 
 	// Walkins Routes
 	app.route('/walkins').post(walkins.create);
@@ -33,6 +34,7 @@ module.exports = function(app) {
     app.route('/walkins/setUnresolved/:walkinId').post(users.hasPermission, walkins.setUnresolved);
     app.route('/walkins/log/logService/:walkinId').put(users.hasPermission, walkins.logService);
     app.route('/walkins/log/logResolution/:walkinId').put(users.hasPermission, walkins.logResolution);
+    app.route('/walkins/log/logContact/:walkinId').post(users.hasPermission, contactLogs.logWalkin);
 
     // Walkin util routes
     app.route('/walkins/util/loadDeviceOS').get(walkins.getDeviceOS);

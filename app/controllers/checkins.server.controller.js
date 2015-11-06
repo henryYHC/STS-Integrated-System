@@ -9,6 +9,7 @@ var mongoose = require('mongoose'),
     Walkin = mongoose.model('Walkin'),
     ServiceEntry = mongoose.model('ServiceEntry'),
     Checkin = mongoose.model('Checkin'),
+    ContactLog = mongoose.model('ContactLog'),
     label = require('./utils/label-util.server.controller.js'),
     Email = require('./utils/email-util.server.controller.js');
 
@@ -18,7 +19,8 @@ var popOpt = [
     { path : 'serviceLog', model : 'ServiceEntry', select : 'type description createdBy createdAt'},
     { path : 'completionTechnician', model : 'User', select : 'username displayName'},
     { path : 'verificationTechnician', model : 'User', select : 'username displayName'},
-    { path : 'checkoutTechnician', model : 'User', select : 'username displayName'}
+    { path : 'checkoutTechnician', model : 'User', select : 'username displayName'},
+    { path : 'contactLog', model : 'ContactLog'}
 ];
 
 var popOpt_entry = [
@@ -26,6 +28,10 @@ var popOpt_entry = [
 ],
     popOpt_walkin = [
     { path : 'walkin.resoluteTechnician',  model : 'User', select : 'username displayName'}
+],
+    popOpt_contactLog = [
+    { path : 'contactLog.customer', model: 'User', select: 'displayName username' },
+    { path : 'contactLog.technician', model: 'User', select: 'displayName username' }
 ];
 
 /**
@@ -187,7 +193,9 @@ exports.checkinByID = function(req, res, next, id) {
             if (err) return next(err);
             Walkin.populate(checkin, popOpt_walkin, function(err, checkin){
                 if (err) return next(err);
-                req.checkin = checkin; next();
+                ContactLog.populate(checkin, popOpt_contactLog, function(err, checkin){
+                    if (err) return next(err);  req.checkin = checkin; next();
+                });
             });
         });
     });

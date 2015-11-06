@@ -35,6 +35,15 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
         $scope.quickviewWalkin = function(id){
             $http.get('/walkins/'+id).success(function(response){
                 $scope.quickWalkin = response;
+
+                if(response.contactLog && response.contactLog.length > 0){
+                    var last = response.contactLog[response.contactLog.length - 1];
+                    $scope.quickWalkin.contactInfo ={
+                        log:  'by ' + last.technician.displayName + ' via ' + last.type,
+                        at:  last.contactedAt
+                    };
+                }
+                else $scope.quickWalkin.contactInfo = {};
             });
         };
 
@@ -108,9 +117,23 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
                     email.email = $scope.quickWalkin.user.username + '@emory.edu';
                     email.name = $scope.quickWalkin.user.displayName;
 
-                    $http.post('/email', email).error(function(){
-                        alert('Failed to send the email');
-                    });
+                    $http.post('/email', email)
+                        .success(function(){
+                            $http.post('/walkins/log/logContact/'+id, { type : 'email', detail : email.body }).success(function(){
+                                $scope.quickviewWalkin(id);
+                            });
+                        })
+                        .error(function(){ alert('Failed to send the email');}
+                    );
+                });
+            }
+        };
+
+        $scope.logContact = function(id){
+            if(id !== undefined){
+                $http.post('/walkins/log/logContact/'+id, { type : 'phone' }).success(function(){
+                    alert('Contact instance logged.');
+                    $scope.quickviewWalkin(id);
                 });
             }
         };

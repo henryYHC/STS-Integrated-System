@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller.js'),
 	User = mongoose.model('User'),
     Walkin = mongoose.model('Walkin'),
+    ContactLog = mongoose.model('ContactLog'),
 	_ = require('lodash'),
     servicenow = require('./utils/servicenow-requestor.server.controller.js');
 
@@ -14,7 +15,13 @@ var popOpt = [
     { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified'},
     { path : 'lastUpdateTechnician', model : 'User', select : 'displayName username'},
     { path : 'serviceTechnician', model : 'User', select : 'displayName username'},
-    { path : 'resoluteTechnician', model : 'User', select : 'displayName username'}
+    { path : 'resoluteTechnician', model : 'User', select : 'displayName username'},
+    { path : 'contactLog', model : 'ContactLog'}
+];
+
+var popOpt_contactLog = [
+    { path : 'contactLog.customer', model: 'User', select: 'displayName username' },
+    { path : 'contactLog.technician', model: 'User', select: 'displayName username' }
 ];
 
 /**
@@ -419,8 +426,11 @@ exports.walkinByID = function(req, res, next, id) {
 
         Walkin.populate(walkin, popOpt, function(err, walkin){
             if (err) return next(err);
-            req.walkin = walkin;
-            next();
+            ContactLog.populate(walkin, popOpt_contactLog, function(err, walkin){
+                if (err) return next(err);
+                req.walkin = walkin;
+                next();
+            });
         });
 	});
 };
