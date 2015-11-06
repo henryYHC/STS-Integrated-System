@@ -9,6 +9,11 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 			$location.path('/');
 
 		$scope.technician = user;
+		var time3dBefore = Date.now() - (60*60*24*3)*1000,
+			time5dBefore = time3dBefore - (60*60*24*2)*1000;
+
+		console.log(new Date(time3dBefore));
+		console.log(new Date(time5dBefore));
 
 		$scope.initQueues = function(){
 			$scope.workQueueItems = undefined;
@@ -31,7 +36,6 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 
 		$scope.initTemplates = function(){
 			$http.get('/checkins/getTemplates').success(function(templates){
-				console.log(templates);
 				$scope.templates = templates;
 			});
 		};
@@ -39,7 +43,6 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 		$scope.viewCheckin = function(checkin){
 			$scope.checkin = checkin;
 			$scope.template = checkin.templateApplied;
-			console.log(checkin);
 		};
 
 		$scope.viewWalkin = function(id){
@@ -89,6 +92,13 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 		$scope.reprintLabel = function(){
 			if(confirm('Are you sure you want to reprint label for this instance?'))
 				$http.get('/checkins/printLabel/' + $scope.checkin._id);
+		};
+
+		$scope.setQueueStyle = function(created){
+			var createdTime = new Date(created).getTime();
+			if(createdTime < time5dBefore)		return 'danger';
+			else if(createdTime < time3dBefore)	return 'warning';
+			else							return '';
 		};
 
 		$scope.setLogStyle = function(type){

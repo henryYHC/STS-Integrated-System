@@ -12,7 +12,7 @@
 					<tr>
 						<th>CI #</th> <th>Customer</th>
 					</tr>
-					<tr data-ng-repeat="workQueueItem in workQueueItems" ng-click="viewCheckin(workQueueItem);">
+					<tr data-ng-repeat="workQueueItem in workQueueItems" ng-click="viewCheckin(workQueueItem);" ng-class="setQueueStyle(workQueueItem.created)">
 						<td>
 							{{ workQueueItem._id }}
 							<span class="glyphicon glyphicon-wrench pull-right" tooltip-placement="top" tooltip="Work in progress" ng-show="workQueueItem.status=='Work in progress'"></span>
