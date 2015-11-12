@@ -211,6 +211,7 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 
 				$http.post('/email', email)
 					.success(function(){
+						$scope.logService('Email: '+email.subject+ ' sent.','Note', function(checkin){ $scope.checkin = checkin; });
 						$http.post('/checkins/log/logContact/'+$scope.checkin._id, { type : 'email', detail : email.body })
 							.error(function(){ alert('Failed to log contact instance'); });
 					})
