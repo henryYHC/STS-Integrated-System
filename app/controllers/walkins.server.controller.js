@@ -269,7 +269,6 @@ exports.queue = function(req, res){
 
         var interval = 620*1000;
         while(interval > 20*1000 && totalCount-- > 0) interval -= 60*1000;
-        console.log(interval);
 
         Walkin.find({ isActive : true, status: 'House call pending'}).sort('created').exec(function(err, houseCalls) {
             if(err)return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
