@@ -9,6 +9,8 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
         else if(user.roles.indexOf('technician') < 0 && user.roles.indexOf('admin') < 0)
             $location.path('/');
 
+        $scope.editWorkNote = false;
+
         $scope.initQueue = function(){
             $http.get('/walkins/queue').success(function(response){
                 $scope.queueCount = 0;
@@ -136,6 +138,11 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
                     $scope.quickviewWalkin(id);
                 });
             }
+        };
+
+        $scope.updateWorkNote = function(){
+            $http.put('/walkins/'+$scope.quickWalkin._id, {workNote: $scope.quickWalkin.workNote})
+                .error(function(){alert('Update failed.');});
         };
     }
 ]);

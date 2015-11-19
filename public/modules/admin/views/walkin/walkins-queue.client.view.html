@@ -101,8 +101,19 @@
                 </div>
                 <div class="form-horizontal">
                     <div class="form-group" style="text-align: left;">
-                        <label class="col-sm-3 control-label" for="8">Work note:</label>
-                        <div class="col-sm-9" id="8" style="margin-top: 8px;"><p style="height: 50px; overflow: auto;">{{quickWalkin.workNote || 'N/A'}}</p></div>
+                        <label class="col-sm-3 control-label" for="workNote">Work Note:
+                            <a class="btn btn-xs btn-primary" ng-hide="editWorkNote" ng-click="editWorkNote=true;"
+                                    style="margin-top:0px;font-size:10px;">Edit</a>
+                        </label>
+                        <div class="col-sm-9" id="workNote" style="margin-top: 8px;">
+                            <div id="workNote-display" ng-show="!editWorkNote">
+                                <p style="height: 75px; overflow: auto;" data-ng-bind="quickWalkin.workNote || 'N/A'"></p>
+                            </div>
+                            <div id="workNote-edit" ng-show="editWorkNote">
+                                <textarea class="form-control" rows="2" data-ng-model="quickWalkin.workNote"></textarea>
+                                <button ng-click="editWorkNote=!editWorkNote;updateWorkNote();" class="btn btn-sm btn-primary pull-right">Done</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-horizontal">

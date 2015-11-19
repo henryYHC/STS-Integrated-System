@@ -131,6 +131,21 @@ var WalkinSchema = new Schema({
         default: []
     },
 
+    //startWorkTime:{
+    //    type: Date
+    //},
+    //workTime : {
+    //    type: Number,
+    //    default: 0
+    //},
+    //startWaitTime:{
+    //    type: Date
+    //},
+    //waitTime : {
+    //    type: Number,
+    //    default: 0
+    //},
+
     // Service Now information
     snSysId: {
         type: String,
@@ -145,8 +160,7 @@ var WalkinSchema = new Schema({
 });
 
 WalkinSchema.pre('save', function(next) {
-    this.updated = Date.now();
-    next();
+    this.updated = Date.now(); next();
 });
 
 WalkinSchema.plugin(autoIncrement.plugin, 'Walkin');

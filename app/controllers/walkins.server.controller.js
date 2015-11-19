@@ -159,6 +159,8 @@ exports.duplicateFromId = function(req, res){
     delete walkin.snValue; delete walkin.snSysId;
     delete walkin.resolution; delete walkin.otherResolution;
     delete walkin.workNote; delete walkin.resolutionType;
+    delete walkin.contactLog; delete walkin.resoluteTechnician;
+    delete walkin.resolutionTime;
 
     walkin = new Walkin(walkin);
     walkin.save(function(err){
@@ -180,7 +182,6 @@ exports.read = function(req, res) {
 exports.update = function(req, res) {
     var walkin = req.walkin ;
 	walkin = _.extend(walkin , req.body);
-    walkin.updated = Date.now();
     walkin.lastUpdateTechnician = req.user._id;
 
 	walkin.save(function(err) {
@@ -266,8 +267,9 @@ exports.queue = function(req, res){
                 waitingCount++;
         }
 
-        var interval = 360000;
-        //if(totalCount > 0)  interval -= 350 * (waitingCount / totalCount) * 1000;
+        var interval = 620*1000;
+        while(interval > 20*1000 && totalCount-- > 0) interval -= 60*1000;
+        console.log(interval);
 
         Walkin.find({ isActive : true, status: 'House call pending'}).sort('created').exec(function(err, houseCalls) {
             if(err)return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
@@ -383,11 +385,8 @@ exports.logService = function(req, res){
     if(walkin.status !== 'Work in progress' && walkin.status !== 'Completed') {
         walkin.status = 'Work in progress';
         if (!walkin.serviceTechnician || !walkin.serviceStartTime) {
-            walkin = _.extend(walkin,
-                {serviceTechnician: req.user, serviceStartTime: Date.now(), updated: Date.now()}
-            );
+            walkin = _.extend(walkin, {serviceTechnician: req.user, serviceStartTime: Date.now()});
         }
-
         walkin.save(function (err) {
             if (err)    return res.status(400).send({message: errorHandler.getErrorMessage(err)});
             else        return res.jsonp(walkin);

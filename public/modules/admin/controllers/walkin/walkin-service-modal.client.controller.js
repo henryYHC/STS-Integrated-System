@@ -137,7 +137,7 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
             if(!$scope.userVerified && $scope.walkin.user.verified)
                 $http.put('/user/verify/'+$scope.walkin.user.username);
 
-            $http.put('/walkins/'+$scope.walkin._id, $scope.walkin).success(function(response){ $modalInstance.close('saved'); });
+            $http.put('/walkins/'+$scope.walkin._id, $scope.walkin).success(function(){ $modalInstance.close('saved'); });
         };
 
         $scope.resolve = function(){
