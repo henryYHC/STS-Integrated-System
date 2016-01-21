@@ -4,21 +4,31 @@
     </div>
     <div class="container">
         <div class="col-md-12" ng-init="init()" style="margin-top: 0.5em;">
-            <div class="btn-group" style="margin-left:2.5em;">
-                <button class="btn btn-sm btn-primary" ng-click="month=1">January</button>
-                <button class="btn btn-sm btn-primary" ng-click="month=2">February</button>
-                <button class="btn btn-sm btn-primary" ng-click="month=3">March</button>
-                <button class="btn btn-sm btn-primary" ng-click="month=4">April</button>
-                <button class="btn btn-sm btn-primary" ng-click="month=5">May</button>
-                <button class="btn btn-sm btn-primary" ng-click="month=6">June</button>
-                <button class="btn btn-sm btn-primary" ng-click="month=7">July</button>
-                <button class="btn btn-sm btn-primary" ng-click="month=8">August</button>
-                <button class="btn btn-sm btn-primary" ng-click="month=9">September</button>
-                <button class="btn btn-sm btn-primary" ng-click="month=10">October</button>
-                <button class="btn btn-sm btn-primary" ng-click="month=11">November</button>
-                <button class="btn btn-sm btn-primary" ng-click="month=12">December</button>
+            <div class="col-md-3">
+                <select id="year" class="form-control" data-ng-model="year" style="margin: 10px 1px;">
+                    <option disabled selected>Select a year</option>
+                </select>
             </div>
-            <h3>Check-ins in {{monthNames[month-1]}}, {{(currentDate.getMonth() >= month-1)? currentDate.getFullYear() : currentDate.getFullYear()-1}}</h3>
+            <div class="col-md-9">
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-primary" ng-click="month=1">Jan.</button>
+                    <button class="btn btn-sm btn-primary" ng-click="month=2">Feb.</button>
+                    <button class="btn btn-sm btn-primary" ng-click="month=3">Mar.</button>
+                    <button class="btn btn-sm btn-primary" ng-click="month=4">Apr.</button>
+                    <button class="btn btn-sm btn-primary" ng-click="month=5">May.</button>
+                    <button class="btn btn-sm btn-primary" ng-click="month=6">Jun.</button>
+                    <button class="btn btn-sm btn-primary" ng-click="month=7">Jul.</button>
+                    <button class="btn btn-sm btn-primary" ng-click="month=8">Aug.</button>
+                    <button class="btn btn-sm btn-primary" ng-click="month=9">Sep.</button>
+                    <button class="btn btn-sm btn-primary" ng-click="month=10">Oct.</button>
+                    <button class="btn btn-sm btn-primary" ng-click="month=11">Nov.</button>
+                    <button class="btn btn-sm btn-primary" ng-click="month=12">Dec.</button>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 3em;">
+                Check-ins in {{monthNames[month-1]}}, {{(currentDate.getMonth() >= month-1)? currentDate.getFullYear() : currentDate.getFullYear()-1}}
+            </h3>
             <span class="pull-right">Count: {{checkins.length}}</span>
             <div>
                 <table class="table table-hover" style="max-height: 80vh; overflow: auto; font-size: 12px;">

@@ -103,12 +103,15 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
         };
 
         $scope.toHouseCall = function(){
-            var walkin = $scope.walkin;
-
-            if(walkin.workNote){
-                walkin.status = 'House call pending';
-                walkin.resolution = 'House call technician: , MAC address: .';
-                $http.put('/walkins/'+$scope.walkin._id, walkin).success(function(){ $modalInstance.close('saved'); });
+            if($scope.walkin.workNote){
+                $scope.walkin.status = 'House call pending';
+                $scope.walkin.resolution = 'House call technician: , MAC address: .';
+                $http.put('/walkins/'+$scope.walkin._id, $scope.walkin)
+                    .success(function(){ $modalInstance.close('saved'); })
+                    .error  (function(){
+                        $scope.walkin.status = 'Work in progress';
+                        alert('Status change failed. Please try again.');
+                });
             }
             else
                 $scope.error = 'Please enter house call appointment date/time in Work Note.';
@@ -186,8 +189,6 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
                 $scope.error = 'Please verify customer\'s identity.';
             else {
                 $scope.save();
-                //$scope.error = 'Function under development.';
-                //return false;
                 $modalInstance.close('transfer');
             }
         };

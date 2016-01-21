@@ -184,16 +184,33 @@ exports.update = function(req, res) {
 	walkin = _.extend(walkin , req.body);
     walkin.lastUpdateTechnician = req.user._id;
 
-	walkin.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-            if(walkin.snSysId) servicenow.updateWalkinIncident(walkin);
-			res.jsonp(walkin);
-		}
-	});
+/*  Potential fix ?
+
+    Walkin.findOneAndUpdate(
+        {_id : req.walkin._id}, req.body,
+        function(error, doc){
+            if(error) return res.status(400).send(
+                { message: errorHandler.getErrorMessage(error)});
+            if(doc.snSysId) servicenow.updateWalkinIncident(walkin);
+            console.log(doc);
+            res.jsonp(doc);
+        }
+    );
+*/
+
+    if(walkin._id){
+        walkin.save(function(err) {
+            if (err)
+                return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            else {
+                if(walkin.snSysId)
+                    servicenow.updateWalkinIncident(walkin);
+                res.jsonp(walkin);
+            }
+        });
+    }
+    else return res.status(500).send('Cannot update walk-in instance: Missing _id.');
+
 };
 
 exports.syncWalkin = function(req, res){
@@ -420,7 +437,8 @@ exports.logResolution = function(req, res){
 exports.walkinByID = function(req, res, next, id) {
 	Walkin.findById(id).exec(function(err, walkin) {
 		if (err) return next(err);
-		if (! walkin) return next(new Error('Failed to load Walkin ' + id));
+		if (!walkin || !walkin._id)
+            return next(new Error('Failed to load Walkin ' + id));
 
         Walkin.populate(walkin, popOpt, function(err, walkin){
             if (err) return next(err);

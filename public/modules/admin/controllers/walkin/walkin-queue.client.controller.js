@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$scope', '$modal', '$location', 'Authentication', '$interval', '$rootScope',
-    function($http, $scope, $modal, $location, Authentication, $interval, $rootScope){
+angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$scope', '$modal', '$location', 'Authentication', '$interval', '$rootScope', '$timeout',
+    function($http, $scope, $modal, $location, Authentication, $interval, $rootScope, $timeout){
 
         var user = Authentication.user;
         if (!user)
@@ -142,7 +142,7 @@ angular.module('admin').controller('AdminWalkinsQueueController', ['$http', '$sc
 
         $scope.updateWorkNote = function(){
             $http.put('/walkins/'+$scope.quickWalkin._id, {workNote: $scope.quickWalkin.workNote})
-                .error(function(){alert('Update failed.');});
+                .error(function(){ alert('Update is not saved. Please try again.'); });
         };
     }
 ]);
