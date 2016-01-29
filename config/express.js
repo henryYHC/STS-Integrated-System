@@ -16,7 +16,7 @@ var fs = require('fs'),
 	helmet = require('helmet'),
 	passport = require('passport'),
     mongoose = require('mongoose'),
-	mongoStore = require('connect-mongo')({
+	MongoStore = require('connect-mongo')({
 		session: session
 	}),
 	flash = require('connect-flash'),
@@ -90,7 +90,7 @@ module.exports = function(db) {
 		saveUninitialized: true,
 		resave: true,
 		secret: config.sessionSecret,
-		store: new mongoStore({
+		store: new MongoStore({
             mongooseConnection: mongoose.connection,
 			db: db.connection.db,
 			collection: config.sessionCollection

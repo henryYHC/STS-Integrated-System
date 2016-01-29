@@ -15,6 +15,35 @@ angular.module('walkins').controller('WalkinDeviceController', ['$scope', '$stat
         // State initialization
         $scope.state = { 'deviceCategory' : true, 'computerOS' : false, 'mobileOS' : false, 'TVMDevice' : false, 'GamingDevice' : false, otherDevice : false };
 
+        var validateDevice = function() {
+            if ($scope.state.otherDevice || ($scope.formData.deviceCategory && ($scope.formData.os || $scope.formData.deviceType))) {
+                delete $scope.$parent.$parent.error;
+                $scope.formStatus.device = true;
+                $state.go('createWalkin.problem');
+            }
+            else
+                $scope.$parent.$parent.error = 'There is something wrong with your device selection.';
+        };
+
+        var setState = function(state){
+            $scope.state.deviceCategory = false;
+            $scope.state.computerOS = false;
+            $scope.state.mobileOS = false;
+            $scope.state.TVMDevice = false;
+            $scope.state.GamingDevice = false;
+            $scope.state.otherDevice = false;
+
+            switch(state){
+                case 'deviceCategory':  $scope.state.deviceCategory = true; break;
+                case 'Computer':      $scope.state.computerOS = true; break;
+                case 'Phone/Tablet':        $scope.state.mobileOS = true; break;
+                case 'TV/Media Device':       $scope.state.TVMDevice = true; break;
+                case 'Gaming System':    $scope.state.GamingDevice = true; break;
+                case 'otherDevice':     $scope.state.otherDevice = true; break;
+
+            }
+        };
+
         $scope.selectDeviceCategory = function(category){
             $scope.formData.deviceCategory = category;
 
@@ -49,38 +78,9 @@ angular.module('walkins').controller('WalkinDeviceController', ['$scope', '$stat
             else                                validateDevice();
         };
 
-        var validateDevice = function() {
-            if ($scope.state.otherDevice || ($scope.formData.deviceCategory && ($scope.formData.os || $scope.formData.deviceType))) {
-                delete $scope.$parent.$parent.error;
-                $scope.formStatus.device = true;
-                $state.go('createWalkin.problem');
-            }
-            else
-                $scope.$parent.$parent.error = 'There is something wrong with your device selection.';
-        };
-
         // State helper function
         $scope.resetState = function(){
             setState('deviceCategory');
-        };
-
-        var setState = function(state){
-            $scope.state.deviceCategory = false;
-            $scope.state.computerOS = false;
-            $scope.state.mobileOS = false;
-            $scope.state.TVMDevice = false;
-            $scope.state.GamingDevice = false;
-            $scope.state.otherDevice = false;
-
-            switch(state){
-                case 'deviceCategory':  $scope.state.deviceCategory = true; break;
-                case 'Computer':      $scope.state.computerOS = true; break;
-                case 'Phone/Tablet':        $scope.state.mobileOS = true; break;
-                case 'TV/Media Device':       $scope.state.TVMDevice = true; break;
-                case 'Gaming System':    $scope.state.GamingDevice = true; break;
-                case 'otherDevice':     $scope.state.otherDevice = true; break;
-
-            }
         };
     }
 ]);
