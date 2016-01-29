@@ -159,9 +159,26 @@ exports.printLabel = function(req, res){
     res.status(200).send('Printed.');
 };
 
+exports.getListingMetadata = function(req, res){
+    Checkin.find({isActive : true}).sort({created : 1}).exec(
+    function(err, checkins){
+        if(err) return res.status(500).send('Check-in query failed.');
+
+        var metadata = {}, head = checkins[0], tail = checkins[checkins.length-1];
+
+        var years = [], startYr = head.created.getFullYear(), endYr = tail.created.getFullYear();
+        for(var i = startYr; i <= endYr; i++) years.push(i);
+        metadata.years = years;
+
+        res.jsonp(metadata);
+    });
+};
+
 exports.listByMonth = function(req, res){
-    var range = req.range;
-    Checkin.find({ created : {$gte: range.start, $lt: range.end}},
+    var month = req.month, year = req.year;
+    var start = new Date(year, month-1, 1), end = new Date(year, month, 1);
+
+    Checkin.find({ created : {$gte: start, $lt: end}},
         function(err, checkins){
             if(err) return res.status(400).send('Failed to retrieved checkins');
             Checkin.populate(checkins, popOpt, function(err, checkins){
@@ -201,23 +218,10 @@ exports.checkinByID = function(req, res, next, id) {
     });
 };
 
-exports.parseMonthRange = function(req, res, next, target){
-    var time1 = new Date(Date.now()); target--;
-    var year = time1.getFullYear(), month = time1.getMonth();
+exports.parseMonth = function(req, res, next, month){
+    req.month = month; next();
+};
 
-    for(var i = 0; i < 11; i++) {
-        if (month === target) break;
-        else if (month === 0) {
-            month = 11;
-            year--;
-        }
-        else month--;
-    }
-
-    time1 = new Date(year, month, 1);
-    if(month++ === 12){ year++; month = 0; }
-    var time2 = new Date(year, month, 1);
-
-    req.range = {start : time1, end : time2};
-    next();
+exports.parseYear = function(req, res, next, year){
+    req.year = year; next();
 };

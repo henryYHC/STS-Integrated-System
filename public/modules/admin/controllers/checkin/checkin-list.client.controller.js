@@ -11,13 +11,17 @@ angular.module('admin').controller('AdminCheckinListingController', ['$http', '$
 
         $scope.currentDate = new Date(Date.now());
         $scope.month = $scope.currentDate.getMonth()+1;
-        $scope.year  = $scope.currentDate.getYear();
+        $scope.year  = $scope.currentDate.getFullYear();
         $scope.monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-        $scope.init = function(){  };
+        $scope.init = function(){
+            $http.get('/checkins/list/metadata')
+                .success( function(metadata){ $scope.metadata = metadata; })
+                .error  ( function(){ $scope.metadata = null; });
+        };
 
-        $scope.$watch('month', function(){
-            $http.get('/checkins/list/' + $scope.month).success(
+        $scope.$watch('[year, month]', function(){
+            $http.get('/checkins/list/' + $scope.year + '/' + $scope.month).success(
                 function(checkins){ $scope.checkins = checkins; });
         });
     }

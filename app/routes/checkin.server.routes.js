@@ -15,7 +15,8 @@ module.exports = function(app) {
     app.route('/checkins/setStatus/:checkinId').post(users.hasPermission, checkins.setStatus);
     app.route('/checkins/printLabel/:checkinId').get(users.hasPermission, checkins.printLabel);
 
-    app.route('/checkins/list/:month').get(users.hasPermission, checkins.listByMonth);
+    app.route('/checkins/list/metadata').get(users.hasPermission, checkins.getListingMetadata);
+    app.route('/checkins/list/:year/:month').get(users.hasPermission, checkins.listByMonth);
 
     app.route('/checkins/:checkinId')
         .get(users.hasPermission, checkins.view)
@@ -24,5 +25,6 @@ module.exports = function(app) {
 
     app.param('walkinId', walkins.walkinByID);
     app.param('checkinId', checkins.checkinByID);
-    app.param('month', checkins.parseMonthRange);
+    app.param('month', checkins.parseMonth);
+    app.param('year', checkins.parseYear);
 };

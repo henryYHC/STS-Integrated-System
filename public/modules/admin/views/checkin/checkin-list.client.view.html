@@ -2,12 +2,17 @@
     <div>
         <h2>STS Technician Panel - Check-in Listing<a href="/#!/admin" class="btn btn-sm btn-default pull-right">Back</a></h2><hr style="margin-top: 10px; margin-bottom: 10px"/>
     </div>
-    <div class="container">
-        <div class="col-md-12" ng-init="init()" style="margin-top: 0.5em;">
+    <div class="container" ng-init="init();">
+        <div class="col-md-12" style="margin-top: 0.5em;">
             <div class="col-md-3">
-                <select id="year" class="form-control" data-ng-model="year" style="margin: 10px 1px;">
-                    <option disabled selected>Select a year</option>
-                </select>
+                <div class="form-horizontal form-group">
+                    <label class="col-sm-3" for="query_yr" style="font-size: 14px; margin-top: 15px;">Year: </label>
+                    <div class="col-sm-9">
+                        <select id="query_yr" class="form-control" data-ng-model="year" style="margin: 10px 1px;">
+                            <option data-ng-repeat="yr in metadata.years" value="{{yr}}" selected="yr==year">{{yr}}</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="col-md-9">
                 <div class="btn-group">
@@ -27,7 +32,7 @@
             </div>
 
             <h3 style="margin-top: 3em;">
-                Check-ins in {{monthNames[month-1]}}, {{(currentDate.getMonth() >= month-1)? currentDate.getFullYear() : currentDate.getFullYear()-1}}
+                Check-ins in {{monthNames[month-1]}}, {{year}}
             </h3>
             <span class="pull-right">Count: {{checkins.length}}</span>
             <div>
