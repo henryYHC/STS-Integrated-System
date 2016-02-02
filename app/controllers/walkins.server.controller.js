@@ -401,7 +401,7 @@ exports.logService = function(req, res){
     if(walkin.status !== 'Work in progress' && walkin.status !== 'Completed') {
         walkin.status = 'Work in progress';
         if (!walkin.serviceTechnician || !walkin.serviceStartTime) {
-            walkin = _.extend(walkin, {serviceTechnician: req.user, serviceStartTime: Date.now()});
+            walkin = _.extend(walkin, {serviceTechnician: req.user, lastUpdateTechnician: req.user, serviceStartTime: Date.now()});
         }
         walkin.save(function (err) {
             if (err)    return res.status(400).send({message: errorHandler.getErrorMessage(err)});
@@ -417,17 +417,18 @@ exports.logResolution = function(req, res){
         walkin.status = 'Completed';
         if (!walkin.resoluteTechnician || !walkin.resolutionTime) {
             walkin = _.extend(walkin,
-                {resoluteTechnician: req.user, resolutionTime: Date.now(), updated: Date.now()}
+                {resoluteTechnician: req.user, resolutionTime: Date.now(),
+                    lastUpdateTechnician: req.user, updated: Date.now()}
             );
-        }
 
-        walkin.save(function (err) {
-            if (err)    return res.status(400).send({message: errorHandler.getErrorMessage(err)});
-            else {
-                //servicenow.createWalkinIncident(walkin);
-                return res.jsonp(walkin);
-            }
-        });
+            walkin.save(function (err) {
+                if (err)    return res.status(400).send({message: errorHandler.getErrorMessage(err)});
+                else {
+                    //servicenow.createWalkinIncident(walkin);
+                    return res.jsonp(walkin);
+                }
+            });
+        }
     }
 };
 
