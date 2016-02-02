@@ -370,7 +370,7 @@ exports.listBySearch = function(req, res){
             res.jsonp(walkins);
         });
     }
-    else if(query.snValue){
+    else if(query.snValue || query._id){
         Walkin.find(query).sort('-created').populate('user', 'username displayName').exec(function(err, walkins) {
             if (err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
             res.jsonp(walkins);
