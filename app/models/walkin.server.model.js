@@ -98,7 +98,7 @@ var WalkinSchema = new Schema({
     },
     resolutionType: {
         type: String,
-        enum: ['N/A', 'DooleyNet', 'EmoryUnplugged', 'Hardware', 'Office365', 'OS Troubleshooting', 'Password Resets', 'Check-in', 'Other'],
+        enum: ['N/A', 'DooleyNet', 'EmoryUnplugged', 'Hardware', 'Office365', 'OS Troubleshooting', 'Password Resets', 'Check-in', 'Printing', 'Other'],
         default: ['N/A']
     },
     otherResolution: {
