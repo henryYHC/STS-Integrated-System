@@ -204,7 +204,7 @@ exports.update = function(req, res) {
                 return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
             else {
                 if(walkin.snSysId)
-                    servicenow.updateWalkinIncident(walkin);
+                    servicenow.syncWalkinIncident(servicenow.UPDATE, walkin);
                 res.jsonp(walkin);
             }
         });
@@ -218,9 +218,12 @@ exports.syncWalkin = function(req, res){
     walkin.updated = Date.now();
 
     walkin.save(function(err) {
-        if (err)    return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        if (err){
+            console.log(err);
+            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        }
         else {
-            servicenow.createWalkinIncident(walkin, function(updatedWalkin){
+            servicenow.syncWalkinIncident(servicenow.CREATE, walkin, function(updatedWalkin){
                 res.jsonp(updatedWalkin);
             });
         }
@@ -417,18 +420,20 @@ exports.logResolution = function(req, res){
         walkin.status = 'Completed';
         if (!walkin.resoluteTechnician || !walkin.resolutionTime) {
             walkin = _.extend(walkin,
-                {resoluteTechnician: req.user, resolutionTime: Date.now(),
-                    lastUpdateTechnician: req.user, updated: Date.now()}
-            );
-
-            walkin.save(function (err) {
-                if (err)    return res.status(400).send({message: errorHandler.getErrorMessage(err)});
-                else {
-                    //servicenow.createWalkinIncident(walkin);
-                    return res.jsonp(walkin);
+                {
+                    resoluteTechnician: req.user, resolutionTime: Date.now(),
+                    lastUpdateTechnician: req.user, updated: Date.now()
                 }
-            });
+            );
         }
+
+        walkin.save(function (err) {
+            if (err)    return res.status(400).send({message: errorHandler.getErrorMessage(err)});
+            else {
+                //servicenow.createWalkinIncident(walkin);
+                return res.jsonp(walkin);
+            }
+        });
     }
 };
 
