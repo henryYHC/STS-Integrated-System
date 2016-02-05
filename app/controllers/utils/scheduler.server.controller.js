@@ -11,7 +11,7 @@ var popOpt = [
 ];
 
 var scheduledSurveyBroadCast_Walkin = function(){
-    return schedule.scheduleJob('0 8 12 * * 1-5',
+    return schedule.scheduleJob('0 0 18 * * 1-5',
     function(){
         var i, user, today = new Date(Date.now());
         today.setHours(0); today.setMinutes(0);
