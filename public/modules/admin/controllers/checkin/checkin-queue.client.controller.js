@@ -148,7 +148,7 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 			viewLibaility.result.then(
 				function(response){
 					if(response){
-						$http.put('/checkins/'+$scope.checkin._id, {pickupSig: response, status : 'Completed'})
+						$http.put('/checkins/'+$scope.checkin._id, {pickupSig: response})
 							.success(function(){
 								$http.post('/checkins/setStatus/'+$scope.checkin._id, {status: 'Completed'})
 									.success(function(){

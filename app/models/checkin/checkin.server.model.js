@@ -87,6 +87,10 @@ var CheckinSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
+	logEmailSent:{
+		type: Boolean,
+		default: false
+	},
 
 	//Walkin information
 	walkin: {

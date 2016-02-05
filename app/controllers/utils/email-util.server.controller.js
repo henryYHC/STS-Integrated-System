@@ -53,7 +53,7 @@ exports.sendEmail = function(email, subject, name, body){
     template.html = template.html.replace('<BODY>', body);
 
     transporter.sendMail(template, function(err, info){
-        if(err) return console.log(err);
+        if(err) return console.error(err);
         if(info.accepted.length <= 0)
             console.log('Email failed to send.');
     });
@@ -76,13 +76,13 @@ exports.sendCheckinReceipt = function(email, id, items, name){
     template.html = template.html.replace('<NAME>', name);
 
     transporter.sendMail(template, function(err, info){
-        if(err) return console.log(err);
+        if(err) return console.error(err);
         if(info.accepted.length > 0)
             Checkin.findById(id, function(err, checkin){
-                if(err) return console.log(err);
+                if(err) return console.error(err);
                 checkin.receiptEmailSent = true;
                 checkin.save(function(err, response){
-                    if(err) return console.log(err);
+                    if(err) return console.error(err);
                 });
             });
     });
@@ -104,14 +104,72 @@ exports.sendPickupReceipt = function(email, id, items, name){
     template.html = template.html.replace('<NAME>', name);
 
     transporter.sendMail(template, function(err, info){
-        if(err) return console.log(err);
+        if(err) return console.error(err);
         if(info.accepted.length > 0)
             Checkin.findById(id, function(err, checkin){
-                if(err) return console.log(err);
+                if(err) return console.error(err);
                 checkin.pickupEmailSent = true;
                 checkin.save(function(err, response){
-                    if(err) return console.log(err);
+                    if(err) return console.error(err);
                 });
             });
+    });
+};
+
+exports.sendServiceLog = function(email, id, items, logs, name){
+    var temp = fs.readFileSync(templateDirPath+'ServiceLog.json', 'utf8');
+    var template = JSON.parse(temp);
+    template.to = email;
+
+    var i, logString, itemsString = items.join(', ');
+
+    logString = '';
+    for(i = 0; i < logs.length; i++){
+        logString += '<li>';
+        logString += logs[i].description;
+        logString += '</li>';
+    }
+
+    template.html = template.html.replace('<ID>', id);
+    template.html = template.html.replace('<NAME>', name);
+    template.html = template.html.replace('<ITEMS>', itemsString);
+    template.html = template.html.replace('<LOG>', logString);
+
+    logString = '';
+    for(i = 0; i < logs.length; i++){
+        logString += logs[i].description;
+        logString += '\n';
+    }
+
+    template.text = template.text.replace('<ID>', id);
+    template.text = template.text.replace('<NAME>', name);
+    template.text = template.text.replace('<ITEMS>', itemsString);
+    template.text = template.text.replace('<LOG>', logString);
+
+    transporter.sendMail(template, function(err, info){
+        if(err) return console.error(err);
+        if(info.accepted.length > 0)
+            Checkin.findById(id, function(err, checkin){
+                if(err) return console.error(err);
+                checkin.logEmailSent = true;
+                checkin.save(function(err, response){
+                    if(err) return console.error(err);
+                });
+            });
+    });
+};
+
+exports.sendSurvey_routine = function(email, name){
+    var temp = fs.readFileSync(templateDirPath+'Survey.json', 'utf8');
+    var template = JSON.parse(temp);
+
+    template.to = email;
+    template.html = template.html.replace('<NAME>', name);
+    template.text = template.text.replace('<NAME>', name);
+
+    transporter.sendMail(template, function(err, info){
+        if(err) return console.log(err);
+        if(info.accepted.length <= 0)
+            console.error('Email failed to send.');
     });
 };

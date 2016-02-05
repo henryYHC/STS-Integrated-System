@@ -127,7 +127,7 @@ exports.logService = function(req, res){
 };
 
 exports.setStatus = function(req, res){
-    var checkin = req.checkin;
+    var user, checkin = req.checkin;
     checkin.status = req.body.status;
 
     switch (checkin.status){
@@ -136,17 +136,19 @@ exports.setStatus = function(req, res){
             break;
         case 'Checkout pending':
             checkin.verificationTechnician = req.user;
-            var user = checkin.user;
+            user = checkin.user;
             Email.sendPickupReceipt(user.username+'@emory.edu', checkin._id, checkin.itemReceived, user.displayName);
             break;
         case 'Completed':
             checkin.checkoutTechnician = req.user;
+            user = checkin.user;
+            Email.sendServiceLog(user.username+'@emory.edu', checkin._id, checkin.itemReceived, checkin.serviceLog, user.displayName);
             break;
     }
 
     checkin.save(function(err){
         if(err) return res.status(400).send(err);
-        res.json(checkin);
+        return res.json(checkin);
     });
 };
 

@@ -36,6 +36,7 @@
     "mongoose": "*",
     "mongoose-auto-increment": "^5.0.1",
     "morgan": "*",
+    "node-schedule": "^1.0.0",
     "nodemailer": "^2.0.0",
     "nodemailer-smtp-transport": "^2.0.1",
     "passport": "^0.3.2",

@@ -34,3 +34,7 @@ exports = module.exports = app;
 
 // Logging initialization
 console.log('MEAN.JS application started on port ' + config.port);
+
+// Set up scheduled jobs
+console.log('\n======== System information ========');
+require('./app/controllers/utils/scheduler.server.controller.js').initScheduledJobs();

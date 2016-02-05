@@ -35,7 +35,7 @@ angular.module('admin').controller('ServicenowSyncController', ['$scope', '$http
             var i, selectedIds = $scope.walkinIds;
             var ids = [], walkins = $scope.walkins;
 
-            if(selectedIds){
+            if(selectedIds && selectedIds.length > 0){
                 var key, keys = Object.keys(selectedIds);
                 for(i in keys){
                     key = keys[i];
