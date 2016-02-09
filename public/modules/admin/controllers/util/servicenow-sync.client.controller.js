@@ -9,7 +9,8 @@ angular.module('admin').controller('ServicenowSyncController', ['$scope', '$http
         $scope.syncing = false;
 
         $scope.getTickets = function(){
-            $scope.loading = true; $scope.walkins = undefined;
+            $scope.loading = true; $scope.syncing = false;
+            $scope.walkins = undefined;
             $http.get('/walkins/list/listUnSynced').success(function(entries){
                 $scope.loading = false;
                 $scope.summary.count = entries.length;

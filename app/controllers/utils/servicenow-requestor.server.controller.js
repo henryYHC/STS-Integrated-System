@@ -1,4 +1,4 @@
-'use strict';
+    'use strict';
 
 /**
  * Module dependencies.
@@ -97,7 +97,7 @@ var getTemplateObj = function(walkin){
             break;
 
         case 'Check-in':
-            subject += 'Check-in';
+            subject += 'Converted to CI';
 
             obj.category1 = 'Desktop Management';
             obj.category2 = 'OS/Firmware';
@@ -125,7 +125,7 @@ var formulateWalkin = function(walkin, soapAction){
 
     return {
         // Request info
-        u_soapaction : soapAction,
+        u_soap_action : soapAction,
         u_incident_state : 'Resolved',
         u_resolution_code : 'Configure',
 
@@ -158,25 +158,16 @@ var formulateWalkin = function(walkin, soapAction){
         u_duration : walkin.resolutionTime.getTime() - walkin.created.getTime(),
         u_time_worked : walkin.resolutionTime.getTime() - walkin.serviceStartTime.getTime(),
         u_last_update : walkin.updated.getTime(),
-        u_actual_resolve_at_ : walkin.resolutionTime.getTime(),
+        u_actual_resolve_at : walkin.resolutionTime.getTime(),
         u_time_of_incident : walkin.created.getTime()
     };
 };
 
-exports.getWalkinIncident = function(snSysId){
-    soap.createClient(credential.wsdl_url, function(err, client){
-        if(err) return console.log(err);
-        client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
+exports.CREATE = 'CREATE';
+exports.UPDATE = 'UPDATE';
 
-        client.getRecords({sys_target_sys_id : snSysId}, function(err, response){
-            if(err) return console.log(err);
-            console.log(response.getRecordsResult[0]);
-        });
-    });
-};
-
-exports.createWalkinIncident = function(walkin, next){
-    var data = formulateWalkin(walkin, 'CREATE');
+exports.syncWalkinIncident = function(action, walkin, next){
+    var data = formulateWalkin(walkin, action);
 
     soap.createClient(credential.wsdl_url, function(err, client){
         if(err) return console.log(err);
@@ -185,13 +176,24 @@ exports.createWalkinIncident = function(walkin, next){
         client.insert(data, function(err, response){
             if(err) return console.log(err);
 
-            console.log(response);
-
-            if(response.status === 'inserted' && response.sys_id && response.display_value){
-                walkin.snSysId = response.sys_id;
-                walkin.snValue = response.display_value;
-                walkin.save(function(err){ if(err) return console.log(err); });
+            if(response.sys_id && response.display_value){
+                switch(response.status){
+                    case 'inserted':
+                        walkin.snSysId = response.sys_id; walkin.snValue = response.display_value;
+                        walkin.save(function(err){ if(err) return console.log(err); });
+                        break;
+                    case 'updated':
+                        if(!walkin.snValue || walkin.snSysId){
+                            walkin.snSysId = response.sys_id;
+                            walkin.snValue = response.display_value;
+                        }
+                        walkin.save(function(err){ if(err) return console.log(err); });
+                        break;
+                    default:
+                        return console.log(response);
+                }
             }
+            else console.log(response);
 
             if(next) return next(walkin);
             else     return walkin;
@@ -199,17 +201,49 @@ exports.createWalkinIncident = function(walkin, next){
     });
 };
 
-exports.updateWalkinIncident = function(walkin, next){
-    var data = formulateWalkin(walkin, 'UPDATE');
-    data.sys_target_sys_id = walkin.snSysId;
-    data.u_last_update_tech = walkin.lastUpdateTechnician.username;
 
-    soap.createClient(credential.wsdl_url, function(err, client){
-        if(err) return console.log(err);
-        client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
+var syncUnsyncedWalkinIncidentAux = function(client, id, action, walkins){
+    if(id < walkins.length){
+        var walkin = walkins[id],
+            data = formulateWalkin(walkin, action);
 
-        client.update(data, function(err, response){
-            if(err) return console.log(err);
+        client.insert(data, function(err, response){
+            if(err) return console.error(err);
+
+            else if(response.sys_id && response.display_value){
+                switch(response.status){
+                    case 'inserted':
+                        walkin.snSysId = response.sys_id; walkin.snValue = response.display_value;
+                        walkin.save(function(err){ if(err) return console.log(err); });
+                        break;
+                    case 'updated':
+                        if(!walkin.snValue || walkin.snSysId){
+                            walkin.snSysId = response.sys_id;
+                            walkin.snValue = response.display_value;
+                        }
+                        walkin.save(function(err){ if(err) return console.error(err); });
+                        break;
+                    default: return console.error(response);
+                }
+
+                syncUnsyncedWalkinIncidentAux(client, id+1, action, walkins);
+            }
+            else return console.error(response);
+        });
+    }
+};
+
+exports.syncUnsyncedWalkinIncidents = function(action, next){
+    Walkin.find({isActive : true, status : 'Completed', snValue : ''})
+        .populate(popOpt).exec(function(err, walkins){
+        if(err) return console.error(err);
+
+        soap.createClient(credential.wsdl_url, function(err, client){
+            if(err) return console.error(err);
+            client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
+            if(walkins.length)  syncUnsyncedWalkinIncidentAux(client, 0, action, walkins);
+
+            if(next) return next();
         });
     });
 };

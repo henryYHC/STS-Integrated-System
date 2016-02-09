@@ -12,6 +12,9 @@
                 <span class="label label-success" style="font-size: 13px; margin-left: 2.5em;" ng-show="walkin.isActive">Active</span>
                 <span class="label label-danger" style="font-size: 13px; margin-left: 2.5em;" ng-show="!walkin.isActive">Inactive</span>
                 <span class="label label-info" style="font-size: 13px; margin-left: 1em;">{{walkin.status}}</span>
+                <span class="label label-warning" ng-show="walkin.snValue"
+                      tooltip-placement="right" tooltip="{{walkin.snValue}}"
+                      style="margin-left: 1em;font-size: 13px;">ServiceNow Inserted</span>
                 <div class="pull-right" >
                     <a ng-click="updateWalkin()"><span class="glyphicon glyphicon-floppy-disk"></span></a>
                     <a ng-show="isAdmin" ng-click="deleteWalkin(walkin._id)"><span class="glyphicon glyphicon-trash"></span></a>

@@ -322,7 +322,9 @@ exports.listToday = function(req, res) {
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
-            res.jsonp(walkins);
+            if(walkins.length > 200)
+                return res.jsonp(walkins.slice(0, 200));
+            return res.jsonp(walkins);
         }
     });
 };
@@ -430,7 +432,7 @@ exports.logResolution = function(req, res){
         walkin.save(function (err) {
             if (err)    return res.status(400).send({message: errorHandler.getErrorMessage(err)});
             else {
-                //servicenow.createWalkinIncident(walkin);
+                //servicenow.syncWalkinIncident(servicenow.CREATE, walkin);
                 return res.jsonp(walkin);
             }
         });

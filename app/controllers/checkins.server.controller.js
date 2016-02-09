@@ -11,7 +11,8 @@ var mongoose = require('mongoose'),
     Checkin = mongoose.model('Checkin'),
     ContactLog = mongoose.model('ContactLog'),
     label = require('./utils/label-util.server.controller.js'),
-    Email = require('./utils/email-util.server.controller.js');
+    Email = require('./utils/email-util.server.controller.js'),
+    servicenow = require('./utils/servicenow-requestor.server.controller.js');
 
 var popOpt = [
     { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified'},
@@ -62,6 +63,7 @@ exports.create = function(req, res) {
 
         walkin.save(function(err){
             if(err) return res.status(400).send(err);
+            //servicenow.syncWalkinIncident(servicenow.CREATE, walkin);
             res.json(response);
         });
     });

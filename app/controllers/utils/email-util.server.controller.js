@@ -17,6 +17,9 @@ var credentialFilePath = __dirname + '/../../credentials/EmailConfig.json',
 var transporter = nodemailer.createTransport(smtpTransport(credential));
 var templateDirPath = __dirname + '/../../templates/email/';
 
+exports.WALKIN  = 'Walk-in';
+exports.CHECKIN = 'Check-in';
+
 exports.sendEmail_REST = function(req, res){
     var email = req.body;
 
@@ -159,8 +162,21 @@ exports.sendServiceLog = function(email, id, items, logs, name){
     });
 };
 
-exports.sendSurvey_routine = function(email, name){
-    var temp = fs.readFileSync(templateDirPath+'Survey.json', 'utf8');
+exports.sendSurvey_routine = function(type, email, name){
+
+    var temp_path;
+    switch(type){
+        case this.WALKIN:
+            temp_path = templateDirPath+'Survey_Walkin.json';
+            break;
+        case this.CHECKIN:
+            temp_path = templateDirPath+'Survey_Checkin.json';
+            break;
+        default:
+            return console.error('Invalid type for survey email.');
+    }
+
+    var temp = fs.readFileSync(temp_path, 'utf8');
     var template = JSON.parse(temp);
 
     template.to = email;
