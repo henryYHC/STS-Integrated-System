@@ -33,18 +33,18 @@ angular.module('admin').controller('ServicenowSyncController', ['$scope', '$http
 
         $scope.syncTickets = function(){
             $scope.summary.syncCount = 0;
-            var i, selectedIds = $scope.walkinIds;
+            var i, selectedIds = Object.keys($scope.walkinIds);
             var ids = [], walkins = $scope.walkins;
 
+            console.log(selectedIds.length);
             if(selectedIds && selectedIds.length > 0){
-                var key, keys = Object.keys(selectedIds);
-                for(i in keys){
-                    key = keys[i];
-                    if(selectedIds[key]) ids.push(key);
-                }
+                for(i in selectedIds)
+                    ids.push(selectedIds[i]);
                 $scope.summary.count = ids.length;
             }
             else    for(i in walkins)   ids.push(walkins[i]._id);
+
+            console.log(ids);
 
             $scope.syncing = true;
             syncWalkinTicketsAux(0, ids);

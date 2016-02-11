@@ -170,11 +170,11 @@ exports.syncWalkinIncident = function(action, walkin, next){
     var data = formulateWalkin(walkin, action);
 
     soap.createClient(credential.wsdl_url, function(err, client){
-        if(err) return console.log(err);
+        if(err) return console.log('Client Creation Error: ' + err);
         client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
 
         client.insert(data, function(err, response){
-            if(err) return console.log(err);
+            if(err) return console.log('Insert Request Error: ' + err);
 
             if(response.sys_id && response.display_value){
                 switch(response.status){
@@ -187,20 +187,19 @@ exports.syncWalkinIncident = function(action, walkin, next){
                             walkin.snSysId = response.sys_id;
                             walkin.snValue = response.display_value;
                         }
-                        walkin.save(function(err){ if(err) return console.log(err); });
+                        walkin.save(function(err){ if(err) return console.log('Walk-in Save Error: ' + err); });
                         break;
                     default:
-                        return console.log(response);
+                        return console.error('Invalid Status Error: ' + response);
                 }
             }
-            else console.log(response);
+            else console.log('Field(s) Missing Error: '+response);
 
             if(next) return next(walkin);
             else     return walkin;
         });
     });
 };
-
 
 var syncUnsyncedWalkinIncidentAux = function(client, id, action, walkins){
     if(id < walkins.length){
