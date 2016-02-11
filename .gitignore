@@ -13,3 +13,6 @@ app/credentials/
 !ExampleSmtpEmailConfig.json
 !angular-touch.js
 logistic/figures/figure_design.pptx
+/mockup/v2.0/node_modules/
+/mockup/v2.0/bower_components/
+/mockup/v2.0/img/
