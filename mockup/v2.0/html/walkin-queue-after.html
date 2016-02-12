@@ -40,7 +40,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                Library Guidance <i class="fa fa-star"></i>
+                                Library Guidance <i class="fa fa-book"></i>
                             </a>
                             <ul class="dropdown-menu animated fadeInDown">
                                 <li class="title">Guidance Categories</li>
@@ -96,7 +96,7 @@
                                 <div id="dropdown-element" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         <ul class="nav navbar-nav">
-                                            <li><a href="walkin-queue.html">Active Queue</a></li>
+                                            <li><a href="walkin-queue-before.html">Active Queue</a></li>
                                             <li><a href="walkin-listing.html">All Listing</a></li>
                                         </ul>
                                     </div>
@@ -168,7 +168,6 @@
                                     <div class="card-title">
                                         <div class="title"><i class="fa fa-male"></i> Customer Waiting</div>
                                     </div>
-                                    <div class="clear-both"></div>
                                 </div>
                                 <div class="card-body no-padding">
                                     <table class="table table-hover">
@@ -178,18 +177,28 @@
                                         </tr></thead>
                                         <tbody>
                                             <tr>
-                                                <th scope="row">1</th>
+                                                <th scope="row">1
+                                                    <span class="fa fa-wrench pull-right" data-toggle="tooltip" data-placement="right" title="Tooltip on right"></span>
+                                                </th>
                                                 <td>Stacy Banana 
                                                     <span class="fa fa-clock-o pull-right" data-toggle="tooltip" data-placement="right" title="Tooltip on right"></span>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th scope="row">2</th>
-                                                <td>Sarah Mango</td>
+                                                <th scope="row">2
+                                                    <span class="fa fa-wrench pull-right" data-toggle="tooltip" data-placement="right" title="Tooltip on right"></span>
+                                                </th>
+                                                <td>Sarah Mango
+                                                    <span class="fa fa-clock-o pull-right" data-toggle="tooltip" data-placement="right" title="Tooltip on right"></span>
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <th scope="row">3</th>
-                                                <td>Michael Buchmann</td>
+                                                <th scope="row">3
+                                                    <span class="fa fa-home pull-right" data-toggle="tooltip" data-placement="right" title="Tooltip on right"></span>
+                                                </th>
+                                                <td>Michael Buchmann
+                                                    <span class="fa fa-clock-o pull-right" data-toggle="tooltip" data-placement="right" title="Tooltip on right"></span>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -200,8 +209,51 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            
+                        <div class="col-lg-9 col-md-9 col-sm-6 col-xs-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <div class="title">
+                                            <i class="fa fa-info"></i>&emsp; Walk-in Information
+                                        </div>
+                                    </div>
+                                    <div class="pull-right" style="font-size: 16px; margin: 10px 5px 0 0;">
+                                        <span class="label label-success">Work in Progress</span>
+                                    </div>
+                                </div>
+                                <div class="card-body no-padding">
+                                    <form class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 10px;">
+                                        <div class="dropdown pull-right">
+                                            <button class="btn btn-sm btn-warning" data-toggle="dropdown" style="margin-top: 0;" 
+                                                role="button" aria-haspopup="true" aria-expanded="false">
+                                                Ticket Functions &emsp;<span class="fa fa-caret-down"></span>
+                                            </button>
+                                            <ul class="dropdown-menu animated fadeInDown pull-rightf">
+                                                <li>Duplicate Ticket</li>
+                                                <li>Reassign NetID</li>
+                                            </ul>    
+                                        </div>
+                                        
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5">
+                                            <div class="form-horizontal">
+                                                <div class="form-group" style="text-align: left">
+                                                    <label class="col-sm-2 control-label" for="2">NetID:</label>
+                                                    <div class="col-sm-8" id="2" style="margin-top: 8px;">smango</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-6">
+                                            <div class="form-horizontal">
+                                                <div class="form-group" style="text-align: left">
+                                                    <label class="col-sm-2 control-label" for="2">Name:</label>
+                                                    <div class="col-sm-8" id="2" style="margin-top: 8px;">Sarah Mango</div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -210,7 +262,7 @@
         <footer class="app-footer">
             <div class="wrapper">
                 <span class="pull-right">v2.0 <a href="https://github.com/henryYHC/STS-Integrated-System"><i class="fa fa-code-fork"></i></a></span> 
-                Copyright &copy; 2015-2016 by Henry(Yu-Hsin) Chen.
+                Copyright &copy; 2015-2016 by Emory Student Tech Support.
             </div>
         </footer>
         <div>
