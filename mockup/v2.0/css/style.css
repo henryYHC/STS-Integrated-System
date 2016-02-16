@@ -1232,3 +1232,15 @@ body.login-page {
   .featurette-heading {
     margin-top: 100px;
     margin-bottom: 20px; } }
+
+/* STS font
+-------------------------------------------------- */
+@font-face {
+    font-family: STS-Light;
+    src: url("../font/Linotype - UniversLTStd-LightCn.otf");
+}
+
+@font-face {
+    font-family: STS-Bold;
+    src: url("../font/Linotype - UniversLTStd-BoldCn.otf");
+}
