@@ -34,7 +34,7 @@ var getTemplateObj = function(walkin){
     switch(walkin.resolutionType){
         case 'DooleyNet':
             subject += 'DN ' + walkin.deviceType;
-            if(walkin.deviceType === 'Other') subject += walkin.otherDevice;
+            if(walkin.deviceType === 'Other') subject += ' ' + walkin.otherDevice;
 
             obj.category1 = 'Application Management';
             obj.category2 = 'Access';
@@ -105,7 +105,7 @@ var getTemplateObj = function(walkin){
             break;
 
         case 'Other':
-            subject += 'O ' + walkin.otherResolution;
+            subject += 'Other ' + walkin.otherResolution;
 
             obj.category1 = 'Desktop Management';
             obj.category2 = 'Software';
