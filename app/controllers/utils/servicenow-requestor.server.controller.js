@@ -222,7 +222,7 @@ var syncUnsyncedWalkinIncidentAux = function(client, id, action, walkins){
                         walkin.snSysId = response.sys_id; walkin.snValue = response.display_value;
                         walkin.save(function(err){ 
                             if(err) return console.log(err); 
-                            else console.log('INFO-AUX: ' + walkin.snValue + ' inserted.');
+                            else console.log('INFO: ' + walkin.snValue + ' inserted. (scheduled)');
                         });
                         break;
                     case 'updated':
@@ -232,7 +232,7 @@ var syncUnsyncedWalkinIncidentAux = function(client, id, action, walkins){
                         }
                         walkin.save(function(err){ 
                             if(err) return console.error(err);
-                            else console.log('INFO-AUX: ' + walkin.snValue + ' updated.');
+                            else console.log('INFO: ' + walkin.snValue + ' updated. (scheduled)');
                         });
                         break;
                     default: return console.error(response);

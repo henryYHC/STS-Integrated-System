@@ -52,8 +52,9 @@ scheduledSurveyBroadCast_Checkin = function(){
         });
 },
 scheduledServiceNowSync_Walkin = function(){
-    return schedule.scheduleJob('0 0 18 * * 1-5',
-        ServiceNow.syncUnsyncedWalkinIncidents(ServiceNow.CREATE));
+    return schedule.scheduleJob('0 0 18 * * 1-5', function(){
+        ServiceNow.syncUnsyncedWalkinIncidents(ServiceNow.CREATE)
+    });
 };
 
 exports.initScheduledJobs = function(){
@@ -65,8 +66,8 @@ exports.initScheduledJobs = function(){
     scheduledSurveyBroadCast_Checkin();
     console.log('---> Scheduled Routine Check-in Survery Email BroadCast @ 6:15pm: Done.');
 
-    // scheduledServiceNowSync_Walkin();
-    console.log('---> Scheduled Service Now Sync for Unsynced Ticket @ 6pm: Not Set Up.');
+    scheduledServiceNowSync_Walkin();
+    console.log('---> Scheduled Service Now Sync for Unsynced Ticket @ 6pm: Done.');
 };
 
 
