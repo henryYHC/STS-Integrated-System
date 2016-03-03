@@ -220,18 +220,23 @@ var syncUnsyncedWalkinIncidentAux = function(client, id, action, walkins){
                 switch(response.status){
                     case 'inserted':
                         walkin.snSysId = response.sys_id; walkin.snValue = response.display_value;
-                        walkin.save(function(err){ if(err) return console.log(err); });
+                        walkin.save(function(err){ 
+                            if(err) return console.log(err); 
+                            else console.log('INFO-AUX: ' + walkin.snValue + ' inserted.');
+                        });
                         break;
                     case 'updated':
                         if(!walkin.snValue || walkin.snSysId){
                             walkin.snSysId = response.sys_id;
                             walkin.snValue = response.display_value;
                         }
-                        walkin.save(function(err){ if(err) return console.error(err); });
+                        walkin.save(function(err){ 
+                            if(err) return console.error(err);
+                            else console.log('INFO-AUX: ' + walkin.snValue + ' updated.');
+                        });
                         break;
                     default: return console.error(response);
                 }
-
                 syncUnsyncedWalkinIncidentAux(client, id+1, action, walkins);
             }
             else return console.error(response);
