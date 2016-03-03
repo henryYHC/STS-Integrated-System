@@ -183,7 +183,7 @@ exports.syncWalkinIncident = function(action, walkin, next){
                         walkin.snSysId = response.sys_id; walkin.snValue = response.display_value;
                         walkin.save(function(err){ 
                             if(err) return console.log(err); 
-                            else console.log('INFO: ' + walkin.snValue + ' inserted.')
+                            else console.log('INFO: ' + walkin.snValue + ' inserted.');
                         });
                         break;
                     case 'updated':
@@ -193,7 +193,7 @@ exports.syncWalkinIncident = function(action, walkin, next){
                         }
                         walkin.save(function(err){ 
                             if(err) return console.log('Walk-in Save Error: ' + err); 
-                            else else console.log('INFO: ' + walkin.snValue + ' updated.')
+                            else console.log('INFO: ' + walkin.snValue + ' updated.');
                         });
                         break;
                     default:
