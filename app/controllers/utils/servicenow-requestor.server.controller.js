@@ -36,6 +36,7 @@ var getTemplateObj = function(walkin){
             subject += 'DN ' + walkin.deviceType;
             if(walkin.deviceType === 'Other') subject += ' ' + walkin.otherDevice;
 
+            obj.type = 'Service Request';
             obj.category1 = 'Application Management';
             obj.category2 = 'Access';
             obj.category3 = 'Inaccessible';
@@ -140,7 +141,7 @@ var formulateWalkin = function(walkin, soapAction){
 
         // Walk-in info
         u_correlation_id : walkin._id,
-        u_record_type:  'Incident',
+        u_record_type:  (template.type)? template.type :'Incident',
         u_reported_source :  'Walk In',
         u_customer : walkin.user.username,
         u_problem : walkin.description,
@@ -180,14 +181,20 @@ exports.syncWalkinIncident = function(action, walkin, next){
                 switch(response.status){
                     case 'inserted':
                         walkin.snSysId = response.sys_id; walkin.snValue = response.display_value;
-                        walkin.save(function(err){ if(err) return console.log(err); });
+                        walkin.save(function(err){ 
+                            if(err) return console.log(err); 
+                            else console.log('INFO: ' + walkin.snValue + ' inserted.')
+                        });
                         break;
                     case 'updated':
                         if(!walkin.snValue || walkin.snSysId){
                             walkin.snSysId = response.sys_id;
                             walkin.snValue = response.display_value;
                         }
-                        walkin.save(function(err){ if(err) return console.log('Walk-in Save Error: ' + err); });
+                        walkin.save(function(err){ 
+                            if(err) return console.log('Walk-in Save Error: ' + err); 
+                            else else console.log('INFO: ' + walkin.snValue + ' updated.')
+                        });
                         break;
                     default:
                         return console.error('Invalid Status Error: ' + response);

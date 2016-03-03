@@ -184,20 +184,6 @@ exports.update = function(req, res) {
 	walkin = _.extend(walkin , req.body);
     walkin.lastUpdateTechnician = req.user._id;
 
-/*  Potential fix ?
-
-    Walkin.findOneAndUpdate(
-        {_id : req.walkin._id}, req.body,
-        function(error, doc){
-            if(error) return res.status(400).send(
-                { message: errorHandler.getErrorMessage(error)});
-            if(doc.snSysId) servicenow.updateWalkinIncident(walkin);
-            console.log(doc);
-            res.jsonp(doc);
-        }
-    );
-*/
-
     if(walkin._id){
         walkin.save(function(err) {
             if (err)
@@ -432,7 +418,7 @@ exports.logResolution = function(req, res){
         walkin.save(function (err) {
             if (err)    return res.status(400).send({message: errorHandler.getErrorMessage(err)});
             else {
-                //servicenow.syncWalkinIncident(servicenow.CREATE, walkin);
+                servicenow.syncWalkinIncident(servicenow.CREATE, walkin);
                 return res.jsonp(walkin);
             }
         });
