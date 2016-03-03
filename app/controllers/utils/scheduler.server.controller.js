@@ -65,8 +65,8 @@ exports.initScheduledJobs = function(){
     scheduledSurveyBroadCast_Checkin();
     console.log('---> Scheduled Routine Check-in Survery Email BroadCast @ 6:15pm: Done.');
 
-    scheduledServiceNowSync_Walkin();
-    console.log('---> Scheduled Service Now Sync for Unsynced Ticket @ 6pm: Done.');
+    // scheduledServiceNowSync_Walkin();
+    console.log('---> Scheduled Service Now Sync for Unsynced Ticket @ 6pm: Not Set Up.');
 };
 
 
