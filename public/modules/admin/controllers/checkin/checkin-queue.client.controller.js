@@ -70,7 +70,6 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 				$http.post('/checkins/log/'+$scope.checkin._id, {checkin : $scope.checkin, log : {description : log, type: type}})
 					.success(function(){
 						$http.get('/checkins/'+$scope.checkin._id).success(function(checkin){
-							$scope.workQueueItems[$scope.workQueueItems.indexOf($scope.checkin)] = checkin;
 							$scope.checkin = checkin;
 							$scope.serviceLog = undefined;
 							if(callback) callback(checkin);
@@ -119,17 +118,18 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 					var note = prompt('Reason for setting the status to pending', '');
 					if(!note) return false;
 
-					$scope.logService('Status changed to '+status, 'Note');
-					$scope.logService('-->' + note, 'Note');
+					$scope.logService('Status changed to '+status, 'Note', function(){
+						var date = new Date(Date.now()),
+							t_string = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+						$scope.logService('-->' + note + ' @ ' + t_string, 'Note');	
+					});
 				}
 				else $scope.logService('Status changed to '+status, 'Note');
 
 				$http.post('/checkins/setStatus/'+$scope.checkin._id, {status: status})
 					.success(function(){
 						$http.get('/checkins/'+$scope.checkin._id).success(function(checkin){
-							$scope.initQueues();
-							$scope.checkin = checkin;
-							$scope.checkin = checkin;
+							$scope.initQueues(); $scope.checkin = checkin;
 						});
 					}
 				);

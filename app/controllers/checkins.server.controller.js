@@ -63,7 +63,7 @@ exports.create = function(req, res) {
 
         walkin.save(function(err){
             if(err) return res.status(400).send(err);
-            //servicenow.syncWalkinIncident(servicenow.CREATE, walkin);
+            servicenow.syncIncident(servicenow.CREATE, servicenow.WALKIN, walkin);
             res.json(response);
         });
     });
@@ -129,21 +129,24 @@ exports.logService = function(req, res){
 };
 
 exports.setStatus = function(req, res){
-    var user, checkin = req.checkin;
+    var checkin = req.checkin, user = checkin.user;
     checkin.status = req.body.status;
 
     switch (checkin.status){
         case 'Verification pending':
             checkin.completionTechnician = req.user;
+            checkin.completionTime = Date.now();
+            console.log(checkin);
             break;
         case 'Checkout pending':
             checkin.verificationTechnician = req.user;
-            user = checkin.user;
+            checkin.verificationTime = Date.now();
+            //servicenow.syncIncident(servicenow.CREATE, servicenow.CHECKIN, checkin);
             Email.sendPickupReceipt(user.username+'@emory.edu', checkin._id, checkin.itemReceived, user.displayName);
             break;
         case 'Completed':
             checkin.checkoutTechnician = req.user;
-            user = checkin.user;
+            checkin.checkoutTime = Date.now();
             Email.sendServiceLog(user.username+'@emory.edu', checkin._id, checkin.itemReceived, checkin.serviceLog, user.displayName);
             break;
     }

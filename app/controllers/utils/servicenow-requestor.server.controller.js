@@ -27,7 +27,7 @@ var popOpt = [
     { path : 'resoluteTechnician', model : 'User', select : 'username'}
 ];
 
-var getTemplateObj = function(walkin){
+var getWalkinTemplateObj = function(walkin){
     var subject = 'STS: ', os = walkin.os;
     var obj = { short_description: '', category1 : '', category2 : '', category3 : '' };
 
@@ -48,16 +48,9 @@ var getTemplateObj = function(walkin){
             else if(os.indexOf('(') >= 0) os = os.substring(0, os.indexOf('(')).trim();
 
             switch(walkin.deviceCategory){
-                case 'Computer':
-                    subject += os;
-                    break;
-
-                case 'Phone/Tablet':
-                    subject += 'Mobile ' + os;
-                    break;
-
-                default:
-                    subject += 'Unknown';
+                case 'Computer': 		subject += os;				break;
+                case 'Phone/Tablet': 	subject += 'Mobile ' + os;	break;
+                default: 				subject += 'Unknown';
             }
 
             obj.category1 = 'Desktop Management';
@@ -107,22 +100,29 @@ var getTemplateObj = function(walkin){
 
         case 'Other':
             subject += 'Other ' + walkin.otherResolution;
-
             obj.category1 = 'Desktop Management';
             obj.category2 = 'Software';
             obj.category3 = 'Error';
             break;
 
-        default:
-            subject += 'Unknown Template';
+        default: subject += 'Unknown Template';
     }
 
     obj.short_description = subject;
     return obj;
 };
 
+var getCheckinTemplateObj = function(checkin){
+	return {
+        short_description: 'STS: CI: Diagnose and Repair',
+		category1: 'Desktop Management',
+		category2: 'OS/Firmware',
+		category3: 'Error'
+	};
+};
+
 var formulateWalkin = function(walkin, soapAction){
-    var template = getTemplateObj(walkin);
+    var template = getWalkinTemplateObj(walkin);
 
     return {
         // Request info
@@ -164,11 +164,63 @@ var formulateWalkin = function(walkin, soapAction){
     };
 };
 
-exports.CREATE = 'CREATE';
-exports.UPDATE = 'UPDATE';
+ var formulateCheckin = function(checkin, soapAction){
+     var worknote = '', template = getCheckinTemplateObj(checkin);
+     worknote += 'Device : ' + checkin.deviceManufacturer + ' ' + checkin.deviceModel + '\n';
+     worknote += 'OS : ' + checkin.walkin.os + ' (' + checkin.deviceInfoOS.join(', ') + ')\n';
+     worknote += 'Item received: ' + checkin.itemReceived.join(', ') + '\n';
+     worknote += checkin.serviceLog.map(function(log){ return log.description; }).join('\n');
 
-exports.syncWalkinIncident = function(action, walkin, next){
-    var data = formulateWalkin(walkin, action);
+     return {
+         // Request info
+         u_soap_action : soapAction,
+         u_incident_state : 'Resolved',
+         u_resolution_code : 'Configure',
+
+         // Static info
+         u_category_1 : template.category1,
+         u_category_2 : template.category2,
+         u_category_3 : template.category3,
+         u_configuration_item : 'Student Technology',
+         u_impact : '4 – Minor/Localized',
+         u_suppress_notification : 'Yes',
+         u_urgency : '4 - Low',
+
+         // Walk-in info
+         u_correlation_id : 'CI'+checkin._id,
+         u_record_type:  (template.type)? template.type :'Incident',
+         u_reported_source :  'Tech Initiated',
+         u_customer : checkin.user.username,
+         u_problem : checkin.preDiagnostic,
+         u_liability_agreement : checkin.liabilitySig !== '',
+         u_short_description : template.short_description,
+         u_resolution : worknote,
+         u_work_note : '',
+
+         // Assignment info
+         u_assigned_to : checkin.walkin.resoluteTechnician.username,
+         u_last_update_tech : checkin.completionTechnician.username,
+         u_assignment_group : 'LITS: Student Digital Life',
+
+         // Time log
+         u_duration : checkin.completionTime.getTime() - checkin.created.getTime(),
+         u_time_worked : checkin.completionTime.getTime() - checkin.created.getTime(),
+         u_last_update : checkin.updated.getTime(),
+         u_actual_resolve_at : checkin.completionTime.getTime(),
+         u_time_of_incident : checkin.created.getTime()
+     };
+ };
+
+exports.CREATE = 'CREATE';	exports.UPDATE = 'UPDATE';
+exports.WALKIN = 'WALKIN';	exports.CHECKIN = 'CHECKIN';
+
+exports.syncIncident = function(action, type, ticket, next){
+    var data;
+    switch(type){
+        case this.WALKIN:   data = formulateWalkin(ticket, action);     break;
+        case this.CHECKIN:  data = formulateCheckin(ticket, action);    break;
+        default:    return console.error('Invalid ticket type: ' + type);
+    }
 
     soap.createClient(credential.wsdl_url, function(err, client){
         if(err) return console.log('Client Creation Error: ' + err);
@@ -180,20 +232,23 @@ exports.syncWalkinIncident = function(action, walkin, next){
             if(response.sys_id && response.display_value){
                 switch(response.status){
                     case 'inserted':
-                        walkin.snSysId = response.sys_id; walkin.snValue = response.display_value;
-                        walkin.save(function(err){ 
-                            if(err) return console.log(err); 
-                            else console.log('INFO: ' + walkin.snValue + ' inserted.');
+                        ticket.snSysId = response.sys_id;
+                        ticket.snValue = response.display_value;
+
+                        ticket.save(function(err){
+                            if(err) return console.error(err);
+                            else console.log('INFO: ' + ticket.snValue + ' inserted.');
                         });
                         break;
                     case 'updated':
-                        if(!walkin.snValue || walkin.snSysId){
-                            walkin.snSysId = response.sys_id;
-                            walkin.snValue = response.display_value;
+                        if(!ticket.snValue || ticket.snSysId){
+                            ticket.snSysId = response.sys_id;
+                            ticket.snValue = response.display_value;
                         }
-                        walkin.save(function(err){ 
-                            if(err) return console.log('Walk-in Save Error: ' + err); 
-                            else console.log('INFO: ' + walkin.snValue + ' updated.');
+
+                        ticket.save(function(err){
+                            if(err) return console.error('Ticket Save Error: ' + err);
+                            else console.log('INFO: ' + ticket.snValue + ' updated.');
                         });
                         break;
                     default:
@@ -202,8 +257,8 @@ exports.syncWalkinIncident = function(action, walkin, next){
             }
             else console.log('Field(s) Missing Error: '+response);
 
-            if(next) return next(walkin);
-            else     return walkin;
+            if(next) return next(ticket);
+            else     return ticket;
         });
     });
 };

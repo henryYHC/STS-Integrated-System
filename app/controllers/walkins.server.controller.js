@@ -190,7 +190,7 @@ exports.update = function(req, res) {
                 return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
             else {
                 if(walkin.snSysId)
-                    servicenow.syncWalkinIncident(servicenow.UPDATE, walkin);
+                    servicenow.syncIncident(servicenow.UPDATE, servicenow.WALKIN, walkin);
                 res.jsonp(walkin);
             }
         });
@@ -209,7 +209,7 @@ exports.syncWalkin = function(req, res){
             return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
         }
         else {
-            servicenow.syncWalkinIncident(servicenow.CREATE, walkin, function(updatedWalkin){
+            servicenow.syncIncident(servicenow.CREATE, servicenow.WALKIN, walkin, function(updatedWalkin){
                 res.jsonp(updatedWalkin);
             });
         }

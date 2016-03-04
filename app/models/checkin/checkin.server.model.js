@@ -127,13 +127,22 @@ var CheckinSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'User'
 	},
+	completionTime:{
+		type: Date
+	},
 	verificationTechnician: {
 		type: Schema.ObjectId,
 		ref: 'User'
 	},
+	verificationTime:{
+		type: Date
+	},
 	checkoutTechnician: {
 		type: Schema.ObjectId,
 		ref: 'User'
+	},
+	checkoutTime:{
+		type: Date
 	},
 	templateApplied: {
 		type: String,
