@@ -418,7 +418,7 @@ exports.logResolution = function(req, res){
         walkin.save(function (err) {
             if (err)    return res.status(400).send({message: errorHandler.getErrorMessage(err)});
             else {
-                servicenow.syncWalkinIncident(servicenow.CREATE, walkin);
+                servicenow.syncIncident(servicenow.CREATE, servicenow.WALKIN, walkin);
                 return res.jsonp(walkin);
             }
         });
