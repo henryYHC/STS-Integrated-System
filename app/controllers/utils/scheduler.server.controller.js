@@ -53,7 +53,7 @@ scheduledSurveyBroadCast_Checkin = function(){
         });
 },
 scheduledServiceNowSync_Walkin = function(){
-    return schedule.scheduleJob('0 39 12 * * 1-5', function(){
+    return schedule.scheduleJob('0 0 18 * * 1-5', function(){
         ServiceNow.syncUnsyncedTickets(ServiceNow.CREATE, ServiceNow.WALKIN);
         ServiceNow.syncUnsyncedTickets(ServiceNow.CREATE, ServiceNow.CHECKIN);
     });
