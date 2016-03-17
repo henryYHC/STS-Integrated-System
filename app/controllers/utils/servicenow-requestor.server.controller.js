@@ -212,7 +212,7 @@ var formulateWalkin = function(walkin, soapAction){
          u_problem : checkin.preDiagnostic,
          u_liability_agreement : checkin.liabilitySig !== '',
          u_short_description : template.short_description,
-         u_resolution : 'Please see work note for detailed description of resolution.',
+         u_resolution : 'Please see work notes for detailed description of resolution.',
          u_work_note : worknote,
 
          // Assignment info
@@ -270,10 +270,14 @@ exports.syncIncident = function(action, type, ticket, next){
                         });
                         break;
                     default:
-                        return console.error('Invalid Status Error: ' + response);
+                        console.error('Invalid Status Error:');
+                        return console.error(response);
                 }
             }
-            else console.log('Field(s) Missing Error: '+response);
+            else{
+                console.error('Field(s) Missing Error:');
+                console.error(response);
+            } 
 
             if(next) return next(ticket);
             else     return ticket;
@@ -313,11 +317,16 @@ var syncUnsyncedTicketsAux = function(client, id, action, type, tickets){
                             else console.log('INFO: '+ type + ' ' + ticket.snValue + ' updated. (scheduled)');
                         });
                         break;
-                    default: return console.error(response);
+                    default: 
+                        console.error('Invalid Status Error:');
+                        return console.error(response);
                 }
                 syncUnsyncedTicketsAux(client, id+1, action, type, tickets);
             }
-            else return console.error(response);
+            else{
+                console.error('Field(s) Missing Error:');
+                console.error(response);
+            } 
         });
     }
 };

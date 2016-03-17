@@ -209,9 +209,11 @@ exports.syncWalkin = function(req, res){
             return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
         }
         else {
-            servicenow.syncIncident(servicenow.CREATE, servicenow.WALKIN, walkin, function(updatedWalkin){
-                res.jsonp(updatedWalkin);
-            });
+        	if(walkin.snSysId){
+            	servicenow.syncIncident(servicenow.CREATE, servicenow.WALKIN, walkin, function(updatedWalkin){
+                	res.jsonp(updatedWalkin);
+            	});
+            }
         }
     });
 };
