@@ -141,7 +141,7 @@ exports.setStatus = function(req, res){
         case 'Checkout pending':
             checkin.verificationTechnician = req.user;
             checkin.verificationTime = Date.now();
-            //servicenow.syncIncident(servicenow.CREATE, servicenow.CHECKIN, checkin);
+            servicenow.syncIncident(servicenow.CREATE, servicenow.CHECKIN, checkin);
             Email.sendPickupReceipt(user.username+'@emory.edu', checkin._id, checkin.itemReceived, user.displayName);
             break;
         case 'Completed':
@@ -193,13 +193,6 @@ exports.listByMonth = function(req, res){
                 res.jsonp(checkins);
             });
     });
-};
-
-/**
- * Delete an Checkin
- */
-exports.delete = function(req, res) {
-
 };
 
 exports.view = function(req, res) {

@@ -2,6 +2,7 @@
 
 var schedule = require('node-schedule'),
     mongoose = require('mongoose'),
+    async = require('async'),
     User = mongoose.model('User'),
     Walkin = mongoose.model('Walkin'),
     Checkin = mongoose.model('Checkin'),
@@ -52,8 +53,9 @@ scheduledSurveyBroadCast_Checkin = function(){
         });
 },
 scheduledServiceNowSync_Walkin = function(){
-    return schedule.scheduleJob('0 0 18 * * 1-5', function(){
-        ServiceNow.syncUnsyncedWalkinIncidents(ServiceNow.CREATE);
+    return schedule.scheduleJob('0 39 12 * * 1-5', function(){
+        ServiceNow.syncUnsyncedTickets(ServiceNow.CREATE, ServiceNow.WALKIN);
+        ServiceNow.syncUnsyncedTickets(ServiceNow.CREATE, ServiceNow.CHECKIN);
     });
 };
 
@@ -61,13 +63,13 @@ exports.initScheduledJobs = function(){
     console.log('Initializing Scheduled Jobs...');
 
     scheduledSurveyBroadCast_Walkin();
-    console.log('---> Scheduled Routine Walk-in Survery Email BroadCast @ 6:15pm: Done.');
+    console.log('---> Scheduled Routine Walk-in Survey Email BroadCast @ 6:15pm: Done.');
 
     scheduledSurveyBroadCast_Checkin();
-    console.log('---> Scheduled Routine Check-in Survery Email BroadCast @ 6:15pm: Done.');
+    console.log('---> Scheduled Routine Check-in Survey Email BroadCast @ 6:15pm: Done.');
 
     scheduledServiceNowSync_Walkin();
-    console.log('---> Scheduled Service Now Sync for Unsynced Ticket @ 6pm: Done.');
+    console.log('---> Scheduled ServiceNow Sync for Un-synced Ticket @ 6pm: Done.');
 };
 
 

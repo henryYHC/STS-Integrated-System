@@ -8,7 +8,10 @@ var mongoose = require('mongoose'),
     request = require('request'),
     soap = require('soap'),
     fs = require('fs'),
-    Walkin = mongoose.model('Walkin');
+    async = require('async'),
+    Walkin = mongoose.model('Walkin'),
+    Checkin = mongoose.model('Checkin'),
+    ContactLog = mongoose.model('ContactLog');
 
 // Get credentials (& reformat wsdl url)
 var credentialFilePath = __dirname + '/../../credentials/ServiceNow.json',
@@ -20,12 +23,24 @@ if(credential.username){
     credential.wsdl_url = credential.wsdl_url.substring(0, index) + credential.username + ':' + credential.password + '@' + credential.wsdl_url.substring(index);
 }
 
-var popOpt = [
+var popOpt_walkin = [
     { path : 'user', model : 'User', select : 'username'},
     { path : 'lastUpdateTechnician', model : 'User', select : 'username'},
     { path : 'serviceTechnician', model : 'User', select : 'username'},
     { path : 'resoluteTechnician', model : 'User', select : 'username'}
 ];
+
+var popOpt_checkin = [
+    { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified'},
+    { path : 'walkin', model : 'Walkin', select : 'description resoluteTechnician deviceCategory deviceType os otherDevice'},
+    { path : 'serviceLog', model : 'ServiceEntry', select : 'type description createdBy createdAt'},
+    { path : 'completionTechnician', model : 'User', select : 'username displayName'},
+    { path : 'verificationTechnician', model : 'User', select : 'username displayName'},
+    { path : 'checkoutTechnician', model : 'User', select : 'username displayName'},
+    { path : 'contactLog', model : 'ContactLog'}
+];
+
+var popOpt_checkin_walkin = [{ path : 'walkin.resoluteTechnician',  model : 'User', select : 'username displayName'}];
 
 var getWalkinTemplateObj = function(walkin){
     var subject = 'STS: ', os = walkin.os;
@@ -171,6 +186,9 @@ var formulateWalkin = function(walkin, soapAction){
      worknote += 'Item received: ' + checkin.itemReceived.join(', ') + '\n';
      worknote += checkin.serviceLog.map(function(log){ return log.description; }).join('\n');
 
+     if(!checkin.completionTime)
+         checkin.completionTime = checkin.created.getTime() + (1000*60*60*24*4);
+
      return {
          // Request info
          u_soap_action : soapAction,
@@ -186,7 +204,7 @@ var formulateWalkin = function(walkin, soapAction){
          u_suppress_notification : 'Yes',
          u_urgency : '4 - Low',
 
-         // Walk-in info
+         // Check-in info
          u_correlation_id : 'CI'+checkin._id,
          u_record_type:  (template.type)? template.type :'Incident',
          u_reported_source :  'Tech Initiated',
@@ -194,8 +212,8 @@ var formulateWalkin = function(walkin, soapAction){
          u_problem : checkin.preDiagnostic,
          u_liability_agreement : checkin.liabilitySig !== '',
          u_short_description : template.short_description,
-         u_resolution : worknote,
-         u_work_note : '',
+         u_resolution : 'Please see work note for detailed description of resolution.',
+         u_work_note : worknote,
 
          // Assignment info
          u_assigned_to : checkin.walkin.resoluteTechnician.username,
@@ -237,7 +255,7 @@ exports.syncIncident = function(action, type, ticket, next){
 
                         ticket.save(function(err){
                             if(err) return console.error(err);
-                            else console.log('INFO: ' + ticket.snValue + ' inserted.');
+                            else console.log('INFO: ' + type + ' ' + ticket.snValue + ' inserted.');
                         });
                         break;
                     case 'updated':
@@ -248,7 +266,7 @@ exports.syncIncident = function(action, type, ticket, next){
 
                         ticket.save(function(err){
                             if(err) return console.error('Ticket Save Error: ' + err);
-                            else console.log('INFO: ' + ticket.snValue + ' updated.');
+                            else console.log('INFO: ' + type + ' ' + ticket.snValue + ' updated.');
                         });
                         break;
                     default:
@@ -263,10 +281,15 @@ exports.syncIncident = function(action, type, ticket, next){
     });
 };
 
-var syncUnsyncedWalkinIncidentAux = function(client, id, action, walkins){
-    if(id < walkins.length){
-        var walkin = walkins[id],
-            data = formulateWalkin(walkin, action);
+var syncUnsyncedTicketsAux = function(client, id, action, type, tickets){
+    if(id < tickets.length){
+        var data, ticket = tickets[id];
+
+        switch(type){
+            case exports.WALKIN:   data = formulateWalkin(ticket, action);     break;
+            case exports.CHECKIN:  data = formulateCheckin(ticket, action);    break;
+            default:    return console.error('Invalid ticket type: ' + type);
+        }
 
         client.insert(data, function(err, response){
             if(err) return console.error(err);
@@ -274,42 +297,65 @@ var syncUnsyncedWalkinIncidentAux = function(client, id, action, walkins){
             else if(response.sys_id && response.display_value){
                 switch(response.status){
                     case 'inserted':
-                        walkin.snSysId = response.sys_id; walkin.snValue = response.display_value;
-                        walkin.save(function(err){ 
+                        ticket.snSysId = response.sys_id; ticket.snValue = response.display_value;
+                        ticket.save(function(err){
                             if(err) return console.log(err); 
-                            else console.log('INFO: ' + walkin.snValue + ' inserted. (scheduled)');
+                            else console.log('INFO: ' + type + ' ' + ticket.snValue + ' inserted. (scheduled)');
                         });
                         break;
                     case 'updated':
-                        if(!walkin.snValue || walkin.snSysId){
-                            walkin.snSysId = response.sys_id;
-                            walkin.snValue = response.display_value;
+                        if(!ticket.snValue || ticket.snSysId){
+                            ticket.snSysId = response.sys_id;
+                            ticket.snValue = response.display_value;
                         }
-                        walkin.save(function(err){ 
+                        ticket.save(function(err){
                             if(err) return console.error(err);
-                            else console.log('INFO: ' + walkin.snValue + ' updated. (scheduled)');
+                            else console.log('INFO: '+ type + ' ' + ticket.snValue + ' updated. (scheduled)');
                         });
                         break;
                     default: return console.error(response);
                 }
-                syncUnsyncedWalkinIncidentAux(client, id+1, action, walkins);
+                syncUnsyncedTicketsAux(client, id+1, action, type, tickets);
             }
             else return console.error(response);
         });
     }
 };
 
-exports.syncUnsyncedWalkinIncidents = function(action, next){
-    Walkin.find({isActive : true, status : 'Completed', snValue : ''})
-        .populate(popOpt).exec(function(err, walkins){
-        if(err) return console.error(err);
+exports.syncUnsyncedTickets = function(action, type){
+    var query = {isActive : true, status : 'Completed', snValue : ''};
 
-        soap.createClient(credential.wsdl_url, function(err, client){
-            if(err) return console.error(err);
-            client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
-            if(walkins.length)  syncUnsyncedWalkinIncidentAux(client, 0, action, walkins);
+    async.waterfall([
+        function(callback){
+            switch(type){
+                case exports.WALKIN:
+                    Walkin.find(query).populate(popOpt_walkin).exec(function(err, walkins){
+                        if(err) callback(console.error(err));
+                        else return callback(null, walkins);
+                    });
+                    break;
+                case exports.CHECKIN:
+                    Checkin.find(query).populate(popOpt_checkin).exec(function(err, checkins){
+                        if(err) callback(console.error(err));
 
-            if(next) return next();
-        });
-    });
+                        Walkin.populate(checkins, popOpt_checkin_walkin, function(err, checkins){
+                            if(err) callback(console.error(err));
+                            else return callback(null, checkins);
+                        });
+                    });
+                    break;
+                default:    callback(console.error('Invalid ticket type: ' + type), null);
+            }
+        },
+        function(tickets, callback){
+            callback(null);
+            soap.createClient(credential.wsdl_url, function(err, client){
+                if(err) return console.error(err);
+                client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
+                if(tickets.length)
+                    syncUnsyncedTicketsAux(client, 0, action, type, tickets);
+                callback(null);
+            });
+        }
+    ]);
 };
