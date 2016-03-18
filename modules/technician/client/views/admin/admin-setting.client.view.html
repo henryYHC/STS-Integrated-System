@@ -74,7 +74,16 @@
         <ul class="list-group" style="overflow: auto; height: 80vh;">
           <li class="list-group-item" ng-show="setting.device_options.length == 0" style="padding: 3px 10px;">None</li>
           <li class="list-group-item" ng-repeat="(idx, option) in setting.device_options" style="padding: 3px 10px;">
-            {{idx+1}}. {{option.key}} <a class="fa fa-times pull-right" style="margin-top: 2px;"></a>
+            {{idx+1}}. {{option.key}}
+            <a class="fa fa-times pull-right" style="margin-top: 2px;"></a>
+            <a class="fa fa-plus pull-right" style="margin-top: 2px;"></a>
+
+            <ul class="list-group" style="margin-top: 3px; margin-bottom: 0px;">
+              <li class="list-group-item" ng-show="option.values.length == 0" style="padding: 3px 10px;">None</li>
+              <li class="list-group-item" ng-repeat="(num, value) in option.values" style="padding: 3px 10px;">
+                >> {{value}} <a class="fa fa-times pull-right" style="margin-top: 2px;"></a>
+              </li>
+            </ul>
           </li>
         </ul>
       </div>

@@ -1,6 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
+  User = mongoose.model('User'),
   SystemSetting = mongoose.model('SystemSetting'),
   KeyValueList = mongoose.model('KeyValueList'),
   _ = require('lodash');
@@ -11,9 +12,9 @@ var popOpt = [{ path: 'device_options', model: 'KeyValueList', select: 'key valu
 exports.init = function(){
   SystemSetting.find({}).sort({ updated : -1 }).exec(function(err, settings){
     if(err) return console.error('***System setting initialization failed***');
-    //
-    var setting;
+
     // Initialize default setting
+    var setting;
     if(settings.length === 0){
       setting = new SystemSetting();
       setting.save();
@@ -27,6 +28,18 @@ exports.init = function(){
     else{
       console.log('System setting loaded.');
       setting = settings[0];
+    }
+  });
+
+  // Initialize default user
+  User.count({}, function(err, count){
+    if(err) return console.error('***User count (initialization) failed***');
+    if(!count){
+      var user = new User(
+          { firstName: 'System', lastName: 'Root', phone: '0000000000', location: 'N/A',
+            username: 'root', password: 'password', role: 'admin' });
+      user.save();
+      console.log('Root user initialized. (root/password)');
     }
   });
 };
