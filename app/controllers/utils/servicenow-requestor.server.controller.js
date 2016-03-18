@@ -163,7 +163,7 @@ var formulateWalkin = function(walkin, soapAction){
         u_liability_agreement : walkin.liabilityAgreement,
         u_short_description : template.short_description,
         u_resolution : walkin.resolution,
-        u_work_note : 'Work Notes:\n'walkin.workNote,
+        u_work_note : 'Work Notes:\n' + walkin.workNote,
 
         // Assignment info
         u_assigned_to : walkin.serviceTechnician.username,
