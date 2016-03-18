@@ -17,8 +17,10 @@ exports.init = function(){
     var setting;
     if(settings.length === 0){
       setting = new SystemSetting();
-      setting.save();
-      console.log('Default system setting initialized.');
+      setting.save(function(err, setting){
+        if(err) return console.error('***System setting initialization failed***');
+        else console.log('Default system setting initialized.');
+      });
     }
     else if(settings.length > 1){
       console.error('Found more than one setting. Using the latest one.');
@@ -37,10 +39,14 @@ exports.init = function(){
     if(!count){
       var user = new User(
           { firstName: 'System', lastName: 'Root', phone: '0000000000', location: 'N/A',
-            username: 'root', password: 'password', role: 'admin' });
-      user.save();
-      console.log('Root user initialized. (root/password)');
+            username: 'root', password: 'password', roles: 'admin', provider: 'local' });
+
+      user.save(function(err, user){
+        if(err) return console.error('***Root user initialization failed***');
+        else console.log('Root user initialized. (root/password)');
+      });
     }
+    else console.log('Existing user count: ' + count);
   });
 };
 
