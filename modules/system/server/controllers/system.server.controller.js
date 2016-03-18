@@ -1,18 +1,21 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-  Setting = mongoose.model('Setting'),
+  SystemSetting = mongoose.model('SystemSetting'),
+  KeyValueList = mongoose.model('KeyValueList'),
   _ = require('lodash');
+
+var popOpt = [{ path: 'device_options', model: 'KeyValueList', select: 'key values' }];
 
 // Initialize / System check for current setting
 exports.init = function(){
-  Setting.find({}).sort({ updated : -1 }).exec(function(err, settings){
+  SystemSetting.find({}).sort({ updated : -1 }).exec(function(err, settings){
     if(err) return console.error('***System setting initialization failed***');
     //
     var setting;
     // Initialize default setting
     if(settings.length === 0){
-      setting = new Setting();
+      setting = new SystemSetting();
       setting.save();
       console.log('Default system setting initialized.');
     }
@@ -34,7 +37,7 @@ exports.getSetting = function (req, res) {
 
 // Setting middleware
 exports.setting = function(req, res, next){
-  Setting.findOne({}, '-_id -updated', function(err, setting){
+  SystemSetting.findOne({}, '-_id -updated').populate(popOpt).exec(function(err, setting){
     if(err) req.setting = null;
     else req.setting = setting;
     next();

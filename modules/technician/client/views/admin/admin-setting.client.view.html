@@ -1,3 +1,83 @@
 <section ng-controller="AdminSettingController" ng-init="init()">
-
+  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+    <div class="panel fresh-color panel-primary">
+      <div class="panel-heading" style="font-size: 16px;">General Settings</div>
+      <div class="panel-body">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label for="livesync" class="col-sm-5 control-label">ServiceNow LiveSync</label>
+            <div class="col-sm-offset-1 col-sm-6" style="padding-top:10px;">
+              <input bs-switch id="livesync" type="checkbox" ng-model="setting.servicenow_liveSync" switch-size="medium" class="toggle-checkbox">
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="usermethod" class="col-sm-5 control-label">User Validation Method</label>
+            <div class="col-sm-offset-1 col-sm-6" style="padding-top:10px;" id="usermethod">
+              <div class="radio3 radio-check radio-inline">
+                <input type="radio" id="manual" name="user_method" value="Manual" ng-model="setting.user_validation_method">
+                <label for="manual">Manual</label>
+              </div>
+              <div class="radio3 radio-check radio-warning radio-inline">
+                <input type="radio" id="entry" name="user_method" value="User Entry" ng-model="setting.user_validation_method">
+                <label for="entry">User Entry</label>
+              </div>
+              <div class="radio3 radio-check radio-success radio-inline">
+                <input type="radio" id="directory" name="user_method" value="Online Directory" ng-model="setting.user_validation_method">
+                <label for="directory">Online Directory</label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="panel fresh-color panel-info" style="">
+      <div class="panel-heading" style="font-size: 16px;">Scheduled Job Settings
+        <button class="btn btn-xs btn-primary pull-right" style="margin: 0 0 0 0;">New</button>
+      </div>
+      <div class="panel-body">
+        <ul class="list-group" style="overflow: auto; height: 15vh;">
+          <li class="list-group-item" ng-show="setting.scheduler_settings.length == 0" style="padding: 3px 10px;">None</li>
+          <li class="list-group-item" ng-repeat="(idx, scheduler_name) in setting.scheduler_settings" style="padding: 3px 10px;">
+            {{idx+1}}. {{scheduler_name}} <a class="fa fa-times pull-right" style="margin-top: 2px;"></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-block btn-danger">SAVE</button>
+  </div>
+  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+    <div class="panel panel-warning"  style="height: 80vh;">
+      <div class="panel-heading" style="font-size: 16px;">User Option Settings</div>
+      <div class="panel-body">
+        <h5>Wildcard NetID prefixes<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;">New</button></h5>
+        <ul class="list-group" style="overflow: auto; height: 15vh;">
+          <li class="list-group-item" ng-show="setting.user_wildcard_prefixes.length == 0" style="padding: 3px 10px;">None</li>
+          <li class="list-group-item" ng-repeat="(idx, prefix) in setting.user_wildcard_prefixes" style="padding: 3px 10px;">
+            {{idx+1}}. {{prefix}} <a class="fa fa-times pull-right" style="margin-top: 2px;"></a>
+          </li>
+        </ul>
+        <h5>Location options<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;">New</button></h5>
+        <ul class="list-group" style="overflow: auto; height: 40vh;">
+          <li class="list-group-item" ng-show="setting.location_options.length == 0" style="padding: 3px 10px;">None</li>
+          <li class="list-group-item" ng-repeat="(idx, location) in setting.location_options" style="padding: 3px 10px;">
+            {{idx+1}}. {{location}} <a class="fa fa-times pull-right" style="margin-top: 2px;"></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+    <div class="panel fresh-color panel-success"  style="height: 80vh;">
+      <div class="panel-heading" style="font-size: 16px;">Device Option Settings</div>
+      <div class="panel-body" style="font-size: 12px;">
+        <h5>Device options<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;">New</button></h5>
+        <ul class="list-group" style="overflow: auto; height: 80vh;">
+          <li class="list-group-item" ng-show="setting.device_options.length == 0" style="padding: 3px 10px;">None</li>
+          <li class="list-group-item" ng-repeat="(idx, option) in setting.device_options" style="padding: 3px 10px;">
+            {{idx+1}}. {{option.key}} <a class="fa fa-times pull-right" style="margin-top: 2px;"></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </section>
