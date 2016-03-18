@@ -159,11 +159,11 @@ var formulateWalkin = function(walkin, soapAction){
         u_record_type:  (template.type)? template.type :'Incident',
         u_reported_source :  'Walk In',
         u_customer : walkin.user.username,
-        u_problem : walkin.description,
+        u_problem : 'Problem:\n' + walkin.description,
         u_liability_agreement : walkin.liabilityAgreement,
         u_short_description : template.short_description,
         u_resolution : walkin.resolution,
-        u_work_note : walkin.workNote,
+        u_work_note : 'Work Notes:\n'walkin.workNote,
 
         // Assignment info
         u_assigned_to : walkin.serviceTechnician.username,
@@ -183,7 +183,7 @@ var formulateWalkin = function(walkin, soapAction){
      var worknote = '', template = getCheckinTemplateObj(checkin);
      worknote += 'Device : ' + checkin.deviceManufacturer + ' ' + checkin.deviceModel + '\n';
      worknote += 'OS : ' + checkin.walkin.os + ' (' + checkin.deviceInfoOS.join(', ') + ')\n';
-     worknote += 'Item received: ' + checkin.itemReceived.join(', ') + '\n';
+     worknote += 'Item received: ' + checkin.itemReceived.join(', ') + '\n\n';
      worknote += checkin.serviceLog.map(function(log){ return log.description; }).join('\n');
 
      if(!checkin.completionTime)
