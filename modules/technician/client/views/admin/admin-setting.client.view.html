@@ -1,5 +1,49 @@
 <section ng-controller="AdminSettingController" ng-init="init()">
   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+    <div class="panel panel-warning"  style="height: 80vh;">
+      <div class="panel-heading" style="font-size: 16px;">User Option Settings</div>
+      <div class="panel-body">
+        <h5>Wildcard NetID prefixes<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;" ng-click="newWildcardNetIDPrefix(setting.user_wildcard_prefixes)">New</button></h5>
+        <ul class="list-group" style="overflow: auto; height: 15vh;">
+          <li class="list-group-item" ng-show="setting.user_wildcard_prefixes.length == 0" style="padding: 3px 10px;">None</li>
+          <li class="list-group-item" ng-repeat="(idx, prefix) in setting.user_wildcard_prefixes" style="padding: 3px 10px;">
+            {{idx+1}}. {{prefix}} <a class="fa fa-times pull-right" style="margin-top: 2px;" ng-click="setting.user_wildcard_prefixes.splice(idx,1)"></a>
+          </li>
+        </ul>
+        <h5>Location options<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;" ng-click="newLocationOption(setting.location_options)">New</button></h5>
+        <ul class="list-group" style="overflow: auto; height: 40vh;">
+          <li class="list-group-item" ng-show="setting.location_options.length == 0" style="padding: 3px 10px;">None</li>
+          <li class="list-group-item" ng-repeat="(idx, location) in setting.location_options" style="padding: 3px 10px;">
+            {{idx+1}}. {{location}} <a class="fa fa-times pull-right" style="margin-top: 2px;" ng-click="setting.location_options.splice(idx,1)"></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+    <div class="panel fresh-color panel-success"  style="height: 80vh;">
+      <div class="panel-heading" style="font-size: 16px;">Device Option Settings</div>
+      <div class="panel-body" style="font-size: 12px;">
+        <h5>Device options<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;" ng-click="newDeviceCategory(setting.device_options)">New</button></h5>
+        <ul class="list-group" style="overflow: auto; height: 60vh">
+          <li class="list-group-item" ng-show="setting.device_options.length == 0" style="padding: 3px 10px;">None</li>
+          <li class="list-group-item" ng-repeat="(idx, option) in setting.device_options" style="padding: 3px 10px;">
+            {{idx+1}}. {{option.key}}
+            <a class="fa fa-times pull-right" style="margin-top: 2px;" ng-click="setting.device_options.splice(idx,1)"></a>
+            <a class="fa fa-plus pull-right" style="margin-top: 2px;" ng-click="newDeviceType(option)"></a>
+
+            <ul class="list-group" style="margin-top: 3px; margin-bottom: 0px;">
+              <li class="list-group-item" ng-show="option.values.length == 0" style="padding: 3px 10px;">None</li>
+              <li class="list-group-item" ng-repeat="(num, value) in option.values" style="padding: 3px 10px;">
+                >> {{value}} <a class="fa fa-times pull-right" style="margin-top: 2px;" ng-click="option.values.splice(num,1)"></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
     <div class="panel fresh-color panel-primary">
       <div class="panel-heading" style="font-size: 16px;">General Settings</div>
       <div class="panel-body">
@@ -30,63 +74,24 @@
         </form>
       </div>
     </div>
-    <div class="panel fresh-color panel-info" style="">
+    <div class="panel fresh-color panel-info" style="margin-bottom: 15px;">
       <div class="panel-heading" style="font-size: 16px;">Scheduled Job Settings
-        <button class="btn btn-xs btn-primary pull-right" style="margin: 0 0 0 0;">New</button>
+        <button class="btn btn-xs btn-primary pull-right" style="margin: 0 0 0 0;" ng-click="newScheduler(setting.scheduler_settings)">New</button>
       </div>
       <div class="panel-body">
         <ul class="list-group" style="overflow: auto; height: 15vh;">
           <li class="list-group-item" ng-show="setting.scheduler_settings.length == 0" style="padding: 3px 10px;">None</li>
           <li class="list-group-item" ng-repeat="(idx, scheduler_name) in setting.scheduler_settings" style="padding: 3px 10px;">
-            {{idx+1}}. {{scheduler_name}} <a class="fa fa-times pull-right" style="margin-top: 2px;"></a>
+            {{idx+1}}. {{scheduler_name}} <a class="fa fa-times pull-right" style="margin-top: 2px;" ng-click="setting.scheduler_settings.splice(idx,1)"></a>
           </li>
         </ul>
       </div>
     </div>
-    <button type="submit" class="btn btn-block btn-danger">SAVE</button>
-  </div>
-  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-    <div class="panel panel-warning"  style="height: 80vh;">
-      <div class="panel-heading" style="font-size: 16px;">User Option Settings</div>
-      <div class="panel-body">
-        <h5>Wildcard NetID prefixes<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;">New</button></h5>
-        <ul class="list-group" style="overflow: auto; height: 15vh;">
-          <li class="list-group-item" ng-show="setting.user_wildcard_prefixes.length == 0" style="padding: 3px 10px;">None</li>
-          <li class="list-group-item" ng-repeat="(idx, prefix) in setting.user_wildcard_prefixes" style="padding: 3px 10px;">
-            {{idx+1}}. {{prefix}} <a class="fa fa-times pull-right" style="margin-top: 2px;"></a>
-          </li>
-        </ul>
-        <h5>Location options<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;">New</button></h5>
-        <ul class="list-group" style="overflow: auto; height: 40vh;">
-          <li class="list-group-item" ng-show="setting.location_options.length == 0" style="padding: 3px 10px;">None</li>
-          <li class="list-group-item" ng-repeat="(idx, location) in setting.location_options" style="padding: 3px 10px;">
-            {{idx+1}}. {{location}} <a class="fa fa-times pull-right" style="margin-top: 2px;"></a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-    <div class="panel fresh-color panel-success"  style="height: 80vh;">
-      <div class="panel-heading" style="font-size: 16px;">Device Option Settings</div>
-      <div class="panel-body" style="font-size: 12px;">
-        <h5>Device options<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;">New</button></h5>
-        <ul class="list-group" style="overflow: auto; height: 80vh;">
-          <li class="list-group-item" ng-show="setting.device_options.length == 0" style="padding: 3px 10px;">None</li>
-          <li class="list-group-item" ng-repeat="(idx, option) in setting.device_options" style="padding: 3px 10px;">
-            {{idx+1}}. {{option.key}}
-            <a class="fa fa-times pull-right" style="margin-top: 2px;"></a>
-            <a class="fa fa-plus pull-right" style="margin-top: 2px;"></a>
+    <span class="pull-right">
+      <span role="success" ng-show="message.success" style="font-size: 12px;color: green;"><span class="fa fa-check-circle-o"></span> {{message.success}}&emsp;</span>
+      <span role="error" ng-show="message.error" style="font-size: 12px;color: red;"><span class="fa fa-times-circle-o"></span> {{message.error}}&emsp;</span>
+      <button type="submit" class="btn btn-md btn-danger" ng-click="save()"><span class="fa fa-save"></span> SAVE</button>
+    </span>
 
-            <ul class="list-group" style="margin-top: 3px; margin-bottom: 0px;">
-              <li class="list-group-item" ng-show="option.values.length == 0" style="padding: 3px 10px;">None</li>
-              <li class="list-group-item" ng-repeat="(num, value) in option.values" style="padding: 3px 10px;">
-                >> {{value}} <a class="fa fa-times pull-right" style="margin-top: 2px;"></a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
   </div>
 </section>

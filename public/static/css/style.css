@@ -1243,3 +1243,8 @@ section.login-page .login-box {
     font-family: STS-Bold;
     src: url("../font/Linotype-UniversLTStd-BoldCn.otf");
 }
+
+.technician-center-modal {
+  position: fixed;
+  margin: 80px 0 0 50px;
+}

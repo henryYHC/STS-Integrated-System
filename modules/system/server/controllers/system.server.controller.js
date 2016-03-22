@@ -50,13 +50,45 @@ exports.init = function(){
   });
 };
 
+exports.update = function(req, res){
+  var setting = req.setting, new_setting = req.body;
+
+  for(var opt, i = 0; i < new_setting.device_options.length; i++){
+    opt = new_setting.device_options[i];
+    if(!opt._id){
+      new_setting.device_options[i] = opt = new KeyValueList(opt);
+      opt.save(function(err){
+        if(err){
+          res.status(500).send('Failed to create new device category.');
+          return console.error(err);
+        }
+      });
+    }
+    else KeyValueList.update({ _id : opt._id }, { $set : { values : opt.values } }, function(err){
+      if(err){
+        res.status(500).send('Failed to update device type.');
+        return console.error(err);
+      }
+    });
+  }
+
+  setting = _.extend(setting, new_setting);
+  setting.save(function(err, setting){
+    if(err) {
+      res.status(500).send('Failed to update system setting.');
+      return console.error(err);
+    }
+    else    res.jsonp(setting);
+  });
+};
+
 exports.getSetting = function (req, res) {
   res.json(req.setting);
 };
 
 // Setting middleware
 exports.setting = function(req, res, next){
-  SystemSetting.findOne({}, '-_id -updated').populate(popOpt).exec(function(err, setting){
+  SystemSetting.findOne({}, '-updated').populate(popOpt).exec(function(err, setting){
     if(err) req.setting = null;
     else req.setting = setting;
     next();
