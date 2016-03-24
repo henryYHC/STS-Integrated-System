@@ -105,6 +105,14 @@ var getWalkinTemplateObj = function(walkin){
             obj.category3 = 'Inaccessible';
             break;
 
+        case 'Printing':
+            subject += 'Printing';
+
+            obj.category1 = 'Print Management';
+            obj.category2 = 'User Printing';
+            obj.category3 = 'Inaccessible';
+            break;
+
         case 'Check-in':
             subject += 'Converted to CI';
 
