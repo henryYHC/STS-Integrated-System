@@ -4,9 +4,14 @@ var mongoose = require('mongoose'),
   User = mongoose.model('User'),
   SystemSetting = mongoose.model('SystemSetting'),
   KeyValueList = mongoose.model('KeyValueList'),
-  _ = require('lodash');
+  _ = require('lodash'),
+  async = require('async'),
+  UserValidator = require('../../../users/server/controllers/users.validation.server.controller.js');
 
-var popOpt = [{ path: 'device_options', model: 'KeyValueList', select: 'key values' }];
+var popOpt = [
+  { path: 'device_options', model: 'KeyValueList', select: 'key values' },
+  { path: 'computer_options', model: 'KeyValueList', select: 'key values' }
+];
 
 // Initialize / System check for current setting
 exports.init = function(){
@@ -51,34 +56,42 @@ exports.init = function(){
 };
 
 exports.update = function(req, res){
-  var setting = req.setting, new_setting = req.body;
+  var i, old_setting = req.setting, new_setting = req.body;
 
-  for(var opt, i = 0; i < new_setting.device_options.length; i++){
-    opt = new_setting.device_options[i];
-    if(!opt._id){
-      new_setting.device_options[i] = opt = new KeyValueList(opt);
-      opt.save(function(err){
-        if(err){
-          res.status(500).send('Failed to create new device category.');
+  async.waterfall([
+    async.apply(function(setting, callback){
+      for(i = 0; i < setting.computer_options.length; i++)
+        if(!setting.computer_options[i]._id)
+          setting.computer_options[i] = new KeyValueList(setting.computer_options[i]);
+
+      async.map(setting.computer_options, function(option, next){
+        KeyValueList.update({ _id : option._id }, option, { upsert: true },
+          function(err){ next(err, option); });
+      }, function(err){ callback(err, setting); });
+    }, new_setting),
+
+    function(setting, callback){
+      for(i = 0; i < setting.device_options.length; i++)
+        if(!setting.device_options[i]._id)
+          setting.device_options[i] = new KeyValueList(setting.device_options[i]);
+
+      async.map(setting.device_options, function(option, next){
+        KeyValueList.update({ _id : option._id }, option, { upsert: true },
+          function(err){ next(err, option); });
+      }, function(err){ callback(err, setting); });
+    }
+  ],
+  function(err, setting){
+    if(!err){
+      old_setting = _.extend(old_setting, setting);
+      old_setting.save(function(err, setting){
+        if(err) {
+          res.status(500).send('Failed to update system setting.');
           return console.error(err);
         }
+        else res.jsonp(old_setting);
       });
     }
-    else KeyValueList.update({ _id : opt._id }, { $set : { values : opt.values } }, function(err){
-      if(err){
-        res.status(500).send('Failed to update device type.');
-        return console.error(err);
-      }
-    });
-  }
-
-  setting = _.extend(setting, new_setting);
-  setting.save(function(err, setting){
-    if(err) {
-      res.status(500).send('Failed to update system setting.');
-      return console.error(err);
-    }
-    else    res.jsonp(setting);
   });
 };
 

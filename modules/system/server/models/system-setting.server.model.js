@@ -26,6 +26,20 @@ var SystemSettingSchema = new Schema({
     }],
     default: []
   },
+  computer_options : {
+    type: [{
+      type: Schema.ObjectId,
+      ref: 'KeyValueList'
+    }],
+    default: []
+  },
+  computer_os_editions : {
+    type: [{
+      type: String,
+      trim: true
+    }],
+    default: []
+  },
   device_options: {
     type: [{
       type: Schema.ObjectId,

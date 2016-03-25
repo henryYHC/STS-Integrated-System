@@ -84,8 +84,12 @@ var UserSchema = new Schema({
     type: Boolean,
     default: true
   },
-  updated: {
+  lastVisit: {
     type: Date
+  },
+  updated: {
+    type: Date,
+    default: Date.now
   },
   created: {
     type: Date,
@@ -115,10 +119,12 @@ UserSchema.pre('save', function (next) {
   }
 
   // Remove duplicated roles
-  var roles = {};
-  for(var i = 0; i < this.roles.length; i++)
-    if(!roles[this.roles[i]]) roles[this.roles[i]] = 1;
-  this.roles = Object.keys(roles);
+  if(this.roles){
+    var roles = {};
+    for(var i = 0; i < this.roles.length; i++)
+      if(!roles[this.roles[i]]) roles[this.roles[i]] = 1;
+    this.roles = Object.keys(roles);
+  }
 
   this.updated = Date.now;
   next();

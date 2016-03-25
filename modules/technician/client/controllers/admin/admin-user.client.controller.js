@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('technician.admin').controller('AdminUserController', ['$scope', '$state', '$http',
-  function ($scope, $state, Authentication, $http) {
+  function ($scope, $state, $http) {
     // Expose view variables
     $scope.$state = $state;
     $scope.register = { registerAdmin : false };
@@ -18,7 +18,7 @@ angular.module('technician.admin').controller('AdminUserController', ['$scope', 
       else
         $scope.register.roles = ['technician'];
 
-      $http.post('/api/auth/signup', $scope.register).success(function (response) {
+      $http.post('/api/auth/registerTechnician', $scope.register).success(function (response) {
         if(!$scope.register.randomPwd)
           $scope.registerMsg.success = 'User registered successfully!';
         else

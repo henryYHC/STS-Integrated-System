@@ -13,9 +13,11 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 
     // Home state routing
     $stateProvider
-      .state('get-started', {
-        url: '/',
+      .state('customer', {
+        url: '/customer',
         templateUrl: 'modules/customer/client/views/home.client.view.html'
       });
+
+    $urlRouterProvider.when('/', '/customer');
   }
 ]);

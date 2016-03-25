@@ -12,7 +12,8 @@ module.exports = {
         'public/lib/datatables/media/css/jquery.dataTables.min.css',
         'public/lib/select2/dist/css/select2.min.css',
         'public/static/css/style.css',
-        'public/static/css/themes/flat-blue.css'
+        'public/static/css/themes/flat-blue.css',
+        'public/static/css/promin.css'
       ],
       js: [
         'public/lib/jquery/dist/jquery.min.js',
@@ -28,6 +29,7 @@ module.exports = {
         'public/lib/ace-builds/src/theme-github.js',
         'public/lib/bootstrap-switch/dist/js/bootstrap-switch.min.js',
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
+        'public/lib/static/js/jquery.promin.js',
 
         'public/lib/angular/angular.js',
         'public/lib/angular-resource/angular-resource.js',

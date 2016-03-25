@@ -1,17 +1,17 @@
 <section ng-controller="AdminSettingController" ng-init="init()">
   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-    <div class="panel panel-warning"  style="height: 80vh;">
+    <div class="panel panel-warning">
       <div class="panel-heading" style="font-size: 16px;">User Option Settings</div>
       <div class="panel-body">
-        <h5>Wildcard NetID prefixes<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;" ng-click="newWildcardNetIDPrefix(setting.user_wildcard_prefixes)">New</button></h5>
-        <ul class="list-group" style="overflow: auto; height: 15vh;">
+        <h4>Wildcard NetID prefixes<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;" ng-click="newWildcardNetIDPrefix(setting.user_wildcard_prefixes)">New</button></h4>
+        <ul class="list-group">
           <li class="list-group-item" ng-show="setting.user_wildcard_prefixes.length == 0" style="padding: 3px 10px;">None</li>
           <li class="list-group-item" ng-repeat="(idx, prefix) in setting.user_wildcard_prefixes" style="padding: 3px 10px;">
             {{idx+1}}. {{prefix}} <a class="fa fa-times pull-right" style="margin-top: 2px;" ng-click="setting.user_wildcard_prefixes.splice(idx,1)"></a>
           </li>
         </ul>
-        <h5>Location options<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;" ng-click="newLocationOption(setting.location_options)">New</button></h5>
-        <ul class="list-group" style="overflow: auto; height: 40vh;">
+        <h4>Location options<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;" ng-click="newLocationOption(setting.location_options)">New</button></h4>
+        <ul class="list-group">
           <li class="list-group-item" ng-show="setting.location_options.length == 0" style="padding: 3px 10px;">None</li>
           <li class="list-group-item" ng-repeat="(idx, location) in setting.location_options" style="padding: 3px 10px;">
             {{idx+1}}. {{location}} <a class="fa fa-times pull-right" style="margin-top: 2px;" ng-click="setting.location_options.splice(idx,1)"></a>
@@ -21,11 +21,45 @@
     </div>
   </div>
   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-    <div class="panel fresh-color panel-success"  style="height: 80vh;">
+    <div class="panel fresh-color panel-success">
       <div class="panel-heading" style="font-size: 16px;">Device Option Settings</div>
       <div class="panel-body" style="font-size: 12px;">
-        <h5>Device options<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;" ng-click="newDeviceCategory(setting.device_options)">New</button></h5>
-        <ul class="list-group" style="overflow: auto; height: 60vh">
+        <h4>Computer options</h4>
+        <h5>Computer categories/versions
+          <span class="fa fa-info-circle" tooltip-placement="right" uib-tooltip="Walk-in options"></span>
+          <button class="btn btn-xs btn-warning pull-right" style="margin: -5px 0 0 0;" ng-click="newDeviceCategory(setting.computer_options)">New</button>
+        </h5>
+        <ul class="list-group">
+          <li class="list-group-item" ng-show="setting.computer_options.length == 0" style="padding: 3px 10px;">None</li>
+          <li class="list-group-item" ng-repeat="(idx, option) in setting.computer_options" style="padding: 3px 10px;">
+            {{idx+1}}. {{option.key}}
+            <a class="fa fa-times pull-right" style="margin-top: 2px;" ng-click="setting.computer_options.splice(idx,1)"></a>
+            <a class="fa fa-plus pull-right" style="margin-top: 2px;" ng-click="newDeviceType(option)"></a>
+
+            <ul class="list-group" style="margin-top: 3px; margin-bottom: 0px;">
+              <li class="list-group-item" ng-show="option.values.length == 0" style="padding: 3px 10px;">None</li>
+              <li class="list-group-item" ng-repeat="(num, os) in option.values" style="padding: 3px 10px;">
+                >> {{os}} <a class="fa fa-times pull-right" style="margin-top: 2px;" ng-click="option.values.splice(num,1)"></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+
+        <h5>Computer OS editions
+          <span class="fa fa-info-circle" tooltip-placement="right" uib-tooltip="Check-in options"></span>
+          <button class="btn btn-xs btn-warning pull-right" style="margin: -5px 0 0 0;" ng-click="newOSEdition(setting.computer_os_editions)">New</button>
+        </h5>
+        <ul class="list-group">
+          <li class="list-group-item" ng-show="setting.computer_os_editions.length == 0" style="padding: 3px 10px;">None</li>
+          <li class="list-group-item" ng-repeat="(idx, editions) in setting.computer_os_editions" style="padding: 3px 10px;">
+            {{idx+1}}. {{editions}} <a class="fa fa-times pull-right" style="margin-top: 2px;" ng-click="setting.computer_os_editions.splice(idx,1)"></a>
+          </li>
+        </ul>
+
+
+        <h4>Category options<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;" ng-click="newDeviceCategory(setting.device_options)">New</button></h4>
+        <ul class="list-group">
           <li class="list-group-item" ng-show="setting.device_options.length == 0" style="padding: 3px 10px;">None</li>
           <li class="list-group-item" ng-repeat="(idx, option) in setting.device_options" style="padding: 3px 10px;">
             {{idx+1}}. {{option.key}}
@@ -79,7 +113,7 @@
         <button class="btn btn-xs btn-primary pull-right" style="margin: 0 0 0 0;" ng-click="newScheduler(setting.scheduler_settings)">New</button>
       </div>
       <div class="panel-body">
-        <ul class="list-group" style="overflow: auto; height: 15vh;">
+        <ul class="list-group">
           <li class="list-group-item" ng-show="setting.scheduler_settings.length == 0" style="padding: 3px 10px;">None</li>
           <li class="list-group-item" ng-repeat="(idx, scheduler_name) in setting.scheduler_settings" style="padding: 3px 10px;">
             {{idx+1}}. {{scheduler_name}} <a class="fa fa-times pull-right" style="margin-top: 2px;" ng-click="setting.scheduler_settings.splice(idx,1)"></a>

@@ -8,7 +8,7 @@ var admin = require('../controllers/admin.server.controller'),
 
 module.exports = function (app) {
 
-  app.route('/api/auth/signup').post(admin.registerTechnician);
+  app.route('/api/auth/registerTechnician').post(admin.registerTechnician);
   app.route('/api/auth/resetPwd/:username').put(admin.resetPwd);
   app.route('/api/auth/removeTechnician/:username').put(admin.removeTechnicianRole);
 

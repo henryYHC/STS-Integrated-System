@@ -8,6 +8,7 @@ angular.module('technician.admin').controller('AdminSettingController', ['$scope
       $http.get('/system/setting')
         .success(function(setting){
           $scope.setting = setting;
+          console.log(setting);
         })
         .error(function(){ $scope.setting = null; });
     };
@@ -18,7 +19,7 @@ angular.module('technician.admin').controller('AdminSettingController', ['$scope
         'Please enter the name of the scheduler you wish to initialize.',
         'Name of the scheduler here');
       name.result.then(function(response){
-          schedulers.push(response);
+        schedulers.push(response);
       });
     };
 
@@ -28,7 +29,7 @@ angular.module('technician.admin').controller('AdminSettingController', ['$scope
           'Please enter the prefix of the wildcard NetID you wish to add.',
           'Prefix of wildcard NetID here');
       prefix.result.then(function(response){
-          prefixes.push(response);
+        prefixes.push(response);
       });
     };
 
@@ -38,27 +39,37 @@ angular.module('technician.admin').controller('AdminSettingController', ['$scope
           'Please enter the name of the location you wish to add.',
           'Name of location NetID here');
       location.result.then(function(response){
-          options.push(response);
+        options.push(response);
+      });
+    };
+
+    $scope.newOSEdition = function(os_extras){
+      var location = ModalLauncher.launchDefaultInputModal(
+        'New OS edition',
+        'Please enter the name of the OS edition you wish to add.',
+        'Name of OS edition here');
+      location.result.then(function(response){
+        os_extras.push(response);
       });
     };
 
     $scope.newDeviceCategory = function(categories){
       var category = ModalLauncher.launchDefaultInputModal(
-          'New Device Category',
-          'Please enter the name of the device category you wish to add.',
-          'Name of the device category here');
+          'New Computer/Device Category',
+          'Please enter the name of the computer/device category you wish to add.',
+          'Name of the computer/device category here');
       category.result.then(function(response){
-          categories.push({ key: response, values: [] });
+        categories.push({ key: response, values: [] });
       });
     };
 
     $scope.newDeviceType = function(category){
       var type = ModalLauncher.launchDefaultInputModal(
-          'New Device Type',
-          'Please enter the name of the device type you wish to add.',
-          'Name of the device type here');
-        type.result.then(function(response){
-          category.values.push(response);
+          'New Computer/Device Type',
+          'Please enter the name of the computer/ device type you wish to add.',
+          'Name of the computer/device type here');
+      type.result.then(function(response){
+        category.values.push(response);
       });
     };
 
