@@ -136,7 +136,6 @@ exports.setStatus = function(req, res){
         case 'Verification pending':
             checkin.completionTechnician = req.user;
             checkin.completionTime = Date.now();
-            console.log(checkin);
             break;
         case 'Checkout pending':
             checkin.verificationTechnician = req.user;

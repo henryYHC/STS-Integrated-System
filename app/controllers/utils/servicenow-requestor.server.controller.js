@@ -249,11 +249,11 @@ exports.syncIncident = function(action, type, ticket, next){
     }
 
     soap.createClient(credential.wsdl_url, function(err, client){
-        if(err) return console.log('Client Creation Error: ' + err);
+        if(err) return console.error('Client Creation Error: ' + err);
         client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
 
         client.insert(data, function(err, response){
-            if(err) return console.log('Insert Request Error: ' + err);
+            if(err) return console.error('Insert Request Error: ' + err);
 
             if(response.sys_id && response.display_value){
                 switch(response.status){

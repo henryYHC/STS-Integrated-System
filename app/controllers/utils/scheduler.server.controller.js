@@ -44,7 +44,6 @@ scheduledSurveyBroadCast_Checkin = function(){
                 function(err, users){
                     if(err) return console.error(err);
 
-                    console.log(users);
                     for(i = 0; i < users.length; i++){
                         user = users[i].user;
                         Email.sendSurvey_routine(Email.CHECKIN, user.username+'@emory.edu', user.firstName);
