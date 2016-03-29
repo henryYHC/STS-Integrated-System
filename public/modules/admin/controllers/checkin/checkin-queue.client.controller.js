@@ -12,9 +12,6 @@ angular.module('admin').controller('AdminCheckinQueueController', ['$http', '$sc
 		var time3dBefore = Date.now() - (60*60*24*3)*1000,
 			time5dBefore = time3dBefore - (60*60*24*2)*1000;
 
-		console.log(new Date(time3dBefore));
-		console.log(new Date(time5dBefore));
-
 		$scope.initQueues = function(){
 			$scope.workQueueItems = undefined;
 			$scope.pendingQueueItems = undefined;

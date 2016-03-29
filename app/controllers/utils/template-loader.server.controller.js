@@ -9,6 +9,15 @@ var mongoose = require('mongoose'),
 
 var templateDirPath = __dirname + '/../../templates/checkin/';
 
+var splitEntries = function(entry_text){
+    var i, entries = entry_text.split('\n');
+    for(i = entries.length-1; i >= 0; i--){
+        entries[i] = entries[i].trim();
+        if(!entries[i]) entries.splice(i, 1);
+    }
+    return entries;
+};
+
 exports.getTemplateNames = function(){
     return fs.readdirSync(templateDirPath);
 };
@@ -19,7 +28,7 @@ exports.getTemplate = function(template){
 
     var start = template.lastIndexOf('/')+ 1, end = template.lastIndexOf('.');
     var templateName = (end < 0)? template.substring(start) :  template.substring(start, end);
-    return { name : templateName, items : data.split('\n')};
+    return { name : templateName, items : splitEntries(data) };
 };
 
 exports.getTemplates = function(req, res){
