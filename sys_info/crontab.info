@@ -1,0 +1,1 @@
+0 7-19 * * 1-5 cd /home/sts/Desktop/backupscripts/ && bash backup.sh >> crontab.log 2>&1

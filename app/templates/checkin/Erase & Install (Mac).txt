@@ -1,15 +1,17 @@
-Permission to Reinstall
-Used Recovery Drive​
-Used Install Disc/Drive
-Formatting of drive necessary for fix (optional)
-Install last purchased version of OS X
-Create STS user account skipping unnecessary steps
-Perform updates, verify (if necessary) that previous issue is resolved
-Install Bradford Agent and McAfee
-Reboot machine into Single User Mode
-Mount HD using "/sbin/mount -uw /"​
-Remove User Folder "rm -rf /Users/"
-Remove Preference plist "rm /var/db/dslocal/nodes/Default/users/sts.plist"
-Restore Setup using "rm /var/db/.applesetupdone" followed by "reboot"
-Verify unit asks to create new account
-Update Notes and contact Customer informing them machine is RFP
+Verified Permission to Reinstall
+Installed from Bain
+Installed from Internet Recovery
+Reinstall complete
+Created STS user account
+Performed updates
+Installed McAfee AV
+Installed Bradford Agent
+Installed Microsoft Office
+Verified that previous issue is resolved
+Rebooted machine into Single User Mode
+Mounted HD using "/sbin/mount -uw /"​
+Removed User Folder "rm -rf /Users/"
+Removed Preference plist "rm /var/db/dslocal/nodes/Default/users/sts.plist"
+Restored Setup using "rm /var/db/.applesetupdone" followed by "reboot"
+Verified unit asks to create new account
+Wiped down machine

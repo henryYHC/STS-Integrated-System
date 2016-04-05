@@ -1,16 +1,22 @@
-​Permission to reinstall
-Obtain Windows CD Key
-Verify CD key is non-pirated version
-Formatting of drive necessary for fix (optional)
+Verified Permission to Reinstall
 Used Recovery Drive to perform install
-Used Install Disc/Drive to perform install
-Create User account for student
-Uninstall any AntiVirus software
-Update drivers via Ethernet
-Perform system updates
-Copy StimPak to desktop
-Run CCleaner
-Install McAfee AV
-Install Bradford Agent
-Connect to EmoryUnplugged, verify, then remove your NetID
-Update Notes and contact Customer informing them machine is RFP
+Recovery Partition non-existant/attempt failed
+Windows Key recorded
+Verified Key is non-pirated version
+Formatted drive
+Used TheElephant to perform install
+Used Install Drive to perform install
+Created user account
+Activated Windows
+Performed Updates
+Uninstalled any preinstalled AV software
+Installed McAfee AV
+Installed Bradford Agent
+Connected to EmoryUnplugged, verified, forgot network
+Installed latest MS Office
+Performed MS Office updates
+Wiped down machine
+
+
+
+ABC
