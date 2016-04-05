@@ -1,7 +1,0 @@
-DEST_ROOT='/mnt/nfs'
-DEST_DIR='Db-Snapshots'
-
-SOURCE_IP='192.168.11.111'
-SOURCE_ROOT='/data'
-
-sudo mount $SOURCE_IP:$SOURCE_ROOT/$DEST_DIR $DEST_ROOT/$DEST_DIR
