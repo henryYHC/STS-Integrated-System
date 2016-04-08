@@ -11,7 +11,8 @@ var mongoose = require('mongoose'),
     async = require('async'),
     Walkin = mongoose.model('Walkin'),
     Checkin = mongoose.model('Checkin'),
-    ContactLog = mongoose.model('ContactLog');
+    ContactLog = mongoose.model('ContactLog'),
+    logger = require('./logger.server.controller.js');
 
 // Get credentials (& reformat wsdl url)
 var credentialFilePath = __dirname + '/../../credentials/ServiceNow.json',
@@ -263,7 +264,10 @@ exports.syncIncident = function(action, type, ticket, next){
 
                         ticket.save(function(err){
                             if(err) return console.error(err);
-                            else console.log('INFO: ' + type + ' ' + ticket.snValue + ' inserted.');
+                            else{
+                                console.log('INFO: ' + type + ' ' + ticket.snValue + ' inserted.');
+                                logger.log('INSERTED ' + JSON.stringify(ticket));
+                            }
                         });
                         break;
                     case 'updated':
@@ -274,7 +278,10 @@ exports.syncIncident = function(action, type, ticket, next){
 
                         ticket.save(function(err){
                             if(err) return console.error('Ticket Save Error: ' + err);
-                            else console.log('INFO: ' + type + ' ' + ticket.snValue + ' updated.');
+                            else{
+                                console.log('INFO: ' + type + ' ' + ticket.snValue + ' updated.');
+                                logger.log('UPDATED ' + JSON.stringify(ticket));
+                            }
                         });
                         break;
                     default:
@@ -312,7 +319,10 @@ var syncUnsyncedTicketsAux = function(client, id, action, type, tickets){
                         ticket.snSysId = response.sys_id; ticket.snValue = response.display_value;
                         ticket.save(function(err){
                             if(err) return console.log(err); 
-                            else console.log('INFO: ' + type + ' ' + ticket.snValue + ' inserted. (scheduled)');
+                            else{
+                                console.log('INFO: ' + type + ' ' + ticket.snValue + ' inserted. (scheduled)');
+                                logger.log('INSERTED ' + JSON.stringify(ticket));
+                            }
                         });
                         break;
                     case 'updated':
@@ -322,7 +332,10 @@ var syncUnsyncedTicketsAux = function(client, id, action, type, tickets){
                         }
                         ticket.save(function(err){
                             if(err) return console.error(err);
-                            else console.log('INFO: '+ type + ' ' + ticket.snValue + ' updated. (scheduled)');
+                            else{
+                                console.log('INFO: '+ type + ' ' + ticket.snValue + ' updated. (scheduled)');
+                                logger.log('UPDATED ' + JSON.stringify(ticket));
+                            }
                         });
                         break;
                     default: 
