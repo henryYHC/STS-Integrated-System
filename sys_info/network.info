@@ -4,3 +4,7 @@ Netmask: 		255.255.255.192
 Gateway: 		170.140. 27.194
 DNS servers: 	170.140.  1.  1
 Search domain: 	emory.edu
+
+Local Network IP Address
+sts-is-clover	192.168.11.114
+sts-is-clover2	192.168.11.115
