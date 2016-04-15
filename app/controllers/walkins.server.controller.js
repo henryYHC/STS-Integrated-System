@@ -32,7 +32,6 @@ exports.create = function(req, res) {
 
     if(!data.userExisted){
         data.user.provider = 'local';
-        data.user.displayName = data.user.firstName + ' ' + data.user.lastName;
         data.user.username = data.user.username.toLowerCase();
         data.user.lastWalkin = Date.now();
 
@@ -58,8 +57,10 @@ exports.create = function(req, res) {
     }
     else{
         data.user.lastWalkin = Date.now();
+        var query = (data.isWildcard)? { username: data.user.username} : {_id: data.user._id};
 
-        User.findOne({_id: data.user._id}).exec(function(err, foundUser) {
+        User.findOne(query).exec(function(err, foundUser) {
+            console.log(data); console.log(foundUser);
             if (!foundUser) return res.status(400).send({ message: 'Failed to load User ' + data.user._id });
             foundUser = _.extend(foundUser, data.user);
 

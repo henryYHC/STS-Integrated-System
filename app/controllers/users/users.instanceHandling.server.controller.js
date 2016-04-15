@@ -17,14 +17,21 @@ exports.updateUser = function(req, res){
     });
 };
 
+var wildcard_prefixes = ['conf', 'sihp'];
+
 /*
  * Validation
  */
 exports.validateNetId = function(req, res){
     var user = req.profile;
+    var netid = (user)? user.username : req.netid.toLowerCase();
+
+    for(var i = 0; i < wildcard_prefixes.length; i++){
+        if(netid.lastIndexOf(wildcard_prefixes[i], 0) === 0)
+            return res.jsonp({ status : 'Wildcard', user : { username: netid, verified : true }, userExisted : user !== undefined });
+    }
 
     if(!user){
-        var netid = req.netid.toLowerCase();
         UserEntry.findOne({netid : netid}, function(err, entry){
             if(err) return res.status(400).send(err);
 

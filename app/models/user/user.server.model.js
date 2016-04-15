@@ -118,6 +118,7 @@ UserSchema.pre('save', function(next) {
 	}
 
     this.username = this.username.toLowerCase();
+	this.displayName = this.firstName + ' ' + this.lastName;
 	next();
 });
 

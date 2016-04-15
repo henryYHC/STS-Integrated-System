@@ -39,6 +39,13 @@ angular.module('walkins').controller('WalkinNetidController', ['$scope', '$state
                                 $scope.formData.user = { 'username' : netid };
                                 $state.go('createWalkin.confirmNetId');
                                 break;
+                            case 'Wildcard':
+                                $scope.formData.isWildcard = true;
+                                $scope.formData.userExisted = response.userExisted;
+                                $scope.formData.user = response.user;
+                                console.log($scope.formData);
+                                $state.go('createWalkin.info');
+                                break;
                             default:
                                 $scope.$parent.$parent.error = 'User MyNetID is invalid.';
                                 return;

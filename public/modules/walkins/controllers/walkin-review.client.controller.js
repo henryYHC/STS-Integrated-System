@@ -21,6 +21,15 @@ angular.module('walkins').controller('WalkinReviewController', ['$scope', '$stat
                     if(response){
                         // Create instance
                         $scope.formData.liabilityAgreement = response;
+
+                        // Formulate work note if wildcard prefix
+                        if($scope.formData.isWildcard){
+
+                            var user = $scope.formData.user,
+                                note = 'Customer info:\n' + user.firstName + ' ' + user.lastName + '\n(' + user.phone + ')\n' + user.location;
+                            $scope.formData.workNote = note;
+                        }
+
                         $http.post('/walkins', $scope.formData)
                             .success(function(response){
                                 $location.path('/success');
