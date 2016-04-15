@@ -378,7 +378,6 @@ exports.syncUnsyncedTickets = function(action, type){
             }
         },
         function(tickets, callback){
-            callback(null);
             soap.createClient(credential.wsdl_url, function(err, client){
                 if(err) return console.error(err);
                 client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
