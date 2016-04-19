@@ -15,7 +15,7 @@ var mongoose = require('mongoose'),
     servicenow = require('./utils/servicenow-requestor.server.controller.js');
 
 var popOpt = [
-    { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified'},
+    { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified isWildcard'},
     { path : 'walkin', model : 'Walkin', select : 'description resoluteTechnician deviceCategory deviceType os otherDevice'},
     { path : 'serviceLog', model : 'ServiceEntry', select : 'type description createdBy createdAt'},
     { path : 'completionTechnician', model : 'User', select : 'username displayName'},
@@ -141,12 +141,12 @@ exports.setStatus = function(req, res){
             checkin.verificationTechnician = req.user;
             checkin.verificationTime = Date.now();
             servicenow.syncIncident(servicenow.CREATE, servicenow.CHECKIN, checkin);
-            Email.sendPickupReceipt(user.username+'@emory.edu', checkin._id, checkin.itemReceived, user.displayName);
+            if(!user.isWildcard) Email.sendPickupReceipt(user.username+'@emory.edu', checkin._id, checkin.itemReceived, user.displayName);
             break;
         case 'Completed':
             checkin.checkoutTechnician = req.user;
             checkin.checkoutTime = Date.now();
-            Email.sendServiceLog(user.username+'@emory.edu', checkin._id, checkin.itemReceived, checkin.serviceLog, user.displayName);
+            if(!user.isWildcard) Email.sendServiceLog(user.username+'@emory.edu', checkin._id, checkin.itemReceived, checkin.serviceLog, user.displayName);
             break;
     }
 

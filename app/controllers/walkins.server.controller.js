@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
     servicenow = require('./utils/servicenow-requestor.server.controller.js');
 
 var popOpt = [
-    { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified'},
+    { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified isWildcard'},
     { path : 'lastUpdateTechnician', model : 'User', select : 'displayName username'},
     { path : 'serviceTechnician', model : 'User', select : 'displayName username'},
     { path : 'resoluteTechnician', model : 'User', select : 'displayName username'},
@@ -60,7 +60,6 @@ exports.create = function(req, res) {
         var query = (data.isWildcard)? { username: data.user.username} : {_id: data.user._id};
 
         User.findOne(query).exec(function(err, foundUser) {
-            console.log(data); console.log(foundUser);
             if (!foundUser) return res.status(400).send({ message: 'Failed to load User ' + data.user._id });
             foundUser = _.extend(foundUser, data.user);
 

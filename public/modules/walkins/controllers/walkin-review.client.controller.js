@@ -27,6 +27,7 @@ angular.module('walkins').controller('WalkinReviewController', ['$scope', '$stat
 
                             var user = $scope.formData.user,
                                 note = 'Customer info:\n' + user.firstName + ' ' + user.lastName + '\n(' + user.phone + ')\n' + user.location;
+                            user.isWildcard = true;
                             $scope.formData.workNote = note;
                         }
 

@@ -10,7 +10,7 @@ var schedule = require('node-schedule'),
     ServiceNow = require('./servicenow-requestor.server.controller.js');
 
 var popOpt = [
-    { path : 'user', model : 'User', select : 'firstName lastName username'},
+    { path : 'user', model : 'User', select : 'firstName lastName username isWildcard'}
 ];
 
 var
@@ -46,7 +46,8 @@ scheduledSurveyBroadCast_Checkin = function(){
 
                     for(i = 0; i < users.length; i++){
                         user = users[i].user;
-                        Email.sendSurvey_routine(Email.CHECKIN, user.username+'@emory.edu', user.firstName);
+                        if(!user.isWildcard)
+                            Email.sendSurvey_routine(Email.CHECKIN, user.username+'@emory.edu', user.firstName);
                     }
                 });
         });

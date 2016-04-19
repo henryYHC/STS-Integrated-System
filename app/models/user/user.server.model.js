@@ -36,6 +36,10 @@ var UserSchema = new Schema({
 		type: String,
 		trim: true
 	},
+	isWildcard : {
+		type: Boolean,
+		default: false
+	},
 	username: {
 		type: String,
 		required: 'Please fill in your NetID',

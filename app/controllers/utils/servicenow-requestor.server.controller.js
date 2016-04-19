@@ -25,14 +25,14 @@ if(credential.username){
 }
 
 var popOpt_walkin = [
-    { path : 'user', model : 'User', select : 'username'},
+    { path : 'user', model : 'User', select : 'username isWildcard'},
     { path : 'lastUpdateTechnician', model : 'User', select : 'username'},
     { path : 'serviceTechnician', model : 'User', select : 'username'},
     { path : 'resoluteTechnician', model : 'User', select : 'username'}
 ];
 
 var popOpt_checkin = [
-    { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified'},
+    { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified isWildcard'},
     { path : 'walkin', model : 'Walkin', select : 'description resoluteTechnician deviceCategory deviceType os otherDevice'},
     { path : 'serviceLog', model : 'ServiceEntry', select : 'type description createdBy createdAt'},
     { path : 'completionTechnician', model : 'User', select : 'username displayName'},
@@ -167,7 +167,7 @@ var formulateWalkin = function(walkin, soapAction){
         u_correlation_id : walkin._id,
         u_record_type:  (template.type)? template.type :'Incident',
         u_reported_source :  'Walk In',
-        u_customer : walkin.user.username,
+        u_customer : walkin.user.isWildcard?  'guest' : walkin.user.username,
         u_problem : 'Problem:\n' + walkin.description,
         u_liability_agreement : walkin.liabilityAgreement,
         u_short_description : template.short_description,
@@ -217,7 +217,7 @@ var formulateWalkin = function(walkin, soapAction){
          u_correlation_id : 'CI'+checkin._id,
          u_record_type:  (template.type)? template.type :'Incident',
          u_reported_source :  'Tech Initiated',
-         u_customer : checkin.user.username,
+         u_customer : checkin.user.isWildcard? 'guest' : checkin.user.username,
          u_problem : checkin.preDiagnostic,
          u_liability_agreement : checkin.liabilitySig !== '',
          u_short_description : template.short_description,
@@ -248,6 +248,7 @@ exports.syncIncident = function(action, type, ticket, next){
         case this.CHECKIN:  data = formulateCheckin(ticket, action);    break;
         default:    return console.error('Invalid ticket type: ' + type);
     }
+    console.log(data);
 
     soap.createClient(credential.wsdl_url, function(err, client){
         if(err) return console.error('Client Creation Error: ' + err);
@@ -292,7 +293,7 @@ exports.syncIncident = function(action, type, ticket, next){
             else{
                 console.error('Field(s) Missing Error:');
                 console.error(response);
-            } 
+            }
 
             if(next) return next(ticket);
             else     return ticket;
