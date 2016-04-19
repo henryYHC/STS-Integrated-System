@@ -32,7 +32,8 @@ module.exports = {
                 'public/lib/bootstrap-material-design/dist/js/ripples.min.js',
                 'public/lib/bootstrap-material-design/dist/js/material.min.js',
                 'public/lib/ng-file-upload/ng-file-upload.min.js',
-                'public/lib/ng-file-upload/ng-file-upload-shim.min.js'
+                'public/lib/ng-file-upload/ng-file-upload-shim.min.js',
+				'public/static/js/noBounce.js'
 			]
 		},
 		css: [
