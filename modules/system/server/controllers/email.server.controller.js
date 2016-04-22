@@ -32,17 +32,17 @@ exports.ATTACHMENT = {
 // Initialization functions
 exports.default = function(){
   var path = __dirname + '/../../../../config/credentials/EmailConfig.json';
-  return this.init(jsonfile.readFileSync(path));
+  return exports.init(jsonfile.readFileSync(path));
 };
 
 exports.init = function(credential){
-  this.transporter = nodemailer.createTransport(smtpTransport(credential));
-  return this;
+  exports.transporter = nodemailer.createTransport(smtpTransport(credential));
+  return exports;
 };
 
 // Module functions
 exports.send = function(email, subject, name, body, callback){
-  jsonfile.readFile(this.TEMPLATE.DEFAULT, function(err, template){
+  jsonfile.readFile(exports.TEMPLATE.DEFAULT, function(err, template){
     if(err || !template) console.error(err);
     else{
       template.to = email; template.subject = subject;
@@ -51,7 +51,8 @@ exports.send = function(email, subject, name, body, callback){
       template.text = template.text.replace('<BODY>', body);
       template.html = template.html.replace('<BODY>', body);
 
-      this.transporter.sendMail(template, function(err, info){
+      template.html = template.html.replace(/\n/g, '<br>');
+      exports.transporter.sendMail(template, function(err, info){
         if(err || !info) return console.error(err);
         if(callback) callback(info);
       });
@@ -60,10 +61,10 @@ exports.send = function(email, subject, name, body, callback){
 };
 
 exports.sendCheckinReceipt = function(email, id, items, name, callback){
-  jsonfile.readFile(this.TEMPLATE.CI_RECEIPT, function(err, template) {
+  jsonfile.readFile(exports.TEMPLATE.CI_RECEIPT, function(err, template) {
     if(err || !template) console.error(err);
     else{
-      template.to = email; template.attachments = [this.ATTACHMENT.CI_LIABILITY];
+      template.to = email; template.attachments = [exports.ATTACHMENT.CI_LIABILITY];
 
       var itemsString = items.join(', ');
       template.text = template.text.replace('<ID>', id);
@@ -74,7 +75,7 @@ exports.sendCheckinReceipt = function(email, id, items, name, callback){
       template.html = template.html.replace('<ITEMS>', itemsString);
       template.html = template.html.replace('<NAME>', name);
 
-      this.transporter.sendMail(template, function(err, info){
+      exports.transporter.sendMail(template, function(err, info){
         if(err || !info) return console.error(err);
         if(callback) callback(info);
       });
@@ -83,7 +84,7 @@ exports.sendCheckinReceipt = function(email, id, items, name, callback){
 };
 
 exports.sendPickupReceipt = function(email, id, items, name, callback){
-  jsonfile.readFile(this.TEMPLATE.CI_PICKUP, function(err, template) {
+  jsonfile.readFile(exports.TEMPLATE.CI_PICKUP, function(err, template) {
     if(err || !template) console.error(err);
     else{
       template.to = email;
@@ -97,7 +98,7 @@ exports.sendPickupReceipt = function(email, id, items, name, callback){
       template.html = template.html.replace('<ITEMS>', itemsString);
       template.html = template.html.replace('<NAME>', name);
 
-      this.transporter.sendMail(template, function(err, info){
+      exports.transporter.sendMail(template, function(err, info){
         if(err || !info) return console.error(err);
         if(callback) callback(info);
       });
@@ -106,7 +107,7 @@ exports.sendPickupReceipt = function(email, id, items, name, callback){
 };
 
 exports.sendServiceLog = function(email, id, items, logs, name, callback) {
-  jsonfile.readFile(this.TEMPLATE.CI_LOG, function(err, template) {
+  jsonfile.readFile(exports.TEMPLATE.CI_LOG, function(err, template) {
     if (err || !template) console.error(err);
     else{
       template.to = email;
@@ -126,7 +127,7 @@ exports.sendServiceLog = function(email, id, items, logs, name, callback) {
       template.text = template.text.replace('<ITEMS>', itemsString);
       template.text = template.text.replace('<LOG>', logString);
 
-      this.transporter.sendMail(template, function(err, info){
+      exports.transporter.sendMail(template, function(err, info){
         if(err || !info) return console.error(err);
         if(callback) callback(info);
       });
@@ -137,17 +138,17 @@ exports.sendServiceLog = function(email, id, items, logs, name, callback) {
 exports.sendSurvey = function(type, email, name, callback){
   var path;
   switch(type){
-    case this.WALKIN: path = this.TEMPLATE.WI_SURVEY; break;
-    case this.CHECKIN: path = this.TEMPLATE.CI_SURVEY; break;
+    case exports.WALKIN: path = exports.TEMPLATE.WI_SURVEY; break;
+    case exports.CHECKIN: path = exports.TEMPLATE.CI_SURVEY; break;
     default: return console.error('Invalid type for survey email.');
   }
-  jsonfile.readFile(this.TEMPLATE.CI_LOG, function(err, template) {
+  jsonfile.readFile(exports.TEMPLATE.CI_LOG, function(err, template) {
     if (err || !template) console.error(err);
     else{
       template.to = email;
       template.html = template.html.replace('<NAME>', name);
       template.text = template.text.replace('<NAME>', name);
-      this.transporter.sendMail(template, function(err, info){
+      exports.transporter.sendMail(template, function(err, info){
         if(err || !info) return console.error(err);
         if(callback) callback(info);
       });

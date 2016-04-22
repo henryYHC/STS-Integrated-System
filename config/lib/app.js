@@ -56,6 +56,9 @@ module.exports.start = function start(callback) {
       // Logging custom system information
       require('../../modules/system/server/controllers/system.server.controller.js').init();
 
+      require('../../modules/system/server/controllers/logger.server.controller.js')
+        .log('/Users/HenryasdChen/Desktop/log.txt', 'Hello world');
+
       if (callback) callback(app, db, config);
     });
 
