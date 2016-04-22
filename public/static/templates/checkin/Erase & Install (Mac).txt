@@ -1,0 +1,17 @@
+Verified Permission to Reinstall
+Installed from Bain
+Installed from Internet Recovery
+Reinstall complete
+Created STS user account
+Performed updates
+Installed McAfee AV
+Installed Bradford Agent
+Installed Microsoft Office
+Verified that previous issue is resolved
+Rebooted machine into Single User Mode
+Mounted HD using "/sbin/mount -uw /"​
+Removed User Folder "rm -rf /Users/"
+Removed Preference plist "rm /var/db/dslocal/nodes/Default/users/sts.plist"
+Restored Setup using "rm /var/db/.applesetupdone" followed by "reboot"
+Verified unit asks to create new account
+Wiped down machine

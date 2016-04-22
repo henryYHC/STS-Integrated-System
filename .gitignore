@@ -76,3 +76,7 @@ mongod
 *.ntvs*
 *.njsproj
 *.sln
+
+# System assets
+# =========
+/config/credentials/

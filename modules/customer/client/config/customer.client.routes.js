@@ -1,23 +1,32 @@
 'use strict';
 
 // Setting up route
-angular.module('core').config(['$stateProvider', '$urlRouterProvider',
+angular.module('customer').config(['$stateProvider', '$urlRouterProvider',
   function ($stateProvider, $urlRouterProvider) {
-
-    // Redirect to 404 when route not found
-    $urlRouterProvider.otherwise(function ($injector, $location) {
-      $injector.get('$state').transitionTo('not-found', null, {
-        location: false
-      });
-    });
 
     // Home state routing
     $stateProvider
       .state('customer', {
+        abstract: true,
         url: '/customer',
+        templateUrl: 'modules/customer/client/views/template.client.view.html'
+      })
+      .state('customer.home', {
+        url: '/home',
         templateUrl: 'modules/customer/client/views/home.client.view.html'
+      })
+      .state('customer.walkin', {
+        abstract: true,
+        url: '/walkin',
+        templateUrl: 'modules/customer/client/views/walkin-template.client.view.html'
+      })
+      .state('customer.walkin.netid', {
+        url: '/netid'
       });
 
-    $urlRouterProvider.when('/', '/customer');
+    $urlRouterProvider.when('/', '/customer/home');
+    $urlRouterProvider.when('/customer', '/customer/home');
+
+    $urlRouterProvider.when('/customer/walkin', '/customer/walkin/netid');
   }
 ]);

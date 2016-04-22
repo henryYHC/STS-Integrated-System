@@ -1,0 +1,156 @@
+'use strict';
+
+var
+  _ = require('lodash'),
+  mongoose = require('mongoose'),
+  nodemailer = require('nodemailer'),
+  jsonfile = require('jsonfile'),
+  smtpTransport = require('nodemailer-smtp-transport');
+
+// Module variables
+exports.transporter = null;
+
+exports.WALKIN = 'Walk-in';
+exports.CHECKIN = 'Check-in';
+
+var template_directory = __dirname + '/../../../../public/static/templates/email';
+exports.TEMPLATE = {
+  DEFAULT: template_directory + '/DefaultTemplate.json',
+  WI_SURVEY: template_directory + '/Survey_Walkin.json',
+  CI_RECEIPT: template_directory + '/CheckinReceipt.json',
+  CI_PICKUP: template_directory + '/PickupReceipt.json',
+  CI_LOG: template_directory + '/ServiceLog.json',
+  CI_SURVEY: template_directory + '/Survey_Checkin.json'
+};
+exports.ATTACHMENT = {
+  CI_LIABILITY: {
+    filename: 'STS Check-in Receipt.pdf',
+    path: template_directory +'/static/STS Check-in Receipt.pdf'
+  }
+};
+
+// Initialization functions
+exports.default = function(){
+  var path = __dirname + '/../../../../config/credentials/EmailConfig.json';
+  return this.init(jsonfile.readFileSync(path));
+};
+
+exports.init = function(credential){
+  this.transporter = nodemailer.createTransport(smtpTransport(credential));
+  return this;
+};
+
+// Module functions
+exports.send = function(email, subject, name, body, callback){
+  jsonfile.readFile(this.TEMPLATE.DEFAULT, function(err, template){
+    if(err || !template) console.error(err);
+    else{
+      template.to = email; template.subject = subject;
+      template.text = template.text.replace('<NAME>', name);
+      template.html = template.html.replace('<NAME>', name);
+      template.text = template.text.replace('<BODY>', body);
+      template.html = template.html.replace('<BODY>', body);
+
+      this.transporter.sendMail(template, function(err, info){
+        if(err || !info) return console.error(err);
+        if(callback) callback(info);
+      });
+    }
+  });
+};
+
+exports.sendCheckinReceipt = function(email, id, items, name, callback){
+  jsonfile.readFile(this.TEMPLATE.CI_RECEIPT, function(err, template) {
+    if(err || !template) console.error(err);
+    else{
+      template.to = email; template.attachments = [this.ATTACHMENT.CI_LIABILITY];
+
+      var itemsString = items.join(', ');
+      template.text = template.text.replace('<ID>', id);
+      template.text = template.text.replace('<ITEMS>', itemsString);
+      template.text = template.text.replace('<NAME>', name);
+
+      template.html = template.html.replace('<ID>', id);
+      template.html = template.html.replace('<ITEMS>', itemsString);
+      template.html = template.html.replace('<NAME>', name);
+
+      this.transporter.sendMail(template, function(err, info){
+        if(err || !info) return console.error(err);
+        if(callback) callback(info);
+      });
+    }
+  });
+};
+
+exports.sendPickupReceipt = function(email, id, items, name, callback){
+  jsonfile.readFile(this.TEMPLATE.CI_PICKUP, function(err, template) {
+    if(err || !template) console.error(err);
+    else{
+      template.to = email;
+
+      var itemsString = items.join(', ');
+      template.text = template.text.replace('<ID>', id);
+      template.text = template.text.replace('<ITEMS>', itemsString);
+      template.text = template.text.replace('<NAME>', name);
+
+      template.html = template.html.replace('<ID>', id);
+      template.html = template.html.replace('<ITEMS>', itemsString);
+      template.html = template.html.replace('<NAME>', name);
+
+      this.transporter.sendMail(template, function(err, info){
+        if(err || !info) return console.error(err);
+        if(callback) callback(info);
+      });
+    }
+  });
+};
+
+exports.sendServiceLog = function(email, id, items, logs, name, callback) {
+  jsonfile.readFile(this.TEMPLATE.CI_LOG, function(err, template) {
+    if (err || !template) console.error(err);
+    else{
+      template.to = email;
+
+      var i, logString, itemsString = items.join(', ');
+      for(i = 0, logString = ''; i < logs.length; i++)
+        logString += '<li>' + logs[i].description + '</li>';
+      template.html = template.html.replace('<ID>', id);
+      template.html = template.html.replace('<NAME>', name);
+      template.html = template.html.replace('<ITEMS>', itemsString);
+      template.html = template.html.replace('<LOG>', logString);
+
+      for(i = 0, logString = ''; i < logs.length; i++)
+        logString += logs[i].description + '\n';
+      template.text = template.text.replace('<ID>', id);
+      template.text = template.text.replace('<NAME>', name);
+      template.text = template.text.replace('<ITEMS>', itemsString);
+      template.text = template.text.replace('<LOG>', logString);
+
+      this.transporter.sendMail(template, function(err, info){
+        if(err || !info) return console.error(err);
+        if(callback) callback(info);
+      });
+    }
+  });
+};
+
+exports.sendSurvey = function(type, email, name, callback){
+  var path;
+  switch(type){
+    case this.WALKIN: path = this.TEMPLATE.WI_SURVEY; break;
+    case this.CHECKIN: path = this.TEMPLATE.CI_SURVEY; break;
+    default: return console.error('Invalid type for survey email.');
+  }
+  jsonfile.readFile(this.TEMPLATE.CI_LOG, function(err, template) {
+    if (err || !template) console.error(err);
+    else{
+      template.to = email;
+      template.html = template.html.replace('<NAME>', name);
+      template.text = template.text.replace('<NAME>', name);
+      this.transporter.sendMail(template, function(err, info){
+        if(err || !info) return console.error(err);
+        if(callback) callback(info);
+      });
+    }
+  });
+};

@@ -3,6 +3,7 @@
 // Setting up route
 angular.module('technician').config(['$stateProvider', '$urlRouterProvider',
   function ($stateProvider, $urlRouterProvider) {
+
     // Home state routing
     $stateProvider
       .state('tech', {
