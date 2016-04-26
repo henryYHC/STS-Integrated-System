@@ -55,7 +55,7 @@ module.exports.start = function start(callback) {
       console.log('-------------- System Information --------------');
       // Logging custom system information
       require('../../modules/system/server/controllers/system.server.controller.js').init();
-
+      
       if (callback) callback(app, db, config);
     });
 

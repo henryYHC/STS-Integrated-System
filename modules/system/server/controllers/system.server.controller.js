@@ -1,29 +1,52 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-  User = mongoose.model('User'),
-  SystemSetting = mongoose.model('SystemSetting'),
-  KeyValueList = mongoose.model('KeyValueList'),
+var
   _ = require('lodash'),
   async = require('async'),
-  UserValidator = require('../../../users/server/controllers/users.validation.server.controller.js');
+  mongoose = require('mongoose'),
+  scheduler = require('./scheduler.server.controller.js'),
 
+  User = mongoose.model('User'),
+  KeyValueList = mongoose.model('KeyValueList'),
+  SystemSetting = mongoose.model('SystemSetting');
+
+// Module variables
 var popOpt = [
   { path: 'device_options', model: 'KeyValueList', select: 'key values' },
   { path: 'computer_options', model: 'KeyValueList', select: 'key values' }
 ];
 
-// Initialize / System check for current setting
 exports.init = function(){
+  async.waterfall([
+    exports.initSetting,
+    scheduler.init
+  ], function(err){
+    if(err){
+      console.error('**System initialization failed**');
+      console.error(err);
+    }
+    else console.log();
+  });
+};
+
+// Initialize / System check for current setting
+exports.initSetting = function(callback){
+  console.log('#### System setting information');
   SystemSetting.find({}).sort({ updated : -1 }).exec(function(err, settings){
-    if(err) return console.error('***System setting initialization failed***');
+    if(err){
+      console.error('***System setting initialization failed***');
+      if(callback){ callback(err, null); } return;
+    }
 
     // Initialize default setting
     var setting;
     if(settings.length === 0){
       setting = new SystemSetting();
       setting.save(function(err, setting){
-        if(err) return console.error('***System setting initialization failed***');
+        if(err){
+          console.error('***System setting initialization failed***');
+          if(callback){ callback(err, null); } return;
+        }
         else console.log('Default system setting initialized.');
       });
     }
@@ -36,22 +59,31 @@ exports.init = function(){
       console.log('System setting loaded.');
       setting = settings[0];
     }
-  });
 
-  // Initialize default user
-  User.count({}, function(err, count){
-    if(err) return console.error('***User count (initialization) failed***');
-    if(!count){
-      var user = new User(
+    // Initialize default user
+    User.count({}, function(err, count){
+      if(err){
+        console.error('***User count (initialization) failed***');
+        if(callback){ callback(err, null); } return;
+      }
+      if(!count){
+        var user = new User(
           { firstName: 'System', lastName: 'Root', phone: '0000000000', location: 'N/A',
             username: 'root', password: 'password', roles: 'admin', provider: 'local' });
 
-      user.save(function(err, user){
-        if(err) return console.error('***Root user initialization failed***');
-        else console.log('Root user initialized. (root/password)');
-      });
-    }
-    else console.log('Existing user count: ' + count);
+        user.save(function(err, user){
+          if(err){
+            console.error('***Root user initialization failed***');
+            if(callback){ callback(err, null); } return;
+          }
+          else console.log('Root user initialized. (root/password)');
+        });
+      }
+      else{
+        console.log('Existing user count: ' + count); console.log();
+        if(callback) callback(null, setting);
+      }
+    });
   });
 };
 
