@@ -34,6 +34,7 @@ exports.sendEmail_REST = function(req, res){
     template.text = template.text.replace('<BODY>', email.body);
     template.html = template.html.replace('<BODY>', email.body);
 
+    template.html = template.html.replace(/\n/g, '<br>');
     transporter.sendMail(template, function(err, info){
         if(err || info.accepted.length <= 0)
             res.status(400).send('Failed to send the email.');
@@ -55,6 +56,7 @@ exports.sendEmail = function(email, subject, name, body){
     template.text = template.text.replace('<BODY>', body);
     template.html = template.html.replace('<BODY>', body);
 
+    template.html = template.html.replace(/\n/g, '<br>');
     transporter.sendMail(template, function(err, info){
         if(err) return console.error(err);
         if(info.accepted.length <= 0)
