@@ -195,6 +195,7 @@
                     </div>
                     <div class="col-sm-3" id="ResolutionFunctions">
                         <button class="btn btn-sm btn-info" ng-click="toHouseCall();" ng-show="walkin.status != 'House call pending' && walkin.resolutionType == 'DooleyNet'">House call</button>
+                        <span ng-show="['Office365', 'Password Resets'].indexOf(walkin.resolutionType) >= 0"><input type="checkbox" style="margin-top: 12px" ng-model="walkin.forward"> Forward to Messaging Team</span>
                     </div>
                 </div>
             </div>

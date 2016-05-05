@@ -138,7 +138,7 @@ var getWalkinTemplateObj = function(walkin){
 
 var getCheckinTemplateObj = function(checkin){
 	return {
-        short_description: 'STS: CI: Diagnose and Repair',
+    short_description: 'STS: CI: Diagnose and Repair',
 		category1: 'Desktop Management',
 		category2: 'OS/Firmware',
 		category3: 'Error'
@@ -177,7 +177,7 @@ var formulateWalkin = function(walkin, soapAction){
         // Assignment info
         u_assigned_to : walkin.serviceTechnician.username,
         u_last_update_tech : walkin.resoluteTechnician.username,
-        u_assignment_group : 'LITS: Student Digital Life',
+        u_assignment_group : 'LITS: Messaging - Tier 3',
 
         // Time log
         u_duration : walkin.resolutionTime.getTime() - walkin.created.getTime(),
@@ -188,7 +188,7 @@ var formulateWalkin = function(walkin, soapAction){
     };
 };
 
- var formulateCheckin = function(checkin, soapAction){
+var formulateCheckin = function(checkin, soapAction){
      var worknote = '', template = getCheckinTemplateObj(checkin);
      worknote += 'Device : ' + checkin.deviceManufacturer + ' ' + checkin.deviceModel + '\n';
      worknote += 'OS : ' + checkin.walkin.os + ' (' + checkin.deviceInfoOS.join(', ') + ')\n';
@@ -238,6 +238,28 @@ var formulateWalkin = function(walkin, soapAction){
      };
  };
 
+var formulateMessageForwarding = function(ticket, soapAction){
+    return {
+        u_soap_action: soapAction,
+        u_correlation_id: ticket.snValue,
+        u_short_description: 'Unblock User\'s Account',
+        u_customer: ticket.user.isWildcard?  'guest' : ticket.user.username,
+        u_incident_state: 'Awaiting Assignment',
+        u_record_type: 'Service Request',
+        u_reported_source: 'Tech Initiated',
+        u_impact: '4 – Minor/Localized',
+        u_configuration_item: 'Office 365',
+        u_suppress_notification: 'No',
+        u_urgency: '4 - Low',
+        u_assignment_group: 'LITS: Student Digital Life',
+        u_category_1: 'Communications & Messaging',
+        u_category_2: 'Mailbox',
+        u_category_3: 'Restore',
+        u_work_note: 'See ' + ticket.snValue + ' - Please remove block.\n1.Reset user\'s password\n2.Educated user on phishing\n3.Scanned machine for threats',
+        u_time_of_incident: ticket.created.getTime()
+    };
+};
+
 exports.CREATE = 'CREATE';	exports.UPDATE = 'UPDATE';
 exports.WALKIN = 'WALKIN';	exports.CHECKIN = 'CHECKIN';
 
@@ -248,7 +270,6 @@ exports.syncIncident = function(action, type, ticket, next){
         case this.CHECKIN:  data = formulateCheckin(ticket, action);    break;
         default:    return console.error('Invalid ticket type: ' + type);
     }
-    console.log(data);
 
     soap.createClient(credential.wsdl_url, function(err, client){
         if(err) return console.error('Client Creation Error: ' + err);
@@ -284,6 +305,41 @@ exports.syncIncident = function(action, type, ticket, next){
                                 logger.log('UPDATED ' + JSON.stringify(ticket));
                             }
                         });
+                        break;
+                    default:
+                        console.error('Invalid Status Error:');
+                        return console.error(response);
+                }
+            }
+            else{
+                console.error('Field(s) Missing Error:');
+                console.error(response);
+            }
+
+            if(next) return next(ticket);
+            else     return ticket;
+        });
+    });
+};
+
+exports.forwardIncident = function(action, type, ticket, next){
+    var data;
+    switch(type){
+        case this.WALKIN:   data = formulateMessageForwarding(ticket, action);     break;
+        default:    return console.error('Invalid ticket type: ' + type);
+    }
+
+    soap.createClient(credential.wsdl_url, function(err, client){
+        if(err) return console.error('Client Creation Error: ' + err);
+        client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
+
+        client.insert(data, function(err, response){
+            if(err) return console.error('Insert Request Error: ' + err);
+
+            if(response.sys_id && response.display_value){
+                switch(response.status){
+                    case 'inserted': case 'updated':
+                        console.log(ticket.snValue + ' Ticket forwarded: ' + response.display_value);
                         break;
                     default:
                         console.error('Invalid Status Error:');

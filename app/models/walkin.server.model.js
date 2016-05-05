@@ -141,6 +141,10 @@ var WalkinSchema = new Schema({
         type: String,
         trim: true,
         default: ''
+    },
+    forward: {
+        type: Boolean,
+        default: false
     }
 });
 
