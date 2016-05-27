@@ -79,4 +79,11 @@ mongod
 
 # System assets
 # =========
+.bluemix/
+.cfignore
+.editorconfig
+.travis.yml
+CHANGELOG.md
+CONTRIBUTING.md
+Procfile
 /config/credentials/
