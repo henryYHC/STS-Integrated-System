@@ -85,7 +85,7 @@ exports.removeTechnicianRole = function (req, res){
     var idx = user.roles.indexOf('technician');
 
     if(idx < 0)
-      return res.status(400).send({ message: 'User does not have technician role.' });
+      return res.status(400).send({ message: 'User does not have panel role.' });
 
     user.roles.splice(idx, 1);
     user.save(function(err){

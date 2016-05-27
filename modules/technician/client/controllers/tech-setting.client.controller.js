@@ -2,7 +2,7 @@
 
 angular.module('technician').controller('TechnicianSettingController', ['$scope', '$http',
   function ($scope, $http) {
-    // Expose view variables]
+    // Expose view variables
     $scope.password = {};
 
     $scope.changePwd = function() {

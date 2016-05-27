@@ -38,3 +38,19 @@ exports.userByUsername = function(req, res, next, username){
     }
   );
 };
+
+exports.hasAdminPermission = function(req, res, next){
+  if (!req.isAuthenticated())
+    return res.status(401).send({ message: 'User is not logged in' });
+  if (_.intersection(req.user.roles, ['admin']).length === 0)
+    return res.status(403).send({ message: 'User is not authorized' });
+  else next();
+};
+
+exports.hasTechnicianPermission = function(req, res, next){
+  if (!req.isAuthenticated())
+    return res.status(401).send({ message: 'User is not logged in' });
+  if (_.intersection(req.user.roles, ['technician', 'admin']).length === 0)
+    return res.status(403).send({ message: 'User is not authorized' });
+  else next();
+};

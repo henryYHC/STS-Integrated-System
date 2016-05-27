@@ -2,13 +2,14 @@
 
 angular.module('technician.admin').controller('AdminSettingController', ['$scope', '$state', '$http', 'ModalLauncher', '$timeout',
   function ($scope, $state, $http, ModalLauncher, $timeout) {
+    // Expose view variables
+    $scope.$state = $state;
     $scope.message = {};
 
     $scope.init = function(){
       $http.get('/system/setting')
         .success(function(setting){
           $scope.setting = setting;
-          console.log(setting);
         })
         .error(function(){ $scope.setting = null; });
     };

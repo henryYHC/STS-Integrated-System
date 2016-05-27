@@ -6,6 +6,7 @@ angular.module('technician.admin').config(['$stateProvider', '$urlRouterProvider
 
     // Home state routing
     $stateProvider
+      // Main views and functions
       .state('admin', {
         abstract: true,
         url: '/admin',
@@ -21,6 +22,14 @@ angular.module('technician.admin').config(['$stateProvider', '$urlRouterProvider
         url: '/setting',
         templateUrl: 'modules/technician/client/views/admin/admin-setting.client.view.html',
         data: { breadcrumb: 'System Setting' }
+      })
+      .state('admin.stat', {
+        url: '/stat'
+      })
+      .state('admin.stat.library-guidance', {
+        url: '/library-guidance',
+        templateUrl: 'modules/technician/client/views/admin/stat/library-guidance-stat.client.view.html',
+        data: { breadcrumb: 'Library Guidance Statistics' }
       });
 
     $urlRouterProvider.when('/admin', '/tech/home');

@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('technician').controller('TechHeaderController', ['$scope', '$state', 'SystemPermission', '$http', 'Authentication',
-  function ($scope, $state, SystemPermission, $http, Authentication) {
+angular.module('technician').controller('TechHeaderController', ['$rootScope', '$scope', '$state', 'SystemPermission', '$http', 'Authentication',
+  function ($rootScope, $scope, $state, SystemPermission, $http, Authentication) {
     // Expose view variables
-    $scope.breadcrumb = $state.current.data.breadcrumb;
     $scope.user = SystemPermission.getUser();
     $scope.user.isAdmin = SystemPermission.hasAdminPerm();
+    $scope.breadcrumb = $state.current.data.breadcrumb;
 
     // Logout
     $scope.logout = function() {
