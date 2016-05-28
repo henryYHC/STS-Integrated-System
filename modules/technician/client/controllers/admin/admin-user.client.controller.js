@@ -1,9 +1,8 @@
 'use strict';
 
-angular.module('technician.admin').controller('AdminUserController', ['$scope', '$state', '$http',
-  function ($scope, $state, $http) {
+angular.module('technician.admin').controller('AdminUserController', ['$scope', '$http',
+  function ($scope, $http) {
     // Expose view variables
-    $scope.$state = $state;
     $scope.register = { registerAdmin : false };
 
     $scope.clearMsgs = function() {

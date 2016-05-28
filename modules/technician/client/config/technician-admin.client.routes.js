@@ -8,8 +8,7 @@ angular.module('technician.admin').config(['$stateProvider', '$urlRouterProvider
     $stateProvider
       // Main views and functions
       .state('admin', {
-        abstract: true,
-        url: '/admin',
+        abstract: true, url: '/admin',
         controller: 'TechAdminController',
         templateUrl: 'modules/technician/client/views/template.client.view.html'
       })
@@ -24,11 +23,11 @@ angular.module('technician.admin').config(['$stateProvider', '$urlRouterProvider
         data: { breadcrumb: 'System Setting' }
       })
       .state('admin.stat', {
-        url: '/stat'
+        abstract: true, url: '/stat', template: '<ui-view>'
       })
       .state('admin.stat.library-guidance', {
         url: '/library-guidance',
-        templateUrl: 'modules/technician/client/views/admin/stat/library-guidance-stat.client.view.html',
+        templateUrl: 'modules/technician/client/views/admin/library-guidance-stat.client.view.html',
         data: { breadcrumb: 'Library Guidance Statistics' }
       });
 

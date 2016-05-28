@@ -1,0 +1,18 @@
+<section ng-controller="StatisticsController" ng-init="initLibraryGuidanceStat()">
+  <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12 card-body">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+      <h3 style="margin-top:0px">Yearly Statistics</h3>
+    </div>
+    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+      <form class="form-inline pull-right">
+        <div class="form-group">
+          <label for="year">View statistics for year:&emsp;</label>
+          <input type="text" class="form-control" id="year" placeholder="Input year for statistics" ng-model="year">
+        </div>
+        <button type="submit" class="btn btn-default" ng-click="initLibraryGuidanceStat()">View</button>
+      </form>
+    </div>
+  </div>
+
+  <canvas id="LibraryGuidanceBarChart" width="5" height="2"></canvas>
+</section>

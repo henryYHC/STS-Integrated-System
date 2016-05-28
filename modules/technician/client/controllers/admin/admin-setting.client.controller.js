@@ -1,9 +1,8 @@
 'use strict';
 
-angular.module('technician.admin').controller('AdminSettingController', ['$scope', '$state', '$http', 'ModalLauncher', '$timeout',
-  function ($scope, $state, $http, ModalLauncher, $timeout) {
+angular.module('technician.admin').controller('AdminSettingController', ['$scope', '$http', 'ModalLauncher', '$timeout',
+  function ($scope, $http, ModalLauncher, $timeout) {
     // Expose view variables
-    $scope.$state = $state;
     $scope.message = {};
 
     $scope.init = function(){

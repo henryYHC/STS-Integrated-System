@@ -20,7 +20,7 @@ angular.module('technician').config(['$stateProvider', '$urlRouterProvider',
       })
       .state('tech.password', {
         url: '/password',
-        templateUrl: 'modules/technician/client/views/tech-change-pwd.client.view.html',
+        templateUrl: 'modules/technician/client/views/technician/tech-change-pwd.client.view.html',
         data: { breadcrumb : 'Change Password' }
       });
 

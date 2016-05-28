@@ -18,7 +18,6 @@ module.exports = {
       js: [
         'public/lib/jquery/dist/jquery.min.js',
         'public/lib/bootstrap/dist/js/bootstrap.min.js',
-        'public/lib/Chart.js/Chart.min.js',
         'public/lib/bootstrap-switch/dist/jsbootstrap-switch.min.js',
         'public/lib/matchHeight/dist/jquery.matchHeight-min.js',
         'public/lib/datatables/media/js/jquery.dataTables.min.js',
@@ -41,7 +40,11 @@ module.exports = {
         'public/lib/angular-ui-utils/ui-utils.js',
         'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
         'public/lib/angular-file-upload/dist/angular-file-upload.min.js',
-        'public/lib/angular-bootstrap-switch/dist/angular-bootstrap-switch.min.js'
+        'public/lib/angular-bootstrap-switch/dist/angular-bootstrap-switch.min.js',
+
+        'public/lib/randomcolor/randomColor.js',
+        'public/lib/Chart.js/dist/Chart.min.js',
+        'public/lib/Chart.js/dist/Chart.bundle.min.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },
@@ -67,7 +70,10 @@ module.exports = {
       'modules/**/*/img/**/*.gif',
       'modules/**/*/img/**/*.svg'
     ],
-    views: ['modules/*/client/views/**/*.html'],
+    views: [
+      'modules/*/client/views/**/*.html',
+      'modules/*/client/views/**/**/*.html'
+    ],
     templates: ['build/templates.js']
   },
   server: {
