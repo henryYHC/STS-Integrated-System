@@ -6,16 +6,20 @@ angular.module('technician').config(['$stateProvider', '$urlRouterProvider',
 
     // Home state routing
     $stateProvider
+      .state('login', {
+        url: '/login',
+        templateUrl: 'modules/technician/client/views/authentication/login.client.view.html'
+      })
       // Main views and functions
       .state('tech', {
         abstract: true,
         url: '/tech',
         controller: 'TechPanelController',
-        templateUrl: 'modules/technician/client/views/template.client.view.html'
+        templateUrl: 'modules/technician/client/views/panel/template.client.view.html'
       })
       .state('tech.home', {
         url: '/home',
-        templateUrl: 'modules/technician/client/views/home.client.view.html',
+        templateUrl: 'modules/technician/client/views/panel/home.client.view.html',
         data: { breadcrumb : 'Dashboard' }
       })
       .state('tech.password', {

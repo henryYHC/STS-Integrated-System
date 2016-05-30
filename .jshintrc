@@ -21,7 +21,9 @@
     "inject",
     "by",
     "browser",
-    "element"
+    "element",
+    "Chart",
+    "randomColor"
   ],
   "devel": true // Allow development statements e.g. `console.log();`.
 }

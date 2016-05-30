@@ -10,7 +10,7 @@ angular.module('technician.admin').config(['$stateProvider', '$urlRouterProvider
       .state('admin', {
         abstract: true, url: '/admin',
         controller: 'TechAdminController',
-        templateUrl: 'modules/technician/client/views/template.client.view.html'
+        templateUrl: 'modules/technician/client/views/panel/template.client.view.html'
       })
       .state('admin.users', {
         url: '/users',

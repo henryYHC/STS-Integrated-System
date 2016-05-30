@@ -1,16 +1,11 @@
 'use strict';
 
-angular.module('users').controller('LoginController', ['$scope', '$state', '$http', '$location', 'Authentication',
-  function ($scope, $state, $http, $location, Authentication) {
+angular.module('technician').controller('LoginController', ['$scope', '$state', '$http', 'Authentication',
+  function ($scope, $state, $http, Authentication) {
     $scope.authentication = Authentication;
 
-    // Get an eventual error defined in the URL query string:
-    $scope.error = $location.search().err;
-
     // If user is signed in then redirect back home
-    if ($scope.authentication.user) {
-      $location.path('/tech');
-    }
+    if ($scope.authentication.user) $state.go('tech.home');
 
     $scope.signin = function() {
       $scope.error = null;
@@ -21,7 +16,7 @@ angular.module('users').controller('LoginController', ['$scope', '$state', '$htt
       }
 
       $http.post('/api/auth/signin', $scope.credentials).success(function (response) {
-        $scope.authentication.user = response; $location.url('/tech');
+        $scope.authentication.user = response; $state.go('tech.home');
       }).error(function (response) { $scope.error = response.message; });
     };
   }

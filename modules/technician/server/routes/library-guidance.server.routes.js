@@ -8,4 +8,5 @@ var users = require('../../../users/server/controllers/users.server.controller')
 
 module.exports = function (app) {
   app.route('/api/tech/library-guidance/log').post(users.hasTechnicianPermission, library_guidance.log);
+  app.route('/api/tech/library-guidance/stat/:year').get(users.hasAdminPermission, library_guidance.stats);
 };
