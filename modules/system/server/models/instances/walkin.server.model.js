@@ -1,63 +1,41 @@
 'use strict';
 
-var
-  mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-  autoIncrement = require('mongoose-auto-increment');
+var mongoose = require('mongoose'),
+  autoIncrement = require('mongoose-auto-increment'),
+  Schema = mongoose.Schema;
 
+// Plugin initialization
 autoIncrement.initialize(mongoose.connection);
 
-// Field validations
-var validateDevice = function(){
-  var device = this.deviceCategory;
-  if(device === 'Computer' || device === 'Phone/Tablet')
-    return this.os;
-  else if(device === 'Gaming System' || device === 'TV/Media Device')
-    return this.deviceType;
-  else
-    return this.otherDevice;
-};
-
-var validateLiability = function(){
-  return this.liabilityAgreement;
-};
-
-// Schema
 var WalkinSchema = new Schema({
+  //Basic instance information
   user: {
     type: Schema.ObjectId,
     ref: 'User'
   },
   deviceCategory: {
     type: String,
-    required: 'Please fill in the category of your device',
-    enum: ['Computer', 'Phone/Tablet', 'Gaming System', 'TV/Media Device', 'Other']
+    required: true
   },
   deviceType: {
     type: String,
-    default: 'N/A',
-    trim: true,
-    validate: [validateDevice, 'Please fill in the type of your device']
+    default: 'N/A'
   },
   os: {
     type: String,
-    default: 'N/A',
-    trim: true,
-    validate: [validateDevice, 'Please fill in the operating system type of your device']
+    default: 'N/A'
   },
   otherDevice: {
     type: String,
-    default: '',
     trim: true
   },
   description: {
     type: String,
-    required: 'Please fill in the description of your problem',
     trim: true
   },
   liabilityAgreement:{
     type: Boolean,
-    validate: [validateLiability, 'Unable to proceed if you do not agree with STS liability statement']
+    required: true
   },
   isActive: {
     type: Boolean,
@@ -70,7 +48,8 @@ var WalkinSchema = new Schema({
     default: Date.now
   },
   updated: {
-    type: Date
+    type: Date,
+    default: Date.now
   },
 
   // Service log
@@ -85,22 +64,18 @@ var WalkinSchema = new Schema({
   },
   workNote: {
     type: String,
-    default: '',
     trim: true
   },
   resolutionType: {
     type: String,
-    default: 'N/A',
     trim: true
   },
   otherResolution: {
     type: String,
-    default: '',
     trim: true
   },
   resolution: {
     type: String,
-    default: '',
     trim: true
   },
   serviceTechnician: {
@@ -126,19 +101,22 @@ var WalkinSchema = new Schema({
   // Service Now information
   snSysId: {
     type: String,
-    trim: true,
-    default: ''
+    trim: true
   },
   snValue: {
     type: String,
-    trim: true,
-    default: ''
+    trim: true
+  },
+  forward: {
+    type: Boolean,
+    default: false
   }
 });
 
 WalkinSchema.pre('save', function(next) {
   this.updated = Date.now(); next();
 });
+
 
 WalkinSchema.plugin(autoIncrement.plugin, 'Walkin');
 mongoose.model('Walkin', WalkinSchema);

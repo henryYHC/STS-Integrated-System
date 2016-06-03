@@ -186,7 +186,7 @@ var manualValidation = function(setting, username, result, callback){
   callback(null, username, result);
 };
 
-exports.validate = function(username){
+exports.validateUsername = function(username, callback){
   async.waterfall(
     [
       async.apply(retrieveSystemSetting, username.toLowerCase()),
@@ -197,7 +197,20 @@ exports.validate = function(username){
       manualValidation
     ],
   function(err, username, result){
-    console.log('Validation result for \'' + username + '\':');
-    console.log(result);
+    if(err){
+      console.error(err);
+      callback(null);
+    }
+    callback(result);
   });
+};
+
+exports.validate = function(req, res){
+  var username = String(req.params.username);
+  if(username){
+    exports.validateUsername(username, function(result){
+      res.status(200).send(result);
+    });
+  }
+  else res.status(400).send('Invalid or unspecified username.');
 };
