@@ -26,6 +26,15 @@ angular.module('technician').config(['$stateProvider', '$urlRouterProvider',
         url: '/password',
         templateUrl: 'modules/technician/client/views/technician/tech-change-pwd.client.view.html',
         data: { breadcrumb : 'Change Password' }
+      })
+      // Walk-in
+      .state('tech.walkin', {
+        abstract: true, url: '/walkin', template: '<ui-view>'
+      })
+      .state('tech.walkin.queue',{
+        url: '/queue',
+        templateUrl: 'modules/technician/client/views/walkin/walkin-queue.client.view.html',
+        data: { breadcrumb : 'Walk-ins: Active Queue' }
       });
 
     $urlRouterProvider.when('/tech', '/tech/home');

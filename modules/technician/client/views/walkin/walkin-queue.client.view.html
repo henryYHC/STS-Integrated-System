@@ -1,10 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<section ng-controller="WalkinQueueController">
+  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="max-height: 80vh;">
+    <div class="card card-info">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="title">
+            <i class="fa fa-male"></i> Customer Waiting
+          </div>
+        </div>
+      </div>
+      <div class="card-body no-padding">
+        <div class="alert text-center" ng-hide="walkins || walkins.length == 0">
+          <span class="fa fa-smile-o"></span> Hooray! Nothing in the queue! <span class="fa fa-smile-o"></span>
+        </div>
+        <table class="table table-hover" ng-show="walkins && walkins.length > 0">
+          <thead><tr>
+            <th>Order</th><th>Customer Name</th>
+          </tr></thead>
+          <tbody style="overflow: auto;">
+            <tr ng-repeat="walkin in walkins" ng-click="loadWalkin(walkin._id);">
+              <th scope="row">&nbsp;{{ $index + 1 }}
+                <span class="fa fa-wrench pull-right" ng-show="walkin.status === 'Work in progress'" tooltip-append-to-body="true"
+                      tooltip-placement="top" uib-tooltip="Helped by {{ walkin.serviceTechnician.firstName }}"></span>
+                <span class="fa fa-home pull-right" ng-show="walkin.status === 'House call pending'"
+                      tooltip-placement="top" uib-tooltip="House call pending"tooltip-append-to-body="true"></span>
+              </th>
+              <td>
+                {{ walkin.user.displayName }}
+                <span class="fa fa-clock-o pull-right" tooltip-placement="left" tooltip-append-to-body="true"
+                      uib-tooltip="{{ (walkin.created | date: walkin.status === 'House call pending'? 'short' : 'shortTime') || 'N/A' }}"></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <hr style="margin-top: -20px;" />
+        <div class="pull-right" style="margin: -15px 10px 5px 0;">
+          Wait time: <b>~{{avgWaitTime}}</b> min
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-9 col-md-9 col-sm-6 col-xs-12" style="height: 80vh;">
+    <div class="pull-right" ng-show="selected && selected.status === 'In queue'"><button class="btn btn-sm btn-default">No Show</button></div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="{{(!selected || selected.status === 'In queue')? 'position: absolute; top: 40%;' : ''}}">
+      <!-- If no walk-in instance is selected -->
+      <div style="text-align: center;" ng-hide="selected"><hr/>
+        <b style="font-size: 18px;"><span class="fa fa-info-circle"></span> Please select an instance in the queue for detail.</b>
+      <hr/></div>
+      <!-- If the walk-in instance is in queue -->
+      <div style="text-align: center;" ng-show="selected && selected.status === 'In queue'">
+        <p style="font-size: 20px;"><b>{{selected.user.displayName}}</b></p>
+        <p style="font-size: 14px;"></p>
+        <p style="font-size: 14px;">{{selected.description}}</p>
+        <hr/>
+        <div><button class="btn btn-lg btn-success">Begin Service</button></div>
+      </div>
+    </div>
+  </div>
+</section>
