@@ -11,6 +11,7 @@ module.exports = {
         'public/lib/checkbox3/dist/checkbox3.min.css',
         'public/lib/datatables/media/css/jquery.dataTables.min.css',
         'public/lib/select2/dist/css/select2.min.css',
+        'public/lib/angular-xeditable/dist/css/xeditable.css',
         'public/static/css/style.css',
         'public/static/css/themes/flat-blue.css',
         'public/static/css/promin.css'
@@ -44,7 +45,8 @@ module.exports = {
 
         'public/lib/randomcolor/randomColor.js',
         'public/lib/Chart.js/dist/Chart.min.js',
-        'public/lib/Chart.js/dist/Chart.bundle.min.js'
+        'public/lib/Chart.js/dist/Chart.bundle.min.js',
+        'public/lib/angular-xeditable/dist/js/xeditable.min.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },

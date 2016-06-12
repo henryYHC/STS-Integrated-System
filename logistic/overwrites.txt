@@ -1,0 +1,7 @@
+## public/lib/angular-xeditable/dist/css/xedit-table.css
+# Line 90
+.editable-click,
+a.editable-click {
+  text-decoration: none;
+  color: #428bca;
+}
