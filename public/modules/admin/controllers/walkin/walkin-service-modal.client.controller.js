@@ -78,7 +78,7 @@ angular.module('admin').controller('AdminWalkinServiceModalCtrl', ['$http', '$sc
                             });
                         }
                         break;
-                    case 'Not found':
+                    case 'Wildcard': case 'Not found':
                         if(confirm('User information NOT found! Are you sure the customer is eligible for assistance?')){
                             user = $scope.walkin.user; delete user._id;
                             user.username = netid; user.verified = true;
