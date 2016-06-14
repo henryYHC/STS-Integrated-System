@@ -12,9 +12,7 @@ angular.module('technician').config(['$stateProvider', '$urlRouterProvider',
       })
       // Main views and functions
       .state('tech', {
-        abstract: true,
-        url: '/tech',
-        controller: 'TechPanelController',
+        abstract: true, url: '/tech',
         templateUrl: 'modules/technician/client/views/panel/template.client.view.html'
       })
       .state('tech.home', {

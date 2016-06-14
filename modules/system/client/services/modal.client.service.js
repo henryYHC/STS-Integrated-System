@@ -5,7 +5,7 @@ angular.module('system').service('ModalLauncher', ['$uibModal',
 
     this.launchDefaultMessageModal = function(title, message){
       $uibModal.open({
-        animation: true, size: 'md',
+        animation: true, size: 'md', backdrop: 'static',
         controller: 'DefaultModalController',
         windowClass: 'fade modal-info panel-center-modal',
         templateUrl: 'modules/system/client/views/default-message-modal.client.view.html',
@@ -16,7 +16,7 @@ angular.module('system').service('ModalLauncher', ['$uibModal',
     // Return a promise
     this.launchDefaultInputModal = function(title, message, placeholder){
       return $uibModal.open({
-        animation: true, size: 'md',
+        animation: true, size: 'md', backdrop: 'static',
         controller: 'DefaultModalController',
         windowClass: 'fade modal-warning panel-center-modal',
         templateUrl: 'modules/system/client/views/default-input-modal.client.view.html',

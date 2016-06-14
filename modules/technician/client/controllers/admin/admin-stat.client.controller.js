@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('technician.admin').controller('StatisticsController', ['$scope', '$http', '$state',
-  function ($scope, $http, $state) {
+angular.module('technician.admin').controller('StatisticsController', ['$scope', '$http',
+  function ($scope, $http) {
 
     var options = {
       responsive: true,

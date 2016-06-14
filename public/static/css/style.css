@@ -1270,3 +1270,7 @@ section.login-page .login-box {
   margin-top: 665px;
   padding: 10px 16px 2px 10px;
 }
+
+.panel-center-modal {
+  margin-top: 12vh;
+}

@@ -9,7 +9,6 @@ angular.module('technician.admin').config(['$stateProvider', '$urlRouterProvider
       // Main views and functions
       .state('admin', {
         abstract: true, url: '/admin',
-        controller: 'TechAdminController',
         templateUrl: 'modules/technician/client/views/panel/template.client.view.html'
       })
       .state('admin.users', {

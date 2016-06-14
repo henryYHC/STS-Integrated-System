@@ -58,7 +58,10 @@
         </ul>
 
 
-        <h4>Category options<button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;" ng-click="newDeviceCategory(setting.device_options)">New</button></h4>
+        <h5><span style="font-size: 18px;">Non-computer options</span>
+          <span class="fa fa-info-circle" tooltip-placement="right" uib-tooltip="ie. tablet, console"></span>
+          <button class="btn btn-xs btn-warning pull-right" style="margin: -2px 0 0 0;" ng-click="newDeviceCategory(setting.device_options)">New</button>
+        </h5>
         <ul class="list-group">
           <li class="list-group-item" ng-show="setting.device_options.length == 0" style="padding: 3px 10px;">None</li>
           <li class="list-group-item" ng-repeat="(idx, option) in setting.device_options" style="padding: 3px 10px;">

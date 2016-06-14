@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('technician').controller('TechHeaderController', ['$rootScope', '$scope', '$state', '$http', 'Authentication',
-  function ($rootScope, $scope, $state, $http, Authentication) {
+angular.module('technician').controller('TechHeaderController', ['$scope', '$state', '$http', 'Authentication',
+  function ($scope, $state, $http, Authentication) {
     // Expose view variables
     if(Authentication.hasTechnicianPerm()) {
       $scope.$state = $state; $scope.user = Authentication.getUser();

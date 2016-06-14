@@ -1,5 +1,5 @@
-<section ng-controller="WalkinQueueController">
-  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="max-height: 80vh;">
+<section ng-controller="WalkinQueueController" ng-init="init()">
+  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="max-height: 80vh; max-width: 400px; margin-bottom: 2em;">
     <div class="card card-info">
       <div class="card-header">
         <div class="card-title">
@@ -39,21 +39,247 @@
       </div>
     </div>
   </div>
-  <div class="col-lg-9 col-md-9 col-sm-6 col-xs-12" style="height: 80vh;">
-    <div class="pull-right" ng-show="selected && selected.status === 'In queue'"><button class="btn btn-sm btn-default">No Show</button></div>
+  <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="height: 80vh;">
+    <!-- Alert messages -->
+    <!--<div class="alert alert-danger alert-dismissible fade in" role="alert">-->
+      <!--<button type="button" class="btn btn-xs btn-danger pull-right" style="margin: 0 0 0 0;">Got it !</button>-->
+      <!--<h4><span class="fa fa-flag"></span>&emsp; Oh snap! Customer has been flagged!</h4>-->
+      <!--<p>Customer's device has been inflected with virus and thus flagged by Emory University. Please run McAfee to remove the threats</p>-->
+    <!--</div>-->
+    <!-- Warning messages -->
+    <div class="alert alert-warning alert-dismissible fade in" role="alert" ng-show="!selected.user.verified">
+      <div class="pull-right" style="margin: 0 -15px 0 0;">
+        <button type="button" class="btn btn-sm btn-primary" ng-click="selected.user.verified=true">Verified</button>
+        <button class="btn btn-sm btn-default">Not Eligible</button>
+      </div>
+  
+
+
+      <h4><span class="fa fa-hand-stop-o"></span>&emsp; No no! Customer status is not verified!</h4>
+      <p>The NetID customer input is not verified by the system. Please make sure he/she is a student at Emory.</p>
+    </div>
+    <!-- Start of workspace -->
+    <div class="pull-right" ng-show="selected && selected.status === 'In queue'">
+      <button class="btn btn-sm btn-default">No Show</button>
+    </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="{{(!selected || selected.status === 'In queue')? 'position: absolute; top: 40%;' : ''}}">
       <!-- If no walk-in instance is selected -->
       <div style="text-align: center;" ng-hide="selected"><hr/>
         <b style="font-size: 18px;"><span class="fa fa-info-circle"></span> Please select an instance in the queue for detail.</b>
       <hr/></div>
-      <!-- If the walk-in instance is in queue -->
+      <!-- If the walk-in instance is 'In queue' -->
       <div style="text-align: center;" ng-show="selected && selected.status === 'In queue'">
         <p style="font-size: 20px;"><b>{{selected.user.displayName}}</b></p>
         <p style="font-size: 14px;"></p>
         <p style="font-size: 14px;">{{selected.description}}</p>
         <hr/>
-        <div><button class="btn btn-lg btn-success">Begin Service</button></div>
+        <div><button class="btn btn-lg btn-success" ng-disabled="!selected.user.verified">Begin Service</button></div>
       </div>
+      <!-- If the walk-in is 'Work in progress'/'House call pending'-->
+      <div class="card" ng-show="selected && selected.status !== 'In queue'">
+        <div class="card-header">
+          <div class="card-title">
+            <div class="title">
+              <i class="fa fa-info"></i>&emsp; Walk-in Information
+            </div>
+          </div>
+          <div class="pull-right" style="font-size: 16px; margin: 10px 5px 0 0;">
+            <span class="label" ng-class="'label-' + ((selected.status === 'House call pending')? 'info' : 'success')">
+              {{ selected.status }}
+            </span>
+          </div>
+        </div>
+        <div class="card-body no-padding">
+          <div role="tabpanel">
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active"><a href="#current" aria-controls="home" role="tab" data-toggle="tab">Current Ticket</a></li>
+              <li role="presentation"><a href="#previous" aria-controls="profile" role="tab" data-toggle="tab">Previous Visits</a></li>
+            </ul>
+            <div class="tab-content" style="max-height: 65vh; overflow: auto;">
+              <div role="tabpanel" id="current" class="tab-pane active col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
+                <div class="dropdown" style="position: absolute; right: 15px; top: 10px; z-index: 999;">
+                  <a class="btn btn-sm btn-warning" data-toggle="dropdown" style="margin-top: 0;" role="button" aria-haspopup="true" aria-expanded="false">
+                    Options &emsp;<span class="fa fa-caret-down"></span>
+                  </a>
+                  <ul class="dropdown-menu" style="text-align: left; left: -100px;">
+                    <li class="dropdown-header" style="margin-left: -5px;">Status changes</li>
+                    <li style="margin-left: 5px;"><a href="#"><span class="fa fa-wrench"></span> Check-in repair</a></li>
+                    <li style="margin-left: 5px;"><a href="#"><span class="fa fa-home"></span> House call pending</a></li>
+                    <li style="margin-left: 5px;"><a href="#"><span class="fa fa-frown-o"></span> No show</a></li>
+                    <li class="dropdown-header" style="margin-left: -5px;">Other functions</li>
+                    <li style="margin-left: 5px;"><a href="#"><span class="fa fa-copy"></span> Duplicate ticket</a></li>
+                    <li style="margin-left: 5px;"><a href="#"><span class="fa fa-unlink"></span> Reassign NetID</a></li>
+                  </ul>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                  <div class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-lg-4 col-md-4 col-sm-4 control-label">NetID:</label>
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 8px;">{{selected.user.username}}</div>
+                    </div>
+                  </div>
+                  <div class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-lg-4 col-md-4 col-sm-4 control-label">Phone:</label>
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 8px;" editable-tel="selected.user.phone" e-pattern="\d{10}">
+                        {{ (selected.user.phone)? selected.user.phone.substring(0, 3) + '-' + selected.user.phone.substring(3, 6) + '-' + selected.user.phone.substring(6) : 'N/A'}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-lg-4 col-md-4 col-sm-4 control-label">Device type:</label>
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 8px;"
+                           editable-select="selected.deviceCategory" e-ng-options="c.value as c.text for c in device_categories">
+                        {{selected.deviceCategory || 'N/A'}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                  <div class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-lg-3 col-md-3 col-sm-3 control-label">Name:</label>
+                      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;" editable-text="selected.user.displayName">{{selected.user.displayName || 'N/A'}}</div>
+                    </div>
+                  </div>
+                  <div class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-lg-3 col-md-3 col-sm-3 control-label">Location:</label>
+                      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;"
+                           editable-select="selected.user.location" e-ng-options="o.value as o.text for o in location_options">
+                        {{selected.user.location || 'N/A'}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-lg-3 col-md-3 col-sm-3 control-label">Device info:</label>
+                      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;" ng-hide="selected.deviceCategory === 'Other'"
+                           editable-select="selected.deviceInfo" e-ng-options="o.value as o.text for o in device_options[selected.deviceCategory]">
+                        {{ selected.deviceInfo || 'N/A' }}
+                      </div>
+                      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;" ng-show="selected.deviceCategory === 'Other'"
+                           editable-text="selected.otherDevice">
+                        {{ selected.otherDevice || 'N/A' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr/>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="sub-title">
+                    Task detail
+                    <span class="pull-right">
+                      <span class="fa fa-user" tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Helped by"></span>
+                        {{selected.serviceTechnician.displayName || 'N/A'}}&nbsp;&nbsp;
+                      <span class="fa fa-hourglass-start" tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Service started at"></span>
+                        {{(selected.serviceStartTime | date: selected.status === 'House call pending'? 'short' : 'shortTime') || 'N/A'}}
+                    </span>
+                  </div>
+                  <div class="text-justify" style="margin: -15px 0 0 20px;">
+                    <div class="form-horizontal">
+                      <div class="form-group">
+                        <label class="col-lg-2 col-md-2 col-sm-2 control-label" style="padding-top: 4px;">Problem:</label>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 	5px;" editable-text="selected.description">{{selected.description || 'N/A'}}</div>
+                      </div>
+                    </div>
+                    <div class="form-horizontal">
+                      <div class="form-group">
+                        <label class="col-lg-2 col-md-2 col-sm-2 control-label" style="padding-top: 4px;">Work note:</label>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 5px;" editable-text="selected.workNote">{{selected.workNote || 'None'}}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sub-title">Resolution detail</div>
+                  <div class="text-justify" style="margin: -15px 0 0 20px;">
+                    <div class="form-horizontal">
+                      <div class="form-group">
+                        <label class="col-lg-2 col-md-2 col-sm-2 control-label" style="padding-top: 4px;">Resolution type:</label>
+                        <select class="col-lg-6 col-md-6 col-sm-6 col-xs-8">
+                          <option value="N/A">N/A</option>
+                          <option value="DooleyNet">DooleyNet</option>
+                          <option value="EmoryUnplugged">EmoryUnplugged</option>
+                          <option value="Hardware">Hardware</option>
+                          <option value="Office365">Office365</option>
+                          <option value="OS Troubleshooting">OS Troubleshooting</option>
+                          <option value="Password Resets">Password Resets</option>
+                          <option value="Printing">Printing</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-horizontal">
+                      <div class="form-group" style="text-align: left;">
+                        <label class="col-lg-2 col-md-2 col-sm-2 control-label" style="padding-top: 2px;">Resolution detail:</label>
+                        <textarea class="col-lg-8 col-md-8 col-sm-8 col-xs-12" rows="3"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pull-right" style="margin-top: 15px;">
+                  <button class="btn btn-md btn-default"><span class="fa fa-save"></span> SAVE</button>
+                  <button class="btn btn-md btn-success"><span class="fa fa-check-circle-o"></span> RESOLVE</button>
+                </div>
+              </div>
+              <div role="tabpanel" id="previous" class="tab-pane col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
+                <div class="sub-title" style="margin-top: -20px;">Previous visits information</div>
+                <table class="table table-hover" style="margin-top: -20px;">
+                  <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Device spec</th>
+                    <th>Status</th>
+                    <th>Resolution type</th>
+                    <th>TimeStamp</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td><a href="#" style="text-align: center; color: green;">view</a></td>
+                    <td>11</td>
+                    <td>Computer</td>
+                    <td>Windows 10</td>
+                    <td>Completed</td>
+                    <td>EmoryUnplugged</td>
+                    <td>2/14/16 12:01 PM</td>
+                  </tr>
+                  <tr>
+                    <td><a href="#" style="text-align: center; color: green;">view</a></td>
+                    <td>16</td>
+                    <td>Phone/Tablet</td>
+                    <td>iOS</td>
+                    <td>Completed</td>
+                    <td>OS Troubleshooting</td>
+                    <td>2/15/16 12:12 PM</td>
+                  </tr>
+                  <tr>
+                    <td><a href="#" style="text-align: center; color: green;">view</a></td>
+                    <td>31</td>
+                    <td>TV/Media Device</td>
+                    <td>Roku</td>
+                    <td>Unresolved</td>
+                    <td>N/A</td>
+                    <td>2/16/16 12:32 PM</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End of right section -->
     </div>
   </div>
 </section>
+
+<!-- Toggle Select2 select box -->
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('select').select2();
+    $('editable-click').removeAttr('border-bottom', '');
+  });
+</script>
