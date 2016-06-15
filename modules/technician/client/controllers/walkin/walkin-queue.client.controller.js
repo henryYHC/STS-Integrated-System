@@ -36,19 +36,25 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
 
         $scope.device_categories = (Object.keys(options)).map(option2Obj);
         $scope.location_options = setting.location_options.map(option2Obj);
-      });
 
-      // Select current working walk-in instance
-      for(i in walkins){
-        if(walkins[i].status === 'House call pending') break;
-        else if(walkins[i].serviceTechnician.username === user.username){
-          $scope.selected = walkins[i]; break;
+        // Initialize resolution template 
+        $scope.resolutions_options = setting.resolutions_options;
+
+        // Select current working walk-in instance
+        for(i in walkins){
+          if(walkins[i].status === 'House call pending') break;
+          else if(walkins[i].serviceTechnician.username === user.username){
+            $scope.loadWalkin(walkins[i]._id); break;
+          }
         }
-      }
+      });
     };
 
     $scope.loadWalkin = function(id){
-      $scope.selected = $scope.walkins[id];
+      var selected = $scope.selected = $scope.walkins[id];
+
+      if(!selected.resolutionType)
+        selected.resolutionType = $scope.resolutions_options.default;
     };
 
     // Watch if customer name changed.
@@ -62,7 +68,7 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
 
     // Watch if device category changed.
     $scope.$watch('selected.deviceCategory', function(n, o){
-      if(n !== o) $scope.selected.deviceInfo = $scope.selected.otherDevice = undefined;
+      if(o && n !== o) $scope.selected.deviceInfo = $scope.selected.otherDevice = undefined;
     });
   }
 ]);

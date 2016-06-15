@@ -6,7 +6,7 @@ angular.module('technician.admin').controller('AdminSettingController', ['$scope
     $scope.message = {};
 
     $scope.init = function(){
-      $http.get('/system/setting')
+      $http.get('/templates/setting')
         .success(function(setting){
           $scope.setting = setting;
         })
@@ -74,7 +74,7 @@ angular.module('technician.admin').controller('AdminSettingController', ['$scope
     };
 
     $scope.save = function(){
-      $http.put('/system/setting', $scope.setting)
+      $http.put('/templates/setting', $scope.setting)
         .success(function(){
           $scope.message.success = 'Save successfully.'; $scope.init();
           $timeout(function(){ $scope.message.success = undefined; }, 5000);

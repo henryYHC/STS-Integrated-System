@@ -47,7 +47,7 @@ exports.initSetting = function(callback){
           console.error('***System setting initialization failed***');
           if(callback){ callback(err, null); } return;
         }
-        else console.log('Default system setting initialized.');
+        else console.log('Default templates setting initialized.');
       });
     }
     else if(settings.length > 1){
@@ -120,7 +120,7 @@ exports.update = function(req, res){
       old_setting = _.extend(old_setting, setting);
       old_setting.save(function(err, setting){
         if(err) {
-          res.status(500).send('Failed to update system setting.');
+          res.status(500).send('Failed to update templates setting.');
           return console.error(err);
         }
         else res.jsonp(old_setting);

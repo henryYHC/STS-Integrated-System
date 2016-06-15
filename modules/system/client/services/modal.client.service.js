@@ -8,7 +8,7 @@ angular.module('system').service('ModalLauncher', ['$uibModal',
         animation: true, size: 'md', backdrop: 'static',
         controller: 'DefaultModalController',
         windowClass: 'fade modal-info panel-center-modal',
-        templateUrl: 'modules/system/client/views/default-message-modal.client.view.html',
+        templateUrl: 'modules/templates/client/views/default-message-modal.client.view.html',
         resolve: { data: function(){ return { title: title, message: message }; } }
       });
     };
@@ -19,7 +19,7 @@ angular.module('system').service('ModalLauncher', ['$uibModal',
         animation: true, size: 'md', backdrop: 'static',
         controller: 'DefaultModalController',
         windowClass: 'fade modal-warning panel-center-modal',
-        templateUrl: 'modules/system/client/views/default-input-modal.client.view.html',
+        templateUrl: 'modules/templates/client/views/default-input-modal.client.view.html',
         resolve: { data: function(){ return { title: title, message: message, placeholder: placeholder }; } }
       });
     };

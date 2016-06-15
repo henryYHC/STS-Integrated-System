@@ -24,7 +24,7 @@ module.exports = {
     format: process.env.LOG_FORMAT || 'combined',
     options: {
       // Stream defaults to process.stdout
-      // Uncomment/comment to toggle the logging to a log on the file system
+      // Uncomment/comment to toggle the logging to a log on the file templates
       stream: {
         directoryPath: process.env.LOG_DIR_PATH || process.cwd(),
         fileName: process.env.LOG_FILE || 'access.log',

@@ -47,14 +47,11 @@
       <!--<p>Customer's device has been inflected with virus and thus flagged by Emory University. Please run McAfee to remove the threats</p>-->
     <!--</div>-->
     <!-- Warning messages -->
-    <div class="alert alert-warning alert-dismissible fade in" role="alert" ng-show="!selected.user.verified">
+    <div class="alert alert-warning alert-dismissible fade in" role="alert" ng-show="selected && !selected.user.verified">
       <div class="pull-right" style="margin: 0 -15px 0 0;">
         <button type="button" class="btn btn-sm btn-primary" ng-click="selected.user.verified=true">Verified</button>
         <button class="btn btn-sm btn-default">Not Eligible</button>
       </div>
-  
-
-
       <h4><span class="fa fa-hand-stop-o"></span>&emsp; No no! Customer status is not verified!</h4>
       <p>The NetID customer input is not verified by the system. Please make sure he/she is a student at Emory.</p>
     </div>
@@ -181,13 +178,15 @@
                     <div class="form-horizontal">
                       <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label" style="padding-top: 4px;">Problem:</label>
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 	5px;" editable-text="selected.description">{{selected.description || 'N/A'}}</div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 	5px;"
+                             editable-textarea="selected.description" e-rows="2" e-cols="80">{{selected.description || 'N/A'}}</div>
                       </div>
                     </div>
                     <div class="form-horizontal">
                       <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label" style="padding-top: 4px;">Work note:</label>
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 5px;" editable-text="selected.workNote">{{selected.workNote || 'None'}}</div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 5px;"
+                             editable-textarea="selected.workNote" e-rows="2" e-cols="80">{{selected.workNote || 'None'}}</div>
                       </div>
                     </div>
                   </div>
@@ -195,24 +194,38 @@
                   <div class="text-justify" style="margin: -15px 0 0 20px;">
                     <div class="form-horizontal">
                       <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label" style="padding-top: 4px;">Resolution type:</label>
-                        <select class="col-lg-6 col-md-6 col-sm-6 col-xs-8">
-                          <option value="N/A">N/A</option>
-                          <option value="DooleyNet">DooleyNet</option>
-                          <option value="EmoryUnplugged">EmoryUnplugged</option>
-                          <option value="Hardware">Hardware</option>
-                          <option value="Office365">Office365</option>
-                          <option value="OS Troubleshooting">OS Troubleshooting</option>
-                          <option value="Password Resets">Password Resets</option>
-                          <option value="Printing">Printing</option>
-                          <option value="Other">Other</option>
+                        <label class="col-lg-2 col-md-2 col-sm-2 col-xs-2 control-label" style="padding-top: 4px;">Resolution type:</label>
+                        <select class="col-lg-6 col-md-6 col-sm-6 col-xs-8" ng-model="selected.resolutionType">
+                          <option ng-repeat="option in resolutions_options.options" value="{{option}}">{{option}}</option>
                         </select>
+                        <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-circle checkbox-light"
+                          style="margin: 0 0 -5px 1em;" ng-show="resolutions_options[selected.resolutionType].forward">
+                          <input type="checkbox" id="forward" ng-model="selected.forward"><label for="forward">Ticket forwarding</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-horizontal" ng-show="resolutions_options[selected.resolutionType].requireSubject">
+                      <div class="form-group" style="text-align: left;">
+                        <label class="col-lg-2 col-md-2 col-sm-2 control-label" style="padding-top: 6px;">Other resolution:</label>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="padding-left:0;">
+                          <input type="text" class="form-control" ng-model="selected.otherResolution" placeholder="Please enter the subject line for other resolution.">
+                        </div>
                       </div>
                     </div>
                     <div class="form-horizontal">
                       <div class="form-group" style="text-align: left;">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label" style="padding-top: 2px;">Resolution detail:</label>
-                        <textarea class="col-lg-8 col-md-8 col-sm-8 col-xs-12" rows="3"></textarea>
+
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="padding-left: 0;">
+                          <span ng-show="resolutions_options[selected.resolutionType].tasks" style="padding-bottom: 5px;">
+                            <span ng-repeat="task in resolutions_options[selected.resolutionType].tasks">
+                                <div class="checkbox3 checkbox-inline checkbox-check checkbox-round checkbox-light">
+                                <input type="checkbox" id="{{'task'+ ($index+1)}}"><label for="{{'task'+ ($index+1)}}">{{task}}</label>
+                              </div><br>
+                            </span>
+                          </span>
+                          <textarea class="col-lg-12 col-md-12 col-sm-12 col-xs-12" rows="3" ng-model="selected.resolution"></textarea>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -222,6 +235,7 @@
                   <button class="btn btn-md btn-success"><span class="fa fa-check-circle-o"></span> RESOLVE</button>
                 </div>
               </div>
+
               <div role="tabpanel" id="previous" class="tab-pane col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
                 <div class="sub-title" style="margin-top: -20px;">Previous visits information</div>
                 <table class="table table-hover" style="margin-top: -20px;">

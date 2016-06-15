@@ -3,7 +3,7 @@
 module.exports = {
   app: {
     title: 'STS-Integrated-System',
-    description: 'An integrated system for STS walk-ins, check-ins, and administrative affairs.',
+    description: 'An integrated templates for STS walk-ins, check-ins, and administrative affairs.',
     keywords: 'Emory University, Student Digital Life, Student Technology Support, Woodruff Library',
     googleAnalyticsTrackingID: process.env.GOOGLE_ANALYTICS_TRACKING_ID || 'GOOGLE_ANALYTICS_TRACKING_ID'
   },

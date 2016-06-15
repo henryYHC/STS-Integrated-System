@@ -1,6 +1,7 @@
 'use strict';
 
-var _ = require('lodash'),
+var fs = require('fs'),
+  _ = require('lodash'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
   Walkin = mongoose.model('Walkin'),
@@ -14,12 +15,14 @@ var populate_options = [
   { path : 'contactLog', model : 'ContactLog' }
 ];
 
-exports.getTechnicianSetting = function(req, res){
-  var setting = req.setting;
+var resolution_templates_path = 'config/templates/walkin/resolution_templates.json',
+  resolution_templates = JSON.parse(fs.readFileSync(resolution_templates_path, 'utf8'));
 
-  // Remove irrelevant system setting
-  setting._id = setting.computer_os_editions = setting.scheduler_settings = undefined;
-  setting.user_wildcard_prefixes = setting.user_validation_method = setting.servicenow_liveSync = undefined;
+exports.getTechnicianSetting = function(req, res){
+  var system = req.setting, setting = {};
+
+  setting.location_options = system.location_options; setting.resolutions_options = resolution_templates;
+  setting.device_options = system.device_options; setting.computer_options = system.computer_options;
 
   res.json(setting);
 };

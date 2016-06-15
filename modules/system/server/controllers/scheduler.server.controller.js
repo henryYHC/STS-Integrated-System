@@ -27,7 +27,7 @@ exports.init = function(setting, callback){
       else console.error(format('Unrecognized scheduler task : {}', task));
     }
   }
-  else console.log('No scheduler task found in system setting.');
+  else console.log('No scheduler task found in templates setting.');
 
   callback();
 };

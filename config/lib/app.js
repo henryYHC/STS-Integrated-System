@@ -53,7 +53,7 @@ module.exports.start = function start(callback) {
         console.log(chalk.green('MEAN.JS version: ' + config.meanjs['meanjs-version']));
       console.log();
       console.log('-------------- System Information --------------');
-      // Logging custom system information
+      // Logging custom templates information
       require('../../modules/system/server/controllers/system.server.controller.js').init();
       
       if (callback) callback(app, db, config);

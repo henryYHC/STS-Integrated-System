@@ -18,7 +18,7 @@ module.exports = {
     format: 'dev',
     options: {
       // Stream defaults to process.stdout
-      // Uncomment/comment to toggle the logging to a log on the file system
+      // Uncomment/comment to toggle the logging to a log on the file templates
       //stream: {
       //  directoryPath: process.cwd(),
       //  fileName: 'access.log',
