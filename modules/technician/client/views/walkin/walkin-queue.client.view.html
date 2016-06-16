@@ -212,20 +212,23 @@
                         </div>
                       </div>
                     </div>
+                    <div class="form-horizontal" ng-show="resolutions_options[selected.resolutionType].tasks">
+                      <div class="form-group" style="text-align: left; margin-bottom: 5px;">
+                        <label class="col-lg-2 col-md-2 col-sm-2 control-label" style="padding-top: 2px;">Resolution tasks:</label>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="padding-left: 0;">
+                          <span ng-repeat="task in resolutions_options[selected.resolutionType].tasks">
+                            <div class="checkbox3 checkbox-inline checkbox-check checkbox-round checkbox-light">
+                              <input type="checkbox" id="{{'task'+ ($index)}}" ng-model="selected.res.tasks[task]">
+                              <label for="{{'task'+ ($index)}}">{{$index+1}}. {{task}}</label>
+                            </div><br>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                     <div class="form-horizontal">
                       <div class="form-group" style="text-align: left;">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label" style="padding-top: 2px;">Resolution detail:</label>
-
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="padding-left: 0;">
-                          <span ng-show="resolutions_options[selected.resolutionType].tasks" style="padding-bottom: 5px;">
-                            <span ng-repeat="task in resolutions_options[selected.resolutionType].tasks">
-                                <div class="checkbox3 checkbox-inline checkbox-check checkbox-round checkbox-light">
-                                <input type="checkbox" id="{{'task'+ ($index+1)}}"><label for="{{'task'+ ($index+1)}}">{{task}}</label>
-                              </div><br>
-                            </span>
-                          </span>
-                          <textarea class="col-lg-12 col-md-12 col-sm-12 col-xs-12" rows="3" ng-model="selected.resolution"></textarea>
-                        </div>
+                        <textarea class="col-lg-8 col-md-8 col-sm-8 col-xs-12" rows="3" ng-model="selected.resolution"></textarea>
                       </div>
                     </div>
                   </div>

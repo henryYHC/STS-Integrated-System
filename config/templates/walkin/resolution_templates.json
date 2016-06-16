@@ -13,11 +13,17 @@
 
   "DooleyNet": {
     "tasks": [
-      "1. Register MAC address",
-      "2. Verify registration"
+      "Register MAC address",
+      "Verify registration"
     ]
   },
-  "Office365": { "forward": {} },
+  "Office365": {
+    "tasks": [
+      "Scan device",
+      "Reset password"
+    ],
+    "forward": {}
+  },
   "Password Resets": { "forward": {} },
   "Other": { "requireSubject": true }
 }

@@ -57,6 +57,7 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
         selected.resolutionType = $scope.resolutions_options.default;
     };
 
+    /*----- Watchers -----*/
     // Watch if customer name changed.
     $scope.$watchGroup(['selected', 'selected.user.displayName'], function(n, o){
       if(o[0] == n[0] && o[1] !== n[1]){
@@ -66,9 +67,15 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
       }
     });
 
+
     // Watch if device category changed.
     $scope.$watch('selected.deviceCategory', function(n, o){
       if(o && n !== o) $scope.selected.deviceInfo = $scope.selected.otherDevice = undefined;
+    });
+    // Watch if resolutionType changed
+    $scope.$watch('selected.resolutionType', function(n, o){
+      if(n !== o && $scope.selected && $scope.selected.res)
+        $scope.selected.res.tasks = {};
     });
   }
 ]);
