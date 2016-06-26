@@ -1,11 +1,19 @@
 'use strict';
 
-angular.module('technician').controller('WalkinQueueController', ['$scope', '$http', 'Authentication',
-  function ($scope, $http, Authentication) {
+angular.module('technician').controller('WalkinQueueController', ['$scope', '$http', 'Authentication', 'ModalLauncher',
+  function ($scope, $http, Authentication, ModalLauncher) {
     var user = Authentication.getUser();
 
+    // Test dummy data
+    var previous = [
+      { _id : 3, deviceCategory : 'Computer', deviceInfo : 'Windows 10', status : 'Completed', resolutionType: 'EmoryUnplugged', created: Date.now() },
+      { _id : 4, deviceCategory : 'Computer', deviceInfo : 'Windows 7', status : 'Completed', resolutionType: 'EmoryUnplugged', created: Date.now() },
+      { _id : 5, deviceCategory : 'Computer', deviceInfo : 'Windows 8', status : 'Completed', resolutionType: 'EmoryUnplugged', created: Date.now() },
+      { _id : 6, deviceCategory : 'Computer', deviceInfo : 'Windows 8.1', status : 'Completed', resolutionType: 'EmoryUnplugged', created: Date.now() }
+    ];
+
     $scope.walkins = [
-      { _id: 0, user: { username : 'npari22', firstName : 'Nihar', lastName : 'Parikh', displayName: 'Nihar Parikh', phone : '1234567890', location : 'Off-campus', verified : true },
+      { _id: 0, user: { username : 'npari22', firstName : 'Nihar', lastName : 'Parikh', displayName: 'Nihar Parikh', phone : '1234567890', location : 'Off-campus', verified : true, previous: previous },
         serviceTechnician : { username : 'yche463', firstName : 'Henry', lastName : 'Chen', displayName: 'Henry Chen' },
         deviceCategory : 'Computer', deviceInfo : 'Windows 10',
         description : 'Computer is messed up.',
@@ -14,6 +22,7 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
       { _id: 2, user: { username : 'mbuchma', firstName : 'Michael', lastName : 'Buchmann', displayName: 'Michael Buchmann', verified : true }, created: Date.now(), status : 'House call pending' }
     ];
     $scope.avgWaitTime = 2.3;
+    ////////////////////
 
     var option2Obj = function(val){
       return { text : val, value : val };
@@ -55,6 +64,10 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
 
       if(!selected.resolutionType)
         selected.resolutionType = $scope.resolutions_options.default;
+    };
+    
+    $scope.viewWalkin = function(id){
+      ModalLauncher.launchWalkinViewModal($scope.walkins[0]);
     };
 
     /*----- Watchers -----*/

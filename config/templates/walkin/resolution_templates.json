@@ -11,12 +11,17 @@
     "Other"],
   "default": "N/A",
 
+  "N/A": {
+  	"allow": false
+  },
+
   "DooleyNet": {
     "tasks": [
       "Register MAC address",
       "Verify registration"
     ]
   },
+  
   "Office365": {
     "tasks": [
       "Scan device",
@@ -24,7 +29,9 @@
     ],
     "forward": {}
   },
+
   "Password Resets": { "forward": {} },
+  
   "Other": { "requireSubject": true }
 }
 

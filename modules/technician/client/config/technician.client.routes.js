@@ -29,10 +29,15 @@ angular.module('technician').config(['$stateProvider', '$urlRouterProvider',
       .state('tech.walkin', {
         abstract: true, url: '/walkin', template: '<ui-view>'
       })
-      .state('tech.walkin.queue',{
+      .state('tech.walkin.queue', {
         url: '/queue',
         templateUrl: 'modules/technician/client/views/walkin/walkin-queue.client.view.html',
         data: { breadcrumb : 'Walk-ins: Active Queue' }
+      })
+      .state('tech.walkin.list', {
+        url: '/list',
+        templateUrl: 'modules/technician/client/views/walkin/walkin-list.client.view.html',
+        data: { breadcrumb : 'Walk-ins: All Walk-ins' }
       });
 
     $urlRouterProvider.when('/tech', '/tech/home');

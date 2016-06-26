@@ -1,0 +1,42 @@
+<section ng-controller="WalkinListController">
+  <div class="row" style="text-align: left; margin-left: 2em;">
+    <div class="form-inline">
+      <div class="form-group">
+        <label style="font-size: 15px;">Search for Walk-ins:&emsp;</label>
+        <select style="width: 100px;" ng-model="query.field">
+          <option value="id">ID</option>
+          <option value="netid">NetID</option>
+          <option value="name">Name</option>
+          <option value="status">Status</option>
+          <option value="created">Created at</option>
+          <option value="resolved">Resolved at</option>
+        </select>
+        <input type="text" class="form-control" placeholder="Input search query"  style="height: 28px; width: 500px;"
+               ng-show="textQuery" ng-model="query.value">
+          <span ng-show="dateQuery">
+            <input type="datetime-local" class="form-control" placeholder="Start time mm/dd/yyyy" style="height: 28px; width: 250px;" ng-model="query.startTime">
+            &nbsp;-&nbsp;
+            <input type="datetime-local" class="form-control" placeholder="End time mm/dd/yyyy" style="height: 28px; width: 250px;" ng-model="query.endTime">
+          </span>
+      </div>
+      <button class="btn btn-sm btn-default"><span class="fa fa-search"></span> Search</button>
+      &emsp;&emsp;&emsp;&emsp;
+      <button class="btn btn-sm btn-primary">All of Today</button>
+      <button class="btn btn-sm btn-info">This month</button>
+      <button class="btn btn-sm btn-warning">Unresolved</button>
+  </div>
+
+  <div style="position: absolute; top: 45%; left: 40%">
+    <div style="text-align: center;"><hr/>
+      <b style="font-size: 18px;"><span class="fa fa-info-circle"></span> Please input query to search for walk-ins.</b>
+    <hr/></div>
+  </div>
+
+</section>
+
+<!-- Toggle Select2 select box -->
+<script type="text/javascript">
+  $(document).ready(function(){ $('select').select2(
+    { minimumResultsForSearch: Infinity }
+  ); });
+</script>
