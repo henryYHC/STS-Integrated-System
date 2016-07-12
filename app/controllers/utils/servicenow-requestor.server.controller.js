@@ -177,7 +177,7 @@ var formulateWalkin = function(walkin, soapAction){
         // Assignment info
         u_assigned_to : walkin.serviceTechnician.username,
         u_last_update_tech : walkin.resoluteTechnician.username,
-        u_assignment_group : 'LITS: Messaging - Tier 3',
+        u_assignment_group : 'LITS: Student Digital Life',
 
         // Time log
         u_duration : walkin.resolutionTime.getTime() - walkin.created.getTime(),
