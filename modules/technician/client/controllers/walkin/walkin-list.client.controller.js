@@ -7,7 +7,7 @@ angular.module('technician').controller('WalkinListController', ['$scope', '$htt
     $scope.$watch('query.field', function(n, o){
       $scope.textQuery = $scope.dateQuery = false;
       $timeout(function(){
-        if(n === 'created' || n === 'resolved')
+        if(n && o && (n === 'created' || n === 'resolved'))
           $scope.dateQuery = true;
         else $scope.textQuery = true;
       }, 250);

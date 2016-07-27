@@ -4,7 +4,7 @@ angular.module('system').service('ModalLauncher', ['$uibModal', '$document',
   function($uibModal, $document){
 
     this.launchDefaultMessageModal = function(title, message){
-      $uibModal.open({
+      return $uibModal.open({
         animation: true, size: 'md', backdrop: 'static',
         controller: 'DefaultModalController',
         windowClass: 'fade modal-info panel-center-modal',

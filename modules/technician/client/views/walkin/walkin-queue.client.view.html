@@ -1,5 +1,5 @@
 <section id="WalkinQueueSection" ng-controller="WalkinQueueController" ng-init="init()">
-  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="max-height: 80vh; max-width: 400px; margin-bottom: 2em;">
+  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="max-width: 400px; margin-bottom: 2em;">
     <div class="card card-info">
       <div class="card-header">
         <div class="card-title">
@@ -8,21 +8,23 @@
           </div>
         </div>
       </div>
-      <div class="card-body no-padding">
-        <div class="alert text-center" ng-hide="walkins || walkins.length == 0">
+      <div class="card-body no-padding" style="overflow: auto; max-height: 70vh;">
+        <div class="alert text-center" ng-hide="walkins.length > 0">
           <span class="fa fa-smile-o"></span> Hooray! Nothing in the queue! <span class="fa fa-smile-o"></span>
         </div>
         <table class="table table-hover" ng-show="walkins && walkins.length > 0">
           <thead><tr>
             <th>Order</th><th>Customer Name</th>
           </tr></thead>
-          <tbody style="overflow: auto;">
-            <tr ng-repeat="walkin in walkins" ng-click="loadWalkin(walkin._id);">
+          <tbody>
+            <tr ng-repeat="walkin in walkins" ng-click="loadWalkin(walkin);">
               <th scope="row">&nbsp;{{ $index + 1 }}
                 <span class="fa fa-wrench pull-right" ng-show="walkin.status === 'Work in progress'" tooltip-append-to-body="true"
-                      tooltip-placement="top" uib-tooltip="Helped by {{ walkin.serviceTechnician.firstName }}"></span>
+                      tooltip-placement="top" uib-tooltip="Helped by {{ walkin.serviceTechnician.displayName }}"></span>
                 <span class="fa fa-home pull-right" ng-show="walkin.status === 'House call pending'"
                       tooltip-placement="top" uib-tooltip="House call pending"tooltip-append-to-body="true"></span>
+                <span class="fa fa-copy pull-right" ng-show="walkin.status === 'Duplicate'"
+                      tooltip-placement="top" uib-tooltip="Duplicate"tooltip-append-to-body="true"></span>
               </th>
               <td>
                 {{ walkin.user.displayName }}
@@ -34,7 +36,7 @@
         </table>
         <hr style="margin-top: -20px;" />
         <div class="pull-right" style="margin: -15px 10px 5px 0;">
-          Wait time: <b>~{{avgWaitTime}}</b> min
+          Avg. wait time: <b>{{avgWaitTime}}</b> min
         </div>
       </div>
     </div>
@@ -56,24 +58,25 @@
       <p>The NetID customer input is not verified by the system. Please make sure he/she is a student at Emory.</p>
     </div>
     <!-- Start of workspace -->
-    <div class="pull-right" ng-show="selected && selected.status === 'In queue'">
-      <button class="btn btn-sm btn-default">No Show</button>
+    <div class="pull-right" ng-show="selected && (selected.status === 'In queue' || selected.status === 'Duplicate')">
+      <button class="btn btn-sm btn-default" ng-click="noshow()">No Show</button>
     </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="{{(!selected || selected.status === 'In queue')? 'position: absolute; top: 40%;' : ''}}">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+         style="{{(!selected || selected.status === 'In queue'|| selected.status === 'Duplicate')? 'position: absolute; top: 40%;' : ''}}">
       <!-- If no walk-in instance is selected -->
       <div style="text-align: center;" ng-hide="selected"><hr/>
         <b style="font-size: 18px;"><span class="fa fa-info-circle"></span> Please select an instance in the queue for detail.</b>
       <hr/></div>
       <!-- If the walk-in instance is 'In queue' -->
-      <div style="text-align: center;" ng-show="selected && selected.status === 'In queue'">
+      <div style="text-align: center;" ng-show="selected && (selected.status === 'In queue' || selected.status === 'Duplicate')">
         <p style="font-size: 20px;"><b>{{selected.user.displayName}}</b></p>
         <p style="font-size: 14px;"></p>
         <p style="font-size: 14px;">{{selected.description}}</p>
         <hr/>
-        <div><button class="btn btn-lg btn-success" ng-disabled="!selected.user.verified">Begin Service</button></div>
+        <div><button class="btn btn-lg btn-success" ng-disabled="!selected.user.verified" ng-click="beginService()">Begin Service</button></div>
       </div>
       <!-- If the walk-in is 'Work in progress'/'House call pending'-->
-      <div class="card" ng-show="selected && selected.status !== 'In queue'">
+      <div class="card" ng-show="selected && (selected.status !== 'In queue' && selected.status !== 'Duplicate')">
         <div class="card-header">
           <div class="card-title">
             <div class="title">
@@ -101,11 +104,11 @@
                   <ul class="dropdown-menu" style="text-align: left; left: -100px;">
                     <li class="dropdown-header" style="margin-left: -5px;">Status changes</li>
                     <li style="margin-left: 5px;"><a href="#"><span class="fa fa-wrench"></span> Check-in repair</a></li>
-                    <li style="margin-left: 5px;"><a href="#"><span class="fa fa-home"></span> House call pending</a></li>
-                    <li style="margin-left: 5px;"><a href="#"><span class="fa fa-frown-o"></span> No show</a></li>
+                    <li style="margin-left: 5px;" ng-show="selected.status!=='House call pending'"><a href="#" ng-click="toHouseCall()"><span class="fa fa-home"></span> House call pending</a></li>
+                    <li style="margin-left: 5px;"><a href="#" ng-click="noshow()"><span class="fa fa-frown-o"></span> No show</a></li>
                     <li class="dropdown-header" style="margin-left: -5px;">Other functions</li>
-                    <li style="margin-left: 5px;"><a href="#"><span class="fa fa-copy"></span> Duplicate ticket</a></li>
-                    <li style="margin-left: 5px;"><a href="#"><span class="fa fa-unlink"></span> Reassign NetID</a></li>
+                    <li style="margin-left: 5px;"><a href="#" ng-click="duplicate()"><span class="fa fa-copy"></span> Duplicate ticket</a></li>
+                    <li style="margin-left: 5px;"><a href="#" ng-click="reassign()"><span class="fa fa-unlink"></span> Reassign NetID</a></li>
                   </ul>
                 </div>
                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
@@ -127,7 +130,7 @@
                     <div class="form-group">
                       <label class="col-lg-4 col-md-4 col-sm-4 control-label">Device type:</label>
                       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 8px;"
-                           editable-select="selected.deviceCategory" e-ng-options="c.value as c.text for c in device_categories">
+                           editable-select="selected.deviceCategory" e-ng-options="c.value as c.text for c in device_categories" onaftersave="selected.deviceInfo=undefined;">
                         {{selected.deviceCategory || 'N/A'}}
                       </div>
                     </div>
@@ -137,7 +140,7 @@
                   <div class="form-horizontal">
                     <div class="form-group">
                       <label class="col-lg-3 col-md-3 col-sm-3 control-label">Name:</label>
-                      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;" editable-text="selected.user.displayName">{{selected.user.displayName || 'N/A'}}</div>
+                      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;" editable-text="selected.user.displayName" onaftersave="onDisplayNameChange();">{{selected.user.displayName || 'N/A'}}</div>
                     </div>
                   </div>
                   <div class="form-horizontal">
@@ -195,8 +198,9 @@
                     <div class="form-horizontal">
                       <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 col-xs-2 control-label" style="padding-top: 4px;">Resolution type:</label>
-                        <select class="col-lg-6 col-md-6 col-sm-6 col-xs-8" ng-model="selected.resolutionType">
-                          <option ng-repeat="option in resolutions_options.options" value="{{option}}">{{option}}</option>
+                        <select class="col-lg-6 col-md-6 col-sm-6 col-xs-8" ng-model="selected.resolutionType" ng-change="onResolutionChange();">
+                          <option ng-repeat="option in resolutions_options.options" value="{{option}}"
+                            ng-selected="option===resolutions_options.default">{{option}}</option>
                         </select>
                         <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-circle checkbox-light"
                           style="margin: 0 0 -5px 1em;" ng-show="resolutions_options[selected.resolutionType].forward">
@@ -218,7 +222,8 @@
                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="padding-left: 0;">
                           <span ng-repeat="task in resolutions_options[selected.resolutionType].tasks">
                             <div class="checkbox3 checkbox-inline checkbox-check checkbox-round checkbox-light">
-                              <input type="checkbox" id="{{'task'+ ($index)}}" ng-model="selected.res.tasks[task]">
+                              <input type="checkbox" id="{{'task'+ ($index)}}" ng-model="selected.res.tasks[task]"
+                                ng-click="onResolutionTaskClick(task)">
                               <label for="{{'task'+ ($index)}}">{{$index+1}}. {{task}}</label>
                             </div><br>
                           </span>
@@ -234,8 +239,10 @@
                   </div>
                 </div>
                 <div class="pull-right" style="margin-top: 15px;">
-                  <button class="btn btn-md btn-default"><span class="fa fa-save"></span> SAVE</button>
-                  <button class="btn btn-md btn-success"><span class="fa fa-check-circle-o"></span> RESOLVE</button>
+                  <span style="color: green;" ng-show="success"><i class="fa fa-check-circle"></i> {{success}}&emsp;</span>
+                  <span style="color: red;" ng-show="error"><i class="fa fa-times-circle"></i> {{error}}&emsp;</span>
+                  <button class="btn btn-md btn-default" ng-click="update()"><span class="fa fa-save"></span> SAVE</button>
+                  <button class="btn btn-md btn-success" ng-click="resolve()"><span class="fa fa-check-circle-o"></span> RESOLVE</button>
                 </div>
               </div>
 

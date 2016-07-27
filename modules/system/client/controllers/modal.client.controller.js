@@ -5,7 +5,7 @@ angular.module('system').controller('DefaultModalController', ['$scope', '$uibMo
     $scope.data = data;
 
     $scope.okay = function(){
-      $uibModalInstance.close();
+      $uibModalInstance.close(true);
     };
 
     $scope.submit = function(){
