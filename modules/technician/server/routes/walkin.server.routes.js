@@ -9,6 +9,9 @@ module.exports = function (app) {
   app.route('/api/technician/walkin/setting')
     .get(system.setting, walkin.getTechnicianSetting);
 
+  app.route('/api/technician/walkin/view/:walkinId')
+    .get(walkin.view);
+
   app.route('/api/technician/walkin/queue')
     .get(walkin.getQueue);
 
@@ -29,6 +32,9 @@ module.exports = function (app) {
 
   app.route('/api/technician/walkin/resolve/:walkinId')
     .put(walkin.resolve);
+  
+  app.route('/api/technician/walkin/previous/:walkinId/:username')
+    .get(walkin.previous);
 
   app.param('walkinId', walkin.walkinById);
   app.param('username', users.userByUsername);

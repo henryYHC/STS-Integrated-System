@@ -93,7 +93,7 @@
           <div role="tabpanel">
             <ul class="nav nav-tabs" role="tablist">
               <li role="presentation" class="active"><a href="#current" aria-controls="home" role="tab" data-toggle="tab">Current Ticket</a></li>
-              <li role="presentation"><a href="#previous" aria-controls="profile" role="tab" data-toggle="tab">Previous Visits</a></li>
+              <li role="presentation" ng-click="loadPrevious()"><a href="#previous" aria-controls="profile" role="tab" data-toggle="tab">Previous Visits</a></li>
             </ul>
             <div class="tab-content" style="max-height: 65vh; overflow: auto;">
               <div role="tabpanel" id="current" class="tab-pane active col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
@@ -248,9 +248,15 @@
 
               <div role="tabpanel" id="previous" class="tab-pane col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
                 <div class="sub-title" style="margin-top: -20px;">Previous visits information
-                  <span class="label label-success" style="font-size: 14px; margin-left: 2em;" ng-show="!selected.user.previous">None</span>
+                  <span style="margin-left: 2em;">
+                    <button ng-show="!loading && !selected.user.previous" ng-click="loadPrevious()"
+                            class="btn btn-xs btn-primary" style="font-size: 14px;">Load</button>
+                    <span ng-show="loading"><i class="fa fa-spinner fa-pulse fa-fw"></i> Loading...</span>
+                    <span ng-show="!loading && selected.user.previous && selected.user.previous.length == 0"
+                      class="label label-success" style="font-size: 14px;">None</span>
+                  </span>
                 </div>
-                <table class="table table-hover" style="margin-top: -20px;" ng-show="selected.user.previous">
+                <table class="table table-hover" style="margin-top: -20px;" ng-show="selected.user.previous && selected.user.previous.length != 0">
                   <thead>
                   <tr>
                     <th>Action</th>
@@ -269,7 +275,7 @@
                       <td>{{walkin.deviceCategory}}</td>
                       <td>{{walkin.deviceInfo}}</td>
                       <td>{{walkin.status}}</td>
-                      <td>{{walkin.resolutionType}}</td>
+                      <td>{{walkin.resolutionType || 'N/A'}}</td>
                       <td>{{walkin.created | date : 'short' }}</td>
                     </tr>
                   </tbody>

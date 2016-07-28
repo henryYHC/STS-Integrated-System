@@ -60,9 +60,26 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
         $scope.selected.resolutionType = $scope.resolutions_options.default;
       console.log(selected);
     };
-    
+
+    $scope.loadPrevious = function() {
+      var selected = $scope.selected;
+      if(selected.user.previous) return false;
+
+      $scope.loading = true;
+      $http.get('/api/technician/walkin/previous/'+selected._id+'/'+selected.user.username)
+        .error(function() { alert('Request failed. Please check console for error.'); })
+        .success(function(previous) {
+          $scope.loading = false;
+          $scope.selected.user.previous = previous;
+        });
+    };
+
     $scope.viewWalkin = function(id){
-      // ModalLauncher.launchWalkinViewModal(id);
+      $http.get('/api/technician/walkin/view/'+id)
+        .error(function() { alert('Request failed. Please check console for error.'); })
+        .success(function(walkin) {
+          ModalLauncher.launchWalkinViewModal(walkin);
+        });
     };
 
     /*----- Status change functions -----*/
@@ -165,7 +182,11 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
         subject = $scope.selected.otherResolution,
         resolution = $scope.selected.resolution;
 
-      if(type === 'Other') {
+      if(type === $scope.resolutions_options.default){
+        $scope.error = 'Please select a resolution type.';
+        $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
+      }
+      else if(type === 'Other') {
         if(!subject)
           $scope.error = 'Please input resolution subject for \'Other\'.';
         else if(subject.length > 20)

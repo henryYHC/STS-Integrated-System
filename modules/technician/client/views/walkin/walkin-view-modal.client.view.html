@@ -95,7 +95,7 @@
                 <div class="form-group" style="text-align: left;">
                     <label class="col-sm-3 control-label" for="resolutionType">Resolution type:</label>
                     <div class="col-sm-9" id="resolutionType" style="margin-top: 8px;">
-                        {{data.walkin.resolutionType}}
+                        {{data.walkin.resolutionType || 'N/A'}}
                     </div>
                 </div>
             </div>
@@ -111,7 +111,7 @@
                 <div class="form-group" style="text-align: left;">
                     <label class="col-sm-3 control-label" for="resolution">Resolution:</label>
                     <div class="col-sm-9" id="resolution" style="margin-top: 8px;">
-                        <p>{{walkin.resolution || 'None'}}</p>
+                        <p>{{data.walkin.resolution || 'None'}}</p>
                         <h4 style="font-size: 14px;" class="pull-right" ng-show="data.walkin.resoluteTechnician">Resolved at {{(data.walkin.resolutionTime | date:'short') || 'N/A'}} by {{data.walkin.resoluteTechnician.displayName}}</h4>
                     </div>
                 </div>

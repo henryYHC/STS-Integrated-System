@@ -27,10 +27,24 @@ exports.getTechnicianSetting = function(req, res){
   res.json(setting);
 };
 
+exports.view = function(req, res) {
+  res.json(req.walkin);
+};
+
+exports.countWaiting = function(req, res, next) {
+  Walkin.count({ isActive : true, liabilityAgreement : true, status : 'In queue'},
+    function(err, count) {
+      if(err) console.error(err);
+      req.walkinCount = count;
+      next();
+    });
+};
+
 exports.getQueue = function(req, res) {
   var today = new Date(Date.now()); today.setHours(0);
 
-  Walkin.find({ created : { $gte : today }, isActive : true, liabilityAgreement : true })
+  Walkin.find({ isActive : true, liabilityAgreement : true,
+    $or: [{ status: { $in : ['In queue', 'Work in progress', 'House call pending']}}, { created : { $gte: today }}]})
     .sort('created').populate(populate_options).exec(function(err, walkins) {
       if(err) console.error(err);
       else {
@@ -58,6 +72,19 @@ exports.getQueue = function(req, res) {
         res.json({ walkins : queue, avgWaitTime : avgTime });
       }
     });
+};
+
+exports.previous = function(req, res) {
+  var walkin = req.walkin, user = req.profile;
+  Walkin.find({ user : user._id, created : { $lt: walkin.created }})
+    .select('_id deviceCategory deviceInfo status resolutionType created')
+    .sort('created').exec(function(err, previous) {
+      if(err) {
+        console.error(err);
+        return res.sendStatus(500);
+      }
+      else res.json(previous);
+  });
 };
 
 exports.create = function(req, res) {
