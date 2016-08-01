@@ -222,8 +222,7 @@
                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="padding-left: 0;">
                           <span ng-repeat="task in resolutions_options[selected.resolutionType].tasks">
                             <div class="checkbox3 checkbox-inline checkbox-check checkbox-round checkbox-light">
-                              <input type="checkbox" id="{{'task'+ ($index)}}" ng-model="selected.res.tasks[task]"
-                                ng-click="onResolutionTaskClick(task)">
+                              <input type="checkbox" id="{{'task'+ ($index)}}" ng-click="onResolutionTaskClick(task)">
                               <label for="{{'task'+ ($index)}}">{{$index+1}}. {{task}}</label>
                             </div><br>
                           </span>

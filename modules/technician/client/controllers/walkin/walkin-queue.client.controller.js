@@ -3,7 +3,6 @@
 angular.module('technician').controller('WalkinQueueController', ['$scope', '$http', 'Authentication', 'ModalLauncher', '$timeout',
   function ($scope, $http, Authentication, ModalLauncher, $timeout) {
     var user = Authentication.getUser();
-    $scope.taskIdx = 0;
 
     var option2Obj = function(val){
       return { text : val, value : val };
@@ -222,13 +221,20 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
     };
 
     // Watch if resolution task clicked
+    var checkedTasks = [], checkedTasksOffset = 0;
     $scope.onResolutionTaskClick = function(task) {
-      if(!$scope.selected.res.tasks[task]) $scope.taskIdx--;
-      else {
-        if($scope.selected.resolution)
-          $scope.selected.resolution += '\n' + (++$scope.taskIdx) + '. ' + task;
-        else $scope.selected.resolution = (++$scope.taskIdx) + '. ' + task;
-      }
+      var idx = checkedTasks.indexOf(task);
+      var resolution = $scope.resolution.substring(checkedTasksOffset);
+
+      if(idx >= 0) checkedTasks.splice(idx, 1);
+      else checkedTasks.push(task);
+
+      var i, task_string = '';
+      for(i in checkedTasks)
+        task_string += (i+1) + '. ' + checkedTasks[i] + '\n';
+      checkedTasksOffset = task_string.length + 1;
+
+      $scope.resolution = task_string + resolution;
     };
   }
 ]);
