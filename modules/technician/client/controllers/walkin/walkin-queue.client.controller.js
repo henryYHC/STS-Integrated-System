@@ -224,17 +224,20 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
     var checkedTasks = [], checkedTasksOffset = 0;
     $scope.onResolutionTaskClick = function(task) {
       var idx = checkedTasks.indexOf(task);
-      var resolution = $scope.resolution.substring(checkedTasksOffset);
+      var resolution = $scope.selected.resolution;
+
+      if(!resolution) resolution = '';
+      else resolution = resolution.substring(checkedTasksOffset);
 
       if(idx >= 0) checkedTasks.splice(idx, 1);
       else checkedTasks.push(task);
 
       var i, task_string = '';
       for(i in checkedTasks)
-        task_string += (i+1) + '. ' + checkedTasks[i] + '\n';
-      checkedTasksOffset = task_string.length + 1;
+        task_string += (parseInt(i)+1) + '. ' + checkedTasks[i] + '\n';
+      checkedTasksOffset = task_string.length;
 
-      $scope.resolution = task_string + resolution;
+      $scope.selected.resolution = task_string + resolution;
     };
   }
 ]);

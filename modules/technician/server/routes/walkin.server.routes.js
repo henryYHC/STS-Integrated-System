@@ -46,7 +46,7 @@ module.exports = function (app) {
     .get(walkin.unresolved);
 
   app.route('/api/technician/walkin/query')
-    .get(walkin.query);
+    .post(walkin.query);
 
   app.param('walkinId', walkin.walkinById);
   app.param('username', users.userByUsername);

@@ -3,40 +3,40 @@
     <div class="form-inline col-lg-9 col-md-9 col-sm-9 col-xs-8">
       <div class="form-group">
         <label for="select" style="font-size: 15px;">Search for Walk-ins:&emsp;</label>
-        <select id="select" style="width: 100px;" ng-model="query.field">
+        <select id="select" style="width: 120px;" ng-model="query.field">
           <option value="id">ID</option>
           <option value="netid">NetID</option>
           <option value="name">Name</option>
-          <option value="status">Status</option>
           <option value="created">Created at</option>
           <option value="resolved">Resolved at</option>
+          <option value="servicenow">ServiceNow ID</option>
         </select>
-        <input type="text" class="form-control" placeholder="Input search query"  style="height: 28px; width: 500px;"
-               ng-show="textQuery" ng-model="query.value">
-          <span ng-show="dateQuery">
-            <input type="datetime-local" class="form-control" placeholder="Start time mm/dd/yyyy" style="height: 28px; width: 250px;" ng-model="query.startTime">
+        <input type="text" class="form-control" placeholder="Input search query"  style="height: 28px; width: 480px;" ng-show="textQuery" ng-model="query.value">
+        <span ng-show="dateQuery">
+            <input type="datetime-local" class="form-control" placeholder="Start time mm/dd/yyyy" style="height: 28px; width: 240px;" ng-model="query.startTime">
             &nbsp;-&nbsp;
-            <input type="datetime-local" class="form-control" placeholder="End time mm/dd/yyyy" style="height: 28px; width: 250px;" ng-model="query.endTime">
+            <input type="datetime-local" class="form-control" placeholder="End time mm/dd/yyyy" style="height: 28px; width: 240px;" ng-model="query.endTime">
           </span>
       </div>
-      <button class="btn btn-sm btn-default"><span class="fa fa-search"></span> Search</button>
+      <button class="btn btn-sm btn-default" ng-click="search()"><span class="fa fa-search"></span> Search</button>
     </div>
 
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4">
-      <button class="btn btn-sm btn-primary">All of Today</button>
-      <button class="btn btn-sm btn-info">This month</button>
-      <button class="btn btn-sm btn-warning">Unresolved</button>
+      <button class="btn btn-sm btn-primary" ng-click="today()">All of Today</button>
+      <button class="btn btn-sm btn-info" ng-click="month()">This month</button>
+      <button class="btn btn-sm btn-warning" ng-click="unresolved()">Unresolved</button>
     </div>
   </div>
 
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="position: absolute; top: 45%;" ng-show="!walkins || walkins.length == 0">
     <div style="text-align: center;"><hr/>
-      <b style="font-size: 18px;"><span class="fa fa-info-circle"></span> Please input query to search for walk-ins.</b>
+      <b style="font-size: 18px;"><span class="fa fa-info-circle"></span>
+        {{ searchMessage || 'Please input query to search for walk-ins.' }}</b>
     <hr/></div>
   </div>
 
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 card"
-       style="margin-top: 15px;" ng-show="walkins && walkins.length > 0">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 card" ng-show="walkins && walkins.length > 0"
+       style="margin-top: 15px; overflow: auto; max-height: 75vh;">
     <table class="table table-hover" style="margin-top: 10px;">
       <thead><tr>
         <th>Action</th>
@@ -48,20 +48,20 @@
         <th>Status</th>
         <th>Resolution type</th>
         <th>Create at</th>
-        <th>Updated at</th>
+        <th>Resolved at</th>
       </tr></thead>
-      <tbody ng-repeat="walkin in walkins">
-        <td><a href="#" style="text-align: center; color: green;" ng-click="">view</a></td>
+      <tbody><tr ng-repeat="walkin in walkins">
+        <td><a href="#" style="text-align: center; color: green;" ng-click="viewWalkin(walkin._id)">view</a></td>
         <td>{{walkin._id}}</td>
         <td>{{walkin.user.username}}</td>
         <td>{{walkin.user.displayName}}</td>
         <td>{{walkin.deviceCategory}}</td>
         <td>{{walkin.deviceInfo}}</td>
         <td>{{walkin.status}}</td>
-        <td>{{walkin.resolutionType}}</td>
-        <td>{{walkin.created}}</td>
-        <td>{{walkin.updated}}</td>
-      </tbody>
+        <td>{{walkin.resolutionType || 'N/A'}}</td>
+        <td>{{walkin.created | date : 'short'}}</td>
+        <td>{{walkin.resolutionTime | date : 'short'}}</td>
+      </tr></tbody>
     </table>
   </div>
 

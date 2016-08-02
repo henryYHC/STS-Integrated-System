@@ -91,16 +91,40 @@ exports.previous = function(req, res) {
 /*----- Instance queries -----*/
 exports.query = function(req, res) {
   var query = req.body;
-  Walkin.find(query)
-    .select('_id deviceCategory deviceInfo status resolutionType created updated')
-    .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
-    .sort('created').exec(function(err, walkins) {
-    if(err) {
-      console.error(err);
-      return res.sendStatus(500);
-    }
-    else res.json(walkins);
-  });
+  console.log(query);
+
+  if(query.username || query.displayName) {
+    User.find(query).select('_id').exec(function(err, ids) {
+      if(err) {
+        console.error(err);
+        return res.sendStatus(500);
+      }
+
+      ids = ids.map(function(obj){ return obj._id; });
+      Walkin.find({ user : { $in : ids } })
+        .select('_id user deviceCategory deviceInfo status resolutionType created resolutionTime')
+        .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
+        .sort('created').exec(function(err, walkins) {
+        if(err) {
+          console.error(err);
+          return res.sendStatus(500);
+        }
+        else res.json(walkins);
+      });
+    });
+  }
+  else {
+    Walkin.find(query)
+      .select('_id user deviceCategory deviceInfo status resolutionType created resolutionTime')
+      .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
+      .sort('created').exec(function(err, walkins) {
+      if(err) {
+        console.error(err);
+        return res.sendStatus(500);
+      }
+      else res.json(walkins);
+    });
+  }
 };
 
 exports.unresolved = function(req, res) {
@@ -109,43 +133,43 @@ exports.unresolved = function(req, res) {
     $or : [
       { status: { $in : ['In queue', 'Work in progress', 'House call pending'] } },
       { status : 'Unresolved', created : { $gte : today } } ] }
-  ).select('_id deviceCategory deviceInfo status resolutionType created updated')
+  ).select('_id user deviceCategory deviceInfo status resolutionType created resolutionTime')
     .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
     .sort('created').exec(function(err, walkins) {
-    if(err) {
-      console.error(err);
-      return res.sendStatus(500);
-    }
-    else res.json(walkins);
-  });
+      if(err) {
+        console.error(err);
+        return res.sendStatus(500);
+      }
+      else res.json(walkins);
+    });
 };
 
 exports.today = function(req, res) {
   var today = new Date(Date.now()); today.setHours(0);
-  Walkin.find( { isActive : true, liabilityAgreement : true, created : { $gte : today } } )
-    .select('_id deviceCategory deviceInfo status resolutionType created updated')
+  Walkin.find({ isActive : true, liabilityAgreement : true, created : { $gte : today } })
+    .select('_id user deviceCategory deviceInfo status resolutionType created resolutionTime')
     .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
     .sort('created').exec(function(err, walkins) {
-    if(err) {
-      console.error(err);
-      return res.sendStatus(500);
-    }
-    else res.json(walkins);
-  });
+      if(err) {
+        console.error(err);
+        return res.sendStatus(500);
+      }
+      else res.json(walkins);
+    });
 };
 
 exports.month = function(req, res) {
-  var currentMonth = new Date(Date.now()); currentMonth.setHours(0); currentMonth.setDate(0);
-  Walkin.find( { isActive : true, liabilityAgreement : true, created : { $gte : currentMonth } } )
-    .select('_id deviceCategory deviceInfo status resolutionType created updated')
+  var currentMonth = new Date(Date.now()); currentMonth.setDate(1); currentMonth.setHours(0);
+  Walkin.find({ isActive : true, liabilityAgreement : true, created : { $gte : currentMonth } })
+    .select('_id user deviceCategory deviceInfo status resolutionType created resolutionTime')
     .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
     .sort('created').exec(function(err, walkins) {
-    if(err) {
-      console.error(err);
-      return res.sendStatus(500);
-    }
-    else res.json(walkins);
-  });
+      if(err) {
+        console.error(err);
+        return res.sendStatus(500);
+      }
+      else res.json(walkins);
+    });
 };
 
 /*----- Instance functions -----*/
