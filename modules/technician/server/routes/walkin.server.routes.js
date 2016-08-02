@@ -35,6 +35,18 @@ module.exports = function (app) {
   
   app.route('/api/technician/walkin/previous/:walkinId/:username')
     .get(walkin.previous);
+  
+  app.route('/api/technician/walkin/query/today')
+    .get(walkin.today);
+  
+  app.route('/api/technician/walkin/query/month')
+    .get(walkin.month);
+  
+  app.route('/api/technician/walkin/query/unresolved')
+    .get(walkin.unresolved);
+
+  app.route('/api/technician/walkin/query')
+    .get(walkin.query);
 
   app.param('walkinId', walkin.walkinById);
   app.param('username', users.userByUsername);

@@ -18,6 +18,7 @@ var populate_options = [
 var resolution_templates_path = 'config/templates/walkin/resolution_templates.json',
   resolution_templates = JSON.parse(fs.readFileSync(resolution_templates_path, 'utf8'));
 
+/*----- Getters -----*/
 exports.getTechnicianSetting = function(req, res){
   var system = req.setting, setting = {};
 
@@ -32,7 +33,7 @@ exports.view = function(req, res) {
 };
 
 exports.countWaiting = function(req, res, next) {
-  Walkin.count({ isActive : true, liabilityAgreement : true, status : 'In queue'},
+  Walkin.count({ isActive : true, liabilityAgreement : true, status : 'In queue' },
     function(err, count) {
       if(err) console.error(err);
       req.walkinCount = count;
@@ -44,7 +45,7 @@ exports.getQueue = function(req, res) {
   var today = new Date(Date.now()); today.setHours(0);
 
   Walkin.find({ isActive : true, liabilityAgreement : true,
-    $or: [{ status: { $in : ['In queue', 'Work in progress', 'House call pending']}}, { created : { $gte: today }}]})
+    $or: [{ status: { $in : ['In queue', 'Work in progress', 'House call pending'] } }, { created : { $gte: today } } ] })
     .sort('created').populate(populate_options).exec(function(err, walkins) {
       if(err) console.error(err);
       else {
@@ -76,7 +77,7 @@ exports.getQueue = function(req, res) {
 
 exports.previous = function(req, res) {
   var walkin = req.walkin, user = req.profile;
-  Walkin.find({ user : user._id, created : { $lt: walkin.created }})
+  Walkin.find({ user : user._id, created : { $lt: walkin.created } })
     .select('_id deviceCategory deviceInfo status resolutionType created')
     .sort('created').exec(function(err, previous) {
       if(err) {
@@ -84,9 +85,70 @@ exports.previous = function(req, res) {
         return res.sendStatus(500);
       }
       else res.json(previous);
+    });
+};
+
+/*----- Instance queries -----*/
+exports.query = function(req, res) {
+  var query = req.body;
+  Walkin.find(query)
+    .select('_id deviceCategory deviceInfo status resolutionType created updated')
+    .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
+    .sort('created').exec(function(err, walkins) {
+    if(err) {
+      console.error(err);
+      return res.sendStatus(500);
+    }
+    else res.json(walkins);
   });
 };
 
+exports.unresolved = function(req, res) {
+  var today = new Date(Date.now()); today.setHours(0);
+  Walkin.find({ isActive : true, liabilityAgreement : true,
+    $or : [
+      { status: { $in : ['In queue', 'Work in progress', 'House call pending'] } },
+      { status : 'Unresolved', created : { $gte : today } } ] }
+  ).select('_id deviceCategory deviceInfo status resolutionType created updated')
+    .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
+    .sort('created').exec(function(err, walkins) {
+    if(err) {
+      console.error(err);
+      return res.sendStatus(500);
+    }
+    else res.json(walkins);
+  });
+};
+
+exports.today = function(req, res) {
+  var today = new Date(Date.now()); today.setHours(0);
+  Walkin.find( { isActive : true, liabilityAgreement : true, created : { $gte : today } } )
+    .select('_id deviceCategory deviceInfo status resolutionType created updated')
+    .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
+    .sort('created').exec(function(err, walkins) {
+    if(err) {
+      console.error(err);
+      return res.sendStatus(500);
+    }
+    else res.json(walkins);
+  });
+};
+
+exports.month = function(req, res) {
+  var currentMonth = new Date(Date.now()); currentMonth.setHours(0); currentMonth.setDate(0);
+  Walkin.find( { isActive : true, liabilityAgreement : true, created : { $gte : currentMonth } } )
+    .select('_id deviceCategory deviceInfo status resolutionType created updated')
+    .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
+    .sort('created').exec(function(err, walkins) {
+    if(err) {
+      console.error(err);
+      return res.sendStatus(500);
+    }
+    else res.json(walkins);
+  });
+};
+
+/*----- Instance functions -----*/
 exports.create = function(req, res) {
 
 };
@@ -154,6 +216,7 @@ exports.update = function(req, res) {
   res.json(original);
 };
 
+/*----- Instance status updates -----*/
 exports.noshow = function(req, res) {
   var original = req.walkin, updated = req.body.walkin;
 
@@ -236,6 +299,7 @@ exports.resolve = function(req, res) {
   });
 };
 
+/*----- Instance middlewares -----*/
 exports.walkinById = function(req, res, next, id) {
   Walkin.findOne({ _id : id }).populate(populate_options)
     .exec(function(err, walkin) {
