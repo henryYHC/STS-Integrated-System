@@ -325,7 +325,7 @@ exports.syncIncident = function(action, type, ticket, next){
 exports.forwardIncident = function(action, type, ticket, next){
     var data;
     switch(type){
-        case this.WALKIN:   data = formulateWalkin(ticket, action);     break;
+        case this.WALKIN:   data = formulateMessageForwarding(ticket, action);     break;
         default:    return console.error('Invalid ticket type: ' + type);
     }
 
