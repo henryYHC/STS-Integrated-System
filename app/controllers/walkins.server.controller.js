@@ -419,11 +419,7 @@ exports.logResolution = function(req, res){
         walkin.save(function (err) {
             if (err)    return res.status(400).send({message: errorHandler.getErrorMessage(err)});
             else {
-                servicenow.syncIncident(servicenow.CREATE, servicenow.WALKIN, walkin,
-                function(response){
-                  if(walkin.forward)
-                    servicenow.forwardIncident(servicenow.CREATE, servicenow.WALKIN, response);
-                });
+                servicenow.syncIncident(servicenow.CREATE, servicenow.WALKIN, walkin);
                 return res.jsonp(walkin);
             }
         });
