@@ -38,6 +38,25 @@ angular.module('technician').config(['$stateProvider', '$urlRouterProvider',
         url: '/list',
         templateUrl: 'modules/technician/client/views/walkin/walkin-list.client.view.html',
         data: { breadcrumb : 'Walk-ins: All Walk-ins' }
+      })
+      .state('tech.walkin.transfer', {
+        url: '/transfer/:walkinId',
+        templateUrl: 'modules/technician/client/views/walkin/walkin-transfer.client.view.html',
+        data: { breadcrumb : 'Walk-ins: Transfer to Check-in' }
+      })
+      // Check-in
+      .state('tech.checkin', {
+        abstract: true, url: '/checkin', template: '<ui-view>'
+      })
+      .state('tech.checkin.queue', {
+        url: '/queue',
+        templateUrl: 'modules/technician/client/views/checkin/checkin-queue.client.view.html',
+        data: { breadcrumb : 'Check-ins: Active Queue' }
+      })
+      .state('tech.checkin.list', {
+        url: '/list',
+        templateUrl: 'modules/technician/client/views/checkin/checkin-list.client.view.html',
+        data: { breadcrumb : 'Check-ins: Previous Repairs' }
       });
 
     $urlRouterProvider.when('/tech', '/tech/home');

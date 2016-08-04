@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('technician').controller('WalkinListController', ['$scope', '$http', 'Authentication', 'ModalLauncher', '$timeout',
-  function ($scope, $http, Authentication, ModalLauncher, $timeout) {
+angular.module('technician').controller('WalkinListController', ['$scope', '$http', 'ModalLauncher', '$timeout',
+  function ($scope, $http, ModalLauncher, $timeout) {
     $scope.query = { field: 'id' };
 
     /*----- Action functions -----*/
@@ -51,7 +51,7 @@ angular.module('technician').controller('WalkinListController', ['$scope', '$htt
           break;
       }
 
-      if( ($scope.textQuery && query.value) || ($scope.dateQuery && query.startTime) ){
+      if(($scope.textQuery && query.value) || ($scope.dateQuery && query.startTime)){
         $http.post('/api/technician/walkin/query', body)
           .error(function() { alert('Request failed. Please view console for error.'); })
           .success(renderWalkins);

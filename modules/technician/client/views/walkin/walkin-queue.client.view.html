@@ -103,7 +103,7 @@
                   </a>
                   <ul class="dropdown-menu" style="text-align: left; left: -100px;">
                     <li class="dropdown-header" style="margin-left: -5px;">Status changes</li>
-                    <li style="margin-left: 5px;"><a href="#"><span class="fa fa-wrench"></span> Check-in repair</a></li>
+                    <li style="margin-left: 5px;"><a href="#" ng-click="transfer()"><span class="fa fa-wrench"></span> Check-in repair</a></li>
                     <li style="margin-left: 5px;" ng-show="selected.status!=='House call pending'"><a href="#" ng-click="toHouseCall()"><span class="fa fa-home"></span> House call pending</a></li>
                     <li style="margin-left: 5px;"><a href="#" ng-click="noshow()"><span class="fa fa-frown-o"></span> No show</a></li>
                     <li class="dropdown-header" style="margin-left: -5px;">Other functions</li>

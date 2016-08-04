@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('technician').controller('WalkinQueueController', ['$scope', '$http', 'Authentication', 'ModalLauncher', '$timeout',
-  function ($scope, $http, Authentication, ModalLauncher, $timeout) {
+angular.module('technician').controller('WalkinQueueController', ['$scope', '$http', 'Authentication', 'ModalLauncher', '$timeout', '$state',
+  function ($scope, $http, Authentication, ModalLauncher, $timeout, $state) {
     var user = Authentication.getUser();
 
     var option2Obj = function(val){
@@ -82,6 +82,11 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
     };
 
     /*----- Status change functions -----*/
+    $scope.transfer = function() {
+      var id = $scope.selected._id;
+      $state.go('tech.walkin.transfer', { walkinId : id });
+    };
+
     $scope.noshow = function() {
       var noshow = ModalLauncher.launchDefaultMessageModal('Confirmation: No show walk-in',
         'This will mark the instance as \'Unresolved\'. Only confirm if the customer is not present. ' +

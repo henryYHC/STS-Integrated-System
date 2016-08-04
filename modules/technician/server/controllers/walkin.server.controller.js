@@ -105,12 +105,12 @@ exports.query = function(req, res) {
         .select('_id user deviceCategory deviceInfo status resolutionType created resolutionTime')
         .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
         .sort('created').exec(function(err, walkins) {
-        if(err) {
-          console.error(err);
-          return res.sendStatus(500);
-        }
-        else res.json(walkins);
-      });
+          if(err) {
+            console.error(err);
+            return res.sendStatus(500);
+          }
+          else res.json(walkins);
+        });
     });
   }
   else {
@@ -118,12 +118,12 @@ exports.query = function(req, res) {
       .select('_id user deviceCategory deviceInfo status resolutionType created resolutionTime')
       .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
       .sort('created').exec(function(err, walkins) {
-      if(err) {
-        console.error(err);
-        return res.sendStatus(500);
-      }
-      else res.json(walkins);
-    });
+        if(err) {
+          console.error(err);
+          return res.sendStatus(500);
+        }
+        else res.json(walkins);
+      });
   }
 };
 
