@@ -13,7 +13,7 @@
     "angular-touch": "latest",
     "angular-sanitize": "latest",
     "angular-bootstrap": "latest",
-    "angular-ui-router": "#master",
+    "angular-ui-router": "^0.3.1",
     "angular-file-upload": "latest",
     "angular-messages": "latest",
     "angular-ui-utils": "bower",
