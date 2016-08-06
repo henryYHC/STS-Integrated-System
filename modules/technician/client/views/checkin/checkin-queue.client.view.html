@@ -1,3 +1,67 @@
-<section>
+<section ng-controller="CheckinQueueController" ng-init="init()">
+  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="max-width: 400px; margin-bottom: 2em;">
+    <div style="height: 40vh;">
+      <div class="card card-info" style="margin-bottom: 2em;">
+        <div class="card-header">
+          <div class="card-title">
+            <div class="title">
+              <i class="fa fa-wrench"></i>&nbsp;&nbsp;Repair in Progress
+            </div>
+          </div>
+        </div>
+        <div class="card-body no-padding" style="overflow: auto; max-height: 35vh;">
+          <div class="alert text-center" style="margin-bottom: 0px;" ng-hide="queues.working.length > 0">
+            <span class="fa fa-smile-o"></span> Hooray! Nothing in the queue! <span class="fa fa-smile-o"></span>
+          </div>
+          <table class="table table-hover" style="margin-bottom: 0px;" ng-show="queues.working && queues.working.length > 0">
+            <thead><tr>
+              <th>CI #</th><th>Customer Name</th>
+            </tr></thead>
+            <tbody>
+            <tr ng-repeat="checkin in queues.working" ng-click="loadWalkin(checkin);">
+              <th scope="row">&nbsp;{{ checkin._id }}</th>
+              <td>{{ checkin.user.displayName }}
+              <span class="fa fa-clock-o pull-right" tooltip-placement="left" tooltip-append-to-body="true"
+                    uib-tooltip="{{ (checkin.created | date: 'short') || 'N/A' }}"></span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <hr style="margin: 0 0 10px 0;"/>
+        </div>
+      </div>
+    </div>
 
+    <div style="height: 40vh;">
+      <div class="card card-success">
+        <div class="card-header">
+          <div class="card-title">
+            <div class="title">
+              <i class="fa fa-archive"></i>&nbsp;&nbsp;Pending Repairs
+            </div>
+          </div>
+        </div>
+        <div class="card-body no-padding" style="overflow: auto; max-height: 35vh;">
+          <div class="alert text-center" style="margin-bottom: 0px;" ng-hide="queues.pending.length > 0">
+            <span class="fa fa-smile-o"></span> Hooray! Nothing in the queue! <span class="fa fa-smile-o"></span>
+          </div>
+          <table class="table table-hover" style="margin-bottom: 0px;" ng-show="queues.pending && queues.pending.length > 0">
+            <thead><tr>
+              <th>CI #</th><th>Customer Name</th>
+            </tr></thead>
+            <tbody>
+            <tr ng-repeat="checkin in queues.pending" ng-click="loadWalkin(checkin);">
+              <th scope="row">&nbsp;{{ checkin._id }}</th>
+              <td>{{ checkin.user.displayName }}
+                <span class="fa fa-clock-o pull-right" tooltip-placement="left" tooltip-append-to-body="true"
+                      uib-tooltip="{{ (checkin.created | date: 'short') || 'N/A' }}"></span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <hr style="margin: 0 0 10px 0;"/>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>

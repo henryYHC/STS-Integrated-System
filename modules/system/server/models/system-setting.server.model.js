@@ -37,6 +37,13 @@ var SystemSettingSchema = new Schema({
     }],
     default: []
   },
+  checkin_items : {
+    type: [{
+      type: String,
+      trim: true
+    }],
+    default: []
+  },
   device_options: {
     type: [{
       type: Schema.ObjectId,

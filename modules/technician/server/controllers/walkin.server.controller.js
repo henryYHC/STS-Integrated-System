@@ -19,7 +19,7 @@ var resolution_templates_path = 'config/templates/walkin/resolution_templates.js
   resolution_templates = JSON.parse(fs.readFileSync(resolution_templates_path, 'utf8'));
 
 /*----- Getters -----*/
-exports.getTechnicianSetting = function(req, res){
+exports.getWalkinSetting = function(req, res){
   var system = req.setting, setting = {};
 
   setting.location_options = system.location_options; setting.resolutions_options = resolution_templates;

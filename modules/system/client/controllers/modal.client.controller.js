@@ -8,6 +8,10 @@ angular.module('system').controller('DefaultModalController', ['$scope', '$uibMo
       $uibModalInstance.close(true);
     };
 
+    $scope.cancel = function(){
+      $uibModalInstance.close();
+    };
+
     $scope.submit = function(){
       $uibModalInstance.close($scope.input);
     };

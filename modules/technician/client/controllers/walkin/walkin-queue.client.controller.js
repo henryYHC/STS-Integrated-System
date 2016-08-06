@@ -57,7 +57,6 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
 
       if(!selected.resolutionType)
         $scope.selected.resolutionType = $scope.resolutions_options.default;
-      console.log(selected);
     };
 
     $scope.loadPrevious = function() {

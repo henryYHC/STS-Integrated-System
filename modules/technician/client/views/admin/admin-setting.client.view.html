@@ -45,7 +45,6 @@
           </li>
         </ul>
 
-
         <h5>Computer OS editions
           <span class="fa fa-info-circle" tooltip-placement="right" uib-tooltip="Check-in options"></span>
           <button class="btn btn-xs btn-warning pull-right" style="margin: -5px 0 0 0;" ng-click="newOSEdition(setting.computer_os_editions)">New</button>
@@ -57,6 +56,16 @@
           </li>
         </ul>
 
+        <h5>Allowed check-in items
+          <span class="fa fa-info-circle" tooltip-placement="right" uib-tooltip="Check-in options"></span>
+          <button class="btn btn-xs btn-warning pull-right" style="margin: -5px 0 0 0;" ng-click="newCheckinItem(setting.checkin_items)">New</button>
+        </h5>
+        <ul class="list-group">
+          <li class="list-group-item" ng-show="setting.checkin_items.length == 0" style="padding: 3px 10px;">None</li>
+          <li class="list-group-item" ng-repeat="(idx, item) in setting.checkin_items" style="padding: 3px 10px;">
+            {{idx+1}}. {{item}} <a class="fa fa-times pull-right" style="margin-top: 2px;" ng-click="setting.checkin_items.splice(idx,1)"></a>
+          </li>
+        </ul>
 
         <h5><span style="font-size: 18px;">Non-computer options</span>
           <span class="fa fa-info-circle" tooltip-placement="right" uib-tooltip="ie. tablet, console"></span>

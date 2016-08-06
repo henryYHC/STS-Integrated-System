@@ -22,6 +22,16 @@ angular.module('system').service('ModalLauncher', ['$uibModal', '$document',
         resolve: { data: function(){ return { walkin: walkin }; } }
       });
     };
+    
+    this.launchCheckinLiabilityModal = function(displayName){
+      return $uibModal.open({
+        animation: true, size: 'lg', backdrop: 'static',
+        controller: 'DefaultModalController',
+        windowClass: 'fade modal-warning panel-center-modal',
+        templateUrl: 'modules/system/client/views/checkin-liability-modal.client.view.html',
+        resolve: { data: function(){ return { displayName: displayName }; } }
+      });
+    };
 
     // Return a promise
     this.launchDefaultInputModal = function(title, message, placeholder){

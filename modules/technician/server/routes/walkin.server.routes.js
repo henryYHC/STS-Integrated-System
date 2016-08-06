@@ -7,7 +7,7 @@ module.exports = function (app) {
   var walkin = require('../controllers/walkin.server.controller.js');
 
   app.route('/api/technician/walkin/setting')
-    .get(system.setting, walkin.getTechnicianSetting);
+    .get(system.setting, walkin.getWalkinSetting);
 
   app.route('/api/technician/walkin/view/:walkinId')
     .get(walkin.view);

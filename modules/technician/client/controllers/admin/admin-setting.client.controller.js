@@ -44,12 +44,22 @@ angular.module('technician.admin').controller('AdminSettingController', ['$scope
     };
 
     $scope.newOSEdition = function(os_extras){
-      var location = ModalLauncher.launchDefaultInputModal(
+      var os = ModalLauncher.launchDefaultInputModal(
         'New OS edition',
         'Please enter the name of the OS edition you wish to add.',
         'Name of OS edition here');
-      location.result.then(function(response){
+      os.result.then(function(response){
         os_extras.push(response);
+      });
+    };
+
+    $scope.newCheckinItem = function(items){
+      var item = ModalLauncher.launchDefaultInputModal(
+        'New Allowed Check-in Item',
+        'Please enter the name of the allowed check-in item you wish to add.',
+        'Name of check-in item here');
+      item.result.then(function(response){
+        items.push(response);
       });
     };
 
