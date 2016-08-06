@@ -15,5 +15,9 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
           console.log(queues);
         });
     };
+    
+    $scope.loadCheckin = function(checkin) {
+      $scope.selected = checkin;
+    };
   }
 ]);

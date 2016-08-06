@@ -41,7 +41,7 @@
       </div>
     </div>
   </div>
-  <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="height: 80vh;">
+  <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="height: 80vh; padding: 0;">
     <!-- Alert messages -->
     <!--<div class="alert alert-danger alert-dismissible fade in" role="alert">-->
       <!--<button type="button" class="btn btn-xs btn-danger pull-right" style="margin: 0 0 0 0;">Got it !</button>-->
@@ -92,10 +92,10 @@
         <div class="card-body no-padding">
           <div role="tabpanel">
             <ul class="nav nav-tabs" role="tablist">
-              <li role="presentation" class="active"><a href="#current" aria-controls="home" role="tab" data-toggle="tab">Current Ticket</a></li>
-              <li role="presentation" ng-click="loadPrevious()"><a href="#previous" aria-controls="profile" role="tab" data-toggle="tab">Previous Visits</a></li>
+              <li role="presentation" class="active"><a href="#current" role="tab" data-toggle="tab">Current Ticket</a></li>
+              <li role="presentation" ng-click="loadPrevious()"><a href="#previous" role="tab" data-toggle="tab">Previous Visits</a></li>
             </ul>
-            <div class="tab-content" style="max-height: 65vh; overflow: auto;">
+            <div class="tab-content" style="max-height: 70vh; overflow: auto;">
               <div role="tabpanel" id="current" class="tab-pane active col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
                 <div class="dropdown" style="position: absolute; right: 15px; top: 10px; z-index: 999;">
                   <a class="btn btn-sm btn-warning" data-toggle="dropdown" style="margin-top: 0;" role="button" aria-haspopup="true" aria-expanded="false">
@@ -103,12 +103,12 @@
                   </a>
                   <ul class="dropdown-menu" style="text-align: left; left: -100px;">
                     <li class="dropdown-header" style="margin-left: -5px;">Status changes</li>
-                    <li style="margin-left: 5px;"><a href="#" ng-click="transfer()"><span class="fa fa-wrench"></span> Check-in repair</a></li>
-                    <li style="margin-left: 5px;" ng-show="selected.status!=='House call pending'"><a href="#" ng-click="toHouseCall()"><span class="fa fa-home"></span> House call pending</a></li>
-                    <li style="margin-left: 5px;"><a href="#" ng-click="noshow()"><span class="fa fa-frown-o"></span> No show</a></li>
+                    <li style="margin-left: 5px;"><a href="#" ng-click="transfer()"><span class="fa fa-wrench"></span>&nbsp;&nbsp;Check-in repair</a></li>
+                    <li style="margin-left: 5px;" ng-show="selected.status!=='House call pending'"><a href="#" ng-click="toHouseCall()"><span class="fa fa-home"></span>&nbsp;&nbsp;House call pending</a></li>
+                    <li style="margin-left: 5px;"><a href="#" ng-click="noshow()"><span class="fa fa-frown-o"></span>&nbsp;&nbsp;No show</a></li>
                     <li class="dropdown-header" style="margin-left: -5px;">Other functions</li>
-                    <li style="margin-left: 5px;"><a href="#" ng-click="duplicate()"><span class="fa fa-copy"></span> Duplicate ticket</a></li>
-                    <li style="margin-left: 5px;"><a href="#" ng-click="reassign()"><span class="fa fa-unlink"></span> Reassign NetID</a></li>
+                    <li style="margin-left: 5px;"><a href="#" ng-click="duplicate()"><span class="fa fa-copy"></span>&nbsp;&nbsp;Duplicate ticket</a></li>
+                    <li style="margin-left: 5px;"><a href="#" ng-click="reassign()"><span class="fa fa-unlink"></span>&nbsp;&nbsp;Reassign NetID</a></li>
                   </ul>
                 </div>
                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
@@ -121,7 +121,7 @@
                   <div class="form-horizontal">
                     <div class="form-group">
                       <label class="col-lg-4 col-md-4 col-sm-4 control-label">Phone:</label>
-                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 8px;" editable-tel="selected.user.phone" e-pattern="\d{10}">
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 8px;" editable-tel="selected.user.phone" e-pattern="\d{10}" onaftersave="update()">
                         {{ (selected.user.phone)? selected.user.phone.substring(0, 3) + '-' + selected.user.phone.substring(3, 6) + '-' + selected.user.phone.substring(6) : 'N/A'}}
                       </div>
                     </div>
@@ -129,7 +129,7 @@
                   <div class="form-horizontal">
                     <div class="form-group">
                       <label class="col-lg-4 col-md-4 col-sm-4 control-label">Device type:</label>
-                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 8px;"
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 8px;" onaftersave="update()"
                            editable-select="selected.deviceCategory" e-ng-options="c.value as c.text for c in device_categories" onaftersave="selected.deviceInfo=undefined;">
                         {{selected.deviceCategory || 'N/A'}}
                       </div>
@@ -140,13 +140,14 @@
                   <div class="form-horizontal">
                     <div class="form-group">
                       <label class="col-lg-3 col-md-3 col-sm-3 control-label">Name:</label>
-                      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;" editable-text="selected.user.displayName" onaftersave="onDisplayNameChange();">{{selected.user.displayName || 'N/A'}}</div>
+                      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;" editable-text="selected.user.displayName"
+                           onaftersave="onDisplayNameChange();update();"> {{selected.user.displayName || 'N/A'}}</div>
                     </div>
                   </div>
                   <div class="form-horizontal">
                     <div class="form-group">
                       <label class="col-lg-3 col-md-3 col-sm-3 control-label">Location:</label>
-                      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;"
+                      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;" onaftersave="update()"
                            editable-select="selected.user.location" e-ng-options="o.value as o.text for o in location_options">
                         {{selected.user.location || 'N/A'}}
                       </div>
@@ -155,12 +156,12 @@
                   <div class="form-horizontal">
                     <div class="form-group">
                       <label class="col-lg-3 col-md-3 col-sm-3 control-label">Device info:</label>
-                      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;" ng-hide="selected.deviceCategory === 'Other'"
+                      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;" ng-hide="selected.deviceCategory === 'Other'" onaftersave="update()"
                            editable-select="selected.deviceInfo" e-ng-options="o.value as o.text for o in device_options[selected.deviceCategory]">
                         {{ selected.deviceInfo || 'N/A' }}
                       </div>
                       <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;" ng-show="selected.deviceCategory === 'Other'"
-                           editable-text="selected.otherDevice">
+                           onaftersave="update()" editable-text="selected.otherDevice">
                         {{ selected.otherDevice || 'N/A' }}
                       </div>
                     </div>
@@ -181,14 +182,14 @@
                     <div class="form-horizontal">
                       <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label" style="padding-top: 4px;">Problem:</label>
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 	5px;"
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 	5px;" onaftersave="update()"
                              editable-textarea="selected.description" e-rows="2" e-cols="80">{{selected.description || 'N/A'}}</div>
                       </div>
                     </div>
                     <div class="form-horizontal">
                       <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label" style="padding-top: 4px;">Work note:</label>
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 5px;"
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 5px;" onaftersave="update()"
                              editable-textarea="selected.workNote" e-rows="2" e-cols="80">{{selected.workNote || 'None'}}</div>
                       </div>
                     </div>
