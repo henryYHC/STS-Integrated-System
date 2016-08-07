@@ -1,0 +1,69 @@
+[
+	{
+		"name" : "Malware Workflow",
+		"tasks" : [
+			"Rebooted into Safe Mode w/networking and connected ethernet cable", 
+			"Launched Hypo and chose Virus Removal tab", 
+			"Running Tronscript", 
+			"Running manual tools to verify system is clean", 
+			"Ran MalwareBytes", 
+			"Ran Rogue Killer", 
+			"Ran Hitman Pro", 
+			"Ran Adwcleaner", 
+			"Ran McAfee", 
+			"Rebooted into Normal Mode", 
+			"The machine is faster, removing any unwanted programs/extensions", 
+			"Signs still point to malware, running Avast and allow for pre-boot heuristic scan", 
+			"Problems are still evident, need to perform E&I", 
+			"Checking for Windows updates", 
+			"Installing Windows updates", 
+			"Machine is clean and up to date", 
+			"Wiped down machine"
+		]
+	},
+	{
+		"name" : "Erase & Install (Mac)",
+		"tasks" : [
+			"Verified Permission to Reinstall",
+			"Installed from Bain",
+			"Installed from Internet Recovery",
+			"Reinstall complete",
+			"Created STS user account",
+			"Performed updates",
+			"Installed McAfee AV",
+			"Installed Bradford Agent",
+			"Installed Microsoft Office",
+			"Verified that previous issue is resolved",
+			"Rebooted machine into Single User Mode",
+			"Mounted HD using \"/sbin/mount -uw /\"​",
+			"Removed User Folder \"rm -rf /Users/\"",
+			"Removed Preference plist \"rm /var/db/dslocal/nodes/Default/users/sts.plist\"",
+			"Restored Setup using \"rm /var/db/.applesetupdone\" followed by \"reboot\"",
+			"Verified unit asks to create new account",
+			"Wiped down machine"
+		]
+	},
+	{
+	"name" : "Erase & Install (PC)",
+		"tasks" : [
+			"Verified Permission to Reinstall", 
+			"Used Recovery Drive to perform install", 
+			"Recovery Partition non-existant/attempt failed", 
+			"Windows Key recorded", 
+			"Verified Key is non-pirated version", 
+			"Formatted drive", 
+			"Used TheElephant to perform install", 
+			"Used Install Drive to perform install", 
+			"Created user account", 
+			"Activated Windows", 
+			"Performed Updates", 
+			"Uninstalled any preinstalled AV software", 
+			"Installed McAfee AV", 
+			"Installed Bradford Agent", 
+			"Connected to EmoryUnplugged, verified, forgot network", 
+			"Installed latest MS Office", 
+			"Performed MS Office updates", 
+			"Wiped down machine"
+		]
+	}
+]
