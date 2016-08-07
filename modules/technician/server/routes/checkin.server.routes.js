@@ -7,8 +7,11 @@ module.exports = function (app) {
   var walkin = require('../controllers/walkin.server.controller.js');
   var checkin = require('../controllers/checkin.server.controller.js');
 
-  app.route('/api/technician/checkin/setting')
-    .get(system.setting, checkin.getCheckinSetting);
+  app.route('/api/technician/checkin/setting/transfer')
+    .get(system.setting, checkin.getCheckinTransferSetting);
+
+  app.route('/api/technician/checkin/setting/queue')
+    .get(system.setting, checkin.getCheckinQueueSetting);
 
   app.route('/api/technician/checkin/hasTransferred/:walkinId')
     .get(checkin.hasTransferred);
@@ -16,11 +19,17 @@ module.exports = function (app) {
   app.route('/api/technician/checkin/create')
     .post(checkin.create);
 
+  app.route('/api/technician/checkin/update/:checkinId')
+    .put(checkin.update);
+
   app.route('/api/technician/checkin/view/:checkinId')
     .get(checkin.view);
 
   app.route('/api/technician/checkin/queue')
     .get(checkin.queue);
+
+  app.route('/api/technician/checkin/logService/:checkinId')
+    .post(checkin.logService);
 
   app.param('walkinId', walkin.walkinById);
   app.param('checkinId', checkin.checkinById);

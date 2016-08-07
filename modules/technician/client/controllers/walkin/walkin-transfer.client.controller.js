@@ -18,7 +18,7 @@ angular.module('technician').controller('WalkinTransferController', ['$scope', '
             closed.result.then(function(){ $state.go('tech.home'); });
           }
           else {
-            $http.get('/api/technician/checkin/setting')
+            $http.get('/api/technician/checkin/setting/transfer')
               .error(function() { alert('Request failed. Please check console for error.'); })
               .success(function(setting) { $scope.setting = setting; });
 

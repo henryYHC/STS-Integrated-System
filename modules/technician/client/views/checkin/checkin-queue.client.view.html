@@ -89,9 +89,8 @@
         <div class="card-body no-padding">
           <div role="tabpanel">
             <ul class="nav nav-tabs" role="tablist">
-              <li role="presentation"><a href="#customer" role="tab" data-toggle="tab">Customer</a></li>
-              <li role="presentation"><a href="#device" role="tab" data-toggle="tab">Device</a></li>
-              <li role="presentation" class="active"><a href="#task" role="tab" data-toggle="tab">Tasks</a></li>
+              <li role="presentation"><a href="#general" role="tab" data-toggle="tab">General</a></li>
+              <li role="presentation" class="active"><a href="#tasks" role="tab" data-toggle="tab">Tasks</a></li>
               <li role="presentation"><a href="#template" role="tab" data-toggle="tab">Template</a></li>
               <li class="pull-right">
                 <div class="dropdown" style="position: absolute; right: 15px; top: 4px; z-index: 999;">
@@ -109,47 +108,129 @@
                     <li class="dropdown-header" style="margin-left: -5px;">Other functions</li>
                     <li style="margin-left: 5px;"><a href="#"><span class="fa fa-mail-forward"></span>&nbsp;&nbsp;Customized Email</a></li>
                     <li style="margin-left: 5px;"><a href="#"><span class="fa fa-phone"></span>&nbsp;&nbsp;Record Calls</a></li>
+                    <li style="margin-left: 5px;"><a href="#"><span class="fa fa-print"></span>&nbsp;&nbsp;Print Device Label</a></li>
                   </ul>
                 </div>
               </li>
             </ul>
           </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="max-height: 70vh; overflow: auto;">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="max-height: 70vh; overflow: auto;">
             <div class="tab-content" style="max-height: 65vh; overflow: auto;">
-              <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+              <div role="tabpanel" id="general" class="tab-pane col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
+                <div class="sub-title" style="padding:0; margin-bottom: 5px;">Customer information</div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding: 0;">
+                  <div class="form-group">
+                    <label for="username">NetID:</label>
+                    <div id="username">{{selected.user.username}}</div>
+                  </div>
+                  <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <div id="phone">{{selected.user.phone}}</div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding: 0;">
+                  <div class="form-group">
+                    <label for="displayName">Name:</label>
+                    <div id="displayName">{{selected.user.displayName}}</div>
+                  </div>
+                  <div class="form-group">
+                    <label for="location">Location:</label>
+                    <div id="location">{{selected.user.location}}</div>
+                  </div>
+                </div>
+
+                <div class="sub-title" style="padding: 0; margin-bottom: 5px;">Device information</div>
+                <div class="form-group">
+                  <label for="dtype">Device Type:</label>
+                  <div id="dtype">{{selected.walkin.deviceCategory}}</div>
+                </div>
+                <div class="form-group">
+                  <label for="dspecs">Device Specs:</label>
+                  <div id="dspecs">{{selected.deviceManufacturer + ' ' + selected.deviceModel}}</div>
+                </div>
+                <div class="form-group">
+                  <label for="os">OS Specs:</label>
+                  <div id="os"> {{selected.walkin.deviceInfo}}
+                    {{(selected.deviceInfoOS.length > 0)? ' (' + selected.deviceInfoOS.join(', ') + ')' : ''}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="items">Item Received:</label>
+                  <div id="items" onaftersave="updateCheckin();logService('Update list of received items', 'Normal');"
+                    editable-select="selected.itemReceived" e-multiple e-ng-options="item as item for item in setting.checkin_items">
+                    {{selected.itemReceived.join(', ')}}</div>
+                </div>
+              </div>
+
+              <div role="tabpanel" id="tasks" class="tab-pane active col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
+                <div class="sub-title" style="padding:0; margin-bottom: 5px;">Task specifications</div>
+                <div class="form-group">
+                  <label for="reformat">Reformat Allowed:</label>
+                  <div id="reformat" style="text-align: justify"><b style="color: red">{{selected.reformatConsent? 'YES' : 'NO'}}</b></div>
+                </div>
+                <div class="form-group">
+                  <label for="preDiag">Preliminary Diagnostics:</label>
+                  <p id="preDiag" style="text-align: justify">{{selected.preDiagnostic}}</p>
+                </div>
+                <div class="form-group">
+                  <label for="sugAct">Suggested Actions:</label>
+                  <p id="sugAct" style="text-align: justify">{{selected.suggestedAction}}</p>
+                </div>
+              </div>
+
+              <div role="tabpanel" id="template" class="tab-pane col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:10px; padding: 0;">
+                <div class="sub-title" style="padding:0; margin-bottom: 5px;">Template selection</div>
+                <div class="row" style="margin: 10px 0 20px 0; text-align: left;">
+                  <select id="templates" style="width: 100%" ng-model="templateViewing">
+                    <option value="N/A">N/A</option>
+                    <option ng-repeat="template in setting.templates" value="{{template.name}}">{{template.name}}</option>
+                  </select>
+                </div>
+                <div ng-show="setting.templateTasks && setting.templateTasks.length > 0">
+                  <div class="sub-title" style="padding: 0; border-bottom: 0; margin: 10px 0 0 0;">
+                    Template tasks
+                    <span class="pull-right" ng-show="selected.templateApplied!==templateViewing">
+                      <button class="btn btn-xs btn-warning" style="margin: -4px 5px 0 0;"
+                        ng-click="applyTemplate()">Apply</button>
+                    </span>
+                  </div>
+                  <table class="table table-hover" style="margin: 2px 0 0 0;">
+                    <tbody>
+                    <tr ng-repeat="task in setting.templateTasks">
+                      <td>{{task}}</td>
+                      <td style="width: 20px;"><i class="fa fa-plus" ng-show="showTemplateImport(task)"
+                        ng-click="logService(task, 'Normal')"></i></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" style="max-height: 70vh; overflow: auto;">
+          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="max-height: 70vh; overflow: auto;">
             <div class="sub-title" style="margin-bottom: 0; border-bottom: 0;">
                 &nbsp;<i class="fa fa-book"></i>&nbsp;&nbsp;Service records
-                <span class="label label-primary pull-right" style="margin: 2px 6px 0 0;">Template applied</span>
+                <span class="label label-primary pull-right" ng-show="selected.templateApplied && selected.templateApplied !== 'N/A'"
+                  style="margin: 2px 6px 0 0;">Template applied</span>
             </div>
 
             <div class="row" style="height: 55vh; overflow: auto; margin-bottom: 60px;">
               <table class="table table-hover" style="margin-left: 2em; margin-bottom: 0px; width: 90%;">
                 <tbody>
-                  <tr>
-                    <th style="width: 20px;"><i class="fa fa-exclamation-circle"
-                      tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Important"></i></th>
-                    <td editable-text="">World! World! World! World!</td>
-                    <td style="width: 100px;"><i class="fa fa-user"></i> 12/34 56:78</td>
-                    <td style="width: 20px;"><i class="fa fa-times"
-                      tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Remove"></i></td>
-                  </tr>
-                  <tr>
-                    <th style="width: 20px;"><i class="fa fa-comment"
-                      tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Note"></i></th>
-                    <td editable-text="">World! World! World! World!</td>
-                    <td style="width: 100px;"><i class="fa fa-user"></i> 12/34 56:78</td>
-                    <td style="width: 20px;"><i class="fa fa-times"
-                      tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Remove"></i></td>
-                  </tr>
-                  <tr>
-                    <th style="width: 20px;"></th>
-                    <td editable-text="">World! World! World! World!</td>
-                    <td style="width: 100px;"><i class="fa fa-user"></i> 12/34 56:78</td>
-                    <td style="width: 20px;"><i class="fa fa-times"
-                      tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Remove"></i></td>
+                  <tr ng-repeat="log in selected.serviceLog">
+                    <th style="width: 20px;">
+                      <i class="fa fa-exclamation-circle" ng-show="log.type==='Important'"
+                         tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Important"></i>
+                      <i class="fa fa-comment" ng-show="log.type==='Note'"
+                         tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Note"></i>
+                    </th>
+                    <td editable-text="log.description" ng-style="getLogStyle(log.type)" onaftersave="updateLog(log)"
+                        edit-disabled="disableEditing(log.createdBy.username, log.createdAt)">{{log.description}}</td>
+                    <td style="width: 120px;"><i class="fa fa-user" tooltip-placement="top" tooltip-append-to-body="true"
+                      uib-tooltip="{{log.createdBy.displayName}}"></i> {{log.createdAt | date : 'M/d h:mma'}}</td>
+                    <td style="width: 20px;"><i class="fa fa-times" ng-show="showRemoval(log.createdBy.username, log.createdAt)"
+                      ng-click="removeLog(log)" tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Remove"></i></td>
                   </tr>
                 </tbody>
               </table>
@@ -157,17 +238,22 @@
 
             <form class="row" style="position: absolute; bottom: 10px; width: 100%;">
               <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="margin-bottom: 0px;">
-                <input type="text" class="form-control" placeholder="Text input">
+                <input type="text" class="form-control" ng-model="record">
               </div>
               <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="margin-bottom: 0px; padding: 0;">
                 <div class="btn-group dropup" uib-dropdown>
-                  <button type="submit" class="btn btn-sm btn-primary" style="margin: 2px 0 2px 0;">Log</button>
+                  <button type="submit" class="btn btn-sm btn-primary" style="margin: 2px 0 2px 0;"
+                    ng-click="logService(record, 'Normal')">Log</button>
                   <button class="btn btn-sm btn-primary" style="margin: 2px 0 2px 0;" uib-dropdown-toggle>
                     <span class="fa fa-caret-up"></span>
                   </button>
                   <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="left: -100px;">
-                    <li><a href="#"><i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Important</a></li>
-                    <li><a href="#"><i class="fa fa-comment"></i>&nbsp;&nbsp;Note</a></li>
+                    <li ng-click="logService(record, 'Important')">
+                      <a href="#"><i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Important</a>
+                    </li>
+                    <li ng-click="logService(record, 'Note')">
+                      <a href="#"><i class="fa fa-comment"></i>&nbsp;&nbsp;Note</a>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -178,3 +264,10 @@
     </div>
   </div>
 </section>
+
+<!-- Toggle Select2 select box -->
+<script type="text/javascript">
+  $(document).ready(function(){ $('select').select2(
+    { minimumResultsForSearch: Infinity }
+  ); });
+</script>
