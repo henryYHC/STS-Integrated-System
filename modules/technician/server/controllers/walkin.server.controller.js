@@ -146,7 +146,7 @@ exports.unresolved = function(req, res) {
 
 exports.today = function(req, res) {
   var today = new Date(Date.now()); today.setHours(0);
-  Walkin.find({ isActive : true, liabilityAgreement : true, created : { $gte : today } })
+  Walkin.find({ isActive : true, liabilityAgreement : true, $or : [ { created : { $gte : today } }, { resolutionTime : { $gte : today } }] })
     .select('_id user deviceCategory deviceInfo status resolutionType created resolutionTime')
     .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
     .sort('created').exec(function(err, walkins) {
@@ -160,7 +160,8 @@ exports.today = function(req, res) {
 
 exports.month = function(req, res) {
   var currentMonth = new Date(Date.now()); currentMonth.setDate(1); currentMonth.setHours(0);
-  Walkin.find({ isActive : true, liabilityAgreement : true, created : { $gte : currentMonth } })
+  Walkin.find({ isActive : true, liabilityAgreement : true,
+    $or : [{ created : { $gte : currentMonth } }, { resolutionTime : { $gte : currentMonth } }] })
     .select('_id user deviceCategory deviceInfo status resolutionType created resolutionTime')
     .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
     .sort('created').exec(function(err, walkins) {

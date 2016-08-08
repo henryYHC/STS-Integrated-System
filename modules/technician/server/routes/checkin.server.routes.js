@@ -22,6 +22,12 @@ module.exports = function (app) {
   app.route('/api/technician/checkin/update/:checkinId')
     .put(checkin.update);
 
+  app.route('/api/technician/checkin/changeStatus/:checkinId')
+    .put(checkin.changeStatus);
+
+  app.route('/api/technician/checkin/checkout/:checkinId')
+    .put(checkin.checkout);
+
   app.route('/api/technician/checkin/view/:checkinId')
     .get(checkin.view);
 
@@ -30,6 +36,15 @@ module.exports = function (app) {
 
   app.route('/api/technician/checkin/logService/:checkinId')
     .post(checkin.logService);
+
+  app.route('/api/technician/checkin/query/month')
+    .get(checkin.month);
+
+  app.route('/api/technician/checkin/query/incomplete')
+    .get(checkin.incomplete);
+
+  app.route('/api/technician/checkin/query')
+    .post(checkin.query);
 
   app.param('walkinId', walkin.walkinById);
   app.param('checkinId', checkin.checkinById);

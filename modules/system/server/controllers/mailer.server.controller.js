@@ -155,3 +155,31 @@ exports.sendSurvey = function(type, email, name, callback){
     }
   });
 };
+
+// REST functions
+exports.send = function(req, res) {
+  var content = req.body;
+
+  jsonfile.readFile(exports.TEMPLATE.DEFAULT, function(err, template){
+    if(err || !template){
+      console.error(err);
+      return res.sendStatus(500);
+    }
+    else{
+      template.to = content.email; template.subject = content.subject;
+      template.text = template.text.replace('<NAME>', content.name);
+      template.html = template.html.replace('<NAME>', content.name);
+      template.text = template.text.replace('<BODY>', content.body);
+      template.html = template.html.replace('<BODY>', content.body);
+
+      template.html = template.html.replace(/\n/g, '<br>');
+      exports.transporter.sendMail(template, function(err, info){
+        if(err || !info) {
+          console.error(err);
+          return res.sendStatus(500);
+        }
+        else res.sendStatus(200);
+      });
+    }
+  });
+};

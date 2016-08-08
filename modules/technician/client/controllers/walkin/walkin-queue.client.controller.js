@@ -106,7 +106,7 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
     $scope.toHouseCall = function() {
       var walkin = $scope.selected;
       if(!walkin.workNote){
-        ModalLauncher.launchDefaultMessageModal('Action Failed: Missing Work Note',
+        ModalLauncher.launchDefaultWarningModal('Action Failed: Missing Work Note',
           'Please input customer availability for housecall appointment as work note.');
         return false;
       }
@@ -161,13 +161,13 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
         'Enter customer\'s NetID here.' 
       );
       modal.result.then(function(netid) {
-        if(!netid) ModalLauncher.launchDefaultMessageModal(
+        if(!netid) ModalLauncher.launchDefaultWarningModal(
           'Action Failed: Missing NetID', 'Please input customer NetID for reassignment.');
         else {
           $http.post('/api/technician/walkin/reassign/'+$scope.selected._id+'/'+netid)
             .error(function(message) {
               if(!message) alert('Request failed. Please view console for error.');
-              else ModalLauncher.launchDefaultMessageModal('Action Failed: User Error', message);
+              else ModalLauncher.launchDefaultWarningModal('Action Failed: User Error', message);
             })
             .success(function(walkin) {
               var idx = $scope.walkins.indexOf($scope.selected);

@@ -12,7 +12,7 @@ var fs = require('fs'),
 
 var popOpt = [
   { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified isWildcard' },
-  { path : 'walkin', model : 'Walkin', select : 'description resoluteTechnician deviceCategory deviceInfo otherDevice' },
+  { path : 'walkin', model : 'Walkin', select : 'description resoluteTechnician deviceCategory deviceInfo otherDevice resolutionTime' },
   { path : 'serviceLog', model : 'ServiceEntry', select : 'type description createdBy createdAt' },
   { path : 'completionTechnician', model : 'User', select : 'username displayName' },
   { path : 'verificationTechnician', model : 'User', select : 'username displayName' },
@@ -102,6 +102,46 @@ exports.update = function(req, res) {
   });
 };
 
+exports.changeStatus = function(req, res) {
+  var checkin = req.checkin, status = req.body.status;
+  var user = req.user, change = { status : status };
+  
+  switch (status) {
+    case 'Work in progress': case 'User action pending':
+      break;
+    case 'Verification pending':
+      change.completionTechnician = user;
+      change.completionTime = Date.now();
+      break;
+    case 'Checkout pending':
+      change.verificationTechnician = user;
+      change.verificationTime = Date.now();
+      break;
+    default:
+      return res.status(500).send('Invalid status.');
+  }
+
+  checkin = _.extend(checkin, change);
+  checkin.save(function(err, checkin) {
+    if(err) { console.error(err); return res.sendStatus(500); }
+    else res.json(checkin);
+  });
+};
+
+exports.checkout = function(req, res) {
+  var checkin = req.checkin;
+
+  checkin = _.extend(checkin, {
+    status : 'Completed',
+    checkoutTime : Date.now(),
+    checkoutTechnician : req.user
+  });
+  checkin.save(function(err, checkin) {
+    if(err) { console.error(err); return res.sendStatus(500); }
+    else res.json(checkin);
+  });
+};
+
 exports.queue = function(req, res) {
   var working = [], pending = [];
 
@@ -124,7 +164,8 @@ exports.queue = function(req, res) {
     else {
       for (var i in checkins) {
         switch (checkins[i].status) {
-          case 'Work in progress': working.push(checkins[i]); break;
+          case 'Work in progress': case 'Verification pending':
+            working.push(checkins[i]); break;
           default: pending.push(checkins[i]);
         }
       }
@@ -147,6 +188,72 @@ exports.logService = function(req, res) {
       });
     }
   });
+};
+
+/*----- Instance queries -----*/
+exports.query = function(req, res) {
+  var query = req.body;
+  console.log(query);
+
+  if(query.username || query.displayName) {
+    User.find(query).select('_id').exec(function(err, ids) {
+      if(err) {
+        console.error(err);
+        return res.sendStatus(500);
+      }
+
+      ids = ids.map(function(obj){ return obj._id; });
+      Checkin.find({ user : { $in : ids } })
+        .select('_id user deviceManufacturer deviceModel status created completionTime checkoutTime')
+        .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
+        .sort('created').exec(function(err, checkins) {
+        if(err) {
+          console.error(err);
+          return res.sendStatus(500);
+        }
+        else res.json(checkins);
+      });
+    });
+  }
+  else {
+    Checkin.find(query)
+      .select('_id user deviceManufacturer deviceModel status created completionTime checkoutTime')
+      .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
+      .sort('created').exec(function(err, checkins) {
+      if(err) {
+        console.error(err);
+        return res.sendStatus(500);
+      }
+      else res.json(checkins);
+    });
+  }
+};
+
+exports.incomplete = function(req, res) {
+  Checkin.find({ isActive : true, status : { $ne : 'Completed' } })
+    .select('_id user deviceManufacturer deviceModel status created completionTime checkoutTime')
+    .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
+    .sort('created').exec(function(err, checkins) {
+      if(err) {
+        console.error(err);
+        return res.sendStatus(500);
+      }
+      else res.json(checkins);
+    });
+};
+
+exports.month = function(req, res) {
+  var currentMonth = new Date(Date.now()); currentMonth.setDate(1); currentMonth.setHours(0);
+  Checkin.find({ isActive : true })
+    .select('_id user deviceManufacturer deviceModel status created completionTime checkoutTime')
+    .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
+    .sort('created').exec(function(err, checkins) {
+      if(err) {
+        console.error(err);
+        return res.sendStatus(500);
+      }
+      else res.json(checkins);
+    });
 };
 
 /*----- Instance middlewares -----*/

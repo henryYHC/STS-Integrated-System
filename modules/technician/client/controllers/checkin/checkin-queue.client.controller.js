@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('technician').controller('CheckinQueueController', ['$scope', '$http', 'Authentication', 'ModalLauncher', '$timeout', '$state',
-  function ($scope, $http, Authentication, ModalLauncher, $timeout, $state) {
+angular.module('technician').controller('CheckinQueueController', ['$scope', '$http', 'Authentication', 'ModalLauncher', '$timeout', 'EmailLauncher',
+  function ($scope, $http, Authentication, ModalLauncher, $timeout, EmailLauncher) {
     var user = Authentication.getUser();
 
     /*----- Load instance functions -----*/
@@ -24,10 +24,11 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
     };
     
     $scope.loadCheckin = function(checkin) {
-      $scope.selected = checkin;
-
       if(!checkin.templateApplied) $scope.templateViewing = 'N/A';
       else $scope.templateViewing = checkin.templateApplied;
+      $scope.updateTemplateTasks();
+
+      $scope.selected = checkin;
     };
 
     $scope.updateCheckin = function(callback) {
@@ -35,6 +36,56 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
       $http.put('/api/technician/checkin/update/'+checkin._id, checkin)
         .error(function() { alert('Request failed. Please check console for error.'); })
         .success(function(checkin){ if(callback) callback(checkin); });
+    };
+
+    /*----- Instance status change functions -----*/
+    $scope.changeStatus = function(toStatus) {
+      var checkin = $scope.selected;
+      $http.put('/api/technician/checkin/changeStatus/'+checkin._id, { status : toStatus })
+        .error(function() { alert('Request failed. Please check console for error.'); })
+        .success(function(updated){
+          $scope.logService('Status changed to ' + toStatus, 'Note');
+
+          var idx;
+          if((checkin.status === 'Work in progress' || checkin.status === 'Verification pending')){
+            idx = $scope.queues.working.indexOf(checkin);
+
+            if((toStatus === 'User action pending' || toStatus === 'Checkout pending')) {
+              $scope.queues.working.splice(idx, 1);
+              $scope.queues.pending.push(updated);
+            }
+            else $scope.queues.working[idx] = updated;
+          }
+          else if((checkin.status === 'User action pending' || checkin.status === 'Checkout pending')){
+            idx = $scope.queues.pending.indexOf(checkin);
+
+            if(toStatus === 'Work in progress' || toStatus === 'Verification pending'){
+              $scope.queues.pending.splice(idx, 1);
+              $scope.queues.working.push(updated);
+            }
+            else $scope.queues.pending[idx] = updated;
+          }
+          $scope.selected = updated;
+        });
+    };
+    
+    $scope.checkout = function() {
+      var checkin = $scope.selected;
+      if(checkin.status === 'Checkout pending'){
+        $http.put('/api/technician/checkin/checkout/'+checkin._id)
+          .error(function() { alert('Request failed. Please check console for error.'); })
+          .success(function() {
+            var idx = $scope.queues.pending.indexOf(checkin);
+            $scope.queues.pending.splice(idx, 1);
+            $scope.selected = undefined;
+          });
+      }
+    };
+
+    /*----- Instance other functions -----*/
+    $scope.sendEmail = function() {
+      var user = $scope.selected.user;
+      EmailLauncher.launchEmailModalWithRecipient(user.username+'@emory.edu', user.displayName);
     };
 
     /*----- Instance service log functions -----*/
@@ -101,14 +152,22 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
     
     /*----- Watchers -----*/
     // Watch if template selected changed
-    $scope.$watch('templateViewing', function(n) {
-      if(n && n !== 'N/A') {
+    $scope.updateTemplateTasks = function() {
+      var name = $scope.templateViewing;
+
+      if(name && name !== 'N/A'){
         var templates = $scope.setting.templates;
         for(var i in templates)
-          if(templates[i].name === n)
+          if(templates[i].name === name)
             $scope.setting.templateTasks = templates[i].tasks;
       }
-      else if (n && n === 'N/A') delete $scope.setting.templateTasks;
-    });
+      else if (name && name === 'N/A') delete $scope.setting.templateTasks;
+
+      // Force refresh select2 selection box (Work around)
+      $timeout(function(){
+        angular.element('#templates').select2({ minimumResultsForSearch: Infinity });
+      }, 10);
+    };
+
   }
 ]);

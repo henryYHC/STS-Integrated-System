@@ -15,11 +15,17 @@
           </div>
           <table class="table table-hover" style="margin-bottom: 0px;" ng-show="queues.working && queues.working.length > 0">
             <thead><tr>
-              <th>CI #</th><th>Customer Name</th>
+              <th>CI #</th><th></th><th>Customer Name</th>
             </tr></thead>
             <tbody>
-            <tr ng-repeat="checkin in queues.working" ng-click="loadCheckin(checkin);">
-              <th scope="row">&nbsp;{{ checkin._id }}</th>
+            <tr ng-repeat="checkin in queues.working | orderBy:'created'" ng-click="loadCheckin(checkin);">
+              <th scope="row" style="width: 55px;">&nbsp;{{ checkin._id }}</th>
+              <td style="width: 20px;">
+                <i class="fa fa-wrench" tooltip-placement="top" tooltip-append-to-body="true"
+                   uib-tooltip="Work in progress" ng-show="checkin.status==='Work in progress'"></i>
+                <i class="fa fa-eye" tooltip-placement="top" tooltip-append-to-body="true"
+                   uib-tooltip="Verification pending" ng-show="checkin.status==='Verification pending'"></i>
+              </td>
               <td>{{ checkin.user.displayName }}
               <span class="fa fa-clock-o pull-right" tooltip-placement="left" tooltip-append-to-body="true"
                     uib-tooltip="{{ (checkin.created | date: 'short') || 'N/A' }}"></span>
@@ -47,11 +53,17 @@
           </div>
           <table class="table table-hover" style="margin-bottom: 0px;" ng-show="queues.pending && queues.pending.length > 0">
             <thead><tr>
-              <th>CI #</th><th>Customer Name</th>
+              <th>CI #</th><th></th><th>Customer Name</th>
             </tr></thead>
             <tbody>
-            <tr ng-repeat="checkin in queues.pending" ng-click="loadCheckin(checkin);">
-              <th scope="row">&nbsp;{{ checkin._id }}</th>
+            <tr ng-repeat="checkin in queues.pending | orderBy:'created'" ng-click="loadCheckin(checkin);">
+              <th scope="row" style="width: 55px;">&nbsp;{{ checkin._id }}</th>
+              <td style="width: 20px;">
+                <i class="fa fa-hourglass-start" tooltip-placement="top" tooltip-append-to-body="true"
+                   uib-tooltip="User action pending" ng-show="checkin.status==='User action pending'"></i>
+                <i class="fa fa-check" tooltip-placement="top" tooltip-append-to-body="true"
+                   uib-tooltip="Checkout pending" ng-show="checkin.status==='Checkout pending'"></i>
+              </td>
               <td>{{ checkin.user.displayName }}
                 <span class="fa fa-clock-o pull-right" tooltip-placement="left" tooltip-append-to-body="true"
                       uib-tooltip="{{ (checkin.created | date: 'short') || 'N/A' }}"></span>
@@ -100,14 +112,18 @@
                   <ul class="dropdown-menu" style="text-align: left; left: -100px;">
                     <li class="dropdown-header" style="margin-left: -5px;">Status changes</li>
                     <li style="margin-left: 5px;" ng-show="selected.status==='User action pending' || selected.status==='Verification pending'">
-                      <a href="#"><span class="fa fa-wrench"></span>&nbsp;&nbsp;Work in progress</a></li>
-                    <li style="margin-left: 5px;" ng-hide="selected.status==='Checkout pending'"><a href="#"><span class="fa fa-user"></span>&nbsp;&nbsp;Customer pending</a></li>
-                    <li style="margin-left: 5px;" ng-show="selected.status==='Work in progress'"><a href="#"><span class="fa fa-eye"></span>&nbsp;&nbsp;Verification ready</a></li>
-                    <li style="margin-left: 5px;" ng-show="selected.status==='Verification pending'"><a href="#"><span class="fa fa-thumbs-o-up"></span>&nbsp;&nbsp;Pickup ready</a></li>
-                    <li style="margin-left: 5px;" ng-show="selected.status==='Checkout pending'"><a href="#"><span class="fa fa-sign-out"></span>&nbsp;&nbsp;Checkout</a></li>
+                      <a href="#" ng-click="changeStatus('Work in progress')"><span class="fa fa-wrench"></span>&nbsp;&nbsp;Work in progress</a></li>
+                    <li style="margin-left: 5px;" ng-show="selected.status==='Work in progress'">
+                      <a href="#" ng-click="changeStatus('User action pending')"><span class="fa fa-user"></span>&nbsp;&nbsp;Customer pending</a></li>
+                    <li style="margin-left: 5px;" ng-show="selected.status==='Work in progress'">
+                      <a href="#" ng-click="changeStatus('Verification pending')"><span class="fa fa-eye"></span>&nbsp;&nbsp;Verification ready</a></li>
+                    <li style="margin-left: 5px;" ng-show="selected.status==='Verification pending'">
+                      <a href="#" ng-click="changeStatus('Checkout pending')"><span class="fa fa-thumbs-o-up"></span>&nbsp;&nbsp;Checkout ready</a></li>
+                    <li style="margin-left: 5px;" ng-show="selected.status==='Checkout pending'">
+                      <a href="#" ng-click="checkout()"><span class="fa fa-sign-out"></span>&nbsp;&nbsp;Checkout</a></li>
                     <li class="dropdown-header" style="margin-left: -5px;">Other functions</li>
-                    <li style="margin-left: 5px;"><a href="#"><span class="fa fa-mail-forward"></span>&nbsp;&nbsp;Customized Email</a></li>
                     <li style="margin-left: 5px;"><a href="#"><span class="fa fa-phone"></span>&nbsp;&nbsp;Record Calls</a></li>
+                    <li style="margin-left: 5px;"><a href="#" ng-click="sendEmail()"><span class="fa fa-mail-forward"></span>&nbsp;&nbsp;Customized Email</a></li>
                     <li style="margin-left: 5px;"><a href="#"><span class="fa fa-print"></span>&nbsp;&nbsp;Print Device Label</a></li>
                   </ul>
                 </div>
@@ -182,7 +198,7 @@
               <div role="tabpanel" id="template" class="tab-pane col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:10px; padding: 0;">
                 <div class="sub-title" style="padding:0; margin-bottom: 5px;">Template selection</div>
                 <div class="row" style="margin: 10px 0 20px 0; text-align: left;">
-                  <select id="templates" style="width: 100%" ng-model="templateViewing">
+                  <select id="templates" style="width: 100%" ng-model="templateViewing" ng-change="updateTemplateTasks()">
                     <option value="N/A">N/A</option>
                     <option ng-repeat="template in setting.templates" value="{{template.name}}">{{template.name}}</option>
                   </select>
@@ -216,7 +232,9 @@
             </div>
 
             <div class="row" style="height: 55vh; overflow: auto; margin-bottom: 60px;">
-              <table class="table table-hover" style="margin-left: 2em; margin-bottom: 0px; width: 90%;">
+              <span style="margin-left: 2em;" ng-hide="selected && selected.serviceLog && selected.serviceLog.length > 0">None</span>
+              <table class="table table-hover" style="margin-left: 2em; margin-bottom: 0px; width: 90%;"
+                     ng-show="selected && selected.serviceLog && selected.serviceLog.length > 0">
                 <tbody>
                   <tr ng-repeat="log in selected.serviceLog">
                     <th style="width: 20px;">
@@ -267,7 +285,7 @@
 
 <!-- Toggle Select2 select box -->
 <script type="text/javascript">
-  $(document).ready(function(){ $('select').select2(
-    { minimumResultsForSearch: Infinity }
-  ); });
+  $(document).ready(function(){
+    $('select').select2({ minimumResultsForSearch: Infinity });
+  });
 </script>

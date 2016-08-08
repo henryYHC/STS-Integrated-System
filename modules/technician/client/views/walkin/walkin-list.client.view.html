@@ -60,7 +60,7 @@
         <td>{{walkin.status}}</td>
         <td>{{walkin.resolutionType || 'N/A'}}</td>
         <td>{{walkin.created | date : 'short'}}</td>
-        <td>{{walkin.resolutionTime | date : 'short'}}</td>
+        <td>{{(walkin.resolutionTime | date : 'short') || 'N/A'}}</td>
       </tr></tbody>
     </table>
   </div>
@@ -69,7 +69,7 @@
 
 <!-- Toggle Select2 select box -->
 <script type="text/javascript">
-  $(document).ready(function(){ $('select').select2(
-    { minimumResultsForSearch: Infinity }
-  ); });
+  $(document).ready(function(){
+    $('select').select2({ minimumResultsForSearch: Infinity } );
+  });
 </script>

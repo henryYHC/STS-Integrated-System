@@ -15,5 +15,6 @@ angular.module('system').controller('DefaultModalController', ['$scope', '$uibMo
     $scope.submit = function(){
       $uibModalInstance.close($scope.input);
     };
+
   }
 ]);

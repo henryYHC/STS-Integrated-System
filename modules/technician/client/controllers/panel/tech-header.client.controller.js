@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('technician').controller('TechHeaderController', ['$scope', '$state', '$http', 'Authentication',
-  function ($scope, $state, $http, Authentication) {
+angular.module('technician').controller('TechHeaderController', ['$scope', '$state', '$http', 'Authentication', 'EmailLauncher',
+  function ($scope, $state, $http, Authentication, EmailLauncher) {
     // Expose view variables
     if(Authentication.hasTechnicianPerm()) {
       $scope.$state = $state; $scope.user = Authentication.getUser();
@@ -11,6 +11,10 @@ angular.module('technician').controller('TechHeaderController', ['$scope', '$sta
         $scope.breadcrumb = toState.data.breadcrumb;
       });
     }
+
+    $scope.sendEmail = function() {
+      EmailLauncher.launchGeneralEmailModal();
+    };
 
     // Logout
     $scope.logout = function() {

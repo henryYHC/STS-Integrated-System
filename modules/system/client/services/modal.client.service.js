@@ -1,13 +1,23 @@
 'use strict';
 
-angular.module('system').service('ModalLauncher', ['$uibModal', '$document',
-  function($uibModal, $document){
+angular.module('system').service('ModalLauncher', ['$uibModal',
+  function($uibModal){
 
     this.launchDefaultMessageModal = function(title, message){
       return $uibModal.open({
         animation: true, size: 'md', backdrop: 'static',
         controller: 'DefaultModalController',
         windowClass: 'fade modal-info panel-center-modal',
+        templateUrl: 'modules/system/client/views/default-message-modal.client.view.html',
+        resolve: { data: function(){ return { title: title, message: message }; } }
+      });
+    };
+
+    this.launchDefaultWarningModal = function(title, message){
+      return $uibModal.open({
+        animation: true, size: 'md', backdrop: 'static',
+        controller: 'DefaultModalController',
+        windowClass: 'fade modal-danger panel-center-modal',
         templateUrl: 'modules/system/client/views/default-message-modal.client.view.html',
         resolve: { data: function(){ return { title: title, message: message }; } }
       });
@@ -28,8 +38,18 @@ angular.module('system').service('ModalLauncher', ['$uibModal', '$document',
         animation: true, size: 'lg', backdrop: 'static',
         controller: 'DefaultModalController',
         windowClass: 'fade modal-warning panel-center-modal',
-        templateUrl: 'modules/system/client/views/checkin-liability-modal.client.view.html',
+        templateUrl: 'modules/technician/client/views/checkin/checkin-liability-modal.client.view.html',
         resolve: { data: function(){ return { displayName: displayName }; } }
+      });
+    };
+
+    this.launchCheckinViewModal = function(checkin){
+      $uibModal.open({
+        animation: true, size: 'lg', backdrop: 'static',
+        controller: 'DefaultModalController',
+        windowClass: 'fade modal-primary panel-center-modal',
+        templateUrl: 'modules/technician/client/views/checkin/checkin-view-modal.client.view.html',
+        resolve: { data: function(){ return { checkin : checkin }; } }
       });
     };
 
