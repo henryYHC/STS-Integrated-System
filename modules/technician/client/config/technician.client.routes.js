@@ -20,11 +20,6 @@ angular.module('technician').config(['$stateProvider', '$urlRouterProvider',
         templateUrl: 'modules/technician/client/views/panel/home.client.view.html',
         data: { breadcrumb : 'Dashboard' }
       })
-      .state('tech.password', {
-        url: '/password',
-        templateUrl: 'modules/technician/client/views/technician/tech-change-pwd.client.view.html',
-        data: { breadcrumb : 'Change Password' }
-      })
       // Walk-in
       .state('tech.walkin', {
         abstract: true, url: '/walkin', template: '<ui-view>'
@@ -57,6 +52,20 @@ angular.module('technician').config(['$stateProvider', '$urlRouterProvider',
         url: '/list',
         templateUrl: 'modules/technician/client/views/checkin/checkin-list.client.view.html',
         data: { breadcrumb : 'Check-ins: Previous Repairs' }
+      })
+      // User
+      .state('tech.user', {
+        abstract: true, url: '/user', template: '<ui-view>'
+      })
+      .state('tech.user.password', {
+        url: '/password',
+        templateUrl: 'modules/technician/client/views/user/user-change-pwd.client.view.html',
+        data: { breadcrumb : 'Change Password' }
+      })
+      .state('tech.user.list', {
+        url: '/list',
+        templateUrl: 'modules/technician/client/views/user/user-list.client.view.html',
+        data: { breadcrumb : 'Search Users' }
       });
 
     $urlRouterProvider.when('/tech', '/tech/home');

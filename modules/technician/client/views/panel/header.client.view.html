@@ -38,7 +38,7 @@
               <div class="profile-info">
                 <h4 class="username">{{user.displayName}}</h4>
                 <div class="btn-group margin-bottom-2x" role="group">
-                  <button type="button" class="btn btn-default" ui-sref="tech.password"><i class="fa fa-key"></i> Password</button>
+                  <button type="button" class="btn btn-default" ui-sref="tech.user.password"><i class="fa fa-key"></i> Password</button>
                   <button type="button" class="btn btn-default" ng-click="logout();"><i class="fa fa-sign-out"></i> Logout</button>
                 </div>
               </div>
@@ -103,7 +103,7 @@
           </li>
 
           <li>
-            <a href="#">
+            <a href="#" ui-sref="tech.user.list">
               <span class="icon fa fa-user"></span><span class="title">Search User</span>
             </a>
           </li>

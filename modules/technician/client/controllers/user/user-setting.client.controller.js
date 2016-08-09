@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('technician').controller('TechnicianSettingController', ['$scope', '$http',
+angular.module('technician').controller('UserSettingController', ['$scope', '$http',
   function ($scope, $http) {
     // Expose view variables
     $scope.password = {};

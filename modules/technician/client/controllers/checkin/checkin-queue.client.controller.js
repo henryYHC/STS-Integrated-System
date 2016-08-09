@@ -3,6 +3,7 @@
 angular.module('technician').controller('CheckinQueueController', ['$scope', '$http', 'Authentication', 'ModalLauncher', '$timeout', 'EmailLauncher',
   function ($scope, $http, Authentication, ModalLauncher, $timeout, EmailLauncher) {
     var user = Authentication.getUser();
+    $scope.technician = { username : user.username };
 
     /*----- Load instance functions -----*/
     $scope.init = function() {
@@ -22,7 +23,7 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
             $scope.loadCheckin(queues.working[0]);
         });
     };
-    
+
     $scope.loadCheckin = function(checkin) {
       if(!checkin.templateApplied) $scope.templateViewing = 'N/A';
       else $scope.templateViewing = checkin.templateApplied;
@@ -68,7 +69,7 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
           $scope.selected = updated;
         });
     };
-    
+
     $scope.checkout = function() {
       var checkin = $scope.selected;
       if(checkin.status === 'Checkout pending'){
@@ -98,19 +99,20 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
           .success(function(entry) { $scope.selected.serviceLog.push(entry); $scope.record = undefined; });
       }
     };
-    
+
     $scope.updateLog = function(log) {
       $http.put('/api/technician/service-entry/update', log)
         .error(function() { alert('Request failed. Please check console for error.'); });
     };
-    
-    $scope.removeLog = function(log) {
-      var idx = $scope.selected.serviceLog.indexOf(log);
-      if(idx >= 0) $scope.selected.serviceLog.splice(idx, 1);
 
+    $scope.removeLog = function(log) {
       $scope.updateCheckin(function(){
         $http.delete('/api/technician/service-entry/update', log)
-          .error(function() { alert('Request failed. Please check console for error.'); });
+          .error(function() { alert('Request failed. Please check console for error.'); })
+          .success(function() {
+            var idx = $scope.selected.serviceLog.indexOf(log);
+            if(idx >= 0) $scope.selected.serviceLog.splice(idx, 1);
+          });
       });
     };
 
@@ -149,7 +151,7 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
       }
       return true;
     };
-    
+
     /*----- Watchers -----*/
     // Watch if template selected changed
     $scope.updateTemplateTasks = function() {

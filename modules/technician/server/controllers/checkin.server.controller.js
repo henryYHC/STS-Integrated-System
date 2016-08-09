@@ -193,7 +193,6 @@ exports.logService = function(req, res) {
 /*----- Instance queries -----*/
 exports.query = function(req, res) {
   var query = req.body;
-  console.log(query);
 
   if(query.username || query.displayName) {
     User.find(query).select('_id').exec(function(err, ids) {
@@ -207,12 +206,12 @@ exports.query = function(req, res) {
         .select('_id user deviceManufacturer deviceModel status created completionTime checkoutTime')
         .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
         .sort('created').exec(function(err, checkins) {
-        if(err) {
-          console.error(err);
-          return res.sendStatus(500);
-        }
-        else res.json(checkins);
-      });
+          if(err) {
+            console.error(err);
+            return res.sendStatus(500);
+          }
+          else res.json(checkins);
+        });
     });
   }
   else {
@@ -220,12 +219,12 @@ exports.query = function(req, res) {
       .select('_id user deviceManufacturer deviceModel status created completionTime checkoutTime')
       .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
       .sort('created').exec(function(err, checkins) {
-      if(err) {
-        console.error(err);
-        return res.sendStatus(500);
-      }
-      else res.json(checkins);
-    });
+        if(err) {
+          console.error(err);
+          return res.sendStatus(500);
+        }
+        else res.json(checkins);
+      });
   }
 };
 
@@ -244,7 +243,7 @@ exports.incomplete = function(req, res) {
 
 exports.month = function(req, res) {
   var currentMonth = new Date(Date.now()); currentMonth.setDate(1); currentMonth.setHours(0);
-  Checkin.find({ isActive : true })
+  Checkin.find({ isActive : true, $or : [ { completionTime : { $gte : currentMonth } }, { created : { $gte : currentMonth } }] })
     .select('_id user deviceManufacturer deviceModel status created completionTime checkoutTime')
     .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
     .sort('created').exec(function(err, checkins) {

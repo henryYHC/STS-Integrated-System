@@ -1,8 +1,8 @@
-<section ng-controller="CheckinListController">
+<section ng-controller="CheckinListController" ng-init="month()">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: left;">
     <div class="form-inline col-lg-9 col-md-9 col-sm-9 col-xs-8">
       <div class="form-group">
-        <label for="select" style="font-size: 15px;">Search for Walk-ins:&emsp;</label>
+        <label for="select" style="font-size: 15px;">Search for Check-ins:&emsp;</label>
         <select id="select" style="width: 120px;" ng-model="query.field">
           <option value="id">ID</option>
           <option value="netid">NetID</option>
@@ -62,7 +62,8 @@
       </tr></tbody>
     </table>
   </div>
-
+  <span class="pull-right" style="margin-right: 3em; font-size: 14px" ng-show="checkins && checkins.length > 0">
+    <b>Count:&nbsp;&nbsp;{{checkins.length}}</b></span>
 </section>
 
 <!-- Toggle Select2 select box -->

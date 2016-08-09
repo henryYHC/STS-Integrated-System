@@ -1,4 +1,4 @@
-<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-controller="TechHomeController" ng-init="init()">
   <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <div class="card title">
@@ -8,12 +8,13 @@
   </div>
   <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-      <a href="#">
+      <a href="#" ui-sref="tech.walkin.queue">
         <div class="card red summary-inline">
           <div class="card-body">
-            <i class="icon fa fa-meh-o fa-4x"></i>
+            <i class="icon fa fa-4x" ng-class=
+                 "stats.walkin.queue >= 10? 'fa-frown-o':(stats.walkin.queue >= 5? 'fa-meh-o':'fa-smaile-o')"></i>
             <div class="content">
-              <div class="title">8</div>
+              <div class="title">{{stats.walkin.queue}}</div>
               <div class="sub-title">Customer Waiting</div>
             </div>
             <div class="clear-both"></div>
@@ -22,12 +23,12 @@
       </a>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-      <a href="#">
+      <a href="#" ui-sref="tech.walkin.list">
         <div class="card yellow summary-inline">
           <div class="card-body">
             <i class="icon fa fa-male fa-4x"></i>
             <div class="content">
-              <div class="title">30</div>
+              <div class="title">{{stats.walkin.today}}</div>
               <div class="sub-title">Total Visit of the Day	</div>
             </div>
             <div class="clear-both"></div>
@@ -38,12 +39,12 @@
   </div>
   <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-      <a href="#">
+      <a href="#" ui-sref="tech.checkin.queue">
         <div class="card blue summary-inline">
           <div class="card-body">
             <i class="icon fa fa-stethoscope fa-4x"></i>
             <div class="content">
-              <div class="title">3</div>
+              <div class="title">{{stats.checkin.queue}}</div>
               <div class="sub-title">Current Check-ins</div>
             </div>
             <div class="clear-both"></div>
@@ -52,12 +53,12 @@
       </a>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-      <a href="#">
+      <a href="#" ui-sref="tech.checkin.list">
         <div class="card green summary-inline">
           <div class="card-body">
             <i class="icon fa fa-thumbs-up fa-4x"></i>
             <div class="content">
-              <div class="title">17</div>
+              <div class="title">{{stats.checkin.month}}</div>
               <div class="sub-title">Monthly Total Repair</div>
             </div>
             <div class="clear-both"></div>

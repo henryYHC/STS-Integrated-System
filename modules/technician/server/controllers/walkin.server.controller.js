@@ -91,7 +91,6 @@ exports.previous = function(req, res) {
 /*----- Instance queries -----*/
 exports.query = function(req, res) {
   var query = req.body;
-  console.log(query);
 
   if(query.username || query.displayName) {
     User.find(query).select('_id').exec(function(err, ids) {

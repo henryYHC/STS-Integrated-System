@@ -84,9 +84,6 @@ var UserSchema = new Schema({
     type: Boolean,
     default: true
   },
-  lastVisit: {
-    type: Date
-  },
   updated: {
     type: Date,
     default: Date.now

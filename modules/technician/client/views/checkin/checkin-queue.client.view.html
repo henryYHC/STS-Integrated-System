@@ -117,7 +117,7 @@
                       <a href="#" ng-click="changeStatus('User action pending')"><span class="fa fa-user"></span>&nbsp;&nbsp;Customer pending</a></li>
                     <li style="margin-left: 5px;" ng-show="selected.status==='Work in progress'">
                       <a href="#" ng-click="changeStatus('Verification pending')"><span class="fa fa-eye"></span>&nbsp;&nbsp;Verification ready</a></li>
-                    <li style="margin-left: 5px;" ng-show="selected.status==='Verification pending'">
+                    <li style="margin-left: 5px;" ng-show="selected.status==='Verification pending'&&selected.completionTechnician&&selected.completionTechnician.username!==technician.username">
                       <a href="#" ng-click="changeStatus('Checkout pending')"><span class="fa fa-thumbs-o-up"></span>&nbsp;&nbsp;Checkout ready</a></li>
                     <li style="margin-left: 5px;" ng-show="selected.status==='Checkout pending'">
                       <a href="#" ng-click="checkout()"><span class="fa fa-sign-out"></span>&nbsp;&nbsp;Checkout</a></li>
