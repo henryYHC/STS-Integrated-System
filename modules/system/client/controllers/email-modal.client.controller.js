@@ -1,12 +1,8 @@
 'use strict';
 
-angular.module('system').controller('EmailModalController', ['$scope', '$uibModalInstance', 'data', '$timeout',
-  function ($scope, $uibModalInstance, data, $timeout) {
+angular.module('system').controller('EmailModalController', ['$scope', '$uibModalInstance', 'data',
+  function ($scope, $uibModalInstance, data) {
     $scope.data = data; $scope.input = {};
-
-    $scope.okay = function(){
-      $uibModalInstance.close(true);
-    };
 
     $scope.cancel = function(){
       $uibModalInstance.close();

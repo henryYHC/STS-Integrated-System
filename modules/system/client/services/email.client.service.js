@@ -13,12 +13,14 @@ angular.module('system').service('EmailLauncher', ['$uibModal', 'ModalLauncher',
         resolve: { data: function(){ return { email : email, name : displayName }; } }
       });
       modal.result.then(function(body) {
-        body.email = email; body.name = displayName;
-        $http.post('/api/technician/email/send', body)
-          .error(function(){
-            ModalLauncher.launchDefaultWarningModal('Action Failed: Send Email',
-              'Email failed to send. Please check console for more detail.');
-          });
+        if(body && body.subject && body.body){
+          body.email = email; body.name = displayName;
+          $http.post('/api/technician/email/send', body)
+            .error(function(){
+              ModalLauncher.launchDefaultWarningModal('Action Failed: Send Email',
+                'Email failed to send. Please check console for more detail.');
+            });
+        }
       });
     };
 
@@ -31,11 +33,13 @@ angular.module('system').service('EmailLauncher', ['$uibModal', 'ModalLauncher',
         resolve: { data: function(){ return { }; } }
       });
       modal.result.then(function(body) {
-        $http.post('/api/technician/email/send', body)
-          .error(function(){
-            ModalLauncher.launchDefaultWarningModal('Action Failed: Send Email',
-              'Email failed to send. Please check console for more detail.');
-          });
+        if(body &&  body.name && body.email && body.subject && body.body) {
+          $http.post('/api/technician/email/send', body)
+            .error(function () {
+              ModalLauncher.launchDefaultWarningModal('Action Failed: Send Email',
+                'Email failed to send. Please check console for more detail.');
+            });
+        }
       });
     };
   }

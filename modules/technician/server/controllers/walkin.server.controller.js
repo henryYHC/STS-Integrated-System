@@ -219,7 +219,11 @@ exports.update = function(req, res) {
   var o_user = original.user, u_user = updated.user;
 
   // Check if user information changed
-  if(o_user.displayName !== u_user.displayName || o_user.phone !== u_user.phone || o_user.location !== u_user.location || o_user.verified !== u_user.verified) {
+  if(o_user.displayName !== u_user.displayName ||
+    o_user.phone !== u_user.phone ||
+    o_user.location !== u_user.location ||
+    o_user.verified !== u_user.verified) {
+
     o_user = _.extend(o_user, u_user);
     o_user.save(function(err) {
       if(err) {
@@ -228,6 +232,7 @@ exports.update = function(req, res) {
       }
     });
   }
+
   // Update walk-in information
   original = _.extend(original, updated);
   updated.lastUpdateTechnician = req.user;

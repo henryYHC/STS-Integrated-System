@@ -112,7 +112,7 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
       }
       else {
         walkin.status = 'House call pending';
-        $http.put('/api/technician/walkin/update/'+$scope.selected._id, { walkin : walkin })
+        $http.put('/api/technician/walkin/update/'+$scope.selected._id, walkin)
           .error(function() { alert('Request failed. Please view console for error.'); })
           .success(function() {
             var idx = $scope.walkins.indexOf($scope.selected);
