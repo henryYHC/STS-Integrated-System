@@ -7,8 +7,7 @@ var fs = require('fs'),
   User = mongoose.model('User'),
   Walkin = mongoose.model('Walkin'),
   Checkin = mongoose.model('Checkin'),
-  ServiceEntry = mongoose.model('ServiceEntry'),
-  ContactLog = mongoose.model('ContactLog');
+  ServiceEntry = mongoose.model('ServiceEntry');
 
 var popOpt = [
   { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified isWildcard' },
@@ -16,8 +15,7 @@ var popOpt = [
   { path : 'serviceLog', model : 'ServiceEntry', select : 'type description createdBy createdAt' },
   { path : 'completionTechnician', model : 'User', select : 'username displayName' },
   { path : 'verificationTechnician', model : 'User', select : 'username displayName' },
-  { path : 'checkoutTechnician', model : 'User', select : 'username displayName' },
-  { path : 'contactLog', model : 'ContactLog' }
+  { path : 'checkoutTechnician', model : 'User', select : 'username displayName' }
 ];
 
 var popOpt_entry = [
@@ -25,10 +23,6 @@ var popOpt_entry = [
   ],
   popOpt_walkin = [
     { path : 'walkin.resoluteTechnician', model : 'User', select : 'username displayName' }
-  ],
-  popOpt_contactLog = [
-    { path : 'contactLog.customer', model: 'User', select: 'displayName username' },
-    { path : 'contactLog.technician', model: 'User', select: 'displayName username' }
   ];
 
 var workflow_templates_path = 'config/templates/checkin/workflow_templates.json',
@@ -266,9 +260,6 @@ exports.checkinById = function(req, res, next, id) {
     },
     function(checkin, callback) {
       ServiceEntry.populate(checkin, popOpt_entry, callback);
-    },
-    function(checkin, callback) {
-      ContactLog.populate(checkin, popOpt_contactLog, callback);
     }
   ], function(err, checkin){ req.checkin = checkin; next(); });
 };

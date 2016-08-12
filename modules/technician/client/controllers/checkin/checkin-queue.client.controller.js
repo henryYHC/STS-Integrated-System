@@ -86,7 +86,14 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
     /*----- Instance other functions -----*/
     $scope.sendEmail = function() {
       var user = $scope.selected.user;
-      EmailLauncher.launchEmailModalWithRecipient(user.username+'@emory.edu', user.displayName);
+      EmailLauncher.launchEmailModalWithRecipient(user.username+'@emory.edu', user.displayName, function(body) {
+        $scope.logService('Sent email "' + body.subject + '" to customer.', 'Note');
+      });
+    };
+
+    $scope.recordCall = function(){
+      var now = new Date(Date.now());
+      $scope.logService('Called customer at ' + now.toLocaleString(), 'Note');
     };
 
     /*----- Instance service log functions -----*/
