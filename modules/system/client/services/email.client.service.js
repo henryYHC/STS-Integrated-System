@@ -4,7 +4,7 @@ angular.module('system').service('EmailLauncher', ['$uibModal', 'ModalLauncher',
   function($uibModal, ModalLauncher, $http){
 
     // Return a promise
-    this.launchEmailModalWithRecipient = function(email, displayName){
+    this.launchEmailModalWithRecipient = function(email, displayName, callback){
       var modal = $uibModal.open({
         animation: true, size: 'lg', backdrop: 'static',
         controller: 'EmailModalController',
@@ -20,11 +20,12 @@ angular.module('system').service('EmailLauncher', ['$uibModal', 'ModalLauncher',
               ModalLauncher.launchDefaultWarningModal('Action Failed: Send Email',
                 'Email failed to send. Please check console for more detail.');
             });
+          if(callback) callback(body);
         }
       });
     };
 
-    this.launchGeneralEmailModal = function(){
+    this.launchGeneralEmailModal = function(callback){
       var modal = $uibModal.open({
         animation: true, size: 'lg', backdrop: 'static',
         controller: 'EmailModalController',
@@ -39,6 +40,7 @@ angular.module('system').service('EmailLauncher', ['$uibModal', 'ModalLauncher',
               ModalLauncher.launchDefaultWarningModal('Action Failed: Send Email',
                 'Email failed to send. Please check console for more detail.');
             });
+          if(callback) callback(body);
         }
       });
     };

@@ -4,32 +4,30 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 // Schema
-var ContactLogSchema = new Schema({
+var MessageSchema = new Schema({
   type: {
     type: String,
-    trim: true,
-    required: true,
-    enum: ['email', 'phone']
+    enum: ['flag', 'notification', 'technician'],
+    required: true
   },
-  customer: {
+  to: {
     type: Schema.ObjectId,
     ref: 'User',
     required: true
   },
-  technician: {
+  from: {
     type: Schema.ObjectId,
-    ref: 'User',
-    required: true
+    ref: 'User'
   },
-  detail:{
+  message:{
     type: String,
     trim: true,
-    default: ''
+    required: true
   },
-  contactedAt: {
+  created: {
     type: Date,
     default: Date.now
   }
 });
 
-mongoose.model('ContactLog', ContactLogSchema);
+mongoose.model('Message', MessageSchema);
