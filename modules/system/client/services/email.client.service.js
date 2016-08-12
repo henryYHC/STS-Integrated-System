@@ -33,7 +33,7 @@ angular.module('system').service('EmailLauncher', ['$uibModal', 'ModalLauncher',
         resolve: { data: function(){ return { }; } }
       });
       modal.result.then(function(body) {
-        if(body &&  body.name && body.email && body.subject && body.body) {
+        if(body && body.name && body.email && body.subject && body.body) {
           $http.post('/api/technician/email/send', body)
             .error(function () {
               ModalLauncher.launchDefaultWarningModal('Action Failed: Send Email',
