@@ -1,0 +1,57 @@
+<section class="walkin-text-content" ng-controller="CustomerWalkinCustomerController" ng-init="status.error=undefined">
+  <div class="walkin-field-content">
+    <p class="walkin-field-label">Please enter your housing location</p>
+    <select type="text" class="walkin-select-box" ng-model="walkin.user.location">
+      <option value="N/A">N/A</option>
+      <option ng-repeat="location in setting.location_options" value="location">{{location}}</option>
+    </select>
+  </div>
+
+  <footer class="walkin-nav-buttons">
+    <button class="btn btn-md btn-default" ui-sref="customer.walkin.phone">
+      <i class="fa fa-arrow-circle-o-left"></i>&nbsp;&nbsp;Back</button>
+    <button class="btn btn-md btn-primary" ng-click="">
+      Next&nbsp;&nbsp;<i class="fa fa-arrow-circle-right"></i></button>
+  </footer>
+</section>
+
+<!-- Toggle Select2 select box -->
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('select').select2({ minimumResultsForSearch: Infinity });
+  });
+</script>
+
+<!-- Select2 Overwrites -->
+<style>
+  .select2-container .select2-selection--single {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    height: 70px;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 70px;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    width: 20px;
+  }
+
+  .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #444;
+    line-height: 80px;
+    font-size: 48px;
+  }
+
+  .select2-results__option {
+    font-size: 32px;
+    padding: 6px;
+    user-select: none;
+    -webkit-user-select: none;
+    font-family: "STS-Light";
+  }
+</style>

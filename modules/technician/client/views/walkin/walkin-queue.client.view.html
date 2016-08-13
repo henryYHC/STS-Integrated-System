@@ -107,6 +107,7 @@
                     <li style="margin-left: 5px;" ng-show="selected.status!=='House call pending'"><a href="#" ng-click="toHouseCall()"><span class="fa fa-home"></span>&nbsp;&nbsp;House call pending</a></li>
                     <li style="margin-left: 5px;"><a href="#" ng-click="noshow()"><span class="fa fa-frown-o"></span>&nbsp;&nbsp;No show</a></li>
                     <li class="dropdown-header" style="margin-left: -5px;">Other functions</li>
+                    <li style="margin-left: 5px;" ng-show="selected.status=='House call pending'"><a href="#" ng-click="recordCall()"><span class="fa fa-phone"></span>&nbsp;&nbsp;Record Calls</a></li>
                     <li style="margin-left: 5px;"><a href="#" ng-click="duplicate()"><span class="fa fa-copy"></span>&nbsp;&nbsp;Duplicate ticket</a></li>
                     <li style="margin-left: 5px;"><a href="#" ng-click="reassign()"><span class="fa fa-unlink"></span>&nbsp;&nbsp;Reassign NetID</a></li>
                   </ul>
@@ -182,14 +183,14 @@
                     <div class="form-horizontal">
                       <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label" style="padding-top: 4px;">Problem:</label>
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 	5px;" onaftersave="update()"
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 	5px;  white-space: pre;" onaftersave="update()"
                              editable-textarea="selected.description" e-rows="2" e-cols="80">{{selected.description || 'N/A'}}</div>
                       </div>
                     </div>
                     <div class="form-horizontal">
                       <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label" style="padding-top: 4px;">Work note:</label>
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 5px;" onaftersave="update()"
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 5px; white-space: pre;" onaftersave="update()"
                              editable-textarea="selected.workNote" e-rows="2" e-cols="80">{{selected.workNote || 'None'}}</div>
                       </div>
                     </div>

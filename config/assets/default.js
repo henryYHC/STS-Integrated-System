@@ -14,7 +14,8 @@ module.exports = {
         'public/lib/angular-xeditable/dist/css/xeditable.css',
         'public/static/css/style.css',
         'public/static/css/themes/flat-blue.css',
-        'public/static/css/promin.css'
+        'public/static/css/promin.css',
+        'public/static/css/sts.css'
       ],
       js: [
         'public/lib/jquery/dist/jquery.min.js',
@@ -40,8 +41,9 @@ module.exports = {
         'public/lib/angular-ui-router/release/angular-ui-router.js',
         'public/lib/angular-ui-utils/ui-utils.js',
         'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-        'public/lib/angular-file-upload/dist/angular-file-upload.min.js',
         'public/lib/angular-bootstrap-switch/dist/angular-bootstrap-switch.min.js',
+        'public/lib/ng-file-upload/ng-file-upload-shim.min.js',
+        'public/lib/ng-file-upload/ng-file-upload.min.js',
 
         'public/lib/randomcolor/randomColor.js',
         'public/lib/Chart.js/dist/Chart.min.js',

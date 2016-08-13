@@ -77,7 +77,7 @@ var validateWithUserDatabase = function(setting, username, result, callback){
   result.user = null;
 
   if(!result.validated){
-    User.findOne({ username : username }, '-password -roles -provider -salt -profileImageURL -__v',
+    User.findOne({ username : username }, '-password -roles -provider -salt -profileImageURL -__v -_id -created -updated',
     function(err, user){
       if(user){
         result.user = user; result.level = 'User';
@@ -151,9 +151,16 @@ var validateWithUserEntryDatabase = function(setting, username, result, callback
           });
         }
         else{
+          var idx, firstName = result.directory.Name, lastName = '';
+          if((idx = firstName.lastIndexOf(' ')) > 0){
+            lastName = firstName.substring(idx+1);
+            firstName = firstName.substring(0, idx);
+          }
+
           entry = new UserEntry({
             username: username,
-            firstName: result.directory.Name,
+            firstName: firstName,
+            lastName: lastName,
             type: result.directory.Type,
             isActive: result.isValid
           });

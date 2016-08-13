@@ -88,6 +88,10 @@ var UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  lastVisit: {
+    type: Date,
+    default: Date.now
+  },
   created: {
     type: Date,
     default: Date.now

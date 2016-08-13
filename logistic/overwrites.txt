@@ -5,3 +5,9 @@ a.editable-click {
   text-decoration: none;
   color: #428bca;
 }
+
+## Model: Walkin
+os & deviceType -> DeviceInfo
+
+## User-Entry
+netid->username

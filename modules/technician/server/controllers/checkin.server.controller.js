@@ -149,9 +149,6 @@ exports.queue = function(req, res) {
     },
     function(checkins, callback) {
       ServiceEntry.populate(checkins, popOpt_entry, callback);
-    },
-    function(checkins, callback) {
-      ContactLog.populate(checkins, popOpt_contactLog, callback);
     }
   ], function(err, checkins){
     if(err) { console.error(err); return res.sendStatus(500); }

@@ -121,6 +121,12 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
           });
       }
     };
+
+    $scope.recordCall = function(){
+      var now = new Date(Date.now());
+      $scope.selected.workNote += '\n' + 'Called customer at ' + now.toLocaleString();
+      $scope.update();
+    };
     
     /*----- Service functions -----*/
     $scope.beginService = function() {

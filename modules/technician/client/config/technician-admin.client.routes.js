@@ -21,6 +21,11 @@ angular.module('technician.admin').config(['$stateProvider', '$urlRouterProvider
         templateUrl: 'modules/technician/client/views/admin/admin-setting.client.view.html',
         data: { breadcrumb: 'System Setting' }
       })
+      .state('admin.import-netid', {
+        url: '/import-netid',
+        templateUrl: 'modules/technician/client/views/admin/admin-import-netid.client.view.html',
+        data: { breadcrumb: 'Import NetID' }
+      })
       .state('admin.stat', {
         abstract: true, url: '/stat', template: '<ui-view>'
       })

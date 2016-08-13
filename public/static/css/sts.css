@@ -1,0 +1,158 @@
+@font-face {
+  font-family: STS-Light;
+  src: url("../font/Linotype-UniversLTStd-LightCn.otf");
+}
+
+@font-face {
+  font-family: STS-Bold;
+  src: url("../font/Linotype-UniversLTStd-BoldCn.otf");
+}
+
+/****** For modal views *****/
+.technician-center-modal {
+  position: fixed;
+  margin: 80px 0 0 50px;
+}
+
+.panel-center-modal {
+  margin-top: 12vh;
+}
+/****** *************** *****/
+
+.home-container {
+  height: 100vh;
+  background-color: #c7c6c6;
+}
+
+.home-icon {
+  max-height: 80vw;
+  width: auto;
+
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.walkin-header {
+  background-color: #231f20;
+  max-height: 60px;
+}
+
+.walkin-footer {
+  position: absolute;
+  bottom: 40px;
+  padding: 0 6vw;
+  width: 100vw;
+  height: 120px;
+  text-align: center;
+}
+
+.walkin-error {
+  position: absolute;
+  bottom: 180px;
+  padding: 0 6vw;
+  width: 100vw;
+  height: 20px;
+
+  color: red;
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 0.5em;
+}
+
+.walkin-image {
+  position: relative;
+  top: 15px; left: 50%;
+
+  display: inline-flex;
+  max-width: 300px;
+  margin-left: -150px;
+}
+
+.walkin-text-content  {
+  height: 275px;
+  margin-top: calc((100vh - 475px) / 2);
+
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-family: "STS-Light";
+}
+
+.walkin-field-label {
+  font-size: 48px;
+  margin-bottom: 0.25em;
+}
+
+.walkin-text-input {
+  font-size: 48px;
+  height: 2em;
+
+  width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.walkin-nav-buttons {
+  margin-top: 2em;
+  font-family: "STS-Bold";
+}
+
+.walkin-nav-buttons button {
+  font-size: 32px;
+  width: 20%;
+  margin-left: 2em;
+  margin-right: 2em;
+}
+
+.walkin-select-box {
+  width: 420px;
+  font-size: 32px;
+}
+
+.invalid-user-message {
+  height: 400px;
+  margin-top: calc((100vh - 460px) / 2);
+  margin-left: 3em; margin-right: 3em;
+
+  text-align: center;
+  font-size: 32px;
+  font-family: "STS-Light";
+}
+
+/***** Responsive CSS *****/
+@media (min-width: 769px) {
+  .walkin-image {
+    max-width: 40%;
+  }
+
+  #mynetid {
+    margin-bottom: 20%;
+  }
+}
+
+@media (min-width: 900px) {
+  .walkin-image {
+    max-width: 30%;
+  }
+
+  #mynetid {
+    margin-bottom: 15%;
+  }
+}
+
+@media (min-width: 1100px) {
+  .walkin-image {
+    width: 22%;
+  }
+}
+
+@media (min-width: 1500px) {
+  .walkin-image {
+    max-width: 15%;
+  }
+  #mynetid {
+    margin-bottom: 25%;
+  }
+}

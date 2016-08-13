@@ -12,12 +12,12 @@ var MessageSchema = new Schema({
   },
   to: {
     type: Schema.ObjectId,
-    ref: 'User',
-    required: true
+    ref: 'User'
   },
   from: {
     type: Schema.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
   message:{
     type: String,

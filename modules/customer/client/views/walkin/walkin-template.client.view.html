@@ -1,0 +1,12 @@
+<section class="home-container" ng-controller="CustomerWalkinController" ng-init="init()">
+  <header class="walkin-header">
+    <img class="walkin-image" src="static/img/walkin-header.png" ui-sref="customer.home">
+  </header>
+
+  <ui-view></ui-view>
+
+  <div class="walkin-error" ng-show="status.error"><i class="fa fa-times-circle"></i> {{status.error}}</div>
+  <footer class="walkin-footer">
+    vvv Breadcrumb Footer goes here. vvv
+  </footer>
+</section>

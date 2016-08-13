@@ -27,16 +27,19 @@ exports.userByID = function (req, res, next, id) {
 };
 
 exports.userByUsername = function(req, res, next, username){
-  User.findOne(
-    { username: username }, '-password -salt',
-    function(err, user){
-      if(err) return next(err);
+  if(!username) next();
+  else {
+    User.findOne(
+      { username: username }, '-password -salt',
+      function(err, user){
+        if(err) return next(err);
 
-      if(!user) req.netid = username;
-      else req.profile = user;
-      next();
-    }
-  );
+        if(!user) req.netid = username;
+        else req.profile = user;
+        next();
+      }
+    );
+  }
 };
 
 exports.hasAdminPermission = function(req, res, next){

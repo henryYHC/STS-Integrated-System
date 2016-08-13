@@ -1,163 +1,127 @@
-<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-controller="TechHomeController" ng-init="init()">
-  <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-      <div class="card title">
-        <h1 style="margin: 10px 0px 10px 10px;">Technician Panel</h1>
+<section ng-controller="TechHomeController" ng-init="init()">
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card title">
+          <h1 style="margin: 10px 0px 10px 10px;">Technician Panel</h1>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-      <a href="#" ui-sref="tech.walkin.queue">
-        <div class="card red summary-inline">
-          <div class="card-body">
-            <i class="icon fa fa-4x" ng-class=
-                 "stats.walkin.queue >= 10? 'fa-frown-o':(stats.walkin.queue >= 5? 'fa-meh-o':'fa-smaile-o')"></i>
-            <div class="content">
-              <div class="title">{{stats.walkin.queue}}</div>
-              <div class="sub-title">Customer Waiting</div>
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <a href="#" ui-sref="tech.walkin.queue">
+          <div class="card red summary-inline">
+            <div class="card-body">
+              <i class="icon fa fa-4x" ng-class=
+                "stats.walkin.queue >= 10? 'fa-frown-o':(stats.walkin.queue >= 5? 'fa-meh-o':'fa-smaile-o')"></i>
+              <div class="content">
+                <div class="title">{{stats.walkin.queue}}</div>
+                <div class="sub-title">Customer Waiting</div>
+              </div>
+              <div class="clear-both"></div>
             </div>
-            <div class="clear-both"></div>
           </div>
-        </div>
-      </a>
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-      <a href="#" ui-sref="tech.walkin.list">
-        <div class="card yellow summary-inline">
-          <div class="card-body">
-            <i class="icon fa fa-male fa-4x"></i>
-            <div class="content">
-              <div class="title">{{stats.walkin.today}}</div>
-              <div class="sub-title">Total Visit of the Day	</div>
+        </a>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <a href="#" ui-sref="tech.walkin.list">
+          <div class="card yellow summary-inline">
+            <div class="card-body">
+              <i class="icon fa fa-male fa-4x"></i>
+              <div class="content">
+                <div class="title">{{stats.walkin.today}}</div>
+                <div class="sub-title">Total Visit of the Day	</div>
+              </div>
+              <div class="clear-both"></div>
             </div>
-            <div class="clear-both"></div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-      <a href="#" ui-sref="tech.checkin.queue">
-        <div class="card blue summary-inline">
-          <div class="card-body">
-            <i class="icon fa fa-stethoscope fa-4x"></i>
-            <div class="content">
-              <div class="title">{{stats.checkin.queue}}</div>
-              <div class="sub-title">Current Check-ins</div>
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <a href="#" ui-sref="tech.checkin.queue">
+          <div class="card blue summary-inline">
+            <div class="card-body">
+              <i class="icon fa fa-stethoscope fa-4x"></i>
+              <div class="content">
+                <div class="title">{{stats.checkin.queue}}</div>
+                <div class="sub-title">Current Check-ins</div>
+              </div>
+              <div class="clear-both"></div>
             </div>
-            <div class="clear-both"></div>
           </div>
-        </div>
-      </a>
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-      <a href="#" ui-sref="tech.checkin.list">
-        <div class="card green summary-inline">
-          <div class="card-body">
-            <i class="icon fa fa-thumbs-up fa-4x"></i>
-            <div class="content">
-              <div class="title">{{stats.checkin.month}}</div>
-              <div class="sub-title">Monthly Total Repair</div>
+        </a>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <a href="#" ui-sref="tech.checkin.list">
+          <div class="card green summary-inline">
+            <div class="card-body">
+              <i class="icon fa fa-thumbs-up fa-4x"></i>
+              <div class="content">
+                <div class="title">{{stats.checkin.month}}</div>
+                <div class="sub-title">Monthly Total Repair</div>
+              </div>
+              <div class="clear-both"></div>
             </div>
-            <div class="clear-both"></div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
     </div>
-  </div>
 
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">
-        <div class="title"><i class="fa fa-link"></i> Useful Links</div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="title"><i class="fa fa-link"></i> Useful Links</div>
+        </div>
+        <div class="clear-both"></div>
       </div>
-      <div class="clear-both"></div>
-    </div>
-    <div class="card-body no-padding">
-      <div class="list-group">
-        <a href="#" class="list-group-item">
-          Opening Checklist
-        </a>
-        <a href="#" class="list-group-item">
-          Closing Checklist
-        </a>
+      <div class="card-body no-padding">
+        <div class="list-group">
+          <a href="#" class="list-group-item">
+            Opening Checklist
+          </a>
+          <a href="#" class="list-group-item">
+            Closing Checklist
+          </a>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-  <div class="card card-info">
-    <div class="card-header">
-      <div class="card-title">
-        <div class="title"><i class="fa fa-comments-o"></i> Messages</div>
-      </div>
-      <div class="clear-both"></div>
-    </div>
-    <div class="card-body no-padding">
-      <ul class="message-list">
-        <a href="#">
-          <li>
-            <img src="img/profile/default_avatar.png" class="profile-img pull-left">
-            <div class="message-block">
-              <div><span class="username">Tui2Tone</span> <span class="message-datetime">12 min ago</span>
-              </div>
-              <div class="message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.</div>
-            </div>
-          </li>
-        </a>
-        <a href="#">
-          <li>
-            <img src="img/profile/default_avatar.png" class="profile-img pull-left">
-            <div class="message-block">
-              <div><span class="username">Tui2Tone</span> <span class="message-datetime">12 min ago</span>
-              </div>
-              <div class="message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.</div>
-            </div>
-          </li>
-        </a>
-        <a href="#">
-          <li>
-            <img src="img/profile/default_avatar.png" class="profile-img pull-left">
-            <div class="message-block">
-              <div><span class="username">Tui2Tone</span> <span class="message-datetime">15 min ago</span>
-              </div>
-              <div class="message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.</div>
-            </div>
-          </li>
-        </a>
-        <a href="#">
-          <li>
-            <img src="img/profile/default_avatar.png" class="profile-img pull-left">
-            <div class="message-block">
-              <div><span class="username">Tui2Tone</span> <span class="message-datetime">2 hour ago</span>
-              </div>
-              <div class="message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.</div>
-            </div>
-          </li>
-        </a>
-        <a href="#">
-          <li>
-            <img src="img/profile/default_avatar.png" class="profile-img pull-left">
-            <div class="message-block">
-              <div><span class="username">Tui2Tone</span> <span class="message-datetime">1 day ago</span>
-              </div>
-              <div class="message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.</div>
-            </div>
-          </li>
-        </a>
-      </ul>
-      <!-- <div class="row"> -->
-      <div class="col-lg-12 col-md-12 col-sm-12">
-        <div class="col-lg-10 col-md-10 col-sm-8" style="margin-top: 5px; margin-bottom: 5px;">
-          <input type="text" class="form-control" placeholder="Type your message here">
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="card card-info">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="title"><i class="fa fa-comments-o"></i> Messages</div>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-4">
-          <button type="button" class="btn btn-default" style="width: 105%">Post</button>
-        </div>
+        <div class="clear-both"></div>
       </div>
-      <!-- </div> -->
+      <div class="card-body no-padding">
+        <ul class="message-list">
+          <a href="#">
+            <li ng-repeat="message in messages | limitTo: -5">
+              <img src="{{message.from.profileImageURL}}" class="profile-img pull-left">
+              <div class="message-block">
+                <div>
+                  <span class="username">{{message.from.displayName}}</span>
+                  <span class="message-datetime pull-right">{{message.created | date : 'short'}}</span>
+                </div>
+                <div class="message">{{message.message}}</div>
+              </div>
+            </li>
+          </a>
+        </ul>
+        <!-- <div class="row"> -->
+        <form class="col-lg-12 col-md-12 col-sm-12">
+          <div class="col-lg-10 col-md-10 col-sm-8" style="margin-top: 5px; margin-bottom: 5px;">
+            <input type="text" class="form-control" placeholder="Type your message here" ng-model="inputMessage">
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-4">
+            <button type="submit" class="btn btn-default" style="width: 105%" ng-click="newMessage()">Post</button>
+          </div>
+        </form>
+        <!-- </div> -->
+      </div>
     </div>
   </div>
-</div>
+</section>

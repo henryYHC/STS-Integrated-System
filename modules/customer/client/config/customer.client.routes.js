@@ -13,15 +13,35 @@ angular.module('customer').config(['$stateProvider', '$urlRouterProvider',
       })
       .state('customer.home', {
         url: '/home',
-        templateUrl: 'modules/customer/client/views/home.client.view.html'
+        templateUrl: 'modules/customer/client/views/home/home.client.view.html'
       })
       .state('customer.walkin', {
-        abstract: true,
-        url: '/walkin',
-        templateUrl: 'modules/customer/client/views/walkin-template.client.view.html'
+        abstract: true, url: '/walkin',
+        templateUrl: 'modules/customer/client/views/walkin/walkin-template.client.view.html'
+      })
+      .state('customer.invalid-user', {
+        url: '/invalid-user',
+        templateUrl: 'modules/customer/client/views/walkin/walkin-invalidUser.client.view.html'
       })
       .state('customer.walkin.netid', {
-        url: '/netid'
+        url : '/netid',
+        templateUrl: 'modules/customer/client/views/walkin/walkin-netid.client.view.html'
+      })
+      .state('customer.walkin.first-name', {
+        url: '/first-name',
+        templateUrl: 'modules/customer/client/views/walkin/walkin-firstName.client.view.html'
+      })
+      .state('customer.walkin.last-name', {
+        url: '/last-name',
+        templateUrl: 'modules/customer/client/views/walkin/walkin-lastName.client.view.html'
+      })
+      .state('customer.walkin.phone', {
+        url: '/phone',
+        templateUrl: 'modules/customer/client/views/walkin/walkin-phone.client.view.html'
+      })
+      .state('customer.walkin.location', {
+        url: '/location',
+        templateUrl: 'modules/customer/client/views/walkin/walkin-location.client.view.html'
       });
 
     $urlRouterProvider.when('/', '/customer/home');
