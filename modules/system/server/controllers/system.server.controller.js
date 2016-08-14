@@ -97,7 +97,6 @@ exports.update = function(req, res){
           setting.computer_options[i] = new KeyValueList(setting.computer_options[i]);
 
       async.map(setting.computer_options, function(option, next){
-        if(option.values.length === 0) option.values.push('N/A');
         KeyValueList.update({ _id : option._id }, option, { upsert: true },
           function(err){ next(err, option); });
       }, function(err){ callback(err, setting); });
@@ -109,7 +108,6 @@ exports.update = function(req, res){
           setting.device_options[i] = new KeyValueList(setting.device_options[i]);
 
       async.map(setting.device_options, function(option, next){
-        if(option.values.length === 0) option.values.push('N/A');
         KeyValueList.update({ _id : option._id }, option, { upsert: true },
           function(err){ next(err, option); });
       }, function(err){ callback(err, setting); });

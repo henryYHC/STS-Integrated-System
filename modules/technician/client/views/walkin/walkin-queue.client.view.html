@@ -62,16 +62,17 @@
       <button class="btn btn-sm btn-default" ng-click="noshow()">No Show</button>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
-         style="{{(!selected || selected.status === 'In queue'|| selected.status === 'Duplicate')? 'position: absolute; top: 40%;' : ''}}">
+         style="{{(!selected || selected.status === 'In queue'|| selected.status === 'Duplicate')? 'position: absolute; top: 35%;' : ''}}">
       <!-- If no walk-in instance is selected -->
       <div style="text-align: center;" ng-hide="selected"><hr/>
         <b style="font-size: 18px;"><span class="fa fa-info-circle"></span> Please select an instance in the queue for detail.</b>
       <hr/></div>
       <!-- If the walk-in instance is 'In queue' -->
       <div style="text-align: center;" ng-show="selected && (selected.status === 'In queue' || selected.status === 'Duplicate')">
-        <p style="font-size: 20px;"><b>{{selected.user.displayName}}</b></p>
+        <p style="font-size: 28px;"><b>{{selected.user.displayName}}</b></p>
+        <p style="font-size: 14px;">-- {{selected.deviceInfo? selected.deviceInfo : selected.deviceCategory}} --</p>
         <p style="font-size: 14px;"></p>
-        <p style="font-size: 14px;">{{selected.description}}</p>
+        <p style="font-size: 14px;"><i>{{selected.description}}</i></p>
         <hr/>
         <div><button class="btn btn-lg btn-success" ng-disabled="!selected.user.verified" ng-click="beginService()">Begin Service</button></div>
       </div>
@@ -130,8 +131,8 @@
                   <div class="form-horizontal">
                     <div class="form-group">
                       <label class="col-lg-4 col-md-4 col-sm-4 control-label">Device type:</label>
-                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 8px;" onaftersave="update()"
-                           editable-select="selected.deviceCategory" e-ng-options="c.value as c.text for c in device_categories" onaftersave="selected.deviceInfo=undefined;">
+                      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 8px;" onaftersave="selected.deviceInfo=undefined;update();"
+                           editable-select="selected.deviceCategory" e-ng-options="c.value as c.text for c in device_categories">
                         {{selected.deviceCategory || 'N/A'}}
                       </div>
                     </div>

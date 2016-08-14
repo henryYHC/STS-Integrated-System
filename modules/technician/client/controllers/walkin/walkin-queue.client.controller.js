@@ -12,19 +12,21 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
     $scope.init = function(){
       var i;
       $http.get('/api/technician/walkin/setting').success(function(setting){
-        // Push specs for computer os
-        var os = [];
-        for(i in setting.computer_options)
-          os = os.concat(setting.computer_options[i].values.map(option2Obj));
-
         // Create map for type -> specs
-        var options = $scope.device_options = { Computer : os };
+        var options = $scope.device_options = {};
+        // OS's
+        for(i in setting.computer_options)
+          options[setting.computer_options[i].key] = setting.computer_options[i].values.map(option2Obj);
+        // Other devices
         for(i in setting.device_options)
           options[setting.device_options[i].key] = setting.device_options[i].values.map(option2Obj);
         options.Other = [];
 
         $scope.device_categories = (Object.keys(options)).map(option2Obj);
         $scope.location_options = setting.location_options.map(option2Obj);
+
+        console.log(setting);
+        console.log($scope.device_options);
 
         // Initialize resolution template 
         $scope.resolutions_options = setting.resolutions_options;

@@ -23,6 +23,16 @@ angular.module('system').service('ModalLauncher', ['$uibModal',
       });
     };
 
+    this.launchWalkinLiabilityModal = function(){
+      return $uibModal.open({
+        animation: true, size: 'lg', backdrop: 'static',
+        controller: 'DefaultModalController',
+        windowClass: 'fade modal-warning',
+        templateUrl: 'modules/customer/client/views/walkin/walkin-liability-modal.client.view.html',
+        resolve: { data: function(){ return { }; } }
+      });
+    };
+    
     this.launchWalkinViewModal = function(walkin){
       $uibModal.open({
         animation: true, size: 'lg', backdrop: 'static',

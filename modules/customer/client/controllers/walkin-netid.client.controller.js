@@ -9,7 +9,6 @@ angular.module('customer').controller('CustomerWalkinNetIDController', ['$scope'
         $http.get('/api/users/validate/'+username)
           .error(function(){ $scope.error = 'System error. Please contact our technician.'; })
           .success(function(user) {
-            console.log(user);
 
             var entry, formatedUser = {};
             if(user.validated && user.isValid){
@@ -34,6 +33,7 @@ angular.module('customer').controller('CustomerWalkinNetIDController', ['$scope'
                   formatedUser.username = entry.username;
                   formatedUser.lastname = entry.lastName;
                   formatedUser.firstName = entry.firstName;
+                  formatedUser.location = 'N/A';
                   break;
 
                 case 'User Entry':
@@ -43,10 +43,12 @@ angular.module('customer').controller('CustomerWalkinNetIDController', ['$scope'
                   formatedUser.username = entry.username;
                   formatedUser.lastname = entry.lastName;
                   formatedUser.firstName = entry.firstName;
+                  formatedUser.location = 'N/A';
                   break;
                 
                 case 'Manual':
                   formatedUser.verified = false;
+                  formatedUser.location = 'N/A';
                   $scope.walkin.need2CreateUser = true;
                   break;
               }

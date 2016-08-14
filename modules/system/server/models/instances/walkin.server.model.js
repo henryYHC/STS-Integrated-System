@@ -27,7 +27,8 @@ var WalkinSchema = new Schema({
   },
   description: {
     type: String,
-    trim: true
+    trim: true,
+    required: true
   },
   liabilityAgreement:{
     type: Boolean,

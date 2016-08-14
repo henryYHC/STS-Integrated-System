@@ -2,8 +2,8 @@
 
 angular.module('customer').controller('CustomerWalkinCustomerController', ['$scope', '$state',
   function ($scope, $state) {
-    // if(!$scope.walkin.user)
-    //   $state.go('customer.walkin.netid');
+    if(!$scope.walkin.user)
+      $state.go('customer.walkin.netid');
     
     $scope.toLastName = function() {
       if($scope.walkin.user.firstName)
@@ -34,6 +34,13 @@ angular.module('customer').controller('CustomerWalkinCustomerController', ['$sco
       }
       else $scope.status.error = 'Please enter your 10 digit phone number correctly.';
     };
-    
+
+    $scope.toDevice = function() {
+      if($scope.walkin.user.location && $scope.walkin.user.location !== 'N/A') {
+        $scope.status.customer = true;
+        $state.go('customer.walkin.device-category');
+      }
+      else $scope.status.error = 'Please enter your housing location correctly.';
+    };
   }
 ]);

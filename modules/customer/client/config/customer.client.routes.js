@@ -7,8 +7,7 @@ angular.module('customer').config(['$stateProvider', '$urlRouterProvider',
     // Home state routing
     $stateProvider
       .state('customer', {
-        abstract: true,
-        url: '/customer',
+        abstract: true, url: '/customer',
         templateUrl: 'modules/customer/client/views/template.client.view.html'
       })
       .state('customer.home', {
@@ -42,6 +41,26 @@ angular.module('customer').config(['$stateProvider', '$urlRouterProvider',
       .state('customer.walkin.location', {
         url: '/location',
         templateUrl: 'modules/customer/client/views/walkin/walkin-location.client.view.html'
+      })
+      .state('customer.walkin.device-category', {
+        url: '/device-category',
+        templateUrl: 'modules/customer/client/views/walkin/walkin-deviceCategories.client.view.html'
+      })
+      .state('customer.walkin.device-info', {
+        url: '/device-info',
+        templateUrl: 'modules/customer/client/views/walkin/walkin-deviceInfo.client.view.html'
+      })
+      .state('customer.walkin.other-device', {
+        url: '/other-device',
+        templateUrl: 'modules/customer/client/views/walkin/walkin-otherDevice.client.view.html'
+      })
+      .state('customer.walkin.problem', {
+        url: '/problem',
+        templateUrl: 'modules/customer/client/views/walkin/walkin-problem.client.view.html'
+      })
+      .state('customer.walkin.review', {
+        url: '/review',
+        templateUrl: 'modules/customer/client/views/walkin/walkin-review.client.view.html'
       });
 
     $urlRouterProvider.when('/', '/customer/home');
