@@ -2,6 +2,8 @@
 
 angular.module('customer').controller('CustomerWalkinCustomerController', ['$scope', '$state',
   function ($scope, $state) {
+    $scope.status.state = 'customer';
+
     if(!$scope.walkin.user)
       $state.go('customer.walkin.netid');
     
@@ -19,7 +21,7 @@ angular.module('customer').controller('CustomerWalkinCustomerController', ['$sco
 
     $scope.toLocation = function() {
       if($scope.walkin.user.phone) {
-        var phone = '', phone_chars = $scope.walkin.user.phone.split('');
+        var phone = '', phone_chars = (''+$scope.walkin.user.phone).split('');
 
         for (var i in phone_chars) {
           if (phone_chars[i] >= '0' && phone_chars[i] <= '9')
@@ -37,7 +39,12 @@ angular.module('customer').controller('CustomerWalkinCustomerController', ['$sco
 
     $scope.toDevice = function() {
       if($scope.walkin.user.location && $scope.walkin.user.location !== 'N/A') {
-        $scope.status.customer = true;
+        // Format for wildcard user
+        var user = $scope.walkin.user;
+        if(user.isWildCard)
+          $scope.walkin.workNote = 'Customer info: ' + user.firstName + ' ' + user.lastName +
+            ' @ ' + user.location +' (phone: ' + user.phone + ')';
+
         $state.go('customer.walkin.device-category');
       }
       else $scope.status.error = 'Please enter your housing location correctly.';

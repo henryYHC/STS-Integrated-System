@@ -11,6 +11,9 @@ module.exports = function (app) {
 
   app.route('/api/technician/walkin/view/:walkinId')
     .get(walkin.view);
+  
+  app.route('/api/technician/walkin/create')
+    .post(walkin.create);
 
   app.route('/api/technician/walkin/queue')
     .get(walkin.getQueue);
@@ -19,7 +22,10 @@ module.exports = function (app) {
     .put(walkin.update);
   
   app.route('/api/technician/walkin/noshow/:walkinId')
-    .post(walkin.noshow);
+    .put(walkin.noshow);
+
+  app.route('/api/technician/walkin/notEligible/:walkinId')
+    .put(walkin.notEligible);
 
   app.route('/api/technician/walkin/beginService/:walkinId')
     .put(walkin.beginService);

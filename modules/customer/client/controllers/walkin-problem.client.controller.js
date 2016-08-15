@@ -2,6 +2,8 @@
 
 angular.module('customer').controller('CustomerWalkinProblemController', ['$scope', '$state',
   function ($scope, $state) {
+    $scope.status.state = 'problem';
+    
     if(!$scope.walkin.user)
       $state.go('customer.walkin.netid');
 

@@ -18,7 +18,7 @@ exports.query = function(req, res) {
 
 exports.technician = function(req, res) {
   User.find({ isActive : true, roles : { $in : ['admin', 'technician'] } })
-    .select('-salt -password -provider').exec(function(err, users) {
+    .select('-salt -password').exec(function(err, users) {
       if(err) {
         console.error(err);
         return res.sendStatus(500);
@@ -29,7 +29,7 @@ exports.technician = function(req, res) {
 
 exports.invalid = function(req, res) {
   User.find({ $or : [{ isActive : false }, { verified : false }] })
-    .select('-salt -password -provider').exec(function(err, users) {
+    .select('-salt -password').exec(function(err, users) {
       if(err) {
         console.error(err);
         return res.sendStatus(500);

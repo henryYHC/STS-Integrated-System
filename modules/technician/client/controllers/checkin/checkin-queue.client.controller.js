@@ -73,13 +73,19 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
     $scope.checkout = function() {
       var checkin = $scope.selected;
       if(checkin.status === 'Checkout pending'){
-        $http.put('/api/technician/checkin/checkout/'+checkin._id)
-          .error(function() { alert('Request failed. Please check console for error.'); })
-          .success(function() {
-            var idx = $scope.queues.pending.indexOf(checkin);
-            $scope.queues.pending.splice(idx, 1);
-            $scope.selected = undefined;
-          });
+        var modal = ModalLauncher.launchCheckinPickupModal(checkin.user.displayName);
+        modal.result.then(function(pickupSig) {
+          if(pickupSig){
+            checkin.pickupSig = pickupSig;
+            $http.put('/api/technician/checkin/checkout/'+checkin._id, checkin)
+              .error(function() { alert('Request failed. Please check console for error.'); })
+              .success(function() {
+                var idx = $scope.queues.pending.indexOf(checkin);
+                $scope.queues.pending.splice(idx, 1);
+                $scope.selected = undefined;
+              });
+          }
+        });
       }
     };
 
@@ -94,6 +100,20 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
     $scope.recordCall = function(){
       var now = new Date(Date.now());
       $scope.logService('Called customer at ' + now.toLocaleString(), 'Note');
+    };
+
+    $scope.printLabel = function() {
+      var checkin = $scope.selected;
+      var modal = ModalLauncher.launchDefaultMessageModal(
+        'Confirm: Print Label',
+        'Are you sure you want to print a label for the selected check-in instance?'
+      );
+      modal.result.then(function (response) {
+        if(response){
+          $http.post('/api/technician/checkin/print/label/' + checkin._id)
+            .error(function() { alert('Request failed. Please check console for error.'); }); 
+        }
+      });
     };
 
     /*----- Instance service log functions -----*/

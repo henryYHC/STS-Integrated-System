@@ -25,9 +25,6 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
         $scope.device_categories = (Object.keys(options)).map(option2Obj);
         $scope.location_options = setting.location_options.map(option2Obj);
 
-        console.log(setting);
-        console.log($scope.device_options);
-
         // Initialize resolution template 
         $scope.resolutions_options = setting.resolutions_options;
 
@@ -95,7 +92,24 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
 
       noshow.result.then(function(response) {
         if(response) {
-          $http.post('/api/technician/walkin/noshow/'+$scope.selected._id, { walkin : $scope.selected })
+          $http.put('/api/technician/walkin/noshow/'+$scope.selected._id, { walkin : $scope.selected })
+            .error(function() { alert('Request failed. Please check console for error.'); })
+            .success(function() {
+              var idx = $scope.walkins.indexOf($scope.selected);
+              $scope.walkins.splice(idx, 1); $scope.selected = undefined;
+            });
+        }
+      });
+    };
+    
+    $scope.notEligible = function() {
+      var modal = ModalLauncher.launchDefaultMessageModal('Confirmation: Customer not eligible',
+        'This will mark the instance as \'Unresolved\'. The customer will also be marked as invalid. ' +
+        'Are you sure that the customer is not eligible for service? (This action is not reversible)');
+
+      modal.result.then(function(response) {
+        if(response) {
+          $http.put('/api/technician/walkin/notEligible/'+$scope.selected._id)
             .error(function() { alert('Request failed. Please check console for error.'); })
             .success(function() {
               var idx = $scope.walkins.indexOf($scope.selected);

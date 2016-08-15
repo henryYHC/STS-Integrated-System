@@ -66,7 +66,8 @@ var validateWithWildcardPrefix = function(setting, username, result, callback){
   if(!result.validated){
     for(var i = 0; i < setting.user_wildcard_prefixes.length; i++){
       if(username.startsWith(setting.user_wildcard_prefixes[i])){
-        result.validated = true; result.level = 'Wildcard';
+        result.validated = true; result.isValid = true;
+        if(!result.level) result.level = 'Wildcard';
       }
     }
   }
@@ -76,26 +77,24 @@ var validateWithWildcardPrefix = function(setting, username, result, callback){
 var validateWithUserDatabase = function(setting, username, result, callback){
   result.user = null;
 
-  if(!result.validated){
-    User.findOne({ username : username }, '-password -roles -provider -salt -profileImageURL -__v -_id -created -updated',
+  User.findOne({ username : username }, '-password -roles -salt -profileImageURL -__v -created -updated',
     function(err, user){
       if(user){
-        result.user = user; result.level = 'User';
-        result.validated = true; result.isValid = true;
+        result.user = user; result.validated = true; result.isValid = user.isActive;
+        if(!result.level) result.level = 'User';
 
         var timestamp = (user.lastVisit)? user.lastVisit : (user.updated)? user.updated : user.created;
         var bound = new Date().getTime() - four_month;
 
         if(timestamp.getTime() <= bound){
-          console.log('Checking online directory!');
           http.post(getOnlineDirectoryURL(username), function(err, res){
             if(res && res.buffer) {
               var directory = parseOnlineDirectoryResult(res.buffer.toString());
               if (directory){
                 if (directory.Type)
-                  user.verified = directory.Type.toLocaleLowerCase().indexOf('student') >= 0;
+                  user.isActive = user.verified = directory.Type.toLocaleLowerCase().indexOf('student') >= 0;
               }
-              else user.verified = false;
+              else user.isActive = user.verified = false;
 
               user.save(function(err){
                 callback(err, setting, username, result);
@@ -108,8 +107,6 @@ var validateWithUserDatabase = function(setting, username, result, callback){
       }
       else callback(err, setting, username, result);
     });
-  }
-  else callback(null, setting, username, result);
 };
 
 var validateWithOnlineDirectory = function(setting, username, result, callback){
@@ -122,7 +119,8 @@ var validateWithOnlineDirectory = function(setting, username, result, callback){
         directory = parseOnlineDirectoryResult(res.buffer.toString());
 
         if(directory && directory.Type){
-          result.validated = true; result.level = 'Online Directory';
+          result.validated = true;
+          if(!result.level) result.level = 'Online Directory';
           result.isValid = directory.Type.toLocaleLowerCase().indexOf('student') >= 0;
         }
       }
@@ -174,7 +172,8 @@ var validateWithUserEntryDatabase = function(setting, username, result, callback
     else if(!result.validated){
       UserEntry.findOne({ username : username }, function(err, entry){
         if(entry){
-          result.validated = true; result.level = 'User Entry';
+          result.validated = true;
+          if(!result.level) result.level = 'User Entry';
           result.isValid = entry.type.indexOf('student') >= 0;
         }
         result.entry = entry;
@@ -188,7 +187,13 @@ var validateWithUserEntryDatabase = function(setting, username, result, callback
 
 var manualValidation = function(setting, username, result, callback){
   if(!result.validated){
-    result.validated = true; result.isValid = false;
+    result.validated = true;
+
+    if (setting.user_validation_method === 'Manual') {
+      result.isValid = true;
+      if(!result.level) result.level = 'Manual';
+    }
+    else result.isValid = false;
   }
   callback(null, username, result);
 };
@@ -216,7 +221,7 @@ exports.validate = function(req, res){
   var username = String(req.params.username);
   if(username){
     exports.validateUsername(username, function(result){
-      res.status(200).send(result);
+      res.json(result);
     });
   }
   else res.status(400).send('Invalid or unspecified username.');

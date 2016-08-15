@@ -215,6 +215,12 @@
   margin-left: 50px;
 }
 
+.walkin-field-content b {
+  color: red;
+  font-size: 56px;
+  font-family: "STS-Bold";
+}
+
 .walkin-review-content b {
   font-family: "STS-Bold";
 }

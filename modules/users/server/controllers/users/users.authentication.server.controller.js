@@ -15,9 +15,11 @@ var path = require('path'),
  */
 exports.signin = function (req, res, next) {
   passport.authenticate('local', function (err, user, info) {
-    if (err || !user) {
+    if (err || !user)
       res.status(400).send(info);
-    } else {
+    else if(user.roles.length === 0 || (user.roles.length === 1) && user.roles[0] === 'customer')
+      res.status(400).send('User does not have sufficient permission.');
+    else {
       // Remove sensitive data before login
       user.password = undefined;
       user.salt = undefined;

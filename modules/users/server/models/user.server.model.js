@@ -44,12 +44,13 @@ var UserSchema = new Schema({
   phone: {
     type: String,
     trim: true,
-    validate: [validatePhoneLength, 'Invalid length for phone number'],
-    required: 'Please fill in your phone number'
+    default: '',
+    validate: [validatePhoneLength, 'Invalid length for phone number']
   },
   location: {
     type: String,
-    required: 'Please fill in your residence hall (or off-campus)'
+    trim: true,
+    default: ''
   },
   username: {
     type: String,
@@ -80,6 +81,10 @@ var UserSchema = new Schema({
     type: Boolean,
     default: false
   },
+  isWildCard: {
+    type: Boolean,
+    default: false
+  },
   isActive: {
     type: Boolean,
     default: true
@@ -95,10 +100,6 @@ var UserSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
-  },
-  provider: {
-    type: String,
-    required: 'Provider is required'
   }
 });
 

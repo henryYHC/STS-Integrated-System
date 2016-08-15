@@ -2,17 +2,28 @@
 
 angular.module('customer').controller('CustomerWalkinNetIDController', ['$scope', '$state', '$http',
   function ($scope, $state, $http) {
+    $scope.status.state = 'netid';
     
     $scope.validate = function () {
       if($scope.walkin.user && $scope.walkin.user.username) {
-        var username = $scope.walkin.user.username.toLowerCase();
+        var username = $scope.walkin.user.username = $scope.walkin.user.username.toLowerCase();
         $http.get('/api/users/validate/'+username)
           .error(function(){ $scope.error = 'System error. Please contact our technician.'; })
           .success(function(user) {
+            console.log(user);
 
-            var entry, formatedUser = {};
+            var entry, formatedUser = { location : 'N/A' };
             if(user.validated && user.isValid){
+
               switch (user.level) {
+                case 'Wildcard':
+                  $scope.walkin.need2CreateUser = user.user? false : true;
+
+                  formatedUser.verified = true;
+                  formatedUser.isWildCard = true;
+                  formatedUser.username = username;
+                  break;
+
                 case 'User':
                   formatedUser = user.user;
                   $scope.walkin.need2CreateUser = false;
@@ -28,33 +39,35 @@ angular.module('customer').controller('CustomerWalkinNetIDController', ['$scope'
                     formatedUser.phone = phone;
 
                   entry = user.entry;
-                  formatedUser.verified = true;
                   $scope.walkin.need2CreateUser = true;
+                  
+                  formatedUser.verified = true;
                   formatedUser.username = entry.username;
-                  formatedUser.lastname = entry.lastName;
+                  formatedUser.lastName = entry.lastName;
                   formatedUser.firstName = entry.firstName;
-                  formatedUser.location = 'N/A';
                   break;
 
                 case 'User Entry':
                   entry = user.entry;
-                  formatedUser.verified = true;
                   $scope.walkin.need2CreateUser = true;
+                  
+                  formatedUser.verified = true;
                   formatedUser.username = entry.username;
-                  formatedUser.lastname = entry.lastName;
+                  formatedUser.lastName = entry.lastName;
                   formatedUser.firstName = entry.firstName;
-                  formatedUser.location = 'N/A';
                   break;
-                
+
                 case 'Manual':
                   formatedUser.verified = false;
-                  formatedUser.location = 'N/A';
+                  formatedUser.username = username;
                   $scope.walkin.need2CreateUser = true;
                   break;
               }
-              
               $scope.walkin.user = formatedUser;
-              $state.go('customer.walkin.first-name');
+
+              if(user.level==='Wildcard' || !formatedUser.verified)
+                $state.go('customer.walkin.confirm-netid');
+              else $state.go('customer.walkin.first-name');
             }
             else $state.go('customer.invalid-user');
           });

@@ -2,6 +2,8 @@
 
 angular.module('customer').controller('CustomerWalkinDeviceController', ['$scope', '$state',
   function ($scope, $state) {
+    $scope.status.state = 'device';
+    
     if(!$scope.walkin.user)
       $state.go('customer.walkin.netid');
 

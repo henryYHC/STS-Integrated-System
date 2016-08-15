@@ -24,7 +24,7 @@ angular.module('technician').controller('WalkinTransferController', ['$scope', '
 
             $http.get('/api/technician/walkin/view/'+walkinId)
               .error(function() { alert('Request failed. Please check console for error.'); })
-              .success(function(walkin) { $scope.walkin = walkin; }); 
+              .success(function(walkin) { $scope.walkin = walkin; console.log(walkin); });
           }
         });
     };
@@ -53,17 +53,15 @@ angular.module('technician').controller('WalkinTransferController', ['$scope', '
         $timeout(function() { $scope.error = undefined; }, 5000);
         return false;
       }
-
-      checkin.deviceInfoOS = getSelectedStringArray(checkin.deviceInfoOSAux);
-      checkin.itemReceived = getSelectedStringArray(checkin.itemReceivedAux);
-      checkin.user = $scope.walkin.user; checkin.walkin = $scope.walkin._id;
+      checkin.deviceInfoOS = checkin.deviceInfoOSAux? getSelectedStringArray(checkin.deviceInfoOSAux) : [];
+      checkin.itemReceived = checkin.itemReceivedAux? getSelectedStringArray(checkin.itemReceivedAux) : [];
 
       var modal = ModalLauncher.launchCheckinLiabilityModal($scope.walkin.user.displayName);
       modal.result.then(function(liabilitySig) {
         if(liabilitySig) {
           checkin.liabilitySig = liabilitySig;
           
-          $http.post('/api/technician/checkin/create', checkin)
+          $http.post('/api/technician/checkin/transfer/' + $scope.walkin._id, checkin)
             .error(function() { alert('Request failed. Please check console for error.'); })
             .success(function(checkin) { $state.go('tech.checkin.queue'); });
         }

@@ -53,6 +53,16 @@ angular.module('system').service('ModalLauncher', ['$uibModal',
       });
     };
 
+    this.launchCheckinPickupModal = function(displayName){
+      return $uibModal.open({
+        animation: true, size: 'lg', backdrop: 'static',
+        controller: 'DefaultModalController',
+        windowClass: 'fade modal-warning panel-center-modal',
+        templateUrl: 'modules/technician/client/views/checkin/checkin-pickup-modal.client.view.html',
+        resolve: { data: function(){ return { displayName: displayName }; } }
+      });
+    };
+
     this.launchCheckinViewModal = function(checkin){
       $uibModal.open({
         animation: true, size: 'lg', backdrop: 'static',

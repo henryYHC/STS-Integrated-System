@@ -26,6 +26,10 @@ angular.module('customer').config(['$stateProvider', '$urlRouterProvider',
         url : '/netid',
         templateUrl: 'modules/customer/client/views/walkin/walkin-netid.client.view.html'
       })
+      .state('customer.walkin.confirm-netid', {
+        url : '/confirm-netid',
+        templateUrl: 'modules/customer/client/views/walkin/walkin-netid-confirm.client.view.html'
+      })
       .state('customer.walkin.first-name', {
         url: '/first-name',
         templateUrl: 'modules/customer/client/views/walkin/walkin-firstName.client.view.html'
@@ -61,6 +65,10 @@ angular.module('customer').config(['$stateProvider', '$urlRouterProvider',
       .state('customer.walkin.review', {
         url: '/review',
         templateUrl: 'modules/customer/client/views/walkin/walkin-review.client.view.html'
+      })
+      .state('customer.walkin-success', {
+        url: '/walkin-success',
+        templateUrl: 'modules/customer/client/views/walkin/walkin-success.client.view.html'
       });
 
     $urlRouterProvider.when('/', '/customer/home');

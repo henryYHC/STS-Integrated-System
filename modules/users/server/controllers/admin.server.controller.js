@@ -41,8 +41,8 @@ exports.registerTechnician = function (req, res) {
       // Init user and add missing fields
       var user = new User(req.body);
       user.verified = true;
+      user.location = 'N/A'; user.phone = '0000000000';
       user.displayName = user.firstName + ' ' + user.lastName;
-      user.provider = 'local'; user.location = 'N/A'; user.phone = '0000000000';
 
       user.save(function(err){
         if(err) return res.status(400).send({ message: errorHandler.getErrorMessage(err) });

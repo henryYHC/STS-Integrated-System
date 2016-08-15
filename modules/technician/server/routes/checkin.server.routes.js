@@ -16,7 +16,7 @@ module.exports = function (app) {
   app.route('/api/technician/checkin/hasTransferred/:walkinId')
     .get(checkin.hasTransferred);
 
-  app.route('/api/technician/checkin/create')
+  app.route('/api/technician/checkin/transfer/:walkinId')
     .post(checkin.create);
 
   app.route('/api/technician/checkin/update/:checkinId')
@@ -45,6 +45,9 @@ module.exports = function (app) {
 
   app.route('/api/technician/checkin/query')
     .post(checkin.query);
+  
+  app.route('/api/technician/checkin/print/label/:checkinId')
+    .post(checkin.printLabel);
 
   app.param('walkinId', walkin.walkinById);
   app.param('checkinId', checkin.checkinById);

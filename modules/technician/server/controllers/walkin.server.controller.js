@@ -2,6 +2,7 @@
 
 var fs = require('fs'),
   _ = require('lodash'),
+  async = require('async'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
   Walkin = mongoose.model('Walkin');
@@ -45,7 +46,7 @@ exports.getQueue = function(req, res) {
   Walkin.find({ isActive : true, liabilityAgreement : true,
     $or: [{ status: { $in : ['In queue', 'Work in progress', 'House call pending'] } }, { created : { $gte: today } } ] })
     .sort('created').populate(populate_options).exec(function(err, walkins) {
-      if(err) console.error(err);
+      if(err){ console.error(err); res.sendStatus(500); }
       else {
         var queue = [], housecalls = [];
         var count = 0, sumTime = 0;
@@ -78,10 +79,7 @@ exports.previous = function(req, res) {
   Walkin.find({ user : user._id, created : { $lt: walkin.created } })
     .select('_id deviceCategory deviceInfo status resolutionType created')
     .sort('created').exec(function(err, previous) {
-      if(err) {
-        console.error(err);
-        return res.sendStatus(500);
-      }
+      if(err) { console.error(err); return res.sendStatus(500); }
       else res.json(previous);
     });
 };
@@ -92,10 +90,7 @@ exports.query = function(req, res) {
 
   if(query.username || query.displayName) {
     User.find(query).select('_id').exec(function(err, ids) {
-      if(err) {
-        console.error(err);
-        return res.sendStatus(500);
-      }
+      if(err){ console.error(err); return res.sendStatus(500); }
 
       ids = ids.map(function(obj){ return obj._id; });
       Walkin.find({ user : { $in : ids } })
@@ -172,7 +167,34 @@ exports.month = function(req, res) {
 
 /*----- Instance functions -----*/
 exports.create = function(req, res) {
+  var need2CreateUser = req.body.need2CreateUser, walkin = req.body;
+  walkin.user.lastVisit = Date.now();
 
+  async.waterfall([
+    // Get+Update/Save user
+    function(callback) {
+      if(!need2CreateUser)
+        User.findOne({ username : walkin.user.username }, function (err, user) {
+          user = _.extend(user, walkin.user);
+          user.save(function(err){ walkin.user = user; callback(err); });
+        });
+      else {
+        var user = new User(walkin.user);
+        user.save(function(err){ walkin.user = user; callback(err); });
+      }
+    },
+
+    // Create walk-in
+    function(callback) {
+      delete walkin.need2CreateUser;
+      walkin = new Walkin(walkin);
+      walkin.save(function(err){ callback(err, walkin); });
+    }],
+    
+    function(err, walkin){
+      if(err){ console.error(err); return res.sendStatus(500); }
+      else res.json(walkin);
+    });
 };
 
 exports.duplicate = function(req, res) {
@@ -251,18 +273,42 @@ exports.noshow = function(req, res) {
   original = _.extend(original, {
     resoluteTechnician : req.user,
     lastUpdateTechnician: req.user,
-    status : 'Unresolved'
+    status : 'Unresolved',
+    resolution: 'Customer no show.'
   });
   if(!original.resolutionTime)
     original.resolutionTime = Date.now();
 
   original.save(function(err) {
-    if(err) {
-      console.error(err);
-      return res.sendStatus(500);
-    }
+    if(err) { console.error(err); return res.sendStatus(500); }
   });
   res.sendStatus(200);
+};
+
+exports.notEligible = function(req, res) {
+  var walkin = req.walkin;
+
+  walkin = _.extend(walkin, {
+    resoluteTechnician : req.user,
+    lastUpdateTechnician: req.user,
+    status : 'Unresolved',
+    resolution: 'Customer is not eligible for service.'
+  });
+  if(!walkin.resolutionTime)
+    walkin.resolutionTime = Date.now();
+
+  walkin.save(function(err){
+    if(err) { console.error(err); return res.sendStatus(500); }
+    else {
+      walkin.user = _.extend(walkin.user, {
+        isActive : false, verified : true
+      });
+      walkin.user.save(function(err){
+        if(err) { console.error(err); return res.sendStatus(500); }
+        else res.sendStatus(200);
+      });
+    }
+  });
 };
 
 exports.toHouseCall = function(req, res) {
@@ -287,6 +333,7 @@ exports.toHouseCall = function(req, res) {
 
 exports.beginService = function(req, res) {
   var walkin = req.walkin;
+
   walkin = _.extend(walkin, {
     status: 'Work in progress',
     serviceTechnician: req.user,

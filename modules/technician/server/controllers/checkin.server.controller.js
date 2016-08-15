@@ -7,7 +7,9 @@ var fs = require('fs'),
   User = mongoose.model('User'),
   Walkin = mongoose.model('Walkin'),
   Checkin = mongoose.model('Checkin'),
-  ServiceEntry = mongoose.model('ServiceEntry');
+  ServiceEntry = mongoose.model('ServiceEntry'),
+  printer = require('../../../system/server/controllers/printer.server.controller.js'),
+  mailer = require('../../../system/server/controllers/mailer.server.controller.js');
 
 var popOpt = [
   { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified isWildcard' },
@@ -63,23 +65,36 @@ exports.hasTransferred = function(req, res) {
 };
 
 exports.create = function(req, res) {
-  var user = req.user, checkin = new Checkin(req.body);
-
+  var user = req.user, walkin = req.walkin, checkin = new Checkin(req.body);
+  
   // Resolve walk-in
-  Walkin.findOne({ _id : checkin.walkin }).exec(function(err, walkin) {
+  walkin.status = 'Completed';
+  walkin.resolutionType = 'Check-in';
+  walkin.resolution = 'Ticket has been transferred into a check-in instance.';
+
+  if(!walkin.resoluteTechnician || !walkin.resolutionTime)
+    walkin = _.extend(walkin , { resoluteTechnician : user, resolutionTime : Date.now() });
+
+  walkin.save(function(err){ 
     if(err) { console.error(err); return res.sendStatus(500); }
     else {
-      walkin.status = 'Completed';
-      walkin.resolutionType = 'Check-in';
-      walkin.resolution = 'Ticket has been transferred into a check-in instance.';
-
-      if(!walkin.resoluteTechnician || !walkin.resolutionTime)
-        walkin = _.extend(walkin , { resoluteTechnician : user, resolutionTime : Date.now() });
-      walkin.save(function(err){ if(err) { console.error(err); return res.sendStatus(500); }});
-
+      // Create Check-in
+      checkin.user = walkin.user;
+      checkin.walkin = walkin;
       checkin.save(function(err, checkin) {
         if(err) { console.error(err); return res.sendStatus(500); }
-        else res.json(checkin);
+        else {
+          // Print labels for every devices 
+          printer.printLabel(checkin.itemReceived.length,
+            checkin.user.displayName, checkin.user.username, checkin.created.toDateString());
+
+          // Send Check-in receipt email
+          mailer.sendCheckinReceipt(checkin.user.username+'@emory.edu',
+            checkin._id, checkin.itemReceived, checkin.user.displayName,
+            function(){ checkin.receiptEmailSent = true; checkin.save(); });
+
+          res.json(checkin);
+        }
       });
     }
   });
@@ -118,21 +133,39 @@ exports.changeStatus = function(req, res) {
   checkin = _.extend(checkin, change);
   checkin.save(function(err, checkin) {
     if(err) { console.error(err); return res.sendStatus(500); }
-    else res.json(checkin);
+    else {
+      // Send email for pick-up
+      if(status === 'Checkout pending' && !checkin.user.isWildcard)
+        mailer.sendPickupReceipt(checkin.user.username+'@emory.edu',
+          checkin._id, checkin.itemReceived, checkin.user.displayName,
+          function(){ checkin.pickupEmailSent = true; checkin.save(); });
+
+      res.json(checkin);
+    }
   });
 };
 
 exports.checkout = function(req, res) {
-  var checkin = req.checkin;
+  var checkin = req.checkin, change = req.body;
 
+  checkin = _.extend(checkin, change);
   checkin = _.extend(checkin, {
     status : 'Completed',
     checkoutTime : Date.now(),
     checkoutTechnician : req.user
   });
+  
   checkin.save(function(err, checkin) {
     if(err) { console.error(err); return res.sendStatus(500); }
-    else res.json(checkin);
+    else{
+      // Send email for service detail
+      if(!checkin.user.isWildcard)
+        mailer.sendServiceLog(checkin.user.username+'@emory.edu',
+          checkin._id, checkin.itemReceived, checkin.serviceLog, checkin.user.displayName,
+        function(){ checkin.logEmailSent = true; checkin.save(); });
+
+      res.json(checkin);
+    }
   });
 };
 
@@ -179,6 +212,13 @@ exports.logService = function(req, res) {
       });
     }
   });
+};
+
+/*----- Other functions -----*/
+exports.printLabel = function(req, res) {
+  var checkin = req.checkin;
+  printer.printLabel(1, checkin.user.displayName, checkin.user.username, checkin.created.toDateString());
+  res.sendStatus(200);
 };
 
 /*----- Instance queries -----*/

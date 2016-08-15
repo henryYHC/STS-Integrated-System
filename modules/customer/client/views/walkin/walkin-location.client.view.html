@@ -1,9 +1,9 @@
-<section class="walkin-text-content" ng-controller="CustomerWalkinCustomerController" ng-init="status.error=undefined">
+<form class="walkin-text-content" ng-controller="CustomerWalkinCustomerController" ng-init="status.error=undefined">
   <div class="walkin-field-content">
     <p class="walkin-field-label">Please enter your housing location</p>
     <select type="text" class="walkin-select-box" ng-model="walkin.user.location">
       <option value="N/A">N/A</option>
-      <option ng-repeat="location in setting.location_options" value="location"
+      <option ng-repeat="location in setting.location_options" value="{{location}}"
               ng-selected="location===walkin.user.location">{{location}}</option>
     </select>
   </div>
@@ -11,10 +11,10 @@
   <footer class="walkin-nav-buttons">
     <button class="btn btn-md btn-default" ui-sref="customer.walkin.phone">
       <i class="fa fa-arrow-circle-o-left"></i>&nbsp;&nbsp;Back</button>
-    <button class="btn btn-md btn-primary" ng-click="toDevice()">
+    <button type="submit" class="btn btn-md btn-primary" ng-click="toDevice()">
       Next&nbsp;&nbsp;<i class="fa fa-arrow-circle-right"></i></button>
   </footer>
-</section>
+</form>
 
 <!-- Toggle Select2 select box -->
 <script type="text/javascript">

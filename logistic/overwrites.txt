@@ -9,5 +9,7 @@ a.editable-click {
 ## Model: Walkin
 os & deviceType -> DeviceInfo
 
+## Model: DeskTask -> LibraryGuidance
+
 ## User-Entry
 netid->username
