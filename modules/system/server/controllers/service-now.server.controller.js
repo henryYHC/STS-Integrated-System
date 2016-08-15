@@ -122,6 +122,14 @@ var getWalkinTemplateObj = function(walkin){
       obj.category3 = 'Error';
       break;
 
+    case 'Unresolved':
+      subject += 'Unresolved';
+      obj.type = 'Service Request';
+      obj.category1 = 'Service Desk';
+      obj.category2 = 'Internal Process';
+      obj.category3 = 'Unsupported User';
+      break;
+
     default: subject += 'Unknown Template';
   }
 

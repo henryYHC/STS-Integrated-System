@@ -3,7 +3,7 @@
     <i class="fa fa-arrow-circle-o-left"></i>&nbsp;&nbsp;Back
   </button>
   <div class="walkin-list-content">
-    <p class="walkin-field-label">Please select a device type:</p>
+    <p class="walkin-field-label-left">Device type:</p>
     <button class="btn btn-block btn-primary" ng-click="selectComputer()">Computer</button>
     <button ng-repeat="doption in setting.device_options" class="btn btn-block btn-primary"
       ng-click="selectDevice(doption.key, doption.values)">{{doption.key}}</button>

@@ -162,6 +162,12 @@
   margin-bottom: 0.25em;
 }
 
+.walkin-field-label-left {
+  font-size: 48px;
+  text-align: left;
+  margin-bottom: 0.25em;
+}
+
 .walkin-text-input {
   font-size: 48px;
   height: 2em;
