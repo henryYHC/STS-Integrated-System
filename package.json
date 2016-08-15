@@ -128,6 +128,7 @@
     "mock-fs": "~3.7.0",
     "run-sequence": "~1.1.5",
     "should": "~8.2.2",
+    "soap": "^0.16.0",
     "supertest": "~1.2.0",
     "yargs": "~3.32.0"
   }

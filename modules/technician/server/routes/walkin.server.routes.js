@@ -37,7 +37,7 @@ module.exports = function (app) {
     .post(walkin.reassign);
 
   app.route('/api/technician/walkin/resolve/:walkinId')
-    .put(walkin.resolve);
+    .put(system.getSetting, walkin.resolve);
   
   app.route('/api/technician/walkin/previous/:walkinId/:username')
     .get(walkin.previous);

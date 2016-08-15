@@ -8,8 +8,9 @@ var fs = require('fs'),
   Walkin = mongoose.model('Walkin'),
   Checkin = mongoose.model('Checkin'),
   ServiceEntry = mongoose.model('ServiceEntry'),
-  printer = require('../../../system/server/controllers/printer.server.controller.js'),
-  mailer = require('../../../system/server/controllers/mailer.server.controller.js');
+  mailer = require('../../../system/server/controllers/mailer.server.controller.js'),
+  sn = require('../../../system/server/controllers/service-now.server.controller.js'),
+  printer = require('../../../system/server/controllers/printer.server.controller.js');
 
 var popOpt = [
   { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified isWildcard' },
@@ -65,7 +66,7 @@ exports.hasTransferred = function(req, res) {
 };
 
 exports.create = function(req, res) {
-  var user = req.user, walkin = req.walkin, checkin = new Checkin(req.body);
+  var setting = req.setting, user = req.user, walkin = req.walkin, checkin = new Checkin(req.body);
   
   // Resolve walk-in
   walkin.status = 'Completed';
@@ -96,6 +97,13 @@ exports.create = function(req, res) {
           res.json(checkin);
         }
       });
+      
+      // Sync ticket to SN
+      if(setting.servicenow_liveSync) {
+        sn.syncIncident(sn.CREATE, sn.WALKIN, walkin, function(response){
+          if(walkin.forward) sn.forwardIncident(sn.CREATE, sn.WALKIN, response);
+        });
+      }
     }
   });
 };
@@ -163,6 +171,9 @@ exports.checkout = function(req, res) {
         mailer.sendServiceLog(checkin.user.username+'@emory.edu',
           checkin._id, checkin.itemReceived, checkin.serviceLog, checkin.user.displayName,
         function(){ checkin.logEmailSent = true; checkin.save(); });
+
+      // Sync with SN
+      sn.syncIncident(sn.CREATE, sn.CHECKIN, checkin);
 
       res.json(checkin);
     }

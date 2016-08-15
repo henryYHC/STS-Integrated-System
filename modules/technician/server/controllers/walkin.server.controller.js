@@ -5,7 +5,8 @@ var fs = require('fs'),
   async = require('async'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
-  Walkin = mongoose.model('Walkin');
+  Walkin = mongoose.model('Walkin'),
+  sn = require('../../../system/server/controllers/service-now.server.controller.js');
 
 var populate_options = [
   { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified isWildcard' },
@@ -352,7 +353,7 @@ exports.beginService = function(req, res) {
 };
 
 exports.resolve = function(req, res) {
-  var walkin = req.walkin, resolved = req.body;
+  var setting = req.setting, walkin = req.walkin, resolved = req.body;
 
   resolved = _.extend(resolved, {
     status: 'Completed',
@@ -368,6 +369,11 @@ exports.resolve = function(req, res) {
       return res.sendStatus(500);
     }
     else {
+      if(setting.servicenow_liveSync) {
+        sn.syncIncident(sn.CREATE, sn.WALKIN, walkin, function(response){
+          if(walkin.forward) sn.forwardIncident(sn.CREATE, sn.WALKIN, response);
+        });
+      }
       res.sendStatus(200);
     }
   });
