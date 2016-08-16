@@ -81,7 +81,7 @@ var UserSchema = new Schema({
     type: Boolean,
     default: false
   },
-  isWildCard: {
+  isWildcard: {
     type: Boolean,
     default: false
   },

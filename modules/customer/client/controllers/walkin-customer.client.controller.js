@@ -41,7 +41,7 @@ angular.module('customer').controller('CustomerWalkinCustomerController', ['$sco
       if($scope.walkin.user.location && $scope.walkin.user.location !== 'N/A') {
         // Format for wildcard user
         var user = $scope.walkin.user;
-        if(user.isWildCard)
+        if(user.isWildcard)
           $scope.walkin.workNote = 'Customer info: ' + user.firstName + ' ' + user.lastName +
             ' @ ' + user.location +' (phone: ' + user.phone + ')';
 

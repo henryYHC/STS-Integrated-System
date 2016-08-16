@@ -142,7 +142,7 @@ exports.sendSurvey = function(type, email, name, callback){
     case exports.CHECKIN: path = exports.TEMPLATE.CI_SURVEY; break;
     default: return console.error('Invalid type for survey email.');
   }
-  jsonfile.readFile(exports.TEMPLATE.CI_LOG, function(err, template) {
+  jsonfile.readFile(path, function(err, template) {
     if (err || !template) console.error(err);
     else{
       template.to = email;

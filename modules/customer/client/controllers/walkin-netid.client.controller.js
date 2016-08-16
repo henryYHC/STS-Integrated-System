@@ -20,7 +20,7 @@ angular.module('customer').controller('CustomerWalkinNetIDController', ['$scope'
                   $scope.walkin.need2CreateUser = user.user? false : true;
 
                   formatedUser.verified = true;
-                  formatedUser.isWildCard = true;
+                  formatedUser.isWildcard = true;
                   formatedUser.username = username;
                   break;
 

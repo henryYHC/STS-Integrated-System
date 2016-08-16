@@ -160,7 +160,7 @@ var formulateWalkin = function(walkin, soapAction){
     u_correlation_id : walkin._id,
     u_record_type:  (template.type)? template.type :'Incident',
     u_reported_source :  'Walk In',
-    u_customer : walkin.user.isWildCard? 'guest' : walkin.user.username,
+    u_customer : walkin.user.isWildcard? 'guest' : walkin.user.username,
     u_problem : 'Problem:\n' + walkin.description,
     u_liability_agreement : walkin.liabilityAgreement,
     u_short_description : template.short_description,
@@ -210,7 +210,7 @@ var formulateCheckin = function(checkin, soapAction){
     u_correlation_id : 'CI'+checkin._id,
     u_record_type:  (template.type)? template.type :'Incident',
     u_reported_source :  'Tech Initiated',
-    u_customer : checkin.user.isWildCard? 'guest' : checkin.user.username,
+    u_customer : checkin.user.isWildcard? 'guest' : checkin.user.username,
     u_problem : checkin.preDiagnostic,
     u_liability_agreement : checkin.liabilitySig !== '',
     u_short_description : template.short_description,
@@ -236,7 +236,7 @@ var formulateMessageForwarding = function(ticket, soapAction){
     u_soap_action: soapAction,
     u_correlation_id: ticket.snValue,
     u_short_description: 'Unblock User\'s Account',
-    u_customer: ticket.user.isWildCard? 'guest' : ticket.user.username,
+    u_customer: ticket.user.isWildcard? 'guest' : ticket.user.username,
     u_incident_state: 'Awaiting Assignment',
     u_record_type: 'Service Request',
     u_reported_source: 'Tech Initiated',
@@ -399,7 +399,7 @@ var syncUnsyncedTicketsAux = function(client, id, action, type, tickets){
 };
 
 exports.syncUnsyncedTickets = function(action, type){
-  var query = { isActive : true, status : 'Completed', snValue : '' };
+  var query = { isActive : true, status : { $in : ['Completed', 'Unresolved'] }, snValue : '' };
 
   async.waterfall([
     function(callback){
