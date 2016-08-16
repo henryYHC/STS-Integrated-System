@@ -22,10 +22,10 @@ module.exports = function (app) {
     .put(walkin.update);
   
   app.route('/api/technician/walkin/noshow/:walkinId')
-    .put(walkin.noshow);
+    .put(system.getSetting, walkin.noshow);
 
   app.route('/api/technician/walkin/notEligible/:walkinId')
-    .put(walkin.notEligible);
+    .put(system.getSetting, walkin.notEligible);
 
   app.route('/api/technician/walkin/beginService/:walkinId')
     .put(walkin.beginService);

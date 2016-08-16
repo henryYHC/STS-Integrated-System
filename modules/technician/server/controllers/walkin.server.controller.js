@@ -268,26 +268,30 @@ exports.update = function(req, res) {
 
 /*----- Instance status updates -----*/
 exports.noshow = function(req, res) {
-  var original = req.walkin, updated = req.body.walkin;
+  var setting = req.setting, walkin = req.walkin, updated = req.body.walkin;
 
-  original = _.extend(original, updated);
-  original = _.extend(original, {
+  walkin = _.extend(walkin, updated);
+  walkin = _.extend(walkin, {
     resoluteTechnician : req.user,
     lastUpdateTechnician: req.user,
     status : 'Unresolved',
     resolution: 'Customer no show.'
   });
-  if(!original.resolutionTime)
-    original.resolutionTime = Date.now();
+  if(!walkin.resolutionTime)
+    walkin.resolutionTime = Date.now();
 
-  original.save(function(err) {
+  walkin.save(function(err) {
     if(err) { console.error(err); return res.sendStatus(500); }
+    else {
+      if(setting.servicenow_liveSync)
+        sn.syncIncident(sn.CREATE, sn.WALKIN, walkin);
+      res.sendStatus(200);
+    }
   });
-  res.sendStatus(200);
 };
 
 exports.notEligible = function(req, res) {
-  var walkin = req.walkin;
+  var setting = req.setting, walkin = req.walkin;
 
   walkin = _.extend(walkin, {
     resoluteTechnician : req.user,
@@ -306,7 +310,11 @@ exports.notEligible = function(req, res) {
       });
       walkin.user.save(function(err){
         if(err) { console.error(err); return res.sendStatus(500); }
-        else res.sendStatus(200);
+        else {
+          if(setting.servicenow_liveSync)
+            sn.syncIncident(sn.CREATE, sn.WALKIN, walkin);
+          res.sendStatus(200);
+        }
       });
     }
   });

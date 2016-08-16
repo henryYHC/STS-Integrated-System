@@ -1,6 +1,6 @@
 <form class="walkin-text-content" ng-controller="CustomerWalkinCustomerController" ng-init="status.error=undefined">
   <div class="walkin-field-content">
-    <p class="walkin-field-label">Please enter your housing location</p>
+    <p class="walkin-field-label-left">Housing location:</p>
     <select type="text" class="walkin-select-box" ng-model="walkin.user.location">
       <option value="N/A">N/A</option>
       <option ng-repeat="location in setting.location_options" value="{{location}}"
