@@ -143,11 +143,6 @@ var CheckinSchema = new Schema({
     trim: true,
     default: ''
   },
-  contactLog: {
-    type: [Schema.ObjectId],
-    ref: 'ContactLog',
-    default: []
-  },
 
   // Service Now information
   snSysId: {

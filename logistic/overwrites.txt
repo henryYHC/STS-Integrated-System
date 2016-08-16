@@ -9,7 +9,20 @@ a.editable-click {
 ## Model: Walkin
 os & deviceType -> DeviceInfo
 
+db.walkins.find().forEach(function(walkin){
+	
+	if( (walkin.deviceCategory == "Gaming System" || walkin.deviceCategory == "TV/Media Device") && walkin.deviceType )
+		walkin.deviceInfo = walkin.deviceType;
+	else if( (walkin.deviceCategory == "Computer" || walkin.deviceCategory == "Phone/Tablet") && walkin.os )
+		walkin.deviceInfo = walkin.os;
+	else if( walkin.deviceCategory != "Other") walkin.deviceInfo = 'N/A';
+
+	db.walkins.save(walkin);
+});
+
 ## Model: DeskTask -> LibraryGuidance
+
+db.desk-tasks.renameCollection('library-guidances');
 
 ## User-Entry
 netid->username
