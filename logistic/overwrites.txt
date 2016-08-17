@@ -8,7 +8,11 @@ a.editable-click {
 
 ## Database
 sts-integratedsystem -> sts
- sts-integratedsystem-dev -> sts-dev
+sts-integratedsystem-dev -> sts-dev
+
+use admin
+db.runCommand({copydb:1, fromdb:'sts-integratedsystem', todb: 'sts'})
+db.runCommand({copydb:1, fromdb:'sts-integratedsystem-dev', todb: 'sts-dev'})
 
 ## Model: Walkin
 os & deviceType -> DeviceInfo
@@ -21,6 +25,7 @@ db.walkins.find().forEach(function(walkin){
 		walkin.deviceInfo = walkin.os;
 	else if( walkin.deviceCategory != "Other") walkin.deviceInfo = 'N/A';
 
+	delete walkin.os; delete walkin.deviceType;
 	db.walkins.save(walkin);
 });
 
