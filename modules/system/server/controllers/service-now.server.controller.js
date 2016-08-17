@@ -361,7 +361,7 @@ exports.forwardIncident = function(action, type, ticket, next){
   });
 };
 
-var syncUnsyncedTicketsAux = function(client, id, action, type, tickets){
+exports.syncTicketAux = function(client, id, action, type, tickets){
   if(id < tickets.length){
     var data, ticket = tickets[id];
 
@@ -401,7 +401,7 @@ var syncUnsyncedTicketsAux = function(client, id, action, type, tickets){
             console.error('Invalid Status Error:');
             return console.error(response);
         }
-        syncUnsyncedTicketsAux(client, id+1, action, type, tickets);
+        exports.syncTicketAux(client, id+1, action, type, tickets);
       }
       else{
         console.error('Field(s) Missing Error:');
@@ -441,9 +441,17 @@ exports.syncUnsyncedTickets = function(action, type){
         if(err) return console.error(err);
         client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
         if(tickets.length)
-          syncUnsyncedTicketsAux(client, 0, action, type, tickets);
+          exports.syncTicketAux(client, 0, action, type, tickets);
         callback(null);
       });
     }
   ]);
+};
+
+exports.createSoapClient = function(callback) {
+  soap.createClient(credential.wsdl_url, function(err, client){
+    if(err) return console.error(err);
+    client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
+    callback(client);
+  });
 };
