@@ -56,22 +56,22 @@ exports.initSetting = function(callback){
       setting = settings[0];
     }
     else{
-      console.log('System setting loaded.');
+      console.log('System setting loaded.\n');
       setting = settings[0];
     }
 
-    // Initialize default user
-    User.count({}, function(err, count){
+    // Initialize default root user
+    User.findOne({ username : 'root' }, function(err, root){
       if(err){
-        console.error('***User count (initialization) failed***');
+        console.error(err);
         if(callback){ callback(err, null); } return;
       }
-      if(!count){
-        var user = new User(
+      if(!root){
+        root = new User(
           { firstName: 'System', lastName: 'Root', phone: '0000000000', location: 'N/A',
             username: 'root', password: 'password', roles: 'admin', provider: 'local' });
 
-        user.save(function(err, user){
+        root.save(function(err, root){
           if(err){
             console.error('***Root user initialization failed***');
             if(callback){ callback(err, null); } return;
@@ -79,10 +79,7 @@ exports.initSetting = function(callback){
           else console.log('Root user initialized. (root/password)');
         });
       }
-      else{
-        console.log('Existing user count: ' + count); console.log();
-        if(callback) callback(null, setting);
-      }
+      else if(callback) callback(null, setting);
     });
   });
 };

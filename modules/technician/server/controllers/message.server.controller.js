@@ -15,7 +15,7 @@ exports.create = function(req, res) {
   var message = new Message(_.extend(req.body, { from : from, to : to }));
   
   message.save(function(err, message) {
-    if(err) { console.log(err); res.sendStatus(500); }
+    if(err) { console.error(err); res.sendStatus(500); }
     else res.json(message);
   });
 };
@@ -23,7 +23,7 @@ exports.create = function(req, res) {
 exports.technicians = function(req, res) {
   Message.find({ type : 'technician' }).sort('created')
     .populate(popOpt).exec(function(err, messages) {
-      if(err) { console.log(err); res.sendStatus(500); }
+      if(err) { console.error(err); res.sendStatus(500); }
       else res.json(messages);
     });
 };

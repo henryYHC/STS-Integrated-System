@@ -5,7 +5,6 @@ var mongoose = require('mongoose'),
 
 exports.query = function(req, res) {
   var query = req.body;
-  console.log(query);
 
   User.find(query).exec(function(err, users) {
     if (err) {

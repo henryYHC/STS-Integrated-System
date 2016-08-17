@@ -10,9 +10,6 @@ exports.create = function(req, res) {
   UserEntry.findOne({ username : new_entry.username.toLowerCase() }, function(err, entry){
     if(err) { console.error(err); res.sendStatus(500); }
 
-    console.log(new_entry);
-    console.log(entry);
-
     if(entry) entry = _.extend(entry, new_entry);
     else entry = new UserEntry(new_entry);
 

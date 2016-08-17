@@ -9,7 +9,6 @@ angular.module('technician').controller('CheckinListController', ['$scope', '$ht
       $http.get('/api/technician/checkin/view/'+id)
         .error(function() { alert('Request failed. Please check console for error.'); })
         .success(function(checkin) {
-          console.log(checkin);
           ModalLauncher.launchCheckinViewModal(checkin);
         });
     };
@@ -17,8 +16,7 @@ angular.module('technician').controller('CheckinListController', ['$scope', '$ht
     /*----- Query functions -----*/
     var renderCheckins = function(checkins) {
       $scope.checkins = checkins;
-
-      console.log(checkins);
+      
       $scope.searchMessage = undefined;
       if(checkins.length === 0)
         $scope.searchMessage = 'Nothing seems to match with your query. :(';

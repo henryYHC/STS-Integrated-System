@@ -13,7 +13,7 @@
           <div class="card red summary-inline">
             <div class="card-body">
               <i class="icon fa fa-4x" ng-class=
-                "stats.walkin.queue >= 10? 'fa-frown-o':(stats.walkin.queue >= 5? 'fa-meh-o':'fa-smaile-o')"></i>
+                "stats.walkin.queue >= 10? 'fa-frown-o':(stats.walkin.queue >= 5? 'fa-meh-o':'fa-smile-o')"></i>
               <div class="content">
                 <div class="title">{{stats.walkin.queue}}</div>
                 <div class="sub-title">Customer Waiting</div>
@@ -99,6 +99,9 @@
       <div class="card-body no-padding">
         <ul class="message-list">
           <a href="#">
+            <li ng-show="!messages || messages.length == 0">
+              <div class="message" style="margin-left: 2em;">No message found.</div>
+            </li>
             <li ng-repeat="message in messages | limitTo: -5">
               <img src="{{message.from.profileImageURL}}" class="profile-img pull-left">
               <div class="message-block">

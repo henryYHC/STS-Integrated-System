@@ -7,6 +7,10 @@
             <i class="fa fa-male"></i>&nbsp;&nbsp;Customer Waiting
           </div>
         </div>
+        <span class="pull-right title" ng-click="initWalkin()">
+          <i class="fa fa-refresh" style="font-size: 20px; margin-top: 12px; margin-right: 10px;"
+             tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Refresh"></i>
+        </span>
       </div>
       <div class="card-body no-padding" style="overflow: auto; max-height: 65vh;">
         <div class="alert text-center" style="margin-bottom: 0px;" ng-hide="walkins.length > 0">

@@ -6,6 +6,10 @@ a.editable-click {
   color: #428bca;
 }
 
+## Database
+sts-integratedsystem -> sts
+ sts-integratedsystem-dev -> sts-dev
+
 ## Model: Walkin
 os & deviceType -> DeviceInfo
 
@@ -22,7 +26,14 @@ db.walkins.find().forEach(function(walkin){
 
 ## Model: DeskTask -> LibraryGuidance
 
-db.desk-tasks.renameCollection('library-guidances');
+db.desktasks.renameCollection('libraryguidances');
 
 ## User-Entry
 netid->username
+
+db.userentries.find().forEach(function(entry){
+	entry.username = entry.netid;
+	delete entry.netid;
+	db.userentries.save(entry);
+});
+

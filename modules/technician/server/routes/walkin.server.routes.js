@@ -22,10 +22,10 @@ module.exports = function (app) {
     .put(walkin.update);
   
   app.route('/api/technician/walkin/noshow/:walkinId')
-    .put(system.getSetting, walkin.noshow);
+    .put(system.setting, walkin.noshow);
 
   app.route('/api/technician/walkin/notEligible/:walkinId')
-    .put(system.getSetting, walkin.notEligible);
+    .put(system.setting, walkin.notEligible);
 
   app.route('/api/technician/walkin/beginService/:walkinId')
     .put(walkin.beginService);
@@ -37,7 +37,7 @@ module.exports = function (app) {
     .post(walkin.reassign);
 
   app.route('/api/technician/walkin/resolve/:walkinId')
-    .put(system.getSetting, walkin.resolve);
+    .put(system.setting, walkin.resolve);
   
   app.route('/api/technician/walkin/previous/:walkinId/:username')
     .get(walkin.previous);

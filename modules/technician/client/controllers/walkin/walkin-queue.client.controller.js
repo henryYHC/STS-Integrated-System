@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('technician').controller('WalkinQueueController', ['$scope', '$http', 'Authentication', 'ModalLauncher', '$timeout', '$state',
-  function ($scope, $http, Authentication, ModalLauncher, $timeout, $state) {
+angular.module('technician').controller('WalkinQueueController', ['$scope', '$http', 'Authentication', 'ModalLauncher', '$timeout', '$state', '$interval', '$rootScope',
+  function ($scope, $http, Authentication, ModalLauncher, $timeout, $state, $interval, $rootScope) {
     var user = Authentication.getUser();
 
     var option2Obj = function(val){
@@ -37,6 +37,10 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
               $scope.loadWalkin(walkins[i]); break;
             }
           }
+
+          // Auto refresh queue
+          $scope.autoRefresher = $interval(function(){ $scope.initWalkin(); }, 20000);
+          $rootScope.$on('$locationChangeSuccess', function() { $interval.cancel($scope.autoRefresher); });
         });
       });
     };

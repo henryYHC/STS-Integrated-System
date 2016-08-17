@@ -9,7 +9,7 @@ var fs = require('fs'),
   Checkin = mongoose.model('Checkin');
 
 // Get credentials (& reformat wsdl url)
-var credentialFilePath = __dirname + '/../../../../config/credentials/ServiceNow.json',
+var credentialFilePath = __dirname + '/../../../../config/credentials/ServiceNow_Test.json',
   credentialFile = fs.readFileSync(credentialFilePath, 'utf8'),
   credential = JSON.parse(credentialFile);
 
@@ -37,13 +37,14 @@ var popOpt_checkin = [
 var popOpt_checkin_walkin = [{ path : 'walkin.resoluteTechnician', model : 'User', select : 'username displayName' }];
 
 var getWalkinTemplateObj = function(walkin){
-  var subject = 'STS: ', os = walkin.os;
+  var subject = 'STS: ', os = walkin.deviceInfo;
   var obj = { short_description: '', category1 : '', category2 : '', category3 : '' };
 
   switch(walkin.resolutionType){
     case 'DooleyNet':
-      subject += 'DN ' + walkin.deviceType;
-      if(walkin.deviceType === 'Other') subject += ' ' + walkin.otherDevice;
+      subject += 'DN ' + walkin.deviceInfo;
+      if(walkin.deviceCategory === 'Other')
+        subject += ' ' + walkin.otherDevice;
 
       obj.type = 'Service Request';
       obj.category1 = 'Application Management';
@@ -53,8 +54,8 @@ var getWalkinTemplateObj = function(walkin){
 
     case 'EmoryUnplugged':
       subject += 'EU ';
-      if(os === 'N/A') os = walkin.otherDevice;
-      else if(os.indexOf('(') >= 0) os = os.substring(0, os.indexOf('(')).trim();
+      if(walkin.deviceCategory === 'Other')
+        subject += ' ' + walkin.otherDevice;
 
       switch(walkin.deviceCategory){
         case 'Computer': 		subject += os;				break;
@@ -69,6 +70,7 @@ var getWalkinTemplateObj = function(walkin){
 
     case 'Hardware':
       subject += 'HW';
+
       obj.category1 = 'Desktop Management';
       obj.category2 = 'Hardware';
       obj.category3 = 'Failure';
@@ -76,14 +78,15 @@ var getWalkinTemplateObj = function(walkin){
 
     case 'Office365':
       subject += 'O365';
+
       obj.category1 = 'Application Management';
       obj.category2 = 'Software';
       obj.category3 = 'Error';
       break;
 
     case 'OS Troubleshooting':
-      if(os === 'N/A') os = walkin.otherDevice;
-      else if(os.indexOf('(') >= 0) os = os.substring(0, os.indexOf('(')).trim();
+      if(walkin.deviceCategory === 'Other')
+        subject += ' ' + walkin.otherDevice;
       subject += 'OS TblSh ' + os;
 
       obj.category1 = 'Desktop Management';
@@ -117,6 +120,7 @@ var getWalkinTemplateObj = function(walkin){
 
     case 'Other':
       subject += 'Other ' + walkin.otherResolution;
+
       obj.category1 = 'Desktop Management';
       obj.category2 = 'Software';
       obj.category3 = 'Error';
@@ -124,6 +128,7 @@ var getWalkinTemplateObj = function(walkin){
 
     case 'Unresolved':
       subject += 'Unresolved';
+
       obj.type = 'Service Request';
       obj.category1 = 'Service Desk';
       obj.category2 = 'Internal Process';
@@ -252,7 +257,7 @@ var formulateMessageForwarding = function(ticket, soapAction){
     u_configuration_item: 'Office 365',
     u_suppress_notification: 'No',
     u_urgency: '4 - Low',
-    u_assignment_group: 'LITS: Student Digital Life',
+    u_assignment_group: 'LITS: Messaging - Tier 3',
     u_category_1: 'Communications & Messaging',
     u_category_2: 'Mailbox',
     u_category_3: 'Restore',
@@ -374,7 +379,7 @@ var syncUnsyncedTicketsAux = function(client, id, action, type, tickets){
           case 'inserted':
             ticket.snSysId = response.sys_id; ticket.snValue = response.display_value;
             ticket.save(function(err){
-              if(err) return console.log(err);
+              if(err) return console.error(err);
               else{
                 console.log('INFO: ' + type + ' ' + ticket.snValue + ' inserted. (scheduled)');
               }

@@ -14,7 +14,8 @@ exports.stats = function(req, res) {
   async.waterfall([
     function(callback) {
       Walkin.find({ isActive : true, liabilityAgreement : true,
-        $or: [{ status: { $in : ['In queue', 'Work in progress', 'House call pending'] } }, { created : { $gte: today } } ] })
+        $or: [{ status: { $in : ['In queue', 'Work in progress', 'House call pending'] } },
+          { status : { $ne : 'Completed' }, created : { $gte: today } } ] })
         .count(function(err, count){ stats.walkin.queue = count; callback(err); });
     },
     function(callback) {

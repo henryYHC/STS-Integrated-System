@@ -8,8 +8,6 @@ angular.module('customer').controller('CustomerWalkinReviewController', ['$scope
       $state.go('customer.walkin.netid');
 
     $scope.confirm = function() {
-      console.log($scope.walkin);
-
       var modal = ModalLauncher.launchWalkinLiabilityModal();
       modal.result.then(function(liability) {
         if(liability){

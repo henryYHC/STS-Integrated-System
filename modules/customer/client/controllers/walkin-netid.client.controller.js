@@ -10,7 +10,6 @@ angular.module('customer').controller('CustomerWalkinNetIDController', ['$scope'
         $http.get('/api/users/validate/'+username)
           .error(function(){ $scope.error = 'System error. Please contact our technician.'; })
           .success(function(user) {
-            console.log(user);
 
             var entry, formatedUser = { location : 'N/A' };
             if(user.validated && user.isValid){

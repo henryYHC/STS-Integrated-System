@@ -24,7 +24,7 @@ angular.module('technician').controller('WalkinTransferController', ['$scope', '
 
             $http.get('/api/technician/walkin/view/'+walkinId)
               .error(function() { alert('Request failed. Please check console for error.'); })
-              .success(function(walkin) { $scope.walkin = walkin; console.log(walkin); });
+              .success(function(walkin) { $scope.walkin = walkin; });
           }
         });
     };

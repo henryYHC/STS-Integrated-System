@@ -16,8 +16,6 @@ exports.update = function (req, res) {
   var user = req.profile, updated = req.body;
 
   user = _.extend(user, updated);
-
-  console.log(user);
   user.save(function(err, user){
     if(err) {
       console.error(err);

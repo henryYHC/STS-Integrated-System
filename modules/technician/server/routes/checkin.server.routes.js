@@ -17,7 +17,7 @@ module.exports = function (app) {
     .get(checkin.hasTransferred);
 
   app.route('/api/technician/checkin/transfer/:walkinId')
-    .post(system.getSetting, checkin.create);
+    .post(system.setting, checkin.create);
 
   app.route('/api/technician/checkin/update/:checkinId')
     .put(checkin.update);
@@ -26,7 +26,7 @@ module.exports = function (app) {
     .put(checkin.changeStatus);
 
   app.route('/api/technician/checkin/checkout/:checkinId')
-    .put(system.getSetting, checkin.checkout);
+    .put(system.setting, checkin.checkout);
 
   app.route('/api/technician/checkin/view/:checkinId')
     .get(checkin.view);
