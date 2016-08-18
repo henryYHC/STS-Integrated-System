@@ -2,10 +2,9 @@
 
 angular.module('customer').controller('CustomerWalkinCustomerController', ['$scope', '$state',
   function ($scope, $state) {
-    $scope.status.state = 'customer';
-
     if(!$scope.walkin.user)
       $state.go('customer.walkin.netid');
+    else $scope.status.state = 'customer';
     
     $scope.toLastName = function() {
       if($scope.walkin.user.firstName)
@@ -28,6 +27,7 @@ angular.module('customer').controller('CustomerWalkinCustomerController', ['$sco
             phone += phone_chars[i];
         }
 
+        console.log($scope.walkin.user.location);
         if (phone.length == 10) {
           $scope.walkin.user.phone = phone;
           $state.go('customer.walkin.location');

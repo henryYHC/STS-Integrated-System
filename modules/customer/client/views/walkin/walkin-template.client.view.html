@@ -7,6 +7,15 @@
 
   <div class="walkin-error" ng-show="status.error"><i class="fa fa-times-circle"></i> {{status.error}}</div>
   <footer class="walkin-footer">
-    vvv Breadcrumb Footer goes here. vvv
+    <div class="row">
+      <img class="walkin-breadcrumb" src="static/img/breadcrumb/customer.png"
+           ng-class="status.state==='netid' || status.state==='customer'? 'walkin-breadcrumb-active' : ''">
+      <img class="walkin-breadcrumb" src="static/img/breadcrumb/device.png"
+           ng-class="status.state==='device'? 'walkin-breadcrumb-active' : ''">
+      <img class="walkin-breadcrumb" src="static/img/breadcrumb/problem.png"
+           ng-class="status.state==='problem'? 'walkin-breadcrumb-active' : ''">
+      <img class="walkin-breadcrumb" src="static/img/breadcrumb/review.png"
+           ng-class="status.state==='review'? 'walkin-breadcrumb-active' : ''">
+    </div>
   </footer>
 </section>

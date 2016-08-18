@@ -2,10 +2,10 @@
 
 angular.module('customer').controller('CustomerWalkinReviewController', ['$scope', '$state', 'ModalLauncher', '$http',
   function ($scope, $state, ModalLauncher, $http) {
-    $scope.status.state = 'review';
-
+    
     if(!$scope.walkin.user)
       $state.go('customer.walkin.netid');
+    else $scope.status.state = 'review';
 
     $scope.confirm = function() {
       var modal = ModalLauncher.launchWalkinLiabilityModal();

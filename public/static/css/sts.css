@@ -31,7 +31,7 @@
 
 .walkin-footer {
   position: absolute;
-  bottom: 40px;
+  bottom: 0;
   padding: 0 6vw;
   width: 100vw;
   height: 120px;
@@ -68,6 +68,11 @@
     margin: auto;
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
+  }
+
+  .walkin-breadcrumb {
+    height: 30px;
+    opacity: 0.25;
   }
 
   .walkin-textarea-input {
@@ -132,9 +137,14 @@
     top: 0; left: 0; bottom: 0; right: 0;
   }
 
+  .walkin-breadcrumb {
+    height: 50px;
+    opacity: 0.25;
+  }
+
   .walkin-textarea-input {
     width: 45%;
-    max-height: 200px;
+    max-height: 225px;
     margin-left: auto;
     margin-right: auto;
     font-size: 48px;
@@ -185,9 +195,17 @@
   }
 }
 
+.walkin-breadcrumb:hover {
+  opacity: 0.6;
+}
+
+.walkin-breadcrumb-active{
+  opacity: 1;
+}
+
 .walkin-text-content  {
   height: 275px;
-  margin-top: calc((100vh - 475px) / 2);
+  margin-top: calc((100vh - 425px) / 2);
 
   text-align: center;
   font-family: "STS-Light";
@@ -249,6 +267,16 @@
 .invalid-user-message {
   height: 400px;
   margin-top: calc((100vh - 460px) / 2);
+  margin-left: 3em; margin-right: 3em;
+
+  text-align: center;
+  font-size: 32px;
+  font-family: "STS-Light";
+}
+
+.walkin-success-message {
+  height: 400px;
+  margin-top: calc((100vh - 500px) / 2);
   margin-left: 3em; margin-right: 3em;
 
   text-align: center;

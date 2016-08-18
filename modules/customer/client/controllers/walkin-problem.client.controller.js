@@ -2,10 +2,10 @@
 
 angular.module('customer').controller('CustomerWalkinProblemController', ['$scope', '$state',
   function ($scope, $state) {
-    $scope.status.state = 'problem';
     
     if(!$scope.walkin.user)
       $state.go('customer.walkin.netid');
+    else $scope.status.state = 'problem';
 
     $scope.toReview = function() {
       if($scope.walkin.description) {

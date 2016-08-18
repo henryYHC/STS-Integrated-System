@@ -16,7 +16,7 @@ exports.updateGroupAssignment = function(req, res) {
   var start = new Date('2016/05/05'), end = new Date('2016/08/03');
     
   Walkin.find({ status : 'Completed', isActive : true, snValue : { $ne : '' },
-    updated : { $gt : start, $lt : end }}).sort('updated').populate(popOpt_walkin)
+    updated : { $gt : start, $lt : end } }).sort('updated').populate(popOpt_walkin)
     .exec(function(err, walkins){
       if(err) { console.error(err); return res.sendStatus(500); }
       else {  
@@ -24,7 +24,7 @@ exports.updateGroupAssignment = function(req, res) {
           
         sn.createSoapClient(function(client) {
           sn.syncTicketAux(client, 0, sn.UPDATE, sn.WALKIN, walkins);
-        })
+        });
       }
     });
 };

@@ -211,7 +211,12 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
         subject = $scope.selected.otherResolution,
         resolution = $scope.selected.resolution;
 
-      if(type === $scope.resolutions_options.default){
+      if((!$scope.selected.deviceInfo && $scope.selected.deviceCategory !== 'Other') ||
+        ($scope.selected.deviceCategory === 'Other' && !$scope.selected.otherDevice)){
+        $scope.error = 'Please specify the device information.';
+        $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
+      }
+      else if(type === $scope.resolutions_options.default){
         $scope.error = 'Please select a resolution type.';
         $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
       }

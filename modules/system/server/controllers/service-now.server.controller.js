@@ -258,11 +258,10 @@ var formulateMessageForwarding = function(ticket, soapAction){
     u_suppress_notification: 'No',
     u_urgency: '4 - Low',
     u_assignment_group: 'LITS: Messaging - Tier 3',
-    u_category_1: 'Communications & Messaging',
+    u_category_1: 'Communications &amp; Messaging',
     u_category_2: 'Mailbox',
     u_category_3: 'Restore',
-    u_work_note: 'See ' + ticket.snValue + ' - Please remove block.\n1.Reset user\'s password\n2.Educated user on phishing\n3.Scanned machine for threats',
-    u_time_of_incident: ticket.created.getTime()
+    u_work_note: 'See ' + ticket.snValue + ' - Please remove block.\n1.Reset user\'s password\n2.Educated user on phishing\n3.Scanned machine for threats'
   };
 };
 
