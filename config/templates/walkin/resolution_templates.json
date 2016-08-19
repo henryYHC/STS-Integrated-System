@@ -24,13 +24,23 @@
   
   "Office365": {
     "tasks": [
-      "Scan device",
-      "Reset password"
+      "Reset user's password",
+      "Scanned device, clean",
+      "Enrolled in Duo",
+      "Provided Phishing eduacation"
     ],
     "forward": {}
   },
 
-  "Password Resets": { "forward": {} },
+  "Password Resets": { 
+    "tasks": [
+      "Reset user's password",
+      "Scanned device, clean",
+      "Enrolled in Duo",
+      "Provided Phishing eduacation"
+    ],
+    "forward": {}
+  },
   
   "Other": { "requireSubject": true }
 }

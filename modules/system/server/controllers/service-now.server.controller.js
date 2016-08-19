@@ -261,7 +261,7 @@ var formulateMessageForwarding = function(ticket, soapAction){
     u_category_1: 'Communications &amp; Messaging',
     u_category_2: 'Mailbox',
     u_category_3: 'Restore',
-    u_work_note: 'See ' + ticket.snValue + ' - Please remove block.\n1.Reset user\'s password\n2.Educated user on phishing\n3.Scanned machine for threats'
+    u_work_note: 'See ' + ticket.snValue + '\n1.Reset user\'s password\n2.Educated user on phishing\n3.Scanned machine for threats\n4.Enrolled user in Duo\n\nMessaging: Please remove block.'
   };
 };
 
