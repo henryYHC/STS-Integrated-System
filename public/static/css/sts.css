@@ -102,7 +102,7 @@
 
   .walkin-review-content {
     height: 400px;
-    margin-top: 120px;
+    margin-top: 100px;
     text-align: center;
     font-family: "STS-Light";
   }
@@ -140,6 +140,26 @@
     width: 20%;
     margin-left: 2em;
     margin-right: 2em;
+  }
+
+  .invalid-user-message {
+    height: 400px;
+    margin-top: 220px;
+    margin-left: 3em; margin-right: 3em;
+
+    text-align: center;
+    font-size: 32px;
+    font-family: "STS-Light";
+  }
+
+  .walkin-success-message {
+    height: 400px;
+    margin-top: 240px;
+    margin-left: 3em; margin-right: 3em;
+
+    text-align: center;
+    font-size: 32px;
+    font-family: "STS-Light";
   }
 }
 
@@ -225,6 +245,26 @@
     margin-left: 2em;
     margin-right: 2em;
   }
+
+  .invalid-user-message {
+    height: 400px;
+    margin-top: calc((100vh - 460px) / 2);
+    margin-left: 3em; margin-right: 3em;
+
+    text-align: center;
+    font-size: 32px;
+    font-family: "STS-Light";
+  }
+
+  .walkin-success-message {
+    height: 400px;
+    margin-top: calc((100vh - 500px) / 2);
+    margin-left: 3em; margin-right: 3em;
+
+    text-align: center;
+    font-size: 32px;
+    font-family: "STS-Light";
+  }
 }
 
 .walkin-breadcrumb:hover {
@@ -278,26 +318,6 @@
 
 .walkin-review-content b {
   font-family: "STS-Bold";
-}
-
-.invalid-user-message {
-  height: 400px;
-  margin-top: calc((100vh - 460px) / 2);
-  margin-left: 3em; margin-right: 3em;
-
-  text-align: center;
-  font-size: 32px;
-  font-family: "STS-Light";
-}
-
-.walkin-success-message {
-  height: 400px;
-  margin-top: calc((100vh - 500px) / 2);
-  margin-left: 3em; margin-right: 3em;
-
-  text-align: center;
-  font-size: 32px;
-  font-family: "STS-Light";
 }
 
 /***** Responsive CSS *****/
