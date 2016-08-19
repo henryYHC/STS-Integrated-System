@@ -144,7 +144,7 @@
 
   .invalid-user-message {
     height: 400px;
-    margin-top: 220px;
+    margin-top: 300px;
     margin-left: 3em; margin-right: 3em;
 
     text-align: center;
@@ -154,7 +154,7 @@
 
   .walkin-success-message {
     height: 400px;
-    margin-top: 240px;
+    margin-top: 400px;
     margin-left: 3em; margin-right: 3em;
 
     text-align: center;
