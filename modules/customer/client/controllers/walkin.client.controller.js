@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('customer').controller('CustomerWalkinController', ['$scope', '$http',
-  function ($scope, $http) {
+angular.module('customer').controller('CustomerWalkinController', ['$rootScope', '$scope', '$http',
+  function ($rootScope, $scope, $http) {
     $scope.walkin = {};
     $scope.status = {};
 
