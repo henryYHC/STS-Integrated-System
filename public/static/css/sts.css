@@ -75,6 +75,14 @@
     opacity: 0.25;
   }
 
+  .walkin-text-content  {
+    height: 275px;
+    margin-top: 28vh;
+
+    text-align: center;
+    font-family: "STS-Light";
+  }
+
   .walkin-textarea-input {
     width: 80%;
     margin-left: auto;
@@ -86,7 +94,7 @@
 
   .walkin-review-content {
     height: 400px;
-    margin-top: calc((100vh - 800px) / 2);
+    margin-top: 16vh;
     text-align: center;
     font-family: "STS-Light";
   }
@@ -107,7 +115,7 @@
 
   .walkin-list-content {
     height: 400px;
-    margin-top: calc((100vh - 675px) / 2);
+    margin-top: 16vh;
     text-align: center;
     font-family: "STS-Light";
   }
@@ -140,6 +148,14 @@
   .walkin-breadcrumb {
     height: 50px;
     opacity: 0.25;
+  }
+
+  .walkin-text-content  {
+    height: 275px;
+    margin-top: calc((100vh - 425px) / 2);
+
+    text-align: center;
+    font-family: "STS-Light";
   }
 
   .walkin-textarea-input {
@@ -201,14 +217,6 @@
 
 .walkin-breadcrumb-active{
   opacity: 1;
-}
-
-.walkin-text-content  {
-  height: 275px;
-  margin-top: calc((100vh - 425px) / 2);
-
-  text-align: center;
-  font-family: "STS-Light";
 }
 
 .walkin-field-label {
