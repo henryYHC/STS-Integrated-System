@@ -77,7 +77,15 @@
 
   .walkin-text-content  {
     height: 275px;
-    margin-top: 28vh;
+    margin-top: 240px;
+
+    text-align: center;
+    font-family: "STS-Light";
+  }
+
+  .walkin-textarea-content {
+    height: 400px;
+    margin-top: 160px;
 
     text-align: center;
     font-family: "STS-Light";
@@ -94,7 +102,7 @@
 
   .walkin-review-content {
     height: 400px;
-    margin-top: 16vh;
+    margin-top: 120px;
     text-align: center;
     font-family: "STS-Light";
   }
@@ -115,7 +123,7 @@
 
   .walkin-list-content {
     height: 400px;
-    margin-top: 16vh;
+    margin-top: 120px;
     text-align: center;
     font-family: "STS-Light";
   }
@@ -153,6 +161,14 @@
   .walkin-text-content  {
     height: 275px;
     margin-top: calc((100vh - 425px) / 2);
+
+    text-align: center;
+    font-family: "STS-Light";
+  }
+
+  .walkin-textarea-content {
+    height: 400px;
+    margin-top: calc((100vh - 600px) / 2);
 
     text-align: center;
     font-family: "STS-Light";
@@ -248,14 +264,6 @@
 .walkin-select-box {
   width: 420px;
   font-size: 32px;
-}
-
-.walkin-textarea-content {
-  height: 400px;
-  margin-top: calc((100vh - 600px) / 2);
-
-  text-align: center;
-  font-family: "STS-Light";
 }
 
 .walkin-review-text .form-horizontal {
