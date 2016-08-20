@@ -234,14 +234,12 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
         $scope.error = 'Please select a resolution type.';
         $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
       }
-      else if(type === 'Other') {
-        if(!subject)
-          $scope.error = 'Please input resolution subject for \'Other\'.';
-        else if(subject.length > 20)
-          $scope.error = 'Please limit resolution subject to under 20 characters.';
-        else if(resolution.trim().length < 25)
-          $scope.error = 'Please provide more detail for resolution (at lease 25 characters).';
-
+      else if(type === 'Other' && !subject) {
+        $scope.error = 'Please input resolution subject for \'Other\'.';
+        $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
+      }
+      else if(type === 'Other' && subject.length > 20) {
+        $scope.error = 'Please limit resolution subject to under 20 characters.';
         $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
       }
       else if(!resolution || (!(res && res.tasks) && resolution.trim().length < 25)) {

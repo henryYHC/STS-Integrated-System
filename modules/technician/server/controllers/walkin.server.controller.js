@@ -45,7 +45,7 @@ exports.getQueue = function(req, res) {
   var today = new Date(Date.now()); today.setHours(0);
 
   Walkin.find({ isActive : true, liabilityAgreement : true,
-    $or: [{ status: { $in : ['In queue', 'Work in progress', 'House call pending'] } },
+    $or: [{ status: { $in : ['In queue', 'Work in progress', 'Duplicate', 'House call pending'] } },
       { status : 'Completed', created : { $gte: today } } ] })
     .sort('created').populate(populate_options).exec(function(err, walkins) {
       if(err){ console.error(err); res.sendStatus(500); }
