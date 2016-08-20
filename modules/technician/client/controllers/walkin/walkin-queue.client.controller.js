@@ -162,7 +162,7 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
       $http.put('/api/technician/walkin/beginService/'+$scope.selected._id)
         .error(function() { alert('Request failed. Please view console for error.'); })
         .success(function(walkin) {
-          
+
           walkin.resolutionType = $scope.resolutions_options.default;
           // Force refresh select2 selection box (Work around)
           $timeout(function(){
@@ -239,7 +239,7 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
           $scope.error = 'Please input resolution subject for \'Other\'.';
         else if(subject.length > 20)
           $scope.error = 'Please limit resolution subject to under 20 characters.';
-        else if(!resolution || (!(res && res.tasks) && resolution.trim().length < 25))
+        else if(resolution.trim().length < 25)
           $scope.error = 'Please provide more detail for resolution (at lease 25 characters).';
 
         $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
