@@ -281,8 +281,8 @@ exports.noshow = function(req, res) {
     status : 'Unresolved',
     resolution: 'Customer no show.'
   });
-  if(!walkin.resolutionTime)
-    walkin.resolutionTime = Date.now();
+  if(!walkin.serviceTechnician) walkin.serviceTechnician = req.user;
+  if(!walkin.resolutionTime) walkin.resolutionTime = Date.now();
 
   walkin.save(function(err) {
     if(err) { console.error(err); return res.sendStatus(500); }
@@ -303,8 +303,8 @@ exports.notEligible = function(req, res) {
     status : 'Unresolved',
     resolution: 'Customer is not eligible for service.'
   });
-  if(!walkin.resolutionTime)
-    walkin.resolutionTime = Date.now();
+  if(!walkin.serviceTechnician) walkin.serviceTechnician = req.user;
+  if(!walkin.resolutionTime) walkin.resolutionTime = Date.now();
 
   walkin.save(function(err){
     if(err) { console.error(err); return res.sendStatus(500); }

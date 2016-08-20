@@ -40,7 +40,14 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
 
           // Auto refresh queue
           $scope.autoRefresher = $interval(function(){ $scope.initWalkin(); }, 20000);
-          $rootScope.$on('$locationChangeSuccess', function() { $interval.cancel($scope.autoRefresher); });
+
+          // Auto saving work-in-progress ticket
+          $scope.autoSaver = $interval(function(){ if($scope.selected) $scope.update(); }, 10000);
+
+          $rootScope.$on('$locationChangeSuccess', function() {
+            $interval.cancel($scope.autoRefresher);
+            $interval.cancel($scope.autoSaver);
+          });
         });
       });
     };
@@ -60,6 +67,11 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
 
       if(!selected.resolutionType)
         $scope.selected.resolutionType = $scope.resolutions_options.default;
+
+      // Force refresh select2 selection box (Work around)
+      $timeout(function(){
+        angular.element('#resolution').select2({ minimumResultsForSearch: Infinity });
+      }, 10);
     };
 
     $scope.loadPrevious = function() {
