@@ -41,12 +41,8 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
           // Auto refresh queue
           $scope.autoRefresher = $interval(function(){ $scope.initWalkin(); }, 20000);
 
-          // Auto saving work-in-progress ticket
-          $scope.autoSaver = $interval(function(){ if($scope.selected) $scope.update(); }, 10000);
-
           $rootScope.$on('$locationChangeSuccess', function() {
             $interval.cancel($scope.autoRefresher);
-            $interval.cancel($scope.autoSaver);
           });
         });
       });
