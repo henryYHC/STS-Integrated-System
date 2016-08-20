@@ -58,9 +58,8 @@ var getWalkinTemplateObj = function(walkin){
         subject += ' ' + walkin.otherDevice;
 
       switch(walkin.deviceCategory){
-        case 'Computer': 		subject += os;				break;
         case 'Phone/Tablet': 	subject += 'Mobile ' + os;	break;
-        default: 				subject += 'Unknown';
+        default: 				subject += os;
       }
 
       obj.category1 = 'Desktop Management';

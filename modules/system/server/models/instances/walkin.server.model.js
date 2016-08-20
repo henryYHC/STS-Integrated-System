@@ -19,7 +19,7 @@ var WalkinSchema = new Schema({
   },
   deviceInfo: {
     type: String,
-    default: 'N/A'
+    trim: true
   },
   otherDevice: {
     type: String,
