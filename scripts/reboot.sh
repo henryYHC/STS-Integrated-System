@@ -1,4 +1,5 @@
-killall node && git pull
+sudo killall node
+sudo git pull
 
 echo 'File cache removed'
 find . -name '*~' -delete
