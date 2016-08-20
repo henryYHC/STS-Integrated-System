@@ -213,10 +213,7 @@ exports.duplicate = function(req, res) {
     });
 
   duplicate.save(function(err) {
-    if(err) {
-      console.error(err);
-      return res.sendStatus(500);
-    }
+    if(err) { console.error(err); return res.sendStatus(500); }
     else res.json(duplicate);
   });
 };
@@ -303,7 +300,9 @@ exports.notEligible = function(req, res) {
     status : 'Unresolved',
     resolution: 'Customer is not eligible for service.'
   });
-  if(!walkin.serviceTechnician) walkin.serviceTechnician = req.user;
+  if(!walkin.serviceTechnician || !walkin.serviceStartTime) {
+    walkin.serviceTechnician = req.user; walkin.serviceStartTime = Date.now();
+  }
   if(!walkin.resolutionTime) walkin.resolutionTime = Date.now();
 
   walkin.save(function(err){
