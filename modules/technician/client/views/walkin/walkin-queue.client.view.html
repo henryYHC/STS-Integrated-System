@@ -205,7 +205,8 @@
                     <div class="form-horizontal">
                       <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 col-xs-2 control-label" style="padding-top: 4px;">Resolution type:</label>
-                        <select class="col-lg-6 col-md-6 col-sm-6 col-xs-8" id="resolution" ng-model="selected.resolutionType" ng-change="onResolutionChange();">
+                        <select class="col-lg-6 col-md-6 col-sm-6 col-xs-8" id="resolution" style="width: 461px;"
+                          ng-model="selected.resolutionType" ng-change="onResolutionChange();">
                           <option ng-repeat="option in resolutions_options.options" value="{{option}}"
                             ng-selected="option===resolutions_options.default">{{option}}</option>
                         </select>

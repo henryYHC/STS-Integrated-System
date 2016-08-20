@@ -278,7 +278,9 @@ exports.noshow = function(req, res) {
     status : 'Unresolved',
     resolution: 'Customer no show.'
   });
-  if(!walkin.serviceTechnician) walkin.serviceTechnician = req.user;
+  if(!walkin.serviceTechnician || !walkin.serviceStartTime) {
+    walkin.serviceTechnician = req.user; walkin.serviceStartTime = Date.now();
+  }
   if(!walkin.resolutionTime) walkin.resolutionTime = Date.now();
 
   walkin.save(function(err) {

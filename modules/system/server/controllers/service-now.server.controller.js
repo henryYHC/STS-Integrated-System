@@ -40,101 +40,102 @@ var getWalkinTemplateObj = function(walkin){
   var subject = 'STS: ', os = walkin.deviceInfo;
   var obj = { short_description: '', category1 : '', category2 : '', category3 : '' };
 
-  switch(walkin.resolutionType){
-    case 'DooleyNet':
-      subject += 'DN ' + walkin.deviceInfo;
-      if(walkin.deviceCategory === 'Other')
-        subject += ' ' + walkin.otherDevice;
+  if(walkin.status === 'Unresolved') {
+    subject += 'Unresolved';
 
-      obj.type = 'Service Request';
-      obj.category1 = 'Application Management';
-      obj.category2 = 'Access';
-      obj.category3 = 'Inaccessible';
-      break;
+    obj.type = 'Service Request';
+    obj.category1 = 'Service Desk';
+    obj.category2 = 'Internal Process';
+    obj.category3 = 'Unsupported User';
+  }
+  else {
+    switch(walkin.resolutionType){
+      case 'DooleyNet':
+        subject += 'DN ' + walkin.deviceInfo;
+        if(walkin.deviceCategory === 'Other')
+          subject += ' ' + walkin.otherDevice;
 
-    case 'EmoryUnplugged':
-      subject += 'EU ';
-      if(walkin.deviceCategory === 'Other')
-        subject += ' ' + walkin.otherDevice;
+        obj.type = 'Service Request';
+        obj.category1 = 'Application Management';
+        obj.category2 = 'Access';
+        obj.category3 = 'Inaccessible';
+        break;
 
-      switch(walkin.deviceCategory){
-        case 'Phone/Tablet': 	subject += 'Mobile ' + os;	break;
-        default: 				subject += os;
-      }
+      case 'EmoryUnplugged':
+        subject += 'EU ';
+        if(walkin.deviceCategory === 'Other')
+          subject += ' ' + walkin.otherDevice;
 
-      obj.category1 = 'Desktop Management';
-      obj.category2 = 'Software';
-      obj.category3 = 'Error';
-      break;
+        switch(walkin.deviceCategory){
+          case 'Phone/Tablet': 	subject += 'Mobile ' + os;	break;
+          default: 				subject += os;
+        }
 
-    case 'Hardware':
-      subject += 'HW';
+        obj.category1 = 'Desktop Management';
+        obj.category2 = 'Software';
+        obj.category3 = 'Error';
+        break;
 
-      obj.category1 = 'Desktop Management';
-      obj.category2 = 'Hardware';
-      obj.category3 = 'Failure';
-      break;
+      case 'Hardware':
+        subject += 'HW';
 
-    case 'Office365':
-      subject += 'O365';
+        obj.category1 = 'Desktop Management';
+        obj.category2 = 'Hardware';
+        obj.category3 = 'Failure';
+        break;
 
-      obj.category1 = 'Application Management';
-      obj.category2 = 'Software';
-      obj.category3 = 'Error';
-      break;
+      case 'Office365':
+        subject += 'O365';
 
-    case 'OS Troubleshooting':
-      if(walkin.deviceCategory === 'Other')
-        subject += ' ' + walkin.otherDevice;
-      subject += 'OS TblSh ' + os;
+        obj.category1 = 'Application Management';
+        obj.category2 = 'Software';
+        obj.category3 = 'Error';
+        break;
 
-      obj.category1 = 'Desktop Management';
-      obj.category2 = 'OS/Firmware';
-      obj.category3 = 'Error';
-      break;
+      case 'OS Troubleshooting':
+        if(walkin.deviceCategory === 'Other')
+          subject += ' ' + walkin.otherDevice;
+        subject += 'OS TblSh ' + os;
 
-    case 'Password Resets':
-      subject += 'PwdReset';
+        obj.category1 = 'Desktop Management';
+        obj.category2 = 'OS/Firmware';
+        obj.category3 = 'Error';
+        break;
 
-      obj.category1 = 'Application Management';
-      obj.category2 = 'Access';
-      obj.category3 = 'Inaccessible';
-      break;
+      case 'Password Resets':
+        subject += 'PwdReset';
 
-    case 'Printing':
-      subject += 'Printing';
+        obj.category1 = 'Application Management';
+        obj.category2 = 'Access';
+        obj.category3 = 'Inaccessible';
+        break;
 
-      obj.category1 = 'Print Management';
-      obj.category2 = 'User Printing';
-      obj.category3 = 'Inaccessible';
-      break;
+      case 'Printing':
+        subject += 'Printing';
 
-    case 'Check-in':
-      subject += 'Converted to CI';
+        obj.category1 = 'Print Management';
+        obj.category2 = 'User Printing';
+        obj.category3 = 'Inaccessible';
+        break;
 
-      obj.category1 = 'Desktop Management';
-      obj.category2 = 'OS/Firmware';
-      obj.category3 = 'Error';
-      break;
+      case 'Check-in':
+        subject += 'Converted to CI';
 
-    case 'Other':
-      subject += 'Other ' + walkin.otherResolution;
+        obj.category1 = 'Desktop Management';
+        obj.category2 = 'OS/Firmware';
+        obj.category3 = 'Error';
+        break;
 
-      obj.category1 = 'Desktop Management';
-      obj.category2 = 'Software';
-      obj.category3 = 'Error';
-      break;
+      case 'Other':
+        subject += 'Other ' + walkin.otherResolution;
 
-    case 'Unresolved':
-      subject += 'Unresolved';
+        obj.category1 = 'Desktop Management';
+        obj.category2 = 'Software';
+        obj.category3 = 'Error';
+        break;
 
-      obj.type = 'Service Request';
-      obj.category1 = 'Service Desk';
-      obj.category2 = 'Internal Process';
-      obj.category3 = 'Unsupported User';
-      break;
-
-    default: subject += 'Unknown Template';
+      default: subject += 'Unknown Template';
+    }
   }
 
   obj.short_description = subject;
@@ -177,7 +178,7 @@ var formulateWalkin = function(walkin, soapAction){
     u_liability_agreement : walkin.liabilityAgreement,
     u_short_description : template.short_description,
     u_resolution : walkin.resolution,
-    u_work_note : 'Work Notes:\n' + walkin.workNote,
+    u_work_note : walkin.workNote? 'Work Notes:\n' + walkin.workNote : '',
 
     // Assignment info
     u_assigned_to : walkin.serviceTechnician.username,
