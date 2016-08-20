@@ -162,7 +162,13 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
       $http.put('/api/technician/walkin/beginService/'+$scope.selected._id)
         .error(function() { alert('Request failed. Please view console for error.'); })
         .success(function(walkin) {
+          
           walkin.resolutionType = $scope.resolutions_options.default;
+          // Force refresh select2 selection box (Work around)
+          $timeout(function(){
+            angular.element('#resolution').select2({ minimumResultsForSearch: Infinity });
+          }, 10);
+
           var idx = $scope.walkins.indexOf($scope.selected);
           $scope.walkins[idx] = $scope.selected = walkin;
         });
