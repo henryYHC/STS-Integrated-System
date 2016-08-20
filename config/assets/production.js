@@ -49,7 +49,7 @@ module.exports = {
         'public/lib/Chart.js/dist/Chart.min.js',
         'public/lib/Chart.js/dist/Chart.bundle.min.js',
         'public/lib/angular-xeditable/dist/js/xeditable.min.js'
-      ],
+      ]
     },
     css: 'public/dist/application.min.css',
     js: 'public/dist/application.min.js'
