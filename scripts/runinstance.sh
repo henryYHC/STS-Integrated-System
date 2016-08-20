@@ -1,5 +1,5 @@
 echo 'File cache removed'
 find . -name '*~' -delete
 
-NODE_ENV=development grunt build
+sudo NODE_ENV=development grunt build
 NODE_ENV=production node server.js > ../server.out 2> ../server.err &
