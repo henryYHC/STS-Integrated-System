@@ -32,7 +32,7 @@ angular.module('system').controller('WalkinViewModalController', ['$scope', '$ui
 
     // Modal functions
     $scope.cancel = function(){
-      $uibModalInstance.close();
+      $uibModalInstance.close(false);
     };
 
     $scope.forward = function(){
