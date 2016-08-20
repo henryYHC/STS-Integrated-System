@@ -36,7 +36,7 @@ angular.module('system').service('ModalLauncher', ['$uibModal',
     this.launchWalkinViewModal = function(walkin){
       $uibModal.open({
         animation: true, size: 'lg', backdrop: 'static',
-        controller: 'DefaultModalController',
+        controller: 'WalkinViewModalController',
         windowClass: 'fade modal-primary panel-center-modal',
         templateUrl: 'modules/technician/client/views/walkin/walkin-view-modal.client.view.html',
         resolve: { data: function(){ return { walkin: walkin }; } }

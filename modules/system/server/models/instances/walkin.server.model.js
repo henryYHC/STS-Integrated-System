@@ -99,9 +99,14 @@ var WalkinSchema = new Schema({
     type: String,
     trim: true
   },
+  
   forward: {
     type: Boolean,
     default: false
+  },
+  forwardSnValue: {
+    type: String,
+    trim: true
   }
 });
 

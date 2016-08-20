@@ -286,7 +286,6 @@ exports.syncIncident = function(action, type, ticket, next){
       if(response.sys_id && response.display_value){
         switch(response.status){
           case 'inserted':
-            ticket.snSysId = response.sys_id;
             ticket.snValue = response.display_value;
 
             ticket.save(function(err){
@@ -297,10 +296,8 @@ exports.syncIncident = function(action, type, ticket, next){
             });
             break;
           case 'updated':
-            if(!ticket.snValue || ticket.snSysId){
-              ticket.snSysId = response.sys_id;
+            if(!ticket.snValue)
               ticket.snValue = response.display_value;
-            }
 
             ticket.save(function(err){
               if(err) return console.error('Ticket Save Error: ' + err);
@@ -342,8 +339,14 @@ exports.forwardIncident = function(action, type, ticket, next){
       if(response.sys_id && response.display_value){
         switch(response.status){
           case 'inserted': case 'updated':
-            console.log(ticket.snValue + ' Ticket forwarded: ' + response.display_value);
+            ticket.forwardSnValue = response.display_value;
+
+            ticket.save(function(err) {
+              if (err) return console.error(err);
+              else console.log(ticket.snValue + ' Ticket forwarded: ' + response.display_value);
+            });
             break;
+          
           default:
             console.error('Invalid Status Error:');
             return console.error(response);
@@ -376,7 +379,7 @@ exports.syncTicketAux = function(client, id, action, type, tickets){
       else if(response.sys_id && response.display_value){
         switch(response.status){
           case 'inserted':
-            ticket.snSysId = response.sys_id; ticket.snValue = response.display_value;
+            ticket.snValue = response.display_value;
             ticket.save(function(err){
               if(err) return console.error(err);
               else{
@@ -385,10 +388,9 @@ exports.syncTicketAux = function(client, id, action, type, tickets){
             });
             break;
           case 'updated':
-            if(!ticket.snValue || ticket.snSysId){
-              ticket.snSysId = response.sys_id;
+            if(!ticket.snValue)
               ticket.snValue = response.display_value;
-            }
+            
             ticket.save(function(err){
               if(err) return console.error(err);
               else{

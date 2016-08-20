@@ -237,6 +237,7 @@ exports.reassign = function(req, res) {
 };
 
 exports.update = function(req, res) {
+  var setting = req.setting;
   var original = req.walkin, updated = req.body;
   var o_user = original.user, u_user = updated.user;
 
@@ -259,12 +260,14 @@ exports.update = function(req, res) {
   original = _.extend(original, updated);
   updated.lastUpdateTechnician = req.user;
   original.save(function(err) {
-    if(err) {
-      console.error(err);
-      return res.sendStatus(500);
+    if(err) { console.error(err); return res.sendStatus(500); }
+    else {
+      if(original.snValue && setting.servicenow_liveSync)
+        sn.syncIncident(sn.UPDATE, sn.WALKIN, original);
+      res.json(original);
     }
   });
-  res.json(original);
+
 };
 
 /*----- Instance status updates -----*/
@@ -384,6 +387,19 @@ exports.resolve = function(req, res) {
         });
       }
       res.sendStatus(200);
+    }
+  });
+};
+
+exports.forward = function(req, res) {
+  var walkin = req.walkin;
+  walkin = _.extend(walkin, { forward: true });
+
+  walkin.save(function(err) {
+    if(err) { console.error(err); return res.sendStatus(500);}
+    else {
+      sn.forwardIncident(sn.CREATE, sn.WALKIN, walkin,
+        function(walkin){ res.json(walkin); });
     }
   });
 };
