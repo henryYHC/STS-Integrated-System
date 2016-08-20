@@ -146,14 +146,14 @@
         <label class="label label-success" ng-show="data.walkin.snValue" style="margin: 0 1em;font-size: 12px;"
           tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="ServiceNow reference">SN: {{data.walkin.snValue}}</label>
 
-        <button class="btn btn-xs btn-warning" ng-show="!data.walkin.forwardSnValue" ng-click="forward()">Forward</button>
+        <button class="btn btn-xs btn-warning" ng-show="!data.walkin.forwardSnValue" ng-click="forward()" ng-show="user.isAdmin">Forward</button>
         <label class="label label-warning" ng-show="data.walkin.forwardSnValue" style="margin: 0 1em;font-size: 12px;"
           tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Forwarded reference">Fd: {{data.walkin.forwardSnValue}}</label>
       </span>
 
       <span style="color: green;" ng-show="success"><i class="fa fa-check-circle"></i> {{success}}&emsp;</span>
       <span style="color: red;" ng-show="error"><i class="fa fa-times-circle"></i> {{error}}&emsp;</span>
-      <button class="btn btn-primary" ng-click="update()"><i class="fa fa-save"></i>&nbsp;&nbsp;Save</button>
+      <button class="btn btn-primary" ng-click="update()" ng-show="user.isAdmin"><i class="fa fa-save"></i>&nbsp;&nbsp;Save</button>
       <button class="btn btn-default" ng-click="cancel()">Cancel</button>
     </div>
 </section>

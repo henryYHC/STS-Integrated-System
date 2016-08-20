@@ -58,7 +58,7 @@
         <td>{{walkin.user.username}}</td>
         <td>{{walkin.user.displayName}}</td>
         <td>{{walkin.deviceCategory}}</td>
-        <td>{{walkin.deviceInfo}}</td>
+        <td>{{ (walkin.deviceCategory==='Other'? walkin.deviceInfo : walkin.otherDevice) || 'N/A' }}</td>
         <td>{{walkin.status}}</td>
         <td>{{walkin.resolutionType || 'N/A'}}</td>
         <td>{{walkin.created | date : 'short'}}</td>
