@@ -74,7 +74,7 @@
       <!-- If the walk-in instance is 'In queue' -->
       <div style="text-align: center;" ng-show="selected && (selected.status === 'In queue' || selected.status === 'Duplicate')">
         <p style="font-size: 28px;"><b>{{selected.user.displayName}}</b></p>
-        <p style="font-size: 14px;">-- {{selected.deviceInfo? selected.deviceCategory : selected.deviceCategory + ' (' + selected.deviceInfo +')'}} --</p>
+        <p style="font-size: 14px;">-- {{!selected.deviceInfo? selected.deviceCategory : selected.deviceCategory + ' (' + selected.deviceInfo +')'}} --</p>
         <p style="font-size: 14px;"></p>
         <p style="font-size: 14px;"><i>{{selected.description}}</i></p>
         <hr/>
