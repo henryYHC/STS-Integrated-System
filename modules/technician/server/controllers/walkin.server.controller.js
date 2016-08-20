@@ -46,7 +46,7 @@ exports.getQueue = function(req, res) {
 
   Walkin.find({ isActive : true, liabilityAgreement : true,
     $or: [{ status: { $in : ['In queue', 'Work in progress', 'House call pending'] } },
-      { status : { $ne : 'Completed' }, created : { $gte: today } } ] })
+      { status : 'Completed', created : { $gte: today } } ] })
     .sort('created').populate(populate_options).exec(function(err, walkins) {
       if(err){ console.error(err); res.sendStatus(500); }
       else {
@@ -64,8 +64,8 @@ exports.getQueue = function(req, res) {
               break;
 
             case 'Completed':
-              count++;
-              sumTime += walkins[i].resolutionTime.getTime() - walkins[i].serviceStartTime.getTime();
+              sumTime += walkins[i].serviceStartTime.getTime() - walkins[i].created.getTime();
+              count++; break;
           }
         }
         queue = queue.concat(housecalls);
