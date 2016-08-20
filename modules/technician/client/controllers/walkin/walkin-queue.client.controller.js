@@ -219,8 +219,8 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
         subject = $scope.selected.otherResolution,
         resolution = $scope.selected.resolution;
 
-      if(((!$scope.selected.deviceInfo || $scope.selected.deviceInfo === 'N/A') && $scope.selected.deviceCategory !== 'Other')
-        || ($scope.selected.deviceCategory === 'Other' && !$scope.selected.otherDevice)){
+      if(((!$scope.selected.deviceInfo || $scope.selected.deviceInfo === 'N/A') &&
+        $scope.selected.deviceCategory !== 'Other') || ($scope.selected.deviceCategory === 'Other' && !$scope.selected.otherDevice)){
         $scope.error = 'Please specify the device information.';
         $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
       }
