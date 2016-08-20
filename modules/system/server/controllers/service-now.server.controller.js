@@ -413,7 +413,8 @@ exports.syncTicketAux = function(client, id, action, type, tickets){
 };
 
 exports.syncUnsyncedTickets = function(action, type){
-  var query = { isActive : true, status : { $in : ['Completed', 'Unresolved'] }, snValue : '' };
+  var today = new Date(Date.now()); today.setHours(0);
+  var query = { isActive : true, status : { $in : ['Completed', 'Unresolved'] }, snValue : '', created : { $gte: today } };
 
   async.waterfall([
     function(callback){
