@@ -248,6 +248,7 @@ var formulateMessageForwarding = function(ticket, soapAction){
   return {
     u_soap_action: soapAction,
     u_correlation_id: ticket.snValue,
+    u_time_of_incident: ticket.resolutionTime.getTime(),
     u_short_description: 'Unblock User\'s Account',
     u_customer: ticket.user.isWildcard? 'guest' : ticket.user.username,
     u_incident_state: 'Awaiting Assignment',
