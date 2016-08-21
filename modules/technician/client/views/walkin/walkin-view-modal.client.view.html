@@ -106,9 +106,9 @@
             <h4>Resolution detail</h4>
               <span class="pull-right" style="font-size: 14px; margin-top: 12px;">
                 <span class="fa fa-user" tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Resolved by"></span>
-                  {{data.walkin.serviceTechnician.displayName || 'N/A'}}&nbsp;&nbsp;
+                  {{data.walkin.resoluteTechnician.displayName || 'N/A'}}&nbsp;&nbsp;
                 <span class="fa fa-hourglass-end" tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Service ended at"></span>
-                  {{(data.walkin.serviceStartTime | date: 'short') || 'N/A'}}
+                  {{(data.walkin.resolutionTime | date: 'short') || 'N/A'}}
               </span>
           </div>
             <div class="form-horizontal">
@@ -134,7 +134,6 @@
                     <div class="col-sm-9" id="resolution" style="margin-top: 8px;">
                         <div editable-textarea="data.walkin.resolution" edit-disabled="!user.isAdmin" e-rows="2" e-cols="60">
                           {{data.walkin.resolution || 'None'}}</div>
-                        <h4 style="font-size: 14px;" class="pull-right" ng-show="data.walkin.resoluteTechnician">Resolved at {{(data.walkin.resolutionTime | date:'short') || 'N/A'}} by {{data.walkin.resoluteTechnician.displayName}}</h4>
                     </div>
                 </div>
             </div>
@@ -144,11 +143,11 @@
     <div class="modal-footer">
       <span class="pull-left">
         <button class="btn btn-xs btn-success" ng-show="!data.walkin.snValue" ng-click="servicenowSync()" ng-show="user.isAdmin">SN Sync</button>
-        <label class="label label-success" ng-show="data.walkin.snValue" style="margin: 0 1em;font-size: 12px;"
+        <label class="label label-success" ng-show="data.walkin.snValue" style="margin: 8px 1em 0 0;font-size: 12px;"
           tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="ServiceNow reference">SN: {{data.walkin.snValue}}</label>
 
         <button class="btn btn-xs btn-warning" ng-show="!data.walkin.forwardSnValue" ng-click="forward()" ng-show="user.isAdmin">Forward</button>
-        <label class="label label-warning" ng-show="data.walkin.forwardSnValue" style="margin: 0 1em;font-size: 12px;"
+        <label class="label label-warning" ng-show="data.walkin.forwardSnValue" style="margin: 8px 0 0 0;font-size: 12px;"
           tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Forwarded reference">Fd: {{data.walkin.forwardSnValue}}</label>
       </span>
 
