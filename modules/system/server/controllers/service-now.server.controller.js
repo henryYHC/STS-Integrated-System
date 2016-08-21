@@ -9,7 +9,7 @@ var fs = require('fs'),
   Checkin = mongoose.model('Checkin');
 
 // Get credentials (& reformat wsdl url)
-var credentialFilePath = __dirname + '/../../../../config/credentials/ServiceNow_Test.json',
+var credentialFilePath = __dirname + '/../../../../config/credentials/ServiceNow.json',
   credentialFile = fs.readFileSync(credentialFilePath, 'utf8'),
   credential = JSON.parse(credentialFile);
 
