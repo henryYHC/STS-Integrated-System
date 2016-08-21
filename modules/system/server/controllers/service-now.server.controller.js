@@ -9,7 +9,7 @@ var fs = require('fs'),
   Checkin = mongoose.model('Checkin');
 
 // Get credentials (& reformat wsdl url)
-var credentialFilePath = __dirname + '/../../../../config/credentials/ServiceNow.json',
+var credentialFilePath = __dirname + '/../../../../config/credentials/ServiceNow_Test.json',
   credentialFile = fs.readFileSync(credentialFilePath, 'utf8'),
   credential = JSON.parse(credentialFile);
 
@@ -271,8 +271,8 @@ exports.WALKIN = 'WALKIN';	exports.CHECKIN = 'CHECKIN';
 exports.syncIncident = function(action, type, ticket, next){
   var data;
   switch(type){
-    case this.WALKIN: data = formulateWalkin(ticket, action); break;
-    case this.CHECKIN: data = formulateCheckin(ticket, action); break;
+    case this.WALKIN: data = formulateWalkin(ticket, action); console.log('Syncing Walk-id ID: ' + ticket._id); break;
+    case this.CHECKIN: data = formulateCheckin(ticket, action); console.log('Syncing Check-id ID: ' + ticket._id); break;
     default: return console.error('Invalid ticket type: ' + type);
   }
 
@@ -291,7 +291,7 @@ exports.syncIncident = function(action, type, ticket, next){
             ticket.save(function(err){
               if(err) return console.error(err);
               else{
-                console.log('INFO: ' + type + ' ' + ticket.snValue + ' inserted.');
+                console.log('>> INFO: ' + type + ' ' + ticket.snValue + ' inserted.');
               }
             });
             break;
@@ -302,7 +302,7 @@ exports.syncIncident = function(action, type, ticket, next){
             ticket.save(function(err){
               if(err) return console.error('Ticket Save Error: ' + err);
               else{
-                console.log('INFO: ' + type + ' ' + ticket.snValue + ' updated.');
+                console.log('>> INFO: ' + type + ' ' + ticket.snValue + ' updated.');
               }
             });
             break;
@@ -343,7 +343,7 @@ exports.forwardIncident = function(action, type, ticket, next){
 
             ticket.save(function(err) {
               if (err) return console.error(err);
-              else console.log(ticket.snValue + ' Ticket forwarded: ' + response.display_value);
+              else console.log(' >>' + ticket.snValue + ' Ticket forwarded: ' + response.display_value);
             });
             break;
           

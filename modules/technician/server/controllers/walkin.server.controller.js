@@ -10,9 +10,9 @@ var fs = require('fs'),
 
 var populate_options = [
   { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified isWildcard' },
-  { path : 'lastUpdateTechnician', model : 'User', select : 'displayName username' },
-  { path : 'serviceTechnician', model : 'User', select : 'displayName username' },
-  { path : 'resoluteTechnician', model : 'User', select : 'displayName username' }
+  { path : 'lastUpdateTechnician', model : 'User', select : 'firstName lastName displayName username' },
+  { path : 'serviceTechnician', model : 'User', select : 'firstName lastName displayName username' },
+  { path : 'resoluteTechnician', model : 'User', select : 'firstName lastName displayName username' }
 ];
 
 var resolution_templates_path = 'config/templates/walkin/resolution_templates.json',
@@ -214,7 +214,10 @@ exports.duplicate = function(req, res) {
 
   duplicate.save(function(err) {
     if(err) { console.error(err); return res.sendStatus(500); }
-    else res.json(duplicate);
+    else {
+      console.log('Duplicate Walk-in ID: ' + original._id + ' -> ' + duplicate._id);
+      res.json(duplicate);
+    }
   });
 };
 
@@ -255,7 +258,9 @@ exports.update = function(req, res) {
 
   // Update walk-in information
   original = _.extend(original, updated);
-  updated.lastUpdateTechnician = req.user;
+  original.lastUpdateTechnician = req.user;
+
+  console.log('Update Walk-in ID: ' + original._id);
   original.save(function(err) {
     if(err) { console.error(err); return res.sendStatus(500); }
     else {
@@ -275,19 +280,20 @@ exports.noshow = function(req, res) {
   walkin = _.extend(walkin, {
     resoluteTechnician : req.user,
     lastUpdateTechnician: req.user,
-    status : 'Unresolved',
-    resolution: 'Customer no show.'
+    status : 'Unresolved', resolution: 'Customer no show.'
   });
   if(!walkin.serviceTechnician || !walkin.serviceStartTime) {
     walkin.serviceTechnician = req.user; walkin.serviceStartTime = Date.now();
   }
   if(!walkin.resolutionTime) walkin.resolutionTime = Date.now();
 
+  console.log('Set No Show Walk-in ID: ' + walkin._id);
   walkin.save(function(err) {
     if(err) { console.error(err); return res.sendStatus(500); }
     else {
       if(setting.servicenow_liveSync)
         sn.syncIncident(sn.CREATE, sn.WALKIN, walkin);
+      console.log(walkin);
       res.sendStatus(200);
     }
   });
@@ -299,8 +305,7 @@ exports.notEligible = function(req, res) {
   walkin = _.extend(walkin, {
     resoluteTechnician : req.user,
     lastUpdateTechnician: req.user,
-    status : 'Unresolved',
-    resolution: 'Customer is not eligible for service.'
+    status : 'Unresolved', resolution: 'Customer is not eligible for service.'
   });
   if(!walkin.serviceTechnician || !walkin.serviceStartTime) {
     walkin.serviceTechnician = req.user; walkin.serviceStartTime = Date.now();
@@ -325,37 +330,17 @@ exports.notEligible = function(req, res) {
   });
 };
 
-exports.toHouseCall = function(req, res) {
-  var original = req.walkin, updated = req.body.walkin;
-
-  original = _.extend(original, updated);
-  original = _.extend(original, {
-    lastUpdateTechnician: req.user,
-    status : 'Unresolved'
-  });
-  if(!original.resolutionTime)
-    original.resolutionTime = Date.now();
-
-  original.save(function(err) {
-    if(err) {
-      console.error(err);
-      return res.sendStatus(500);
-    }
-  });
-  res.sendStatus(200);
-};
-
 exports.beginService = function(req, res) {
   var walkin = req.walkin;
 
   walkin = _.extend(walkin, {
     status: 'Work in progress',
+    lastUpdateTechnician: req.user,
     serviceTechnician: req.user,
-    lastUpdateTechnician: req.user
+    serviceStartTime: Date.now()
   });
-  if(!walkin.serviceStartTime)
-    walkin.serviceStartTime = Date.now();
 
+  console.log('Begin Service Walk-in ID: ' + walkin._id);
   walkin.save(function(err, walkin) {
     if(err) {
       console.error(err);
@@ -376,6 +361,7 @@ exports.resolve = function(req, res) {
   });
   walkin = _.extend(walkin, resolved);
 
+  console.log('Resolved Walk-in ID: ' + walkin._id);
   walkin.save(function(err) {
     if(err) {
       console.error(err);
@@ -387,6 +373,7 @@ exports.resolve = function(req, res) {
           if(walkin.forward) sn.forwardIncident(sn.CREATE, sn.WALKIN, response);
         });
       }
+      console.log(walkin);
       res.sendStatus(200);
     }
   });
@@ -396,6 +383,7 @@ exports.forward = function(req, res) {
   var walkin = req.walkin;
   walkin = _.extend(walkin, { forward: true });
 
+  console.log('Forward Walk-in ID: ' + walkin._id);
   walkin.save(function(err) {
     if(err) { console.error(err); return res.sendStatus(500);}
     else {
@@ -410,8 +398,6 @@ exports.walkinById = function(req, res, next, id) {
   Walkin.findOne({ _id : id }).populate(populate_options)
     .exec(function(err, walkin) {
       if(err) console.error(err);
-      else {
-        req.walkin = walkin; next();
-      }
+      else { req.walkin = walkin; next(); }
     });
 };
