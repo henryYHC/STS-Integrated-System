@@ -35,6 +35,12 @@ angular.module('system').controller('WalkinViewModalController', ['$scope', '$ui
       $uibModalInstance.close(false);
     };
 
+    $scope.servicenowSync = function() {
+      $http.post('/api/technician/walkin/servicenowSync/'+$scope.data.walkin._id)
+        .error(function(err) { $scope.error = err; })
+        .success(function(walkin) { $scope.data.walkin = walkin; });
+    };
+
     $scope.forward = function(){
       $http.post('/api/technician/walkin/forward/'+$scope.data.walkin._id)
         .error(function() { $scope.error = 'Forward failed.'; })

@@ -237,7 +237,6 @@ exports.reassign = function(req, res) {
 };
 
 exports.update = function(req, res) {
-  var setting = req.setting;
   var original = req.walkin, updated = req.body;
   var o_user = original.user, u_user = updated.user;
 
@@ -263,13 +262,21 @@ exports.update = function(req, res) {
   console.log('Update Walk-in ID: ' + original._id);
   original.save(function(err) {
     if(err) { console.error(err); return res.sendStatus(500); }
-    else {
-      if(original.snValue && setting.servicenow_liveSync)
-        sn.syncIncident(sn.UPDATE, sn.WALKIN, original);
-      res.json(original);
-    }
+    else res.json(original);
   });
+};
 
+exports.syncTicket = function(req, res) {
+  var setting = req.setting, walkin = req.walkin;
+  if(setting.servicenow_liveSync) {
+    var action = walkin.snValue? sn.UPDATE : sn.CREATE;
+
+    sn.syncIncident(action, sn.WALKIN, walkin, function(walkin){
+      if(walkin) res.json(walkin);
+      else res.sendStatus(500);
+    });
+  }
+  else res.status(400).send('ServiceNow Sync is disabled.');
 };
 
 /*----- Instance status updates -----*/

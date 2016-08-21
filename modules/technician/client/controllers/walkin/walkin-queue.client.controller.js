@@ -3,6 +3,7 @@
 angular.module('technician').controller('WalkinQueueController', ['$scope', '$http', 'Authentication', 'ModalLauncher', '$timeout', '$state', '$interval', '$rootScope',
   function ($scope, $http, Authentication, ModalLauncher, $timeout, $state, $interval, $rootScope) {
     var user = Authentication.getUser();
+    var checkedTasks = [], checkedTasksOffset = 0;
 
     var option2Obj = function(val){
       return { text : val, value : val };
@@ -63,6 +64,9 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
 
       if(!selected.resolutionType)
         $scope.selected.resolutionType = $scope.resolutions_options.default;
+
+      // Clear cache for template task array
+      checkedTasks = []; checkedTasksOffset = 0;
 
       // Force refresh select2 selection box (Work around)
       $timeout(function(){
@@ -271,7 +275,6 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
     };
 
     // Watch if resolution task clicked
-    var checkedTasks = [], checkedTasksOffset = 0;
     $scope.onResolutionTaskClick = function(task) {
       var idx = checkedTasks.indexOf(task);
       var resolution = $scope.selected.resolution;

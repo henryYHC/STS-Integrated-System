@@ -19,7 +19,10 @@ module.exports = function (app) {
     .get(walkin.getQueue);
 
   app.route('/api/technician/walkin/update/:walkinId')
-    .put(system.setting, walkin.update);
+    .put( walkin.update);
+
+  app.route('/api/technician/walkin/servicenowSync/:walkinId')
+    .post(system.setting, walkin.syncTicket);
   
   app.route('/api/technician/walkin/noshow/:walkinId')
     .put(system.setting, walkin.noshow);
