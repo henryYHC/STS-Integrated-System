@@ -134,53 +134,15 @@ var validateWithOnlineDirectory = function(setting, username, result, callback){
 var validateWithUserEntryDatabase = function(setting, username, result, callback){
   result.entry = null;
 
-  if(setting.user_validation_method !== 'Manual'){
-    if(result.validated && setting.user_validation_method === 'Online Directory' && result.directory){
-      // update user entry using online directory
-      UserEntry.findOne({ username : username }, function(err, entry){
-        if(err) return callback(err, setting, username, result);
-
-        if(entry){
-          entry.type = result.directory.Type;
-          entry.isActive = result.isValid;
-          entry.save(function(err, entry){
-            result.entry = entry;
-            callback(err, setting, username, result);
-          });
-        }
-        else{
-          var idx, firstName = result.directory.Name, lastName = '';
-          if((idx = firstName.lastIndexOf(' ')) > 0){
-            lastName = firstName.substring(idx+1);
-            firstName = firstName.substring(0, idx);
-          }
-
-          entry = new UserEntry({
-            username: username,
-            firstName: firstName,
-            lastName: lastName,
-            type: result.directory.Type,
-            isActive: result.isValid
-          });
-          entry.save(function(err, entry){
-            result.entry = entry;
-            callback(err, setting, username, result);
-          });
-        }
-      });
-    }
-    else if(!result.validated){
-      UserEntry.findOne({ username : username }, function(err, entry){
-        if(entry){
-          result.validated = true;
-          if(!result.level) result.level = 'User Entry';
-          result.isValid = entry.type.indexOf('student') >= 0;
-        }
-        result.entry = entry;
-        callback(null, setting, username, result);
-      });
-    }
-    else callback(null, setting, username, result);
+  if(!result.validated && setting.user_validation_method !== 'Manual'){
+    UserEntry.findOne({ username : username }, function(err, entry){
+      if(entry){
+        result.validated = result.isValid = true;
+        if(!result.level) result.level = 'User Entry';
+      }
+      result.entry = entry;
+      callback(null, setting, username, result);
+    });
   }
   else callback(null, setting, username, result);
 };
@@ -204,8 +166,8 @@ exports.validateUsername = function(username, callback){
       async.apply(retrieveSystemSetting, username.toLowerCase()),
       validateWithWildcardPrefix,
       validateWithUserDatabase,
-      validateWithOnlineDirectory,
       validateWithUserEntryDatabase,
+      validateWithOnlineDirectory,
       manualValidation
     ],
   function(err, username, result){
