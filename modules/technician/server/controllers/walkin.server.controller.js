@@ -293,7 +293,6 @@ exports.noshow = function(req, res) {
     else {
       if(setting.servicenow_liveSync)
         sn.syncIncident(sn.CREATE, sn.WALKIN, walkin);
-      console.log(walkin);
       res.sendStatus(200);
     }
   });
@@ -373,7 +372,6 @@ exports.resolve = function(req, res) {
           if(walkin.forward) sn.forwardIncident(sn.CREATE, sn.WALKIN, response);
         });
       }
-      console.log(walkin);
       res.sendStatus(200);
     }
   });
