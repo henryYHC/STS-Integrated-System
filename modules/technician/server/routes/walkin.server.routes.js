@@ -6,60 +6,69 @@ module.exports = function (app) {
   var users = require('../../../users/server/controllers/users.server.controller.js');
   var walkin = require('../controllers/walkin.server.controller.js');
 
-  app.route('/api/technician/walkin/setting')
-    .get(system.setting, walkin.getWalkinSetting);
-
-  app.route('/api/technician/walkin/view/:walkinId')
-    .get(walkin.view);
-  
+  // Setting functions
   app.route('/api/technician/walkin/create')
     .post(walkin.create);
 
+  app.route('/api/technician/walkin/setting')
+    .get(system.setting, walkin.getWalkinSetting);
+
+
+  // Rendering functions
+  app.route('/api/technician/walkin/view/:walkinId')
+    .get(users.hasTechnicianPermission, walkin.view);
+
   app.route('/api/technician/walkin/queue')
-    .get(walkin.getQueue);
+    .get(users.hasTechnicianPermission, walkin.getQueue);
 
-  app.route('/api/technician/walkin/update/:walkinId')
-    .put(walkin.update);
-
-  app.route('/api/technician/walkin/servicenowSync/:walkinId')
-    .post(system.setting, walkin.syncTicket);
-  
-  app.route('/api/technician/walkin/noshow/:walkinId')
-    .put(system.setting, walkin.noshow);
-
-  app.route('/api/technician/walkin/notEligible/:walkinId')
-    .put(system.setting, walkin.notEligible);
-
-  app.route('/api/technician/walkin/beginService/:walkinId')
-    .put(walkin.beginService);
-
-  app.route('/api/technician/walkin/duplicate/:walkinId')
-    .post(walkin.duplicate);
-  
-  app.route('/api/technician/walkin/reassign/:walkinId/:username')
-    .post(walkin.reassign);
-
-  app.route('/api/technician/walkin/resolve/:walkinId')
-    .put(system.setting, walkin.resolve);
-
-  app.route('/api/technician/walkin/forward/:walkinId')
-    .post(walkin.forward);
-  
+  // Searching function
   app.route('/api/technician/walkin/previous/:walkinId/:username')
-    .get(walkin.previous);
-  
+    .get(users.hasTechnicianPermission, walkin.previous);
+
   app.route('/api/technician/walkin/query/today')
-    .get(walkin.today);
-  
+    .get(users.hasTechnicianPermission, walkin.today);
+
   app.route('/api/technician/walkin/query/month')
-    .get(walkin.month);
-  
+    .get(users.hasTechnicianPermission, walkin.month);
+
   app.route('/api/technician/walkin/query/unresolved')
-    .get(walkin.unresolved);
+    .get(users.hasTechnicianPermission, walkin.unresolved);
 
   app.route('/api/technician/walkin/query')
-    .post(walkin.query);
+    .post(users.hasTechnicianPermission, walkin.query);
 
+  // Updating functions
+  app.route('/api/technician/walkin/beginService/:walkinId')
+    .put(users.hasTechnicianPermission, walkin.beginService);
+
+  app.route('/api/technician/walkin/noshow/:walkinId')
+    .put(users.hasTechnicianPermission, system.setting, walkin.noshow);
+
+  app.route('/api/technician/walkin/notEligible/:walkinId')
+    .put(users.hasTechnicianPermission, system.setting, walkin.notEligible);
+
+  app.route('/api/technician/walkin/duplicate/:walkinId')
+    .post(users.hasTechnicianPermission, walkin.duplicate);
+
+  app.route('/api/technician/walkin/reassign/:walkinId/:username')
+    .post(users.hasTechnicianPermission, walkin.reassign);
+
+  app.route('/api/technician/walkin/resolve/:walkinId')
+    .put(users.hasTechnicianPermission, system.setting, walkin.resolve);
+
+
+  // Admin overwrite functions
+  app.route('/api/technician/walkin/update/:walkinId')
+    .put(users.hasAdminPermission, walkin.update);
+
+  app.route('/api/technician/walkin/servicenowSync/:walkinId')
+    .post(users.hasAdminPermission, system.setting, walkin.syncTicket);
+
+  app.route('/api/technician/walkin/forward/:walkinId')
+    .post(users.hasAdminPermission, walkin.forward);
+  
+
+  // Middlewares
   app.param('walkinId', walkin.walkinById);
   app.param('username', users.userByUsername);
 };

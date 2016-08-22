@@ -14,40 +14,40 @@ module.exports = function (app) {
     .get(system.setting, checkin.getCheckinQueueSetting);
 
   app.route('/api/technician/checkin/hasTransferred/:walkinId')
-    .get(checkin.hasTransferred);
+    .get(users.hasTechnicianPermission, checkin.hasTransferred);
 
   app.route('/api/technician/checkin/transfer/:walkinId')
-    .post(system.setting, checkin.create);
+    .post(users.hasTechnicianPermission, system.setting, checkin.create);
 
   app.route('/api/technician/checkin/update/:checkinId')
-    .put(checkin.update);
+    .put(users.hasTechnicianPermission, checkin.update);
 
   app.route('/api/technician/checkin/changeStatus/:checkinId')
-    .put(checkin.changeStatus);
+    .put(users.hasTechnicianPermission, checkin.changeStatus);
 
   app.route('/api/technician/checkin/checkout/:checkinId')
-    .put(system.setting, checkin.checkout);
+    .put(users.hasTechnicianPermission, system.setting, checkin.checkout);
 
   app.route('/api/technician/checkin/view/:checkinId')
-    .get(checkin.view);
+    .get(users.hasTechnicianPermission, checkin.view);
 
   app.route('/api/technician/checkin/queue')
-    .get(checkin.queue);
+    .get(users.hasTechnicianPermission, checkin.queue);
 
   app.route('/api/technician/checkin/logService/:checkinId')
-    .post(checkin.logService);
+    .post(users.hasTechnicianPermission, checkin.logService);
 
   app.route('/api/technician/checkin/query/month')
-    .get(checkin.month);
+    .get(users.hasTechnicianPermission, checkin.month);
 
   app.route('/api/technician/checkin/query/incomplete')
-    .get(checkin.incomplete);
+    .get(users.hasTechnicianPermission, checkin.incomplete);
 
   app.route('/api/technician/checkin/query')
-    .post(checkin.query);
+    .post(users.hasTechnicianPermission, checkin.query);
   
   app.route('/api/technician/checkin/print/label/:checkinId')
-    .post(checkin.printLabel);
+    .post(users.hasTechnicianPermission, checkin.printLabel);
 
   app.param('walkinId', walkin.walkinById);
   app.param('checkinId', checkin.checkinById);
