@@ -51,7 +51,7 @@ exports.getQueue = function(req, res) {
       if(err){ console.error(err); res.sendStatus(500); }
       else {
         var queue = [], housecalls = [];
-        var count = 0, sumTime = 0;
+        var count = 0, sumWaitTime = 0, sumWorkTime = 0;
 
         for(var i in walkins) {
           switch (walkins[i].status) {
@@ -64,14 +64,16 @@ exports.getQueue = function(req, res) {
               break;
 
             case 'Completed':
-              sumTime += walkins[i].serviceStartTime.getTime() - walkins[i].created.getTime();
+              sumWaitTime += walkins[i].serviceStartTime.getTime() - walkins[i].created.getTime();
+              sumWorkTime += walkins[i].resolutionTime.getTime() - walkins[i].serviceStartTime.getTime();
               count++; break;
           }
         }
         queue = queue.concat(housecalls);
-        var avgTime = count !== 0? Math.round(sumTime / 60000.0 / count * 100) / 100.0 : 0;
+        var avgWaitTime = count !== 0? Math.round(sumWaitTime / 60000.0 / count * 100) / 100.0 : 0,
+          avgWorkTime = count !== 0? Math.round(sumWorkTime / 60000.0 / count * 100) / 100.0 : 0;
 
-        res.json({ walkins : queue, avgWaitTime : avgTime });
+        res.json({ walkins : queue, avgWaitTime : avgWaitTime, avgWorkTime : avgWorkTime });
       }
     });
 };

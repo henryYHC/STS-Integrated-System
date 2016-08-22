@@ -59,9 +59,9 @@ var
 // Module variables
 exports.jobs = [];
 exports.TASKS = {
-  'Walk-in Survey Broadcast @ 8:15pm' : WalkinSurveyBroadcast,
-  'Check-in Survey Broadcast @ 8:15pm' : CheckinSurveyBroadcast,
-  'ServiceNow Batch Sync @ 8:00pm' : ServiceNowBatchSync
+  'Walk-in Survey Broadcast @ 6:15pm' : WalkinSurveyBroadcast,
+  'Check-in Survey Broadcast @ 6:15pm' : CheckinSurveyBroadcast,
+  'ServiceNow Batch Sync @ 6:00pm' : ServiceNowBatchSync
 };
 
 exports.init = function(setting, callback){

@@ -3,15 +3,124 @@
 /**
  * Module dependencies
  */
-var
-  mongoose = require('mongoose'),
-  _ = require('lodash'),
-  http = require('http-request'),
+var _ = require('lodash'),
   async = require('async'),
+  http = require('http-request'),
+  mongoose = require('mongoose'),
   User = mongoose.model('User'),
   UserEntry = mongoose.model('UserEntry'),
   KeyValueList = mongoose.model('KeyValueList'),
   SystemSetting = mongoose.model('SystemSetting');
+
+// Validator body
+var retrieveSystemSetting = function(username, callback){
+  SystemSetting.findOne({}, '-_id user_validation_method user_wildcard_prefixes')
+    .exec(function(err, setting){ callback(err, setting, username, { validated: false }); });
+};
+
+var validateWithWildcardPrefix = function(setting, username, result, callback){
+  if(!result.validated){
+    for(var i = 0; i < setting.user_wildcard_prefixes.length; i++){
+      if(username.startsWith(setting.user_wildcard_prefixes[i])){
+        result.validated = true; result.isValid = true;
+        if(!result.level) result.level = 'Wildcard';
+      }
+    }
+  }
+  callback(null, setting, username, result);
+};
+
+var validateWithUserDatabase = function(setting, username, result, callback){
+  result.user = null;
+
+  User.findOne({ username : username }, '-password -roles -salt -profileImageURL -__v -created -updated',
+    function(err, user){
+      if(user){
+        result.user = user; result.validated = true; result.isValid = user.isActive;
+        if(!result.level) result.level = 'User';
+
+        callback(err, setting, username, result);
+      }
+      else callback(err, setting, username, result);
+    });
+};
+
+var validateWithUserEntryDatabase = function(setting, username, result, callback){
+  result.entry = null;
+
+  if(!result.validated){
+    UserEntry.findOne({ username : username }, function(err, entry){
+      if(entry){
+        result.validated = result.isValid = true;
+        if(!result.level) result.level = 'User Entry';
+      }
+      result.entry = entry;
+      callback(null, setting, username, result);
+    });
+  }
+  else callback(null, setting, username, result);
+};
+
+var manualValidation = function(setting, username, result, callback){
+  if(!result.validated){
+    result.validated = result.isValid = true;
+    if(!result.level) result.level = 'Manual';
+  }
+  callback(null, username, result);
+};
+
+exports.validateUsername = function(username, callback){
+  async.waterfall(
+    [
+      async.apply(retrieveSystemSetting, username.toLowerCase()),
+      validateWithWildcardPrefix,
+      validateWithUserDatabase,
+      validateWithUserEntryDatabase,
+      manualValidation
+    ],
+  function(err, username, result){
+    if(err){
+      console.error(err);
+      callback(null);
+    }
+    callback(result);
+  });
+};
+
+exports.validate = function(req, res){
+  var username = String(req.params.username);
+  if(username){
+    exports.validateUsername(username, function(result){
+      res.json(result);
+    });
+  }
+  else res.status(400).send('Invalid or unspecified username.');
+};
+
+
+/* Archive code
+
+var validateWithOnlineDirectory = function(setting, username, result, callback){
+  result.directory = null;
+
+  if(!result.validated){
+    http.post(getOnlineDirectoryURL(username), function(err, res){
+      var directory = null;
+      if(res && res.buffer){
+        directory = parseOnlineDirectoryResult(res.buffer.toString());
+
+        if(directory && directory.Type){
+          result.validated = true;
+          if(!result.level) result.level = 'Online Directory';
+          result.isValid = directory.Type.toLocaleLowerCase().indexOf('student') >= 0;
+        }
+      }
+      result.directory = directory;
+      callback(err, setting, username, result);
+    });
+  }
+  else callback(null, setting, username, result);
+};
 
 // Online directory email
 var URL_EmoryOnlineDirectory = 'http://directory.service.emory.edu/index.cfm';
@@ -53,138 +162,4 @@ var parseOnlineDirectoryResult = function(html){
   return null;
 };
 
-// Time spans
-var four_month = 1000*60*60*24*30*4;
-
-// Validator body
-var retrieveSystemSetting = function(username, callback){
-  SystemSetting.findOne({}, '-_id user_validation_method user_wildcard_prefixes')
-    .exec(function(err, setting){ callback(err, setting, username, { validated: false }); });
-};
-
-var validateWithWildcardPrefix = function(setting, username, result, callback){
-  if(!result.validated){
-    for(var i = 0; i < setting.user_wildcard_prefixes.length; i++){
-      if(username.startsWith(setting.user_wildcard_prefixes[i])){
-        result.validated = true; result.isValid = true;
-        if(!result.level) result.level = 'Wildcard';
-      }
-    }
-  }
-  callback(null, setting, username, result);
-};
-
-var validateWithUserDatabase = function(setting, username, result, callback){
-  result.user = null;
-
-  User.findOne({ username : username }, '-password -roles -salt -profileImageURL -__v -created -updated',
-    function(err, user){
-      if(user){
-        result.user = user; result.validated = true; result.isValid = user.isActive;
-        if(!result.level) result.level = 'User';
-
-        var timestamp = (user.lastVisit)? user.lastVisit : (user.updated)? user.updated : user.created;
-        var bound = new Date().getTime() - four_month;
-
-        if(timestamp.getTime() <= bound){
-          http.post(getOnlineDirectoryURL(username), function(err, res){
-            if(res && res.buffer) {
-              var directory = parseOnlineDirectoryResult(res.buffer.toString());
-              if (directory){
-                if (directory.Type)
-                  user.isActive = user.verified = directory.Type.toLocaleLowerCase().indexOf('student') >= 0;
-              }
-              else user.isActive = user.verified = false;
-
-              user.save(function(err){
-                callback(err, setting, username, result);
-              });
-            }
-            else callback(err, setting, username, result);
-          });
-        }
-        else callback(err, setting, username, result);
-      }
-      else callback(err, setting, username, result);
-    });
-};
-
-var validateWithOnlineDirectory = function(setting, username, result, callback){
-  result.directory = null;
-
-  if(!result.validated && setting.user_validation_method === 'Online Directory'){
-    http.post(getOnlineDirectoryURL(username), function(err, res){
-      var directory = null;
-      if(res && res.buffer){
-        directory = parseOnlineDirectoryResult(res.buffer.toString());
-
-        if(directory && directory.Type){
-          result.validated = true;
-          if(!result.level) result.level = 'Online Directory';
-          result.isValid = directory.Type.toLocaleLowerCase().indexOf('student') >= 0;
-        }
-      }
-      result.directory = directory;
-      callback(err, setting, username, result);
-    });
-  }
-  else callback(null, setting, username, result);
-};
-
-var validateWithUserEntryDatabase = function(setting, username, result, callback){
-  result.entry = null;
-
-  if(!result.validated && setting.user_validation_method !== 'Manual'){
-    UserEntry.findOne({ username : username }, function(err, entry){
-      if(entry){
-        result.validated = result.isValid = true;
-        if(!result.level) result.level = 'User Entry';
-      }
-      result.entry = entry;
-      callback(null, setting, username, result);
-    });
-  }
-  else callback(null, setting, username, result);
-};
-
-var manualValidation = function(setting, username, result, callback){
-  if(!result.validated){
-    result.validated = true;
-
-    if (setting.user_validation_method === 'Manual') {
-      result.isValid = true;
-      if(!result.level) result.level = 'Manual';
-    }
-    else result.isValid = false;
-  }
-  callback(null, username, result);
-};
-
-exports.validateUsername = function(username, callback){
-  async.waterfall(
-    [
-      async.apply(retrieveSystemSetting, username.toLowerCase()),
-      validateWithWildcardPrefix,
-      validateWithUserDatabase,
-      validateWithUserEntryDatabase,
-      validateWithOnlineDirectory,
-      manualValidation
-    ],
-  function(err, username, result){
-    if(err){
-      console.error(err);
-      callback(null);
-    }
-    callback(result);
-  });
-};
-
-exports.validate = function(req, res){
-  var username = String(req.params.username);
-  if(username){
-    exports.validateUsername(username, function(result){
-      res.json(result);
-    });
-  }
-  else res.status(400).send('Invalid or unspecified username.');
-};
+*/

@@ -36,6 +36,11 @@ var popOpt_checkin = [
 
 var popOpt_checkin_walkin = [{ path : 'walkin.resoluteTechnician', model : 'User', select : 'username displayName' }];
 
+var getEscapedXMLCharacters = function(string) {
+  return string.replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+};
+
 var getWalkinTemplateObj = function(walkin){
   var subject = 'STS: ', os = walkin.deviceInfo;
   var obj = { short_description: '', category1 : '', category2 : '', category3 : '' };
@@ -177,8 +182,8 @@ var formulateWalkin = function(walkin, soapAction){
     u_problem : 'Problem:\n' + walkin.description,
     u_liability_agreement : walkin.liabilityAgreement,
     u_short_description : template.short_description,
-    u_resolution : walkin.resolution,
-    u_work_note : walkin.workNote? 'Work Notes:\n' + walkin.workNote : '',
+    u_resolution : getEscapedXMLCharacters(walkin.resolution),
+    u_work_note : walkin.workNote? getEscapedXMLCharacters(walkin.workNote) : '',
 
     // Assignment info
     u_assigned_to : walkin.serviceTechnician.username,
@@ -224,11 +229,11 @@ var formulateCheckin = function(checkin, soapAction){
     u_record_type:  (template.type)? template.type :'Incident',
     u_reported_source :  'Tech Initiated',
     u_customer : checkin.user.isWildcard? 'guest' : checkin.user.username,
-    u_problem : checkin.preDiagnostic,
+    u_problem : getEscapedXMLCharacters(checkin.preDiagnostic),
     u_liability_agreement : checkin.liabilitySig !== '',
     u_short_description : template.short_description,
     u_resolution : 'Please see work notes for detailed description of resolution.',
-    u_work_note : worknote,
+    u_work_note : getEscapedXMLCharacters(worknote),
 
     // Assignment info
     u_assigned_to : checkin.walkin.resoluteTechnician.username,

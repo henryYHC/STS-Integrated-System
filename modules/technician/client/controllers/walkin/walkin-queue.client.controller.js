@@ -54,6 +54,8 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
       $http.get('/api/technician/walkin/queue').success(function(result) {
         $scope.walkins = result.walkins;
         $scope.avgWaitTime = result.avgWaitTime;
+        $scope.avgWorkTime = result.avgWorkTime;
+
         if(callback) callback(result.walkins);
       });
     };
