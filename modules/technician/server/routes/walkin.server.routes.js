@@ -38,6 +38,9 @@ module.exports = function (app) {
     .post(users.hasTechnicianPermission, walkin.query);
 
   // Updating functions
+  app.route('/api/technician/walkin/update/:walkinId')
+    .put(users.hasTechnicianPermission, walkin.update);
+  
   app.route('/api/technician/walkin/beginService/:walkinId')
     .put(users.hasTechnicianPermission, walkin.beginService);
 
@@ -58,9 +61,6 @@ module.exports = function (app) {
 
 
   // Admin overwrite functions
-  app.route('/api/technician/walkin/update/:walkinId')
-    .put(users.hasAdminPermission, walkin.update);
-
   app.route('/api/technician/walkin/servicenowSync/:walkinId')
     .post(users.hasAdminPermission, system.setting, walkin.syncTicket);
 
