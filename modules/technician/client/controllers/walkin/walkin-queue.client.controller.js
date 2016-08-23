@@ -189,8 +189,7 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
 
           for(var idx in $scope.walkins)
             if($scope.walkins[idx]._id === $scope.selected._id) {
-              $scope.walkins.splice(idx, 1);
-              $scope.selected = undefined;
+              $scope.walkins[idx] = $scope.selected = walkin;
               break;
             }
         });
