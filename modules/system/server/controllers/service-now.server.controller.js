@@ -263,7 +263,7 @@ var formulateMessageForwarding = function(ticket, soapAction){
     u_configuration_item: 'Office 365',
     u_suppress_notification: 'No',
     u_urgency: '4 - Low',
-    u_assignment_group: 'LITS: Messaging - Tier 3',
+    u_assignment_group: 'LITS: Messaging- Tier 3',
     u_category_1: 'Communications &amp; Messaging',
     u_category_2: 'Mailbox',
     u_category_3: 'Restore',
