@@ -53,9 +53,9 @@
       <!--<p>Customer's device has been inflected with virus and thus flagged by Emory University. Please run McAfee to remove the threats</p>-->
     <!--</div>-->
     <!-- Warning messages -->
-    <div class="alert alert-warning alert-dismissible fade in" role="alert" ng-show="selected && !selected.user.verified">
+    <div class="alert alert-warning alert-dismissible fade in" role="alert" ng-show="selected && selected.message && selected.status === 'In queue'">
       <div class="pull-right" style="margin: 0 -15px 0 0;">
-        <button type="button" class="btn btn-sm btn-primary" ng-click="selected.user.verified=true; update();">Verified</button>
+        <button type="button" class="btn btn-sm btn-primary" ng-click="selected.message=false;">Proceed</button>
         <button class="btn btn-sm btn-default" ng-click="notEligible()">Not Eligible</button>
       </div>
       <h4><span class="fa fa-hand-stop-o"></span>&emsp; No no! Customer status is not verified!</h4>
@@ -78,7 +78,7 @@
         <p style="font-size: 14px;"></p>
         <p style="font-size: 14px;"><i>{{selected.description}}</i></p>
         <hr/>
-        <div><button class="btn btn-lg btn-success" ng-disabled="!selected.user.verified" ng-click="beginService()">Begin Service</button></div>
+        <div><button class="btn btn-lg btn-success" ng-disabled="selected.message" ng-click="beginService()">Begin Service</button></div>
       </div>
       <!-- If the walk-in is 'Work in progress'/'House call pending'-->
       <div class="card" ng-show="selected && (selected.status !== 'In queue' && selected.status !== 'Duplicate')">
@@ -114,7 +114,7 @@
                     <li class="dropdown-header" style="margin-left: -5px;">Other functions</li>
                     <li style="margin-left: 5px;" ng-show="selected.status=='House call pending'"><a href="#" ng-click="recordCall()"><span class="fa fa-phone"></span>&nbsp;&nbsp;Record Calls</a></li>
                     <li style="margin-left: 5px;"><a href="#" ng-click="duplicate()"><span class="fa fa-copy"></span>&nbsp;&nbsp;Duplicate ticket</a></li>
-                    <li style="margin-left: 5px;"><a href="#" ng-click="reassign()"><span class="fa fa-unlink"></span>&nbsp;&nbsp;Reassign NetID</a></li>
+                    <li style="margin-left: 5px;"><a href="#" ng-click="reassign()"><span class="fa fa-unlink"></span>&nbsp;&nbsp;Change NetID</a></li>
                   </ul>
                 </div>
                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
@@ -136,7 +136,7 @@
                     <div class="form-group">
                       <label class="col-lg-4 col-md-4 col-sm-4 control-label">Device type:</label>
                       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="margin-top: 8px;" onaftersave="selected.deviceInfo=undefined;update();"
-                           editable-select="selected.deviceCategory" e-ng-options="c.value as c.text for c in device_categories">
+                           editable-select="selected.deviceCategory" e-ng-options="c.value as c.text for c in device_categories" buttons="no">
                         {{selected.deviceCategory || 'N/A'}}
                       </div>
                     </div>
@@ -153,7 +153,7 @@
                   <div class="form-horizontal">
                     <div class="form-group">
                       <label class="col-lg-3 col-md-3 col-sm-3 control-label">Location:</label>
-                      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;" onaftersave="update()"
+                      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;" onaftersave="update()" buttons="no"
                            editable-select="selected.user.location" e-ng-options="o.value as o.text for o in location_options">
                         {{selected.user.location || 'N/A'}}
                       </div>
@@ -163,7 +163,7 @@
                     <div class="form-group">
                       <label class="col-lg-3 col-md-3 col-sm-3 control-label">Device info:</label>
                       <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;" ng-hide="selected.deviceCategory === 'Other'" onaftersave="update()"
-                           editable-select="selected.deviceInfo" e-ng-options="o.value as o.text for o in device_options[selected.deviceCategory]" buttons="no" >
+                           editable-select="selected.deviceInfo" e-ng-options="o.value as o.text for o in device_options[selected.deviceCategory]" buttons="no">
                         {{ selected.deviceInfo || 'N/A' }}
                       </div>
                       <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="margin-top: 8px;" ng-show="selected.deviceCategory === 'Other'"
@@ -212,7 +212,8 @@
                         </select>
                         <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-circle checkbox-light"
                           style="margin: 0 0 -5px 1em;" ng-show="resolutions_options[selected.resolutionType].forward">
-                          <input type="checkbox" id="forward" ng-model="selected.forward"><label for="forward">Ticket forwarding</label>
+                          <input type="checkbox" id="forward" ng-model="selected.forward" ng-disabled="!selected.allowForward">
+                            <label for="forward">Ticket forwarding</label>
                         </div>
                       </div>
                     </div>
@@ -250,7 +251,8 @@
                   <span style="color: green;" ng-show="success"><i class="fa fa-check-circle"></i> {{success}}&emsp;</span>
                   <span style="color: red;" ng-show="error"><i class="fa fa-times-circle"></i> {{error}}&emsp;</span>
                   <button class="btn btn-md btn-default" ng-click="update()"><span class="fa fa-save"></span> SAVE</button>
-                  <button class="btn btn-md btn-success" ng-click="resolve()"><span class="fa fa-check-circle-o"></span> RESOLVE</button>
+                  <button class="btn btn-md btn-success" ng-show="selected.user.verified" ng-click="resolve()"><span class="fa fa-check-circle-o"></span> RESOLVE</button>
+                  <button class="btn btn-md btn-warning" ng-show="!selected.user.verified" ng-click="selected.user.verified=true"><span class="fa fa-eye"></span> Verify NetID</button>
                 </div>
               </div>
 

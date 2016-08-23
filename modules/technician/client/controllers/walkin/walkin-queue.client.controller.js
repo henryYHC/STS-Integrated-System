@@ -66,6 +66,10 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
 
       if(!selected.resolutionType)
         $scope.selected.resolutionType = $scope.resolutions_options.default;
+      
+      // Flag if user is not verified
+      if(!$scope.selected.user.verified)
+        $scope.selected.message = true;
 
       // Clear cache for template task array
       checkedTasks = []; checkedTasksOffset = 0;
@@ -113,8 +117,12 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
           $http.put('/api/technician/walkin/noshow/'+$scope.selected._id, { walkin : $scope.selected })
             .error(function() { alert('Request failed. Please check console for error.'); })
             .success(function() {
-              var idx = $scope.walkins.indexOf($scope.selected);
-              $scope.walkins.splice(idx, 1); $scope.selected = undefined;
+              for(var idx in $scope.walkins)
+                if($scope.walkins[idx]._id === $scope.selected._id) {
+                  $scope.walkins.splice(idx, 1);
+                  $scope.selected = undefined;
+                  break;
+                }
             });
         }
       });
@@ -130,8 +138,12 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
           $http.put('/api/technician/walkin/notEligible/'+$scope.selected._id)
             .error(function() { alert('Request failed. Please check console for error.'); })
             .success(function() {
-              var idx = $scope.walkins.indexOf($scope.selected);
-              $scope.walkins.splice(idx, 1); $scope.selected = undefined;
+              for(var idx in $scope.walkins)
+                if($scope.walkins[idx]._id === $scope.selected._id) {
+                  $scope.walkins.splice(idx, 1);
+                  $scope.selected = undefined;
+                  break;
+                }
             });
         }
       });
@@ -175,8 +187,12 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
             angular.element('#resolution').select2({ minimumResultsForSearch: Infinity });
           }, 10);
 
-          var idx = $scope.walkins.indexOf($scope.selected);
-          $scope.walkins[idx] = $scope.selected = walkin;
+          for(var idx in $scope.walkins)
+            if($scope.walkins[idx]._id === $scope.selected._id) {
+              $scope.walkins.splice(idx, 1);
+              $scope.selected = undefined;
+              break;
+            }
         });
     };
 
@@ -210,15 +226,8 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
         if(!netid) ModalLauncher.launchDefaultWarningModal(
           'Action Failed: Missing NetID', 'Please input customer NetID for reassignment.');
         else {
-          $http.post('/api/technician/walkin/reassign/'+$scope.selected._id+'/'+netid)
-            .error(function(message) {
-              if(!message) alert('Request failed. Please view console for error.');
-              else ModalLauncher.launchDefaultWarningModal('Action Failed: User Error', message);
-            })
-            .success(function(walkin) {
-              var idx = $scope.walkins.indexOf($scope.selected);
-              $scope.walkins[idx] = $scope.selected = walkin;
-            });
+          $scope.selected.user.username = netid;
+          $scope.update();
         }
       });
     };
@@ -256,8 +265,12 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
         $http.put('/api/technician/walkin/resolve/'+$scope.selected._id, $scope.selected)
           .error(function() { alert('Request failed. Please view console for error.'); })
           .success(function() {
-            var idx = $scope.walkins.indexOf($scope.selected);
-            $scope.walkins.splice(idx, 1); $scope.selected = undefined;
+            for(var idx in $scope.walkins)
+              if($scope.walkins[idx]._id === $scope.selected._id) {
+                $scope.walkins.splice(idx, 1);
+                $scope.selected = undefined;
+                break;
+              }
           });
       }
     };
@@ -292,7 +305,14 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
         task_string += (parseInt(i)+1) + '. ' + checkedTasks[i] + '\n';
       checkedTasksOffset = task_string.length;
 
+      // Allow forward if all tasks are checked
+      if(checkedTasks.length == $scope.resolutions_options[$scope.selected.resolutionType].tasks.length)
+        $scope.selected.allowForward = true;
+      else $scope.selected.allowForward = $scope.selected.forward = false;
+
       $scope.selected.resolution = task_string + resolution;
     };
+
+
   }
 ]);
