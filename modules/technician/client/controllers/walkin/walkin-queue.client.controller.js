@@ -225,8 +225,15 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
         if(!netid) ModalLauncher.launchDefaultWarningModal(
           'Action Failed: Missing NetID', 'Please input customer NetID for reassignment.');
         else {
-          $scope.selected.user.username = netid;
-          $scope.update();
+          $http.post('/api/technician/walkin/reassign/'+$scope.selected._id+'/'+netid, $scope.selected.user)
+            .error(function() { alert('Request failed. Please view console for error.'); })
+            .success(function(walkin) {
+              for(var idx in $scope.walkins)
+                if($scope.walkins[idx]._id === $scope.selected._id) {
+                  $scope.walkins[idx] = $scope.selected = walkin;
+                  break;
+                }
+            });
         }
       });
     };

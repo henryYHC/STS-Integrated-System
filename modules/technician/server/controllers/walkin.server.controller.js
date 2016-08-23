@@ -224,18 +224,33 @@ exports.duplicate = function(req, res) {
 };
 
 exports.reassign = function(req, res) {
-  var user = req.profile;
-  if(!user) return res.status(500).send('User does not exist. Please submit a new walk-in ticket.');
-  if(!user.isActive) return res.status(500).send('User is not active. User does not have access to service.');
-  
-  var walkin = req.walkin; walkin.user = user;
-  walkin.save(function(err) {
-    if(err) {
-      console.error(err);
-      return res.sendStatus(500);
-    }
-    res.json(walkin);
-  });
+  var walkin = req.walkin; var to = req.profile, from = req.body;
+
+  if(!to) {
+    to = req.netid;
+    User.findOne({ username : from.username }, function(err, user) {
+      if(err) { console.error(err); return res.sendStatus(500); }
+      user.username = req.netid;
+      user.save(function(err){
+        if(err) { console.error(err); return res.sendStatus(500); }
+
+        walkin.user = user;
+        walkin.save(function(err) {
+          if(err) { console.error(err); return res.sendStatus(500); }
+          res.json(walkin);
+        });
+      });
+    });
+  }
+  else if(!to.isActive)
+    return res.status(500).send('User is not active. User does not have access to service.');
+  else {
+    walkin.user = to;
+    walkin.save(function(err) {
+      if(err) { console.error(err); return res.sendStatus(500); }
+      res.json(walkin);
+    });
+  }
 };
 
 exports.update = function(req, res) {
