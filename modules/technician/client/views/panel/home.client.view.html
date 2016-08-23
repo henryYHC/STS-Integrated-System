@@ -98,10 +98,11 @@
       </div>
       <div class="card-body no-padding">
         <ul class="message-list">
-            <li ng-show="!messages || messages.length == 0">
-              <div class="message" style="margin-left: 2em;">No message found.</div>
-            </li>
-            <li ng-repeat="message in messages | limitTo: -5">
+          <a href="#" ng-show="!messages || messages.length == 0">
+            <li><div class="message" style="margin-left: 2em;">No message found.</div></li>
+          </a>
+          <a href="#" ng-repeat="message in messages | limitTo: -5">
+            <li>
               <img src="{{message.from.profileImageURL}}" class="profile-img pull-left">
               <div class="message-block">
                 <div>
@@ -111,6 +112,7 @@
                 <div class="message">{{message.message}}</div>
               </div>
             </li>
+          </a>
         </ul>
         <!-- <div class="row"> -->
         <form class="col-lg-12 col-md-12 col-sm-12">
