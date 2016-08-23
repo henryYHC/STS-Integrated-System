@@ -101,7 +101,7 @@
           <a href="#" ng-show="!messages || messages.length == 0">
             <li><div class="message" style="margin-left: 2em;">No message found.</div></li>
           </a>
-          <a href="#" ng-repeat="message in messages | limitTo: -5">
+          <a href="#" ng-repeat="message in messages | orderBy: '-created' | limitTo: 5">
             <li>
               <img src="{{message.from.profileImageURL}}" class="profile-img pull-left">
               <div class="message-block">
