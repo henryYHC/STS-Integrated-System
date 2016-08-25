@@ -14,7 +14,7 @@ var _ = require('lodash'),
 
 // Validator body
 var retrieveSystemSetting = function(username, callback){
-  SystemSetting.findOne({}, '-_id user_validation_method user_wildcard_prefixes')
+  SystemSetting.findOne({}, '-_id user_wildcard_prefixes')
     .exec(function(err, setting){ callback(err, setting, username, { validated: false }); });
 };
 

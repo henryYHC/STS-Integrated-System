@@ -4,11 +4,6 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var SystemSettingSchema = new Schema({
-  user_validation_method : {
-    type: String,
-    enum: ['Online Directory', 'User Entry', 'Manual'],
-    default: 'Manual'
-  },
   user_wildcard_prefixes : {
     type: [{
       type: String,

@@ -29,6 +29,8 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
       else $scope.templateViewing = checkin.templateApplied;
       $scope.updateTemplateTasks();
 
+
+      console.log(checkin);
       $scope.selected = checkin;
     };
 

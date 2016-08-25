@@ -95,26 +95,9 @@
       <div class="panel-body">
         <form class="form-horizontal">
           <div class="form-group">
-            <label for="livesync" class="col-sm-5 control-label">ServiceNow LiveSync</label>
+            <label for="livesync" class="col-sm-5 control-label" style="margin-top: 11px;">ServiceNow Live Sync</label>
             <div class="col-sm-offset-1 col-sm-6" style="padding-top:10px;">
               <input bs-switch id="livesync" type="checkbox" ng-model="setting.servicenow_liveSync" switch-size="medium" class="toggle-checkbox">
-            </div>
-          </div>
-          <div class="form-group" style="margin-bottom: 0;">
-            <label for="usermethod" class="col-sm-5 control-label">User Validation Method</label>
-            <div class="col-sm-offset-1 col-sm-6" style="padding-top:10px;" id="usermethod">
-              <div class="radio3 radio-check radio-inline">
-                <input type="radio" id="manual" name="user_method" value="Manual" ng-model="setting.user_validation_method">
-                <label for="manual">Manual</label>
-              </div>
-              <div class="radio3 radio-check radio-warning radio-inline">
-                <input type="radio" id="entry" name="user_method" value="User Entry" ng-model="setting.user_validation_method">
-                <label for="entry">User Entry</label>
-              </div>
-              <div class="radio3 radio-check radio-success radio-inline">
-                <input type="radio" id="directory" name="user_method" value="Online Directory" ng-model="setting.user_validation_method">
-                <label for="directory">Online Directory</label>
-              </div>
             </div>
           </div>
         </form>
