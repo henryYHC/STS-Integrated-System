@@ -103,8 +103,15 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
 
     /*----- Status change functions -----*/
     $scope.transfer = function() {
-      var id = $scope.selected._id;
-      $state.go('tech.walkin.transfer', { walkinId : id });
+      if(((!$scope.selected.deviceInfo || $scope.selected.deviceInfo === 'N/A') &&
+        $scope.selected.deviceCategory !== 'Other') || ($scope.selected.deviceCategory === 'Other' && !$scope.selected.otherDevice)){
+        $scope.error = 'Please specify the device information.';
+        $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
+      }
+      else{
+        var id = $scope.selected._id;
+        $state.go('tech.walkin.transfer', { walkinId : id });
+      }
     };
 
     $scope.noshow = function() {
