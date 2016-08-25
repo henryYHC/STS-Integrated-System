@@ -199,10 +199,10 @@ var formulateWalkin = function(walkin, soapAction){
   };
 };
 
-var formulateCheckin = function(checkin, soapAction){
+var formulateCheckin = function(checkin, soapAction) {
   var worknote = '', template = getCheckinTemplateObj(checkin);
   worknote += 'Device : ' + checkin.deviceManufacturer + ' ' + checkin.deviceModel + '\n';
-  worknote += 'OS : ' + checkin.walkin.os + ' (' + checkin.deviceInfoOS.join(', ') + ')\n';
+  worknote += 'OS : ' + checkin.walkin.deviceInfo + ' (' + checkin.deviceInfoOS.join(', ') + ')\n';
   worknote += 'Item received: ' + checkin.itemReceived.join(', ') + '\n\n';
   worknote += checkin.serviceLog.map(function(log){ return log.description; }).join('\n');
 
@@ -277,8 +277,8 @@ exports.WALKIN = 'WALKIN';	exports.CHECKIN = 'CHECKIN';
 exports.syncIncident = function(action, type, ticket, next){
   var data;
   switch(type){
-    case this.WALKIN: data = formulateWalkin(ticket, action); console.log('Syncing Walk-id ID: ' + ticket._id); break;
-    case this.CHECKIN: data = formulateCheckin(ticket, action); console.log('Syncing Check-id ID: ' + ticket._id); break;
+    case this.WALKIN: data = formulateWalkin(ticket, action); console.log('Syncing Walk-in ID: ' + ticket._id); break;
+    case this.CHECKIN: data = formulateCheckin(ticket, action); console.log('Syncing Check-in ID: ' + ticket._id); break;
     default: return console.error('Invalid ticket type: ' + type);
   }
 
@@ -349,7 +349,7 @@ exports.forwardIncident = function(action, type, ticket, next){
 
             ticket.save(function(err) {
               if (err) return console.error(err);
-              else console.log(' >>' + ticket.snValue + ' Ticket forwarded: ' + response.display_value);
+              else console.log('>>' + ticket.snValue + ' Ticket forwarded: ' + response.display_value);
             });
             break;
           
@@ -374,8 +374,8 @@ exports.syncTicketAux = function(client, id, action, type, tickets){
     var data, ticket = tickets[id];
 
     switch(type){
-      case exports.WALKIN: data = formulateWalkin(ticket, action); break;
-      case exports.CHECKIN: data = formulateCheckin(ticket, action); break;
+      case exports.WALKIN: data = formulateWalkin(ticket, action); console.log('Syncing Walk-in ID: ' + ticket._id + ' (scheduled)'); break;
+      case exports.CHECKIN: data = formulateCheckin(ticket, action); console.log('Syncing Check-in ID: ' + ticket._id + ' (scheduled)'); break;
       default: return console.error('Invalid ticket type: ' + type);
     }
 

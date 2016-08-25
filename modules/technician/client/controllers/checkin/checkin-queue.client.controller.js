@@ -135,14 +135,14 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
     };
 
     $scope.removeLog = function(log) {
-      $scope.updateCheckin(function(){
-        $http.delete('/api/technician/service-entry/update', log)
-          .error(function() { alert('Request failed. Please check console for error.'); })
-          .success(function() {
-            var idx = $scope.selected.serviceLog.indexOf(log);
-            if(idx >= 0) $scope.selected.serviceLog.splice(idx, 1);
-          });
-      });
+      $http.delete('/api/technician/service-entry/update', log)
+        .error(function() { alert('Request failed. Please check console for error.'); })
+        .success(function() {
+          var idx = $scope.selected.serviceLog.indexOf(log);
+          if(idx >= 0) $scope.selected.serviceLog.splice(idx, 1);
+
+          $scope.updateCheckin();
+        });
     };
 
     $scope.applyTemplate = function() {
