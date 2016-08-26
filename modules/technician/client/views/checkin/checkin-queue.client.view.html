@@ -18,7 +18,8 @@
               <th>CI #</th><th></th><th>Customer Name</th>
             </tr></thead>
             <tbody>
-            <tr ng-repeat="checkin in queues.working | orderBy:'created'" ng-click="loadCheckin(checkin);">
+            <tr ng-repeat="checkin in queues.working | orderBy:'created'"
+                ng-click="loadCheckin(checkin);" ng-class="selected._id==checkin._id?'selected-checkin':'' ">
               <th scope="row" style="width: 55px;">&nbsp;{{ checkin._id }}</th>
               <td style="width: 20px;">
                 <i class="fa fa-wrench" tooltip-placement="top" tooltip-append-to-body="true"

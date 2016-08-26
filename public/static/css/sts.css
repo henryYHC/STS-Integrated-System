@@ -320,6 +320,10 @@
   font-family: "STS-Bold";
 }
 
+.selected-checkin {
+  background-color: #E6E6E6;
+}
+
 /***** Responsive CSS *****/
 @media (min-width: 769px) {
   .walkin-image {
