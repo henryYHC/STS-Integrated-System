@@ -971,24 +971,24 @@ section.login-page .login-box {
   margin: 0;
   padding: 0;
   list-style-type: none; }
-  .message-list > a > li {
+  .message-list > li {
     border-bottom: 1px dotted #EEE;
     padding: 8px; }
-    .message-list > a > li > .message-block {
+    .message-list > li > .message-block {
       padding-left: 70px;
       min-height: 60px; }
-      .message-list > a > li > .message-block .username {
+      .message-list > li > .message-block .username {
         font-size: 12px;
         font-weight: bold; }
-      .message-list > a > li > .message-block .message-datetime {
+      .message-list > li > .message-block .message-datetime {
         font-size: 10px;
         color: #AAA; }
-      .message-list > a > li > .message-block .message {
+      .message-list > li > .message-block .message {
         font-size: 12px; }
-    .message-list > a > li .profile-img {
+    .message-list > li .profile-img {
       width: 60px;
       height: 60px; }
-  .message-list > a:hover li {
+  .message-list > li:hover  {
     background-color: rgba(0, 0, 0, 0.01); }
 
 .bs-example > * {
