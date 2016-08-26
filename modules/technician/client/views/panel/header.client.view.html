@@ -13,10 +13,10 @@
         </button>
       </div>
       <ul class="nav navbar-nav navbar-right">
-        <li ng-click="sendEmail()"><a href="#"><i class="fa fa-envelope-o"></i>&nbsp;&nbsp;Send Email</a></li>
+        <li ng-click="sendEmail()"><a href="#"><i class="fa fa-envelope-o"></i></a></li>
         <li class="dropdown" uib-dropdown ng-controller="LibraryGuidanceController">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" uib-dropdown-toggle>
-            <span ng-hide="success || error"><i class="fa fa-book"></i>&nbsp;&nbsp;Library Guidance</span>
+            <span ng-hide="success || error"><i class="fa fa-university"></i></span>
             <span ng-show="success" style="color:#00ff00"><i class="fa fa-check-circle"></i> {{success}}</span>
             <span ng-show="error" style="color:#ff0000"><i class="fa fa-times-circle"></i> {{error}}</span>
           </a>

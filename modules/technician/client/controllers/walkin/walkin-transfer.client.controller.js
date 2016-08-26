@@ -44,7 +44,7 @@ angular.module('technician').controller('WalkinTransferController', ['$scope', '
       
       if(!checkin.preDiagnostic) $scope.error = 'Missing preliminary diagnostics.';
       else if(!checkin.suggestedAction) $scope.error = 'Missing suggested actions.';
-      else if(!checkin.deviceManufacturer) $scope.error = 'Missing device manufacturer information.';
+      else if(!checkin.deviceManufacturer) $scope.error = 'Missing device brand information.';
       else if(!checkin.deviceModel) $scope.error = 'Missing device model information.';
       else if(!checkin.deviceInfoUser) $scope.error = 'Missing device username credential.';
       else if(!checkin.deviceInfoPwd) $scope.error = 'Missing device username password.';

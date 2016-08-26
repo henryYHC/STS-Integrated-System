@@ -2,7 +2,8 @@
 
 angular.module('technician').controller('CheckinQueueController', ['$scope', '$http', 'Authentication', 'ModalLauncher', '$timeout', 'EmailLauncher',
   function ($scope, $http, Authentication, ModalLauncher, $timeout, EmailLauncher) {
-    var user = Authentication.getUser();
+    var user = $scope.user = Authentication.getUser();
+    console.log(user);
     $scope.technician = { username : user.username };
 
     /*----- Load instance functions -----*/
@@ -28,9 +29,7 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
       if(!checkin.templateApplied) $scope.templateViewing = 'N/A';
       else $scope.templateViewing = checkin.templateApplied;
       $scope.updateTemplateTasks();
-
-
-      console.log(checkin);
+      
       $scope.selected = checkin;
     };
 
@@ -41,7 +40,22 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
         .success(function(checkin){ if(callback) callback(checkin); });
     };
 
+    $scope.viewWalkin = function() {
+      $http.get('/api/technician/walkin/view/'+$scope.selected.walkin._id)
+        .error(function() { alert('Request failed. Please check console for error.'); })
+        .success(function(walkin){ ModalLauncher.launchWalkinViewModal(walkin); });
+
+    };
+
     /*----- Instance status change functions -----*/
+    $scope.updateReformatConsent = function() {
+      var allow = $scope.selected.reformatConsent==='true';
+      $scope.updateCheckin(function(){
+        if(allow) $scope.logService('Reformat consent updated to "YES"', 'Important');
+        else $scope.logService('Reformat consent updated to "NO"', 'Important');
+      });
+    };
+    
     $scope.changeStatus = function(toStatus) {
       var checkin = $scope.selected;
       $http.put('/api/technician/checkin/changeStatus/'+checkin._id, { status : toStatus })

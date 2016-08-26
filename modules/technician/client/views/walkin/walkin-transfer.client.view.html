@@ -90,13 +90,17 @@
                 <div class="form-horizontal">
                   <div class="form-group">
                     <label class="col-lg-3 col-md-3 col-sm-3 control-label">Brand:</label>
-                    <div class="col-lg-9 col-md-9 col-sm-9" style="margin-top: 8px;" editable-text="checkin.deviceManufacturer">{{checkin.deviceManufacturer || 'N/A'}}</div>
+                    <div class="col-lg-9 col-md-9 col-sm-9">
+                      <input type="text" class="form-control" ng-model="checkin.deviceManufacturer" placeholder="Device brand here">
+                    </div>
                   </div>
                 </div>
                 <div class="form-horizontal">
                   <div class="form-group">
                     <label class="col-lg-3 col-md-3 col-sm-3 control-label">Username:</label>
-                    <div class="col-lg-9 col-md-9 col-sm-9" style="margin-top: 8px;" editable-text="checkin.deviceInfoUser">{{checkin.deviceInfoUser || 'N/A'}}</div>
+                    <div class="col-lg-9 col-md-9 col-sm-9">
+                      <input type="text" class="form-control" ng-model="checkin.deviceInfoUser" placeholder="Device username here">
+                    </div>
                   </div>
                 </div>
               </div>
@@ -105,11 +109,15 @@
                 <div class="form-horizontal">
                   <div class="form-group">
                     <label class="col-lg-3 col-md-3 col-sm-3 control-label">Model:</label>
-                    <div class="col-lg-9 col-md-9 col-sm-9" style="margin-top: 8px;" editable-text="checkin.deviceModel">{{checkin.deviceModel || 'N/A'}}</div>
+                    <div class="col-lg-9 col-md-9 col-sm-9">
+                      <input type="text" class="form-control" ng-model="checkin.deviceModel" placeholder="Device model here">
+                    </div>
                   </div>
                   <div class="form-group">
                     <label class="col-lg-3 col-md-3 col-sm-3 control-label">Password:</label>
-                    <div class="col-lg-9 col-md-9 col-sm-9" style="margin-top: 8px;" editable-text="checkin.deviceInfoPwd">{{checkin.deviceInfoPwd || 'N/A'}}</div>
+                    <div class="col-lg-9 col-md-9 col-sm-9">
+                      <input type="text" class="form-control" ng-model="checkin.deviceInfoPwd" placeholder="Device password here">
+                    </div>
                   </div>
                 </div>
               </div>

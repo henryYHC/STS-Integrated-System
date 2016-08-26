@@ -19,7 +19,7 @@
             </tr></thead>
             <tbody>
             <tr ng-repeat="checkin in queues.working | orderBy:'created'"
-                ng-click="loadCheckin(checkin);" ng-class="selected._id==checkin._id?'selected-checkin':'' ">
+                ng-click="loadCheckin(checkin);" ng-class="selected._id==checkin._id?'selected-checkin':''">
               <th scope="row" style="width: 55px;">&nbsp;{{ checkin._id }}</th>
               <td style="width: 20px;">
                 <i class="fa fa-wrench" tooltip-placement="top" tooltip-append-to-body="true"
@@ -57,7 +57,8 @@
               <th>CI #</th><th></th><th>Customer Name</th>
             </tr></thead>
             <tbody>
-            <tr ng-repeat="checkin in queues.pending | orderBy:'created'" ng-click="loadCheckin(checkin);">
+            <tr ng-repeat="checkin in queues.pending | orderBy:'created'"
+                ng-click="loadCheckin(checkin);" ng-class="selected._id==checkin._id?'selected-checkin':''">
               <th scope="row" style="width: 55px;">&nbsp;{{ checkin._id }}</th>
               <td style="width: 20px;">
                 <i class="fa fa-hourglass-start" tooltip-placement="top" tooltip-append-to-body="true"
@@ -181,10 +182,16 @@
               </div>
 
               <div role="tabpanel" id="tasks" class="tab-pane active col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
-                <div class="sub-title" style="padding:0; margin-bottom: 5px;">Task specifications</div>
+                <div class="sub-title" style="padding:0; margin-bottom: 5px;">Task specifications
+                  <span class="pull-right" style="margin: -8px 5px 0 0;">
+                    <button class="btn btn-xs btn-primary" ng-click="viewWalkin()">View Walk-in</button>
+                  </span>
+                </div>
                 <div class="form-group">
                   <label for="reformat">Reformat Allowed:</label>
-                  <div id="reformat" style="text-align: justify"><b style="color: red">{{selected.reformatConsent? 'YES' : 'NO'}}</b></div>
+                  <div id="reformat" style="text-align: justify; font-weight: bold; color: red;" edit-disabled="{{user.isAdmin==false}}" editable-radiolist="selected.reformatConsent"
+                    onaftersave="updateReformatConsent()" e-ng-options="opt.value as opt.text for opt in [{ value : 'true', text : 'YES' }, { value : 'false', text : 'NO' }]">
+                    {{selected.reformatConsent=='true'? 'YES' : 'NO' }}</div>
                 </div>
                 <div class="form-group">
                   <label for="preDiag">Preliminary Diagnostics:</label>

@@ -142,11 +142,11 @@
     </div>
     <div class="modal-footer">
       <span class="pull-left" style="margin: 8px 0 0 6px;">
-        <button class="btn btn-xs btn-success" ng-show="!data.walkin.snValue" ng-click="servicenowSync()" ng-show="user.isAdmin">SN Sync</button>
+        <button class="btn btn-xs btn-success" ng-show="user.isAdmin&&!data.walkin.snValue" ng-click="servicenowSync()">SN Sync</button>
         <label class="label label-success" ng-show="data.walkin.snValue" style="font-size: 12px;"
           tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="ServiceNow reference">SN: {{data.walkin.snValue}}</label>
 
-        <button class="btn btn-xs btn-warning" ng-show="!data.walkin.forwardSnValue" ng-click="forward()" ng-show="user.isAdmin">Forward</button>
+        <button class="btn btn-xs btn-warning" ng-show="user.isAdmin&&!data.walkin.forwardSnValue" ng-click="forward()">Forward</button>
         <label class="label label-warning" ng-show="data.walkin.forwardSnValue" style="margin: 8px 0 0 0;font-size: 12px;"
           tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Forwarded reference">Fd: {{data.walkin.forwardSnValue}}</label>
       </span>
