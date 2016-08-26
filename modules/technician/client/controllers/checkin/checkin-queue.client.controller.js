@@ -49,7 +49,7 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
 
     /*----- Instance status change functions -----*/
     $scope.updateReformatConsent = function() {
-      var allow = $scope.selected.reformatConsent==='true';
+      var allow = $scope.selected.reformatConsent = $scope.selected.reformatConsent==='true';
       $scope.updateCheckin(function(){
         if(allow) $scope.logService('Reformat consent updated to "YES"', 'Important');
         else $scope.logService('Reformat consent updated to "NO"', 'Important');
