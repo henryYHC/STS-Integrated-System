@@ -232,6 +232,19 @@ exports.printLabel = function(req, res) {
   res.sendStatus(200);
 };
 
+exports.syncTicket = function(req, res) {
+  var setting = req.setting, checkin = req.checkin;
+  if(setting.servicenow_liveSync) {
+    var action = checkin.snValue ? sn.UPDATE : sn.CREATE;
+
+    sn.syncIncident(action, sn.CHECKIN, checkin, function(checkin){
+      if(checkin) res.json(checkin);
+      else res.sendStatus(500);
+    });
+  }
+  else res.status(400).send('ServiceNow Sync is disabled.');
+};
+
 /*----- Instance queries -----*/
 exports.query = function(req, res) {
   var query = req.body;

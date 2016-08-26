@@ -129,12 +129,13 @@
               </div>
             </div>
 
-            <div class="sub-title" style="padding: 0 0 0 0; margin: 0.5em 0 0.5em 0; border-bottom: 0;">Item Received</div>&emsp;
-            <span class="checkbox3 checkbox-inline checkbox-check checkbox-light" ng-repeat="item in setting.checkin_items">
-              <input type="checkbox" id="{{'item_'+item}}" ng-model="checkin.itemReceivedAux[item]">
-              <label for="{{'item_'+item}}">{{item}}</label>
-            </span>
-
+            <div class="sub-title" style="padding: 0 0 0 0; margin: 0.5em 0 0.5em 0; border-bottom: 0;">Item Received</div>
+            <div style="padding-left: 20px;">
+              <span class="checkbox3 checkbox-inline checkbox-check checkbox-light" ng-repeat="item in setting.checkin_items">
+                <input type="checkbox" id="{{'item_'+item}}" ng-model="checkin.itemReceivedAux[item]">
+                <label for="{{'item_'+item}}">{{item}}</label>
+              </span>
+            </div>
           </div>
 
           <span class="pull-right" style="margin-bottom: 1em;">

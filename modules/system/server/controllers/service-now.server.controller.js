@@ -9,7 +9,7 @@ var fs = require('fs'),
   Checkin = mongoose.model('Checkin');
 
 // Get credentials (& reformat wsdl url)
-var credentialFilePath = __dirname + '/../../../../config/credentials/ServiceNow.json',
+var credentialFilePath = __dirname + '/../../../../config/credentials/ServiceNow_Test.json',
   credentialFile = fs.readFileSync(credentialFilePath, 'utf8'),
   credential = JSON.parse(credentialFile);
 
@@ -37,8 +37,8 @@ var popOpt_checkin = [
 var popOpt_checkin_walkin = [{ path : 'walkin.resoluteTechnician', model : 'User', select : 'username displayName' }];
 
 var getEscapedXMLCharacters = function(string) {
-  return string.replace(/&/g, '&amp;').replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+  return string? string.replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;') : string;
 };
 
 var getWalkinTemplateObj = function(walkin){

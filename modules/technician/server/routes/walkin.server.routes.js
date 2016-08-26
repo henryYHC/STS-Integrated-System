@@ -7,12 +7,12 @@ module.exports = function (app) {
   var walkin = require('../controllers/walkin.server.controller.js');
 
   // Setting functions
-  app.route('/api/technician/walkin/create')
-    .post(walkin.create);
-
   app.route('/api/technician/walkin/setting')
     .get(system.setting, walkin.getWalkinSetting);
 
+  // Creation functions
+  app.route('/api/technician/walkin/create')
+    .post(walkin.create);
 
   // Rendering functions
   app.route('/api/technician/walkin/view/:walkinId')

@@ -141,8 +141,12 @@
       </div>
     </div>
     <div class="modal-footer">
-        <span class="pull-left label label-success" ng-show="data.checkin.snValue"
-              style="margin-left: 1em;margin-top: 8px;font-size: 13px;">{{data.checkin.snValue}}</span>
-        <button class="btn btn-default" ng-click="okay()">Cancel</button>
+      <span class="pull-left" style="margin: 8px 0 0 6px;">
+        <button class="btn btn-xs btn-success" ng-show="!data.checkin.snValue" ng-click="servicenowSync()" ng-show="user.isAdmin">SN Sync</button>
+        <label class="label label-success" ng-show="data.checkin.snValue" style="font-size: 12px;"
+               tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="ServiceNow reference">SN: {{data.checkin.snValue}}</label>
+      </span>
+
+      <button class="btn btn-default" ng-click="okay()">Cancel</button>
     </div>
 </section>

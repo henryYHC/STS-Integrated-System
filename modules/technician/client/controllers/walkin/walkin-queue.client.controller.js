@@ -94,7 +94,7 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
     };
 
     $scope.viewWalkin = function(id){
-      $http.get('/api/technician/walkin/view/'+id)
+      $http.get('/api/technician/walkin/view/'+id)  
         .error(function() { alert('Request failed. Please check console for error.'); })
         .success(function(walkin) {
           ModalLauncher.launchWalkinViewModal(walkin);

@@ -66,7 +66,7 @@ angular.module('system').service('ModalLauncher', ['$uibModal',
     this.launchCheckinViewModal = function(checkin){
       $uibModal.open({
         animation: true, size: 'lg', backdrop: 'static',
-        controller: 'DefaultModalController',
+        controller: 'CheckinViewModalController',
         windowClass: 'fade modal-primary panel-center-modal',
         templateUrl: 'modules/technician/client/views/checkin/checkin-view-modal.client.view.html',
         resolve: { data: function(){ return { checkin : checkin }; } }
