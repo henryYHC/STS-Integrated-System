@@ -4,8 +4,8 @@ angular.module('technician').controller('LibraryGuidanceController', ['$scope', 
   function ($scope, $http, $timeout) {
     $scope.logLibraryGuidance = function(type){
       $http.post('/api/tech/library-guidance/log', { task : type })
-        .success(function(){ $scope.success = 'Log Successfully'; })
-        .error(function(){ $scope.error = 'System error'; });
+        .success(function(){ $scope.success = true; })
+        .error(function(){ $scope.error = false; });
       $timeout(function(){ $scope.error = $scope.success = undefined; }, 3000);
     };
   }
