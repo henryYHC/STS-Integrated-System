@@ -349,7 +349,7 @@ exports.forwardIncident = function(action, type, ticket, next){
 
             ticket.save(function(err) {
               if (err) return console.error(err);
-              else console.log('>>' + ticket.snValue + ' Ticket forwarded: ' + response.display_value);
+              else console.log('>> ' + ticket.snValue + ' Ticket forwarded: ' + response.display_value);
             });
             break;
           

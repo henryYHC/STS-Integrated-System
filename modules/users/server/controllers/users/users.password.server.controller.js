@@ -8,7 +8,6 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
-  nodemailer = require('nodemailer'),
   async = require('async'),
   crypto = require('crypto');
 
