@@ -93,7 +93,7 @@ angular.module('technician').controller('CheckinQueueController', ['$scope', '$h
         modal.result.then(function(pickupSig) {
           if(pickupSig){
             checkin.pickupSig = pickupSig;
-            $http.put('/api/technician/checkin/checkout/'+checkin._id, checkin)
+            $http.post('/api/technician/checkin/checkout/'+checkin._id)
               .error(function() { alert('Request failed. Please check console for error.'); })
               .success(function() {
                 var idx = $scope.queues.pending.indexOf(checkin);

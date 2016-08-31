@@ -154,10 +154,7 @@ exports.changeStatus = function(req, res) {
 };
 
 exports.checkout = function(req, res) {
-  var checkin = req.checkin, change = req.body;
-
-  checkin = _.extend(checkin, change);
-  checkin = _.extend(checkin, {
+  var checkin = _.extend(req.checkin, {
     status : 'Completed',
     checkoutTime : Date.now(),
     checkoutTechnician : req.user

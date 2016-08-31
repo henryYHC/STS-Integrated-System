@@ -15,11 +15,10 @@ var popOpt = [
 
 var
   WalkinSurveyBroadcast = function() {
-    return schedule.scheduleJob('0 15 18 * * 1-5', function(){
-      var i, user, today = new Date(Date.now());
-      today.setHours(0); today.setMinutes(0);
+    return schedule.scheduleJob('0 0 9-18 * * 1-5', function(){
+      var i, user, start = new Date(Date.now()-60*60*1000), end = new Date(Date.now());
 
-      Walkin.find({ status : 'Completed', isActive : true, updated : { $gte: today },
+      Walkin.find({ status : 'Completed', isActive : true, resolutionTime : { $gte: start, $lt : end },
         resolutionType : { $nin : ['N/A', 'Check-in'] } }).select('user -_id')
         .populate(popOpt).exec(function(err, walkins){
           if(err) return console.error(err);
@@ -33,11 +32,10 @@ var
     });
   },
   CheckinSurveyBroadcast = function() {
-    return schedule.scheduleJob('0 15 18 * * 1-5', function(){
-      var i, user, today = new Date(Date.now());
-      today.setHours(0); today.setMinutes(0);
+    return schedule.scheduleJob('0 1 9-18 * * 1-5', function(){
+      var i, user, start = new Date(Date.now()-60*60*1000), end = new Date(Date.now());
 
-      Checkin.find({ status : 'Completed', isActive : true, updated : { $gte: today } })
+      Checkin.find({ status : 'Completed', isActive : true, completionTime : { $gte: start, $lt : end } })
         .select('user -_id').populate(popOpt).exec(function(err, checkins){
           if(err) return console.error(err);
 
@@ -59,8 +57,8 @@ var
 // Module variables
 exports.jobs = [];
 exports.TASKS = {
-  'Walk-in Survey Broadcast @ 6:15pm' : WalkinSurveyBroadcast,
-  'Check-in Survey Broadcast @ 6:15pm' : CheckinSurveyBroadcast,
+  'Hourly Walk-in Survey Broadcast' : WalkinSurveyBroadcast,
+  'Hourly Check-in Survey Broadcast' : CheckinSurveyBroadcast,
   'ServiceNow Batch Sync @ 6:00pm' : ServiceNowBatchSync
 };
 

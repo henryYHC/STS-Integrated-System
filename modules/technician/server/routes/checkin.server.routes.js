@@ -49,7 +49,7 @@ module.exports = function (app) {
     .put(users.hasTechnicianPermission, checkin.changeStatus);
 
   app.route('/api/technician/checkin/checkout/:checkinId')
-    .put(users.hasTechnicianPermission, system.setting, checkin.checkout);
+    .post(users.hasTechnicianPermission, system.setting, checkin.checkout);
   
   // Utility functions
   app.route('/api/technician/checkin/print/label/:checkinId')
