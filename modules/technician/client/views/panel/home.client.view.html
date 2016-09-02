@@ -96,12 +96,12 @@
         </div>
         <div class="clear-both"></div>
       </div>
-      <div class="card-body no-padding">
+      <div class="card-body no-padding" style="max-height: 645px; overflow: auto;">
         <ul class="message-list">
           <li ng-show="!messages || messages.length == 0">
             <div class="message" style="margin-left: 2em;">No message found.</div>
           </li>
-          <li ng-repeat="message in messages | orderBy: '-created' | limitTo: 5">
+          <li ng-repeat="message in messages | orderBy: '-created'">
             <img src="{{message.from.profileImageURL}}" class="profile-img pull-left">
             <div class="message-block">
               <div>
