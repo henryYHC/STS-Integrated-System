@@ -191,8 +191,14 @@ exports.create = function(req, res) {
     // Create walk-in
     function(callback) {
       delete walkin.need2CreateUser;
-      walkin = new Walkin(walkin);
-      walkin.save(function(err){ callback(err, walkin); });
+
+      Walkin.findOne({ user : walkin.user._id, created : { $gte : new Date(Date.now()-30000) } })
+        .populate(populate_options).exec(function(err, created_ticket) {
+          if(created_ticket) walkin = _.extend(created_ticket, walkin);
+          else walkin = new Walkin(walkin);
+
+          walkin.save(function(err){ callback(err, walkin); });
+        });
     }],
     
     function(err, walkin){
