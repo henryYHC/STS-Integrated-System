@@ -279,7 +279,12 @@ exports.update = function(req, res) {
   console.log('Update Walk-in ID: ' + original._id);
   original.save(function(err) {
     if(err) { console.error(err); return res.sendStatus(500); }
-    else res.json(original);
+    else {
+      if(original.snValue)
+        sn.syncIncident(sn.UPDATE, sn.WALKIN, original);
+
+      res.json(original);
+    }
   });
 };
 

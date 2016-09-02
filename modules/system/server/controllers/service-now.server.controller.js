@@ -179,7 +179,7 @@ var formulateWalkin = function(walkin, soapAction){
     u_record_type:  (template.type)? template.type :'Incident',
     u_reported_source :  'Walk In',
     u_customer : walkin.user.isWildcard? 'guest' : walkin.user.username,
-    u_problem : 'Problem:\n' + walkin.description,
+    u_problem : 'Problem:\n' + getEscapedXMLCharacters(walkin.description),
     u_liability_agreement : walkin.liabilityAgreement,
     u_short_description : template.short_description,
     u_resolution : getEscapedXMLCharacters(walkin.resolution),
