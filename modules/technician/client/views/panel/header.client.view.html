@@ -1,4 +1,4 @@
-<section ng-controller="TechHeaderController">
+<section ng-controller="TechHeaderController" ng-init="init()">
   <nav class="navbar navbar-inverse navbar-fixed-top navbar-top">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -32,15 +32,27 @@
             <li class="message"><a href="#" ng-click="logLibraryGuidance('Other')">Other</a></li>
           </ul>
         </li>
-        <li class="dropdown" uib-dropdown>
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" uib-dropdown-toggle>
-            <span><i class="fa fa-comments-o"></i>&nbsp;&nbsp;<span class="badge" style="font-size: 10px; margin-top: -2px; background-color: red;">0</span></span>
-          </a>
-          <ul class="dropdown-menu animated fadeInDown" uib-dropdown-menu>
-            <li class="title">Your Messages</li>
-            <li class="message" style="text-align: left; word-wrap: break-word;"><a href="#">ABC ABC ABC ABC ABC ABC ABC ABC</a></li>
-          </ul>
-        </li>
+        <!--<li class="dropdown" dropdown uib-dropdown auto-close="disabled">-->
+          <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" uib-dropdown-toggle>-->
+            <!--<span><i class="fa fa-comments-o"></i>&nbsp;&nbsp;-->
+              <!--<span class="badge" style="font-size: 10px; margin-top: -2px; background-color: red;">1</span>-->
+            <!--</span>-->
+          <!--</a>-->
+          <!--<ul class="dropdown-menu animated fadeInDown" uib-dropdown-menu style="margin-right: -100px;">-->
+            <!--<li class="title">Your Messages</li>-->
+            <!--<li class="message" style="height: 40px;">-->
+              <!--<a href="" style="padding: 0; width: 240px;">-->
+                <!--<span class="col-sm-1" style="padding: 0; margin-left: -10px">-->
+                  <!--<i class="fa fa-circle" style="font-size: 6px;"></i>-->
+                <!--</span>-->
+                <!--<div class="col-sm-11" style="word-wrap: break-word; text-align: left;padding: 0">-->
+                  <!--<p style="margin-bottom: -8px;">Hello World!</p>-->
+                  <!--<label class="" style="color: grey; font-size: 8px;">Henry</label>-->
+                <!--</div>-->
+              <!--</a>-->
+            <!--</li>-->
+          <!--</ul>-->
+        <!--</li>-->
         <li class="dropdown profile" uib-dropdown>
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" uib-dropdown-toggle>
             {{user.displayName}} <span class="caret"></span>
@@ -177,4 +189,12 @@
       });
     });
   </script>
+
+  <style>
+    .popover-content {
+      padding: 9px 14px;
+      word-wrap: break-word;
+      width: 200px;
+    }
+  </style>
 </section>

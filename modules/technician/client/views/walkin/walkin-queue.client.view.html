@@ -106,10 +106,11 @@
                   <a class="btn btn-sm btn-warning" data-toggle="dropdown" style="margin-top: 0;" role="button" aria-haspopup="true" aria-expanded="false">
                     Options &emsp;<span class="fa fa-caret-down"></span>
                   </a>
-                  <ul class="dropdown-menu" style="text-align: left; left: -100px;">
+                  <ul class="dropdown-menu" style="text-align: left; left: -112px;">
                     <li class="dropdown-header" style="margin-left: -5px;">Status changes</li>
                     <li style="margin-left: 5px;"><a href="#" ng-click="transfer()"><span class="fa fa-wrench"></span>&nbsp;&nbsp;Check-in repair</a></li>
                     <li style="margin-left: 5px;" ng-show="selected.status!=='House call pending'"><a href="#" ng-click="toHouseCall()"><span class="fa fa-home"></span>&nbsp;&nbsp;House call pending</a></li>
+                    <!--<li style="margin-left: 5px;"><a href="#" ng-click="willReturn()"><span class="fa fa-sign-out"></span>&nbsp;&nbsp;Customer will return</a></li>-->
                     <li style="margin-left: 5px;"><a href="#" ng-click="noshow()"><span class="fa fa-frown-o"></span>&nbsp;&nbsp;No show</a></li>
                     <li class="dropdown-header" style="margin-left: -5px;">Other functions</li>
                     <li style="margin-left: 5px;" ng-show="selected.status=='House call pending'"><a href="#" ng-click="recordCall()"><span class="fa fa-phone"></span>&nbsp;&nbsp;Record Calls</a></li>
