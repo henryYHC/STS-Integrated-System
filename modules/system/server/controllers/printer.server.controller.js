@@ -1,7 +1,7 @@
 'use strict';
 
 var
-  sys = require('sys'),
+  sys = require('util'),
   path = require('path'),
   format = require('string-format'),
   exec = require('child_process').exec;

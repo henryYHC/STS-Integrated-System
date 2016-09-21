@@ -44,11 +44,14 @@ module.exports = function (app) {
   app.route('/api/technician/walkin/beginService/:walkinId')
     .put(users.hasTechnicianPermission, walkin.beginService);
 
+  app.route('/api/technician/walkin/willReturn/:walkinId')
+    .put(users.hasTechnicianPermission, system.setting, walkin.willReturn);
+
   app.route('/api/technician/walkin/noshow/:walkinId')
     .put(users.hasTechnicianPermission, system.setting, walkin.noshow);
 
   app.route('/api/technician/walkin/notEligible/:walkinId')
-    .put(users.hasTechnicianPermission, system.setting, walkin.notEligible);
+    .put(users.hasTechnicianPermission, walkin.notEligible);
 
   app.route('/api/technician/walkin/duplicate/:walkinId')
     .post(users.hasTechnicianPermission, walkin.duplicate);

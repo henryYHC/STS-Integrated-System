@@ -110,7 +110,6 @@
                     <li class="dropdown-header" style="margin-left: -5px;">Status changes</li>
                     <li style="margin-left: 5px;"><a href="#" ng-click="transfer()"><span class="fa fa-wrench"></span>&nbsp;&nbsp;Check-in repair</a></li>
                     <li style="margin-left: 5px;" ng-show="selected.status!=='House call pending'"><a href="#" ng-click="toHouseCall()"><span class="fa fa-home"></span>&nbsp;&nbsp;House call pending</a></li>
-                    <!--<li style="margin-left: 5px;"><a href="#" ng-click="willReturn()"><span class="fa fa-sign-out"></span>&nbsp;&nbsp;Customer will return</a></li>-->
                     <li style="margin-left: 5px;"><a href="#" ng-click="noshow()"><span class="fa fa-frown-o"></span>&nbsp;&nbsp;No show</a></li>
                     <li class="dropdown-header" style="margin-left: -5px;">Other functions</li>
                     <li style="margin-left: 5px;" ng-show="selected.status=='House call pending'"><a href="#" ng-click="recordCall()"><span class="fa fa-phone"></span>&nbsp;&nbsp;Record Calls</a></li>
@@ -248,11 +247,15 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="pull-left" style="margin-top: 15px;">
+                  <button class="btn btn-md btn-default" ng-click="update()"><span class="fa fa-save"></span> SAVE</button>
+                </div>
                 <div class="pull-right" style="margin-top: 15px;">
                   <span style="color: green;" ng-show="success"><i class="fa fa-check-circle"></i> {{success}}&emsp;</span>
                   <span style="color: red;" ng-show="error"><i class="fa fa-times-circle"></i> {{error}}&emsp;</span>
-                  <button class="btn btn-md btn-default" ng-click="update()"><span class="fa fa-save"></span> SAVE</button>
-                  <button class="btn btn-md btn-success" ng-show="selected.user.verified" ng-click="resolve()"><span class="fa fa-check-circle-o"></span> RESOLVE</button>
+                  <button class="btn btn-md btn-info" ng-show="selected.user.verified" ng-click="willReturn()"><span class="fa fa-sign-out"></span> WILL RETURN</button>&emsp;
+                  <button class="btn btn-md btn-success" ng-show="selected.user.verified" ng-click="resolve()"><span class="fa fa-check-circle-o"></span>&nbsp;&nbsp;RESOLVED&nbsp;</button>
                   <button class="btn btn-md btn-warning" ng-show="!selected.user.verified" ng-click="selected.user.verified=true"><span class="fa fa-eye"></span> Verify NetID</button>
                 </div>
               </div>

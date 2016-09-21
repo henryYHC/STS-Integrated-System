@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('customer').controller('CustomerWalkinCustomerController', ['$scope', '$state',
-  function ($scope, $state) {
+angular.module('customer').controller('CustomerWalkinCustomerController', ['$scope', '$state', '$http',
+  function ($scope, $state, $http) {
+
     if(!$scope.walkin.user)
       $state.go('customer.walkin.netid');
     else $scope.status.state = 'customer';
@@ -27,7 +28,6 @@ angular.module('customer').controller('CustomerWalkinCustomerController', ['$sco
             phone += phone_chars[i];
         }
 
-        console.log($scope.walkin.user.location);
         if (phone.length == 10) {
           $scope.walkin.user.phone = phone;
           $state.go('customer.walkin.location');
@@ -48,6 +48,14 @@ angular.module('customer').controller('CustomerWalkinCustomerController', ['$sco
         $state.go('customer.walkin.device-category');
       }
       else $scope.status.error = 'Please enter your housing location correctly.';
+    };
+
+    $scope.createWalkinFromReference = function () {
+      if($scope.reference.type === 'walk-in') {
+        $http.post('/api/technician/walkin/create', $scope.reference.ticket)
+          .error(function() { alert('Request failed. Please check console for error.'); })
+          .success(function() { $state.go('customer.walkin-success'); });
+      }
     };
   }
 ]);

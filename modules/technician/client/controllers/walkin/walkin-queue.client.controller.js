@@ -174,6 +174,53 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
           });
       }
     };
+    
+    $scope.willReturn = function() {
+      $scope.error = $scope.success = undefined;
+
+      var walkin = $scope.selected,
+        type = $scope.selected.resolutionType,
+        subject = $scope.selected.otherResolution;
+
+      if(((!$scope.selected.deviceInfo || $scope.selected.deviceInfo === 'N/A') &&
+        $scope.selected.deviceCategory !== 'Other') || ($scope.selected.deviceCategory === 'Other' && !$scope.selected.otherDevice)){
+        $scope.error = 'Please specify the device information.';
+        $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
+      }
+      else if(!walkin.description) {
+        $scope.error = 'Please specify the problem description.';
+        $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
+      }
+      else if(type === $scope.resolutions_options.default){
+        $scope.error = 'Please select a resolution type.';
+        $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
+      }
+      else if(type === 'Other' && !subject) {
+        $scope.error = 'Please input resolution subject for \'Other\'.';
+        $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
+      }
+      else if(type === 'Other' && subject.length > 20) {
+        $scope.error = 'Please limit resolution subject to under 20 characters.';
+        $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
+      }
+      else if(!walkin.workNote){
+        $scope.error = 'Please input current status of the ticket as work note.';
+        $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
+      }
+      else {
+        walkin.status = 'Unresolved - Customer will return';
+        $http.put('/api/technician/walkin/willReturn/'+$scope.selected._id, walkin)
+          .error(function() { alert('Request failed. Please view console for error.'); })
+          .success(function() {
+            for(var idx in $scope.walkins)
+              if($scope.walkins[idx]._id === $scope.selected._id) {
+                $scope.walkins.splice(idx, 1);
+                $scope.selected = undefined;
+                break;
+              }
+          });
+      }
+    };
 
     $scope.recordCall = function(){
       var now = new Date(Date.now());

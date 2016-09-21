@@ -45,8 +45,8 @@ var getWalkinTemplateObj = function(walkin){
   var subject = 'STS: ', os = walkin.deviceInfo;
   var obj = { short_description: '', category1 : '', category2 : '', category3 : '' };
 
-  if(walkin.status === 'Unresolved') {
-    subject += 'Unresolved';
+  if(walkin.status === 'Unresolved - No show') {
+    subject += 'Unresolved - No show';
 
     obj.type = 'Service Request';
     obj.category1 = 'Service Desk';
@@ -54,6 +54,9 @@ var getWalkinTemplateObj = function(walkin){
     obj.category3 = 'Unsupported User';
   }
   else {
+    if(walkin.status === 'Unresolved - Customer will return')
+      subject += 'Unresolved - Customer will return: ';
+
     switch(walkin.resolutionType){
       case 'DooleyNet':
         subject += 'DN ' + walkin.deviceInfo;

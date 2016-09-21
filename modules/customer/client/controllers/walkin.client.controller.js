@@ -4,6 +4,8 @@ angular.module('customer').controller('CustomerWalkinController', ['$rootScope',
   function ($rootScope, $scope, $http) {
     $scope.walkin = {};
     $scope.status = {};
+    $scope.reference = { type : '', ticket : {} };
+
 
     $scope.init = function() {
       $http.get('/api/customer/setting')

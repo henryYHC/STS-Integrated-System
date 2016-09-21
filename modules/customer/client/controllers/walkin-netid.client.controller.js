@@ -11,9 +11,7 @@ angular.module('customer').controller('CustomerWalkinNetIDController', ['$scope'
           $scope.status.error = 'Please enter your NetID correctly.';
         else {
           $http.get('/api/users/validate/' + username)
-            .error(function () {
-              $scope.error = 'System error. Please contact our technician.';
-            })
+            .error(function () { $scope.error = 'System error. Please contact our technician.'; })
             .success(function (user) {
 
               var entry, formatedUser = { location: 'N/A' };
@@ -71,6 +69,42 @@ angular.module('customer').controller('CustomerWalkinNetIDController', ['$scope'
 
                 if (user.level === 'Wildcard' || !formatedUser.verified)
                   $state.go('customer.walkin.confirm-netid');
+
+                // Query for "Unresolved - Customer will return" tickets
+                else if(user.level === 'User' && formatedUser) {
+                  $http.get('/api/customer/referenceTicket/'+formatedUser.username)
+                    .error(function () { $scope.error = 'System error. Please contact our technician.'; })
+                    .success(function(result) {
+                      if(!result.found) $state.go('customer.walkin.first-name');
+                      else {
+                        var ticket;
+
+                        switch (result.type ) {
+                          case 'walk-in':
+                            ticket = {
+                              user : result.ticket.user,
+                              workNote : result.ticket.workNote,
+                              deviceInfo : result.ticket.deviceInfo,
+                              deviceCategory : result.ticket.deviceCategory,
+                              resolutionType : result.ticket.resolutionType,
+                              liabilityAgreement : result.ticket.liabilityAgreement,
+                              description : '(Customer returned) '+result.ticket.description
+                            };
+                            break;
+                          case 'check-in':
+                            ticket = {
+                              deviceModel : result.ticket.deviceModel,
+                              deviceManufacturer : result.ticket.deviceManufacturer
+                            };
+                            break;
+                        }
+                        $scope.reference.type = result.type;
+                        $scope.reference.ticket = ticket;
+
+                        $state.go('customer.walkin.reference');
+                      }
+                    });
+                }
                 else $state.go('customer.walkin.first-name');
               }
               else $state.go('customer.invalid-user');

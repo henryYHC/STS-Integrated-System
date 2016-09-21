@@ -217,7 +217,8 @@ exports.duplicate = function(req, res) {
       description: original.description,
       otherDevice: original.otherDevice,
       deviceCategory: original.deviceCategory,
-      liabilityAgreement: original.liabilityAgreement
+      liabilityAgreement: original.liabilityAgreement,
+      workNote: 'This is a duplicate ticket for walk-in id: ' + original._id + '.'
     });
 
   duplicate.save(function(err) {
@@ -308,6 +309,32 @@ exports.syncTicket = function(req, res) {
 };
 
 /*----- Instance status updates -----*/
+exports.willReturn = function(req, res) {
+  var setting = req.setting, walkin = req.walkin, updated = req.body.walkin;
+
+  walkin = _.extend(walkin, updated);
+  walkin = _.extend(walkin, {
+    resoluteTechnician : req.user,
+    lastUpdateTechnician: req.user,
+    status : 'Unresolved - Customer will return',
+    resolution: 'Customer will return. See work note for current status.'
+  });
+  if(!walkin.serviceTechnician || !walkin.serviceStartTime) {
+    walkin.serviceTechnician = req.user; walkin.serviceStartTime = Date.now();
+  }
+  if(!walkin.resolutionTime) walkin.resolutionTime = Date.now();
+
+  console.log('Set Will Return Walk-in ID: ' + walkin._id);
+  walkin.save(function(err) {
+    if(err) { console.error(err); return res.sendStatus(500); }
+    else {
+      if(setting.servicenow_liveSync)
+        sn.syncIncident(sn.CREATE, sn.WALKIN, walkin);
+      res.sendStatus(200);
+    }
+  });
+};
+
 exports.noshow = function(req, res) {
   var setting = req.setting, walkin = req.walkin, updated = req.body.walkin;
 
@@ -315,7 +342,7 @@ exports.noshow = function(req, res) {
   walkin = _.extend(walkin, {
     resoluteTechnician : req.user,
     lastUpdateTechnician: req.user,
-    status : 'Unresolved', resolution: 'Customer no show.'
+    status : 'Unresolved - No show', resolution: 'Customer no show.'
   });
   if(!walkin.serviceTechnician || !walkin.serviceStartTime) {
     walkin.serviceTechnician = req.user; walkin.serviceStartTime = Date.now();
@@ -334,12 +361,13 @@ exports.noshow = function(req, res) {
 };
 
 exports.notEligible = function(req, res) {
-  var setting = req.setting, walkin = req.walkin;
+  var walkin = req.walkin;
 
   walkin = _.extend(walkin, {
     resoluteTechnician : req.user,
     lastUpdateTechnician: req.user,
-    status : 'Unresolved', resolution: 'Customer is not eligible for service.'
+    status : 'Unresolved - Not eligible', 
+    resolution: 'Customer is not eligible for service.'
   });
   if(!walkin.serviceTechnician || !walkin.serviceStartTime) {
     walkin.serviceTechnician = req.user; walkin.serviceStartTime = Date.now();
@@ -354,11 +382,7 @@ exports.notEligible = function(req, res) {
       });
       walkin.user.save(function(err){
         if(err) { console.error(err); return res.sendStatus(500); }
-        else {
-          if(setting.servicenow_liveSync)
-            sn.syncIncident(sn.CREATE, sn.WALKIN, walkin);
-          res.sendStatus(200);
-        }
+        else res.sendStatus(200);
       });
     }
   });

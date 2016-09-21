@@ -52,7 +52,7 @@ var WalkinSchema = new Schema({
   // Service log
   status: {
     type: String,
-    enum: ['In queue', 'Duplicate', 'House call pending', 'Work in progress', 'Completed', 'Unresolved'],
+    enum: ['In queue', 'Duplicate', 'House call pending', 'Work in progress', 'Completed', 'Unresolved', 'Unresolved - Customer will return', 'Unresolved - Not eligible', 'Unresolved - No show'],
     default: ['In queue']
   },
   lastUpdateTechnician: {
