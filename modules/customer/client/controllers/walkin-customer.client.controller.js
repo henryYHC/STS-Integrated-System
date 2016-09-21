@@ -52,6 +52,7 @@ angular.module('customer').controller('CustomerWalkinCustomerController', ['$sco
 
     $scope.createWalkinFromReference = function () {
       if($scope.reference.type === 'walk-in') {
+        $scope.reference.description = '(Customer returned) ' + $scope.reference.description;
         $http.post('/api/technician/walkin/create', $scope.reference.ticket)
           .error(function() { alert('Request failed. Please check console for error.'); })
           .success(function() { $state.go('customer.walkin-success'); });

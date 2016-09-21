@@ -23,7 +23,7 @@
     <button ng-show="reference.type=='walk-in'" class="btn btn-md btn-primary"
             ng-click="createWalkinFromReference()">Yes</button>
 
-    <div style="font-size: 28px; color: red; margin: 1.2em 0;">
+    <div ng-show="reference.type=='check-in'" style="font-size: 28px; color: red; margin: 1.2em 0;">
       If you are here for pick-up only, please let a technician know.
     </div>
   </footer>

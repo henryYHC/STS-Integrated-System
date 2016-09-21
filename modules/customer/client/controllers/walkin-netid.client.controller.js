@@ -88,7 +88,7 @@ angular.module('customer').controller('CustomerWalkinNetIDController', ['$scope'
                               deviceCategory : result.ticket.deviceCategory,
                               resolutionType : result.ticket.resolutionType,
                               liabilityAgreement : result.ticket.liabilityAgreement,
-                              description : '(Customer returned) '+result.ticket.description
+                              description : result.ticket.description
                             };
                             break;
                           case 'check-in':
