@@ -79,7 +79,7 @@ angular.module('customer').controller('CustomerWalkinNetIDController', ['$scope'
                       else {
                         var ticket;
 
-                        switch (result.type ) {
+                        switch (result.type) {
                           case 'walk-in':
                             ticket = {
                               user : result.ticket.user,
