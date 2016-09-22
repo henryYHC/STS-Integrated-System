@@ -52,6 +52,18 @@ var
       sn.syncUnsyncedTickets(sn.CREATE, sn.WALKIN);
       sn.syncUnsyncedTickets(sn.CREATE, sn.CHECKIN);
     });
+  },
+  UnclosedWalkinEmailNotification = function() {
+    return schedule.scheduledJobs('0 30 17 * * 1-5', function() {
+      Walkin.find({ status : 'In queue', isActive : true })
+        .count(function (err, count) {
+          if(err) return console.error(err);
+
+          if(count)
+            mailer.send('michael.buchmann@emory.edu', 'Unclosed Walk-in Tickets', 'Michael',
+              'Important: There are ' + count + ' walk-in ticket(s) remains in the queue. Please take action to close them.');
+        });
+    });
   };
 
 // Module variables
@@ -59,7 +71,8 @@ exports.jobs = [];
 exports.TASKS = {
   'Hourly Walk-in Survey Broadcast' : WalkinSurveyBroadcast,
   'Hourly Check-in Survey Broadcast' : CheckinSurveyBroadcast,
-  'ServiceNow Batch Sync @ 6:00pm' : ServiceNowBatchSync
+  'ServiceNow Batch Sync @ 6:00pm' : ServiceNowBatchSync,
+  'Unclosed Walk-in Ticket check @ 5:30pm' : UnclosedWalkinEmailNotification
 };
 
 exports.init = function(setting, callback){
