@@ -54,7 +54,7 @@ var
     });
   },
   UnclosedWalkinEmailNotification = function() {
-    return schedule.scheduledJobs('0 30 17 * * 1-5', function() {
+    return schedule.scheduleJob('0 30 17 * * 1-5', function() {
       Walkin.find({ status : 'In queue', isActive : true })
         .count(function (err, count) {
           if(err) return console.error(err);
