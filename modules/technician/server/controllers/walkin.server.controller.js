@@ -333,7 +333,7 @@ exports.willReturn = function(req, res) {
         sn.syncIncident(sn.CREATE, sn.WALKIN, walkin);
       else if(!walkin.user.verified)
         mailer.send('michael.buchmann@emory.edu', 'Clover: Unverified NetID ' + walkin.user.username, 'Michael',
-          'Important: Please verify NetID '  + walkin.user.username + ' (' + walkin.user.displayName + ').');
+          'Important: Please verify NetID ' + walkin.user.username + ' (' + walkin.user.displayName + ').');
       res.sendStatus(200);
     }
   });
@@ -437,7 +437,7 @@ exports.resolve = function(req, res) {
       }
       else if(!walkin.user.verified)
         mailer.send('michael.buchmann@emory.edu', 'Clover: Unverified NetID ' + walkin.user.username, 'Michael',
-          'Important: Please verify NetID '  + walkin.user.username + ' (' + walkin.user.displayName + ').');
+          'Important: Please verify NetID ' + walkin.user.username + ' (' + walkin.user.displayName + ').');
 
       res.sendStatus(200);
     }
