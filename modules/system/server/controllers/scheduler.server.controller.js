@@ -60,7 +60,7 @@ var
           if(err) return console.error(err);
 
           if(count)
-            mailer.send('michael.buchmann@emory.edu', 'Unclosed Walk-in Tickets', 'Michael',
+            mailer.send('michael.buchmann@emory.edu', 'Clover: Unclosed Walk-in Tickets', 'Michael',
               'Important: There are ' + count + ' walk-in ticket(s) remains in the queue. Please take action to close them.');
         });
     });

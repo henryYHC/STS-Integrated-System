@@ -382,42 +382,45 @@ exports.syncTicketAux = function(client, id, action, type, tickets){
       default: return console.error('Invalid ticket type: ' + type);
     }
 
-    client.insert(data, function(err, response){
-      if(err) return console.error(err);
+    if(ticket.user.verified) {
+      client.insert(data, function(err, response){
+        if(err) return console.error(err);
 
-      else if(response.sys_id && response.display_value){
-        switch(response.status){
-          case 'inserted':
-            ticket.snValue = response.display_value;
-            ticket.save(function(err){
-              if(err) return console.error(err);
-              else{
-                console.log('INFO: ' + type + ' ' + ticket.snValue + ' inserted. (scheduled)');
-              }
-            });
-            break;
-          case 'updated':
-            if(!ticket.snValue)
+        else if(response.sys_id && response.display_value){
+          switch(response.status){
+            case 'inserted':
               ticket.snValue = response.display_value;
-            
-            ticket.save(function(err){
-              if(err) return console.error(err);
-              else{
-                console.log('INFO: '+ type + ' ' + ticket.snValue + ' updated. (scheduled)');
-              }
-            });
-            break;
-          default:
-            console.error('Invalid Status Error:');
-            return console.error(response);
+              ticket.save(function(err){
+                if(err) return console.error(err);
+                else{
+                  console.log('INFO: ' + type + ' ' + ticket.snValue + ' inserted. (scheduled)');
+                }
+              });
+              break;
+            case 'updated':
+              if(!ticket.snValue)
+                ticket.snValue = response.display_value;
+
+              ticket.save(function(err){
+                if(err) return console.error(err);
+                else{
+                  console.log('INFO: '+ type + ' ' + ticket.snValue + ' updated. (scheduled)');
+                }
+              });
+              break;
+            default:
+              console.error('Invalid Status Error:');
+              return console.error(response);
+          }
+          exports.syncTicketAux(client, id+1, action, type, tickets);
         }
-        exports.syncTicketAux(client, id+1, action, type, tickets);
-      }
-      else{
-        console.error('Field(s) Missing Error:');
-        console.error(response);
-      }
-    });
+        else{
+          console.error('Field(s) Missing Error:');
+          console.error(response);
+        }
+      });
+    }
+    else console.error('Sync aborted: User not verified');
   }
 };
 

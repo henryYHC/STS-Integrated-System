@@ -254,9 +254,8 @@
                 <div class="pull-right" style="margin-top: 15px;">
                   <span style="color: green;" ng-show="success"><i class="fa fa-check-circle"></i> {{success}}&emsp;</span>
                   <span style="color: red;" ng-show="error"><i class="fa fa-times-circle"></i> {{error}}&emsp;</span>
-                  <button class="btn btn-md btn-info" ng-show="selected.user.verified" ng-click="willReturn()"><span class="fa fa-sign-out"></span> WILL RETURN</button>&emsp;
-                  <button class="btn btn-md btn-success" ng-show="selected.user.verified" ng-click="resolve()"><span class="fa fa-check-circle-o"></span>&nbsp;&nbsp;RESOLVED&nbsp;</button>
-                  <button class="btn btn-md btn-warning" ng-show="!selected.user.verified" ng-click="selected.user.verified=true"><span class="fa fa-eye"></span> Verify NetID</button>
+                  <button class="btn btn-md btn-info" ng-click="willReturn()"><span class="fa fa-sign-out"></span> WILL RETURN</button>&emsp;
+                  <button class="btn btn-md btn-success" ng-click="resolve()"><span class="fa fa-check-circle-o"></span>&nbsp;&nbsp;RESOLVED&nbsp;</button>
                 </div>
               </div>
 

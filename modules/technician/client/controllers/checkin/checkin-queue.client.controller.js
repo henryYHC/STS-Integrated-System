@@ -3,7 +3,6 @@
 angular.module('technician').controller('CheckinQueueController', ['$scope', '$http', 'Authentication', 'ModalLauncher', '$timeout', 'EmailLauncher',
   function ($scope, $http, Authentication, ModalLauncher, $timeout, EmailLauncher) {
     var user = $scope.user = Authentication.getUser();
-    console.log(user);
     $scope.technician = { username : user.username };
 
     /*----- Load instance functions -----*/

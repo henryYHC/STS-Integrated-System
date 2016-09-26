@@ -2,7 +2,8 @@
 
 angular.module('technician').controller('WalkinQueueController', ['$scope', '$http', 'Authentication', 'ModalLauncher', '$timeout', '$state', '$interval', '$rootScope',
   function ($scope, $http, Authentication, ModalLauncher, $timeout, $state, $interval, $rootScope) {
-    var user = Authentication.getUser();
+    var user = $scope.user = Authentication.getUser();
+
     var checkedTasks = [], checkedTasksOffset = 0;
 
     var option2Obj = function(val){
@@ -290,6 +291,11 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
             });
         }
       });
+    };
+
+    $scope.verifyUser = function() {
+      $scope.selected.user.verified = true;
+      $scope.update();
     };
 
     $scope.resolve = function() {

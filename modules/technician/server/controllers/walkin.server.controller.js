@@ -6,6 +6,7 @@ var fs = require('fs'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
   Walkin = mongoose.model('Walkin'),
+  mailer = require('../../../system/server/controllers/mailer.server.controller.js'),
   sn = require('../../../system/server/controllers/service-now.server.controller.js');
 
 var populate_options = [
@@ -328,8 +329,11 @@ exports.willReturn = function(req, res) {
   walkin.save(function(err) {
     if(err) { console.error(err); return res.sendStatus(500); }
     else {
-      if(setting.servicenow_liveSync)
+      if(setting.servicenow_liveSync && walkin.user.verified)
         sn.syncIncident(sn.CREATE, sn.WALKIN, walkin);
+      else if(!walkin.user.verified)
+        mailer.send('michael.buchmann@emory.edu', 'Clover: Unverified NetID ' + walkin.user.username, 'Michael',
+          'Important: Please verify NetID '  + walkin.user.username + ' (' + walkin.user.displayName + ').');
       res.sendStatus(200);
     }
   });
@@ -426,11 +430,15 @@ exports.resolve = function(req, res) {
       return res.sendStatus(500);
     }
     else {
-      if(setting.servicenow_liveSync) {
+      if(setting.servicenow_liveSync && walkin.user.verified) {
         sn.syncIncident(sn.CREATE, sn.WALKIN, walkin, function(response){
           if(walkin.forward) sn.forwardIncident(sn.CREATE, sn.WALKIN, response);
         });
       }
+      else if(!walkin.user.verified)
+        mailer.send('michael.buchmann@emory.edu', 'Clover: Unverified NetID ' + walkin.user.username, 'Michael',
+          'Important: Please verify NetID '  + walkin.user.username + ' (' + walkin.user.displayName + ').');
+
       res.sendStatus(200);
     }
   });

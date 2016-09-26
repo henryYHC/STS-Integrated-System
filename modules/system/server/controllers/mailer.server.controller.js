@@ -157,7 +157,7 @@ exports.sendSurvey = function(type, email, name, callback){
 };
 
 // REST functions
-exports.send = function(req, res) {
+exports.sendREST = function(req, res) {
   var content = req.body;
 
   jsonfile.readFile(exports.TEMPLATE.DEFAULT, function(err, template){
