@@ -409,18 +409,17 @@ exports.syncTicketAux = function(client, id, action, type, tickets){
               });
               break;
             default:
-              console.error('Invalid Status Error:');
-              return console.error(response);
+              console.error('Invalid Status Error:'); console.error(response);
           }
-          exports.syncTicketAux(client, id+1, action, type, tickets);
         }
-        else{
-          console.error('Field(s) Missing Error:');
-          console.error(response);
-        }
+        else{ console.error('Field(s) Missing Error:'); console.error(response); }
+        exports.syncTicketAux(client, id+1, action, type, tickets);
       });
     }
-    else console.error('Sync aborted: User not verified');
+    else {
+      console.error('Sync aborted: User not verified');
+      exports.syncTicketAux(client, id+1, action, type, tickets);
+    }
   }
 };
 
@@ -428,6 +427,7 @@ exports.syncUnsyncedTickets = function(action, type){
   var today = new Date(Date.now()); today.setHours(0);
   var query = { isActive : true, status : { $in : ['Completed', 'Unresolved'] }, snValue : '', created : { $gte: today } };
 
+  console.log('Scheduler: Syncing unsynced ' + type + ' tickets');
   async.waterfall([
     function(callback){
       switch(type){
@@ -454,6 +454,8 @@ exports.syncUnsyncedTickets = function(action, type){
       soap.createClient(credential.wsdl_url, function(err, client){
         if(err) return console.error(err);
         client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
+
+        console.log('Syncing ' + tickets.length + 'tickets...');
         if(tickets.length)
           exports.syncTicketAux(client, 0, action, type, tickets);
         callback(null);
