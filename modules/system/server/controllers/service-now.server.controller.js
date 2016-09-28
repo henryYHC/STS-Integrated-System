@@ -425,7 +425,8 @@ exports.syncTicketAux = function(client, id, action, type, tickets){
 
 exports.syncUnsyncedTickets = function(action, type){
   var today = new Date(Date.now()); today.setHours(0);
-  var query = { isActive : true, status : { $in : ['Completed', 'Unresolved'] }, snValue : '', created : { $gte: today } };
+  var query = { isActive : true, status : { $in : ['Completed', 'Unresolved', 'Unresolved - Customer will return',
+    'Unresolved - Not eligible', 'Unresolved - No show'] }, snValue : '', created : { $gte: today } };
 
   console.log('Scheduler: Syncing unsynced ' + type + ' tickets');
   async.waterfall([
@@ -455,7 +456,7 @@ exports.syncUnsyncedTickets = function(action, type){
         if(err) return console.error(err);
         client.setSecurity(new soap.BasicAuthSecurity(credential.username, credential.password));
 
-        console.log('Syncing ' + tickets.length + 'tickets...');
+        console.log('Syncing ' + tickets.length + ' ' + type + ' tickets...');
         if(tickets.length)
           exports.syncTicketAux(client, 0, action, type, tickets);
         callback(null);
