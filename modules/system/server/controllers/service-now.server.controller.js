@@ -59,9 +59,10 @@ var getWalkinTemplateObj = function(walkin){
 
     switch(walkin.resolutionType){
       case 'DooleyNet':
-        subject += 'DN ' + walkin.deviceInfo;
+        subject += 'DN ';
         if(walkin.deviceCategory === 'Other')
-          subject += ' ' + walkin.otherDevice;
+          subject += walkin.otherDevice;
+        else subject += walkin.deviceInfo;
 
         obj.type = 'Service Request';
         obj.category1 = 'Application Management';
@@ -72,12 +73,10 @@ var getWalkinTemplateObj = function(walkin){
       case 'EmoryUnplugged':
         subject += 'EU ';
         if(walkin.deviceCategory === 'Other')
-          subject += ' ' + walkin.otherDevice;
-
-        switch(walkin.deviceCategory){
-          case 'Phone/Tablet': 	subject += 'Mobile ' + os;	break;
-          default: 				subject += os;
-        }
+          subject += walkin.otherDevice;
+        else if(walkin.deviceCategory === 'Phone/Tablet')
+          subject += 'Mobile ' + os;
+        else subject += os;
 
         obj.category1 = 'Desktop Management';
         obj.category2 = 'Software';

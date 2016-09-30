@@ -188,11 +188,7 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
         $scope.error = 'Please specify the device information.';
         $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
       }
-      else if(!walkin.description) {
-        $scope.error = 'Please specify the problem description.';
-        $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
-      }
-      else if(type === $scope.resolutions_options.default){
+      else if(!type || type === $scope.resolutions_options.default){
         $scope.error = 'Please select a resolution type.';
         $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
       }
@@ -303,15 +299,15 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
 
       var res = $scope.selected.res,
         type = $scope.selected.resolutionType,
-        subject = $scope.selected.otherResolution,
-        resolution = $scope.selected.resolution;
+        resolution = $scope.selected.resolution,
+        subject = $scope.selected.otherResolution;
 
       if(((!$scope.selected.deviceInfo || $scope.selected.deviceInfo === 'N/A') &&
         $scope.selected.deviceCategory !== 'Other') || ($scope.selected.deviceCategory === 'Other' && !$scope.selected.otherDevice)){
         $scope.error = 'Please specify the device information.';
         $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
       }
-      else if(type === $scope.resolutions_options.default){
+      else if(!type || type === $scope.resolutions_options.default){
         $scope.error = 'Please select a resolution type.';
         $timeout(function(){ $scope.error = $scope.success = undefined; }, 5000);
       }
