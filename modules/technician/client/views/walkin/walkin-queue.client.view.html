@@ -199,6 +199,9 @@
                              editable-textarea="selected.workNote" e-rows="2" e-cols="80">{{selected.workNote || 'None'}}</div>
                       </div>
                     </div>
+                    <span class="pull-right" style="color: #353d47; font-size: 12px; font-family: 'Roboto Condensed', sans-serif;">
+                      Last updated by {{selected.lastUpdateTechnician.displayName}} at {{selected.updated | date: 'short' : 'shortTime'}}
+                    </span>
                   </div>
                   <div class="sub-title">Resolution detail</div>
                   <div class="text-justify" style="margin: -15px 0 0 20px;">
