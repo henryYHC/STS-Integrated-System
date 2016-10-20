@@ -18,7 +18,7 @@ angular.module('technician').controller('TechHomeController', ['$scope', '$state
     $scope.newMessage = function() {
       var message = $scope.inputMessage;
       if(message) {
-        $http.post('/api/technician/message/create/bulletinboard', { type : 'technician', message : message })
+        $http.post('/api/technician/message/create', { type : 'technician', message : message })
           .error(function() { alert('Request failed. Please check console for error.'); })
           .success(function(message) {
             $scope.inputMessage = '';
