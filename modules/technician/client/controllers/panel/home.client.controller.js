@@ -10,7 +10,7 @@ angular.module('technician').controller('TechHomeController', ['$scope', '$state
         .error(function() { alert('Request failed. Please check console for error.'); })
         .success(function(stats) { $scope.stats = stats; });
 
-      $http.get('/api/technician/message/query/bulletinboard')
+      $http.get('/api/technician/message/technicians')
         .error(function() { alert('Request failed. Please check console for error.'); })
         .success(function(messages) { $scope.messages = messages; });
     };

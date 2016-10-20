@@ -55,7 +55,7 @@ var
   },
   UnclosedWalkinEmailNotification = function() {
     return schedule.scheduleJob('0 30 17 * * 1-5', function() {
-      Walkin.find({ status : 'In queue', isActive : true })
+      Walkin.find({ status : { $in : ['In queue', 'Work in progress'] }, isActive : true })
         .count(function (err, count) {
           if(err) return console.error(err);
 
