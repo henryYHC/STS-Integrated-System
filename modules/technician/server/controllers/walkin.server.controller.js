@@ -7,7 +7,8 @@ var fs = require('fs'),
   User = mongoose.model('User'),
   Walkin = mongoose.model('Walkin'),
   mailer = require('../../../system/server/controllers/mailer.server.controller.js'),
-  sn = require('../../../system/server/controllers/service-now.server.controller.js');
+  sn = require('../../../system/server/controllers/service-now.server.controller.js'),
+  printer = require('../../../system/server/controllers/printer.server.controller.js');
 
 var populate_options = [
   { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified isWildcard' },
@@ -456,6 +457,13 @@ exports.forward = function(req, res) {
         function(walkin){ res.json(walkin); });
     }
   });
+};
+
+/*----- Other functions -----*/
+exports.printLabel = function(req, res) {
+  var walkin = req.walkin;
+  printer.printLabel(1, walkin.user.displayName, walkin.user.username, walkin.created.toDateString());
+  res.sendStatus(200);
 };
 
 /*----- Instance middlewares -----*/

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('technician').controller('WalkinQueueController', ['$scope', '$http', 'Authentication', 'ModalLauncher', '$timeout', '$state', '$interval', '$rootScope',
-  function ($scope, $http, Authentication, ModalLauncher, $timeout, $state, $interval, $rootScope) {
+angular.module('technician').controller('WalkinQueueController', ['$scope', '$http', 'Authentication', 'ModalLauncher', '$timeout', '$state', '$interval', '$rootScope', 'EmailLauncher',
+  function ($scope, $http, Authentication, ModalLauncher, $timeout, $state, $interval, $rootScope, EmailLauncher) {
     var user = $scope.user = Authentication.getUser();
 
     var checkedTasks = [], checkedTasksOffset = 0;
@@ -335,6 +335,26 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
               }
           });
       }
+    };
+
+    /*----- Instance other functions -----*/
+    $scope.sendEmail = function() {
+      var user = $scope.selected.user;
+      EmailLauncher.launchEmailModalWithRecipient(user.username+'@emory.edu', user.displayName);
+    };
+
+    $scope.printLabel = function() {
+      var walkin = $scope.selected;
+      var modal = ModalLauncher.launchDefaultMessageModal(
+        'Confirm: Print Label',
+        'Are you sure you want to print a label for the selected walk-in instance?'
+      );
+      modal.result.then(function (response) {
+        if(response){
+          $http.post('/api/technician/walkin/print/label/' + walkin._id)
+            .error(function() { alert('Request failed. Please check console for error.'); });
+        }
+      });
     };
 
     /*----- Watchers -----*/

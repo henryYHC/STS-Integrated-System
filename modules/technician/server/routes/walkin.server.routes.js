@@ -62,6 +62,9 @@ module.exports = function (app) {
   app.route('/api/technician/walkin/resolve/:walkinId')
     .put(users.hasTechnicianPermission, system.setting, walkin.resolve);
 
+  // Utility functions
+  app.route('/api/technician/walkin/print/label/:walkinId')
+    .post(users.hasTechnicianPermission, walkin.printLabel);
 
   // Admin overwrite functions
   app.route('/api/technician/walkin/servicenowSync/:walkinId')
