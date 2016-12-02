@@ -42,7 +42,7 @@ var getEscapedXMLCharacters = function(string) {
 };
 
 var getWalkinTemplateObj = function(walkin){
-  var subject = 'STS: ', os = walkin.deviceInfo;
+  var subject = 'STS: ', dinfo = walkin.deviceInfo;
   var obj = { short_description: '', category1 : '', category2 : '', category3 : '' };
 
   if(walkin.status === 'Unresolved - No show') {
@@ -62,7 +62,7 @@ var getWalkinTemplateObj = function(walkin){
         subject += 'DN ';
         if(walkin.deviceCategory === 'Other')
           subject += walkin.otherDevice;
-        else subject += walkin.deviceInfo;
+        else if(dinfo) subject += dinfo;
 
         obj.type = 'Service Request';
         obj.category1 = 'Application Management';
@@ -74,9 +74,11 @@ var getWalkinTemplateObj = function(walkin){
         subject += 'EU ';
         if(walkin.deviceCategory === 'Other')
           subject += walkin.otherDevice;
-        else if(walkin.deviceCategory === 'Phone/Tablet')
-          subject += 'Mobile ' + os;
-        else subject += os;
+        else if(dinfo) {
+          if(walkin.deviceCategory === 'Phone/Tablet')
+            subject += 'Mobile ' + dinfo;
+          else subject += dinfo;
+        }
 
         obj.category1 = 'Desktop Management';
         obj.category2 = 'Software';
@@ -100,9 +102,11 @@ var getWalkinTemplateObj = function(walkin){
         break;
 
       case 'OS Troubleshooting':
+        subject += 'OS TblSh ';
+
         if(walkin.deviceCategory === 'Other')
-          subject += ' ' + walkin.otherDevice;
-        subject += 'OS TblSh ' + os;
+          subject += walkin.otherDevice;
+        else if(dinfo) subject += dinfo;
 
         obj.category1 = 'Desktop Management';
         obj.category2 = 'OS/Firmware';
@@ -140,8 +144,6 @@ var getWalkinTemplateObj = function(walkin){
         obj.category2 = 'Software';
         obj.category3 = 'Error';
         break;
-
-      default: subject += 'Unknown Template';
     }
   }
 

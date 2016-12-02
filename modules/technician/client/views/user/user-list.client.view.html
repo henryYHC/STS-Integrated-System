@@ -39,16 +39,15 @@
         <th>isActive</th>
       </tr></thead>
       <tbody><tr ng-repeat="user in users">
-        <td style="width:50px; text-align: center;">
-          <div class="dropdown">
-            <a data-toggle="dropdown" style="margin-top: 0;"><span class="fa fa-caret-down"></span></a>
-            <ul class="dropdown-menu" style="text-align: left;">
-              <li style="margin-left: 5px;" ng-show="!user.verified"><a href="#" ng-click="verify(user)">Verify User</a></li>
-              <li style="margin-left: 5px;" ng-show="!user.isActive"><a href="#" ng-click="setActive(user)">Set Active</a></li>
-              <li style="margin-left: 5px;" ng-show="user.isActive"><a href="#" ng-click="setInactive(user)">Set Inactive</a></li>
-              <li style="margin-left: 5px;" ng-show="isAdmin&&user.roles.indexOf('technician')>=0"><a href="#" ng-click="removeTechnician(user)">Remove Technician</a></li>
-            </ul>
-          </div>
+        <td style="width:65px; text-align: center;">
+          <span class="fa fa-angle-double-right" ng-show="!showActions[$index]" ng-mouseover="showActions[$index]=true"></span>
+          <span ng-show="showActions[$index]" ng-mouseleave="showActions[$index]=false">
+            <span class="fa fa-plus-circle" tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Create task" ng-click="createTask(user)"></span>
+            <span ng-show="!user.verified" class="fa fa-thumbs-o-up" tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Verify" ng-click="verify(user)"></span>
+            <span ng-show="!user.isActive" class="fa fa-user-plus" tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Set Active" ng-click="setActive(user)"></span>
+            <span ng-show="user.isActive" class="fa fa-user-times" tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Set Inactive" ng-click="setInactive(user)"></span>
+            <span ng-show="isAdmin&&user.roles.indexOf('technician')>=0" class="fa fa-eye-slash" tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="Remove Technician" ng-click="removeTechnician(user)"></span>
+          </span>
         </td>
         <td>{{user.username}}</td>
         <td>{{user.displayName}}</td>
