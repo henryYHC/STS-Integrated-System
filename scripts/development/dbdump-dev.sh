@@ -1,2 +1,2 @@
 if [ "$1" = "" ]; then echo "Missing argument: Data dump directory missing."; exit 0; fi;
-mongodump --db sts-integratedsystem-dev --out $1
+mongodump --db sts-dev --out $1
