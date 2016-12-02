@@ -10,7 +10,7 @@ angular.module('technician').controller('TechHomeController', ['$scope', '$state
         .error(function() { alert('Request failed. Please check console for error.'); })
         .success(function(stats) { $scope.stats = stats; });
 
-      $http.get('/api/technician/message/technicians')
+      $http.get('/api/technician/message/get/announcements')
         .error(function() { alert('Request failed. Please check console for error.'); })
         .success(function(messages) { $scope.messages = messages; });
     };
@@ -18,13 +18,20 @@ angular.module('technician').controller('TechHomeController', ['$scope', '$state
     $scope.newMessage = function() {
       var message = $scope.inputMessage;
       if(message) {
-        $http.post('/api/technician/message/create', { type : 'technician', message : message })
+        $http.post('/api/technician/message/create/announcement', { message : message })
           .error(function() { alert('Request failed. Please check console for error.'); })
           .success(function(message) {
+            console.log(message);
             $scope.inputMessage = '';
             $scope.messages.push(message);
           });
       }
+    };
+
+    $scope.makeAsRead = function(message) {
+      $http.post('/api/technician/message/read', message)
+        .error(function() { alert('Request failed. Please check console for error.'); })
+        .success(function(result) { message.read = result.read; });
     };
   }
 ]);

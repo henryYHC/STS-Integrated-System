@@ -73,6 +73,26 @@ angular.module('system').service('ModalLauncher', ['$uibModal',
       });
     };
 
+    this.launchChoreCreateModal = function() {
+      $uibModal.open({
+        animation: true, size: 'md', backdrop: 'static',
+        controller: 'ChoreCreateController',
+        windowClass: 'fade modal-primary panel-center-modal',
+        templateUrl: 'modules/technician/client/views/chore/chore-create-modal.client.view.html',
+        resolve: { data: function(){ return { }; } }
+      });
+    };
+
+    this.launchSITaskCreateModal = function(user) {
+      $uibModal.open({
+        animation: true, size: 'lg', backdrop: 'static', keyboard: false,
+        controller: 'SITaskCreateModalController',
+        windowClass: 'fade modal-warning panel-center-modal',
+        templateUrl: 'modules/technician/client/views/user/sitask-create-modal.client.view.html',
+        resolve: { data: function(){ return { user : user }; } }
+      });
+    };
+
     // Return a promise
     this.launchDefaultInputModal = function(title, message, placeholder){
       return $uibModal.open({

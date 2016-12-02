@@ -5,11 +5,11 @@ module.exports = function (app) {
   var message = require('../controllers/message.server.controller.js');
   var users = require('../../../users/server/controllers/users.server.controller.js');
 
-  app.route('/api/technician/message/create').post(users.hasTechnicianPermission, message.create);
-  app.route('/api/technician/message/create/:to').post(users.hasTechnicianPermission, message.create);
+  app.route('/api/technician/message/create/announcement').post(users.hasTechnicianPermission, message.createAnnouncement);
+  app.route('/api/technician/message/read').post(users.hasTechnicianPermission, message.markAsRead);
 
-  app.route('/api/technician/message/technicians')
-    .get(users.hasTechnicianPermission, message.technicians);
+  app.route('/api/technician/message/get/announcements')
+    .get(users.hasTechnicianPermission, message.getAnnouncements);
 
   app.param('to', users.userByUsername);
 };

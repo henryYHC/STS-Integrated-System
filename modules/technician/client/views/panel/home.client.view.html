@@ -102,12 +102,19 @@
             <div class="message" style="margin-left: 2em;">No message found.</div>
           </li>
           <li ng-repeat="message in messages | orderBy: '-created'">
-            <img src="{{message.from.profileImageURL}}" class="profile-img pull-left">
-            <div class="message-block">
-              <div>
-                <span class="username">{{message.from.displayName}}</span>
-                <span class="message-datetime pull-right">{{message.created | date : 'short'}}</span>
-              </div>
+            <span class="fa fa-chevron-right profile-img pull-left" ng-show="!message.read"
+                  style="width: 20px; text-align: center; padding-top: 14px; font-size: 10px;"></span>
+            <div class="message-block" style="padding-left: 24px;">
+              <span class="username">{{message.from.displayName}}</span>
+
+              <span class="pull-right" style="height: 60px; width: 90px; text-align: right;">
+                <span class="message-datetime">{{message.created | date : 'short'}}</span>
+                <span class="btn btn-xs btn-default" style="margin: 12px 3px 0 0;"
+                      ng-show="!message.read" ng-click="makeAsRead(message)">Mark as read</span>
+                <span class="message-datetime" ng-show="message.read" tooltip-append-to-body="true"
+                      tooltip-placement="left" uib-tooltip="{{message.read | date : 'short'}}">read</span>
+              </span>
+
               <div class="message">{{message.message}}</div>
             </div>
           </li>
