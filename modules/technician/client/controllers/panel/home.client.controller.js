@@ -21,7 +21,8 @@ angular.module('technician').controller('TechHomeController', ['$scope', '$state
         $http.post('/api/technician/message/create/announcement', { message : message })
           .error(function() { alert('Request failed. Please check console for error.'); })
           .success(function(message) {
-            console.log(message);
+            $scope.makeAsRead(message);
+
             $scope.inputMessage = '';
             $scope.messages.push(message);
           });
