@@ -47,7 +47,7 @@ angular.module('technician').controller('WalkinListController', ['$scope', '$htt
           body.created = { '$gte' : query.startTime, '$lte' : query.endTime };
           break;
         case 'resolved':
-          body.resolved = { '$gte' : query.startTime, '$lte' : query.endTime };
+          body.resolutionTime = { '$gte' : query.startTime, '$lte' : query.endTime };
           break;
       }
 

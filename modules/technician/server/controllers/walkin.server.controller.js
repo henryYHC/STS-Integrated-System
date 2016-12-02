@@ -100,7 +100,7 @@ exports.query = function(req, res) {
 
       ids = ids.map(function(obj){ return obj._id; });
       Walkin.find({ user : { $in : ids } })
-        .select('_id user deviceCategory deviceInfo status resolutionType created resolutionTime')
+        .select('_id user deviceCategory deviceInfo otherDevice status resolutionType created resolutionTime')
         .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
         .sort('created').exec(function(err, walkins) {
           if(err) {
@@ -113,7 +113,7 @@ exports.query = function(req, res) {
   }
   else {
     Walkin.find(query)
-      .select('_id user deviceCategory deviceInfo status resolutionType created resolutionTime')
+      .select('_id user deviceCategory deviceInfo otherDevice status resolutionType created resolutionTime')
       .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
       .sort('created').exec(function(err, walkins) {
         if(err) {
@@ -131,7 +131,7 @@ exports.unresolved = function(req, res) {
     $or : [
       { status: { $in : ['In queue', 'Work in progress', 'House call pending'] } },
       { status : { $in : ['Unresolved', 'Unresolved - Customer will return', 'Unresolved - Not eligible', 'Unresolved - No show'] }, created : { $gte : today } } ] }
-  ).select('_id user deviceCategory deviceInfo status resolutionType created resolutionTime')
+  ).select('_id user deviceCategory deviceInfo otherDevice status resolutionType created resolutionTime')
     .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
     .sort('created').exec(function(err, walkins) {
       if(err) {
@@ -145,7 +145,7 @@ exports.unresolved = function(req, res) {
 exports.today = function(req, res) {
   var today = new Date(Date.now()); today.setHours(0);
   Walkin.find({ isActive : true, liabilityAgreement : true, $or : [ { created : { $gte : today } }, { resolutionTime : { $gte : today } }] })
-    .select('_id user deviceCategory deviceInfo status resolutionType created resolutionTime')
+    .select('_id user deviceCategory deviceInfo otherDevice status resolutionType created resolutionTime')
     .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
     .sort('created').exec(function(err, walkins) {
       if(err) {
@@ -160,7 +160,7 @@ exports.month = function(req, res) {
   var currentMonth = new Date(Date.now()); currentMonth.setDate(1); currentMonth.setHours(0);
   Walkin.find({ isActive : true, liabilityAgreement : true,
     $or : [{ created : { $gte : currentMonth } }, { resolutionTime : { $gte : currentMonth } }] })
-    .select('_id user deviceCategory deviceInfo status resolutionType created resolutionTime')
+    .select('_id user deviceCategory deviceInfo otherDevice status resolutionType created resolutionTime')
     .populate([{ path : 'user', model : 'User', select : 'displayName username' }])
     .sort('created').exec(function(err, walkins) {
       if(err) {
