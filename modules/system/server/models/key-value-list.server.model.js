@@ -20,7 +20,8 @@ var KeyValueListSchema = new Schema({
 });
 
 KeyValueListSchema.pre('save', function (next) {
-  this.updated = Date.now(); next();
+  this.updated = Date.now();
+  this.values.sort(); next();
 });
 
 mongoose.model('KeyValueList', KeyValueListSchema);
