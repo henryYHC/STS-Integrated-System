@@ -16,6 +16,9 @@
         <li ng-click="sendEmail()"><a href="#" tooltip-append-to-body="true" tooltip-placement="bottom" uib-tooltip="Send Email">
           <i class="fa fa-envelope-o"></i></a></li>
 
+        <li ng-click="createChore()"><a href="#" tooltip-append-to-body="true" tooltip-placement="bottom" uib-tooltip="Create Chore">
+          <i class="fa fa-tasks"></i></a></li>
+
         <li class="dropdown" uib-dropdown ng-controller="LibraryGuidanceController">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" uib-dropdown-toggle
             tooltip-append-to-body="true" tooltip-placement="bottom" uib-tooltip="Library Guidance">
@@ -32,27 +35,39 @@
             <li class="message"><a href="#" ng-click="logLibraryGuidance('Other')">Other</a></li>
           </ul>
         </li>
-        <!--<li class="dropdown" dropdown uib-dropdown auto-close="disabled">-->
-          <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" uib-dropdown-toggle>-->
-            <!--<span><i class="fa fa-comments-o"></i>&nbsp;&nbsp;-->
-              <!--<span class="badge" style="font-size: 10px; margin-top: -2px; background-color: red;">1</span>-->
-            <!--</span>-->
-          <!--</a>-->
-          <!--<ul class="dropdown-menu animated fadeInDown" uib-dropdown-menu style="margin-right: -100px;">-->
-            <!--<li class="title">Your Messages</li>-->
-            <!--<li class="message" style="height: 40px;">-->
-              <!--<a href="" style="padding: 0; width: 240px;">-->
-                <!--<span class="col-sm-1" style="padding: 0; margin-left: -10px">-->
-                  <!--<i class="fa fa-circle" style="font-size: 6px;"></i>-->
-                <!--</span>-->
-                <!--<div class="col-sm-11" style="word-wrap: break-word; text-align: left;padding: 0">-->
-                  <!--<p style="margin-bottom: -8px;">Hello World!</p>-->
-                  <!--<label class="" style="color: grey; font-size: 8px;">Henry</label>-->
-                <!--</div>-->
-              <!--</a>-->
-            <!--</li>-->
-          <!--</ul>-->
-        <!--</li>-->
+
+        <li class="dropdown" dropdown uib-dropdown auto-close="disabled" ng-show="notificationCounts.announcements || notificationCounts.chores">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" uib-dropdown-toggle>
+            <span style="color: red;" ng-show="notificationCounts.announcements"><i class="fa fa-exclamation-circle"></i>&nbsp;{{notificationCounts.announcements}}</span>&nbsp;
+            <span style="color: #ffb400;" ng-show="notificationCounts.chores"><i class="fa fa-tasks"></i>&nbsp;{{(notificationCounts.chores)}}</span>
+          </a>
+          <ul class="dropdown-menu danger animated fadeInDown" uib-dropdown-menu style="margin-right: -10px;">
+            <li class="title" style="background-color: #696969;">Notification</li>
+            <li>
+              <ul class="list-group notifications">
+                <a href="#" ui-sref="tech.home">
+                  <li class="list-group-item">
+                    <span class="badge danger">{{notificationCounts.announcements}}</span> <i class="fa fa-exclamation-circle icon"></i> Announcements
+                  </li>
+                </a>
+                <a href="#">
+                  <li class="list-group-item">
+                    <span class="badge info">{{notificationCounts.sitasks}}</span> <i class="fa fa-gears icon"></i> STS Tasks
+                  </li>
+                </a>
+                <a href="#">
+                  <li class="list-group-item">
+                    <span class="badge warning">{{notificationCounts.chores}}</span> <i class="fa fa-tasks icon"></i> Incomplete Chores
+                  </li>
+                </a>
+                <a href="#"  ui-sref="tech.tasks">
+                  <li class="list-group-item message">Go to Task Center</li>
+                </a>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
         <li class="dropdown profile" uib-dropdown>
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" uib-dropdown-toggle>
             {{user.displayName}} <span class="caret"></span>

@@ -30,8 +30,8 @@ angular.module('customer').config(['$stateProvider', '$urlRouterProvider',
         url : '/confirm-netid',
         templateUrl: 'modules/customer/client/views/walkin/walkin-netid-confirm.client.view.html'
       })
-      .state('customer.walkin.reference', {
-        url: '/reference',
+      .state('customer.walkin.confirm-reference', {
+        url: '/confirm-reference',
         templateUrl: 'modules/customer/client/views/walkin/walkin-reference-confirm.client.view.html'
       })
       .state('customer.walkin.first-name', {

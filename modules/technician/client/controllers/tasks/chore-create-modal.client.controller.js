@@ -13,7 +13,7 @@ angular.module('system').controller('ChoreCreateController', ['$scope', '$uibMod
       else {
         $http.post('/api/tech/chore/create', chore)
           .error(function() { $scope.error = 'Server error.'; return false; })
-          .success(function() { $uibModalInstance.close(false); });
+          .success(function(chore) { $uibModalInstance.close(chore); });
       }
     };
     

@@ -2,9 +2,9 @@
 
 var async = require('async'),
   mongoose = require('mongoose'),
-  User = mongoose.model('User'),
-  Walkin = mongoose.model('Walkin'),
-  Checkin = mongoose.model('Checkin');
+  User = mongoose.model('User'), Message = mongoose.model('Message'),
+  Chore = mongoose.model('Chore'), SITask = mongoose.model('SITask'),
+  Walkin = mongoose.model('Walkin'), Checkin = mongoose.model('Checkin');
 
 exports.stats = function(req, res) {
   var stats = { walkin: {}, checkin : {} };
@@ -36,5 +36,30 @@ exports.stats = function(req, res) {
       return res.sendStatus(500);
     }
     else res.json(stats);
+  });
+};
+
+exports.notificationCounts = function(req, res) {
+  var notificationCounts = {};
+
+  async.waterfall([
+    function(callback) {
+      Message.find({ type : 'announcement', to : req.user, read : { $exists: false } })
+        .count(function(err, count) { notificationCounts.announcements = count; callback(err); });
+    },
+    function(callback) {
+      Chore.find({ completed : { $exists: false }, completedBy : { $exists: false } })
+        .count(function(err, count) { notificationCounts.chores = count; callback(err); });
+    },
+    function(callback) {
+      SITask.find({ walkin : { $exists: false } })
+        .count(function(err, count) { notificationCounts.sitasks = count; callback(err); });
+    }
+  ], function(err){
+    if(err) {
+      console.error(err);
+      return res.sendStatus(500);
+    }
+    else res.json(notificationCounts);
   });
 };

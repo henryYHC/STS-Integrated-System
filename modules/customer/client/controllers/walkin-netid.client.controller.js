@@ -97,11 +97,17 @@ angular.module('customer').controller('CustomerWalkinNetIDController', ['$scope'
                               deviceManufacturer : result.ticket.deviceManufacturer
                             };
                             break;
+                          case 'sitask':
+                            ticket = {
+                              description : result.ticket.description,
+                              message : result.ticket.msg_DisplayCustomer
+                            };
+                            break;
                         }
                         $scope.reference.type = result.type;
                         $scope.reference.ticket = ticket;
 
-                        $state.go('customer.walkin.reference');
+                        $state.go('customer.walkin.confirm-reference');
                       }
                     });
                 }

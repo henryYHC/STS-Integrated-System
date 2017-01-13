@@ -6,6 +6,7 @@ var fs = require('fs'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
   Walkin = mongoose.model('Walkin'),
+  SITask = mongoose.model('SITask'),
   mailer = require('../../../system/server/controllers/mailer.server.controller.js'),
   sn = require('../../../system/server/controllers/service-now.server.controller.js'),
   printer = require('../../../system/server/controllers/printer.server.controller.js');
@@ -358,8 +359,11 @@ exports.noshow = function(req, res) {
   walkin.save(function(err) {
     if(err) { console.error(err); return res.sendStatus(500); }
     else {
-      if(setting.servicenow_liveSync)
+      if(setting.servicenow_liveSync && walkin.user.verified)
         sn.syncIncident(sn.CREATE, sn.WALKIN, walkin);
+      else if(!walkin.user.verified)
+        mailer.send('michael.buchmann@emory.edu', 'Clover: Unverified NetID ' + walkin.user.username, 'Michael',
+          'Important: Please verify NetID ' + walkin.user.username + ' (' + walkin.user.displayName + ').');
       res.sendStatus(200);
     }
   });
@@ -426,10 +430,7 @@ exports.resolve = function(req, res) {
 
   console.log('Resolved Walk-in ID: ' + walkin._id);
   walkin.save(function(err) {
-    if(err) {
-      console.error(err);
-      return res.sendStatus(500);
-    }
+    if(err) { console.error(err); res.sendStatus(500); }
     else {
       if(setting.servicenow_liveSync && walkin.user.verified) {
         sn.syncIncident(sn.CREATE, sn.WALKIN, walkin, function(response){
@@ -440,7 +441,15 @@ exports.resolve = function(req, res) {
         mailer.send('michael.buchmann@emory.edu', 'Clover: Unverified NetID ' + walkin.user.username, 'Michael',
           'Important: Please verify NetID ' + walkin.user.username + ' (' + walkin.user.displayName + ').');
 
-      res.sendStatus(200);
+      if(walkin.sitask) {
+        console.log('Resolved STS task ID: ' + walkin.sitask._id);
+        SITask.findOneAndUpdate({ _id : walkin.sitask._id }, { walkin : walkin._id },
+          function(err) {
+            if(err) { console.error(err); res.sendStatus(500); }
+            else res.sendStatus(200);
+          });
+      }
+      else res.sendStatus(200);
     }
   });
 };
@@ -471,6 +480,8 @@ exports.walkinById = function(req, res, next, id) {
   Walkin.findOne({ _id : id }).populate(populate_options)
     .exec(function(err, walkin) {
       if(err) console.error(err);
-      else { req.walkin = walkin; next(); }
+      else req.walkin = walkin;
+
+      next();
     });
 };

@@ -10,7 +10,7 @@ module.exports = function (app) {
   app.route('/api/auth/signin').post(users.signin);
   app.route('/api/auth/signout').get(users.signout);
 
-  app.route('/api/auth/registerTechnician').post(users.hasAdminPermission, admin.registerTechnician);
+  app.route('/api/auth/registerUser').post(users.hasAdminPermission, admin.registerUser);
   app.route('/api/auth/resetPwd/:username').put(users.hasAdminPermission, admin.resetPwd);
   app.route('/api/auth/removeTechnician/:username').put(users.hasAdminPermission, admin.removeTechnicianRole);
   

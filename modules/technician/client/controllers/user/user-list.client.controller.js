@@ -1,11 +1,15 @@
 'use strict';
 
-angular.module('technician').controller('UserListController', ['$scope', '$http', 'Authentication',
-  function ($scope, $http, Authentication) {
+angular.module('technician').controller('UserListController', ['$scope', '$http', 'Authentication', 'ModalLauncher',
+  function ($scope, $http, Authentication, ModalLauncher) {
     $scope.query = { field: 'netid' };
     $scope.isAdmin = Authentication.hasAdminPerm();
-    
+
     /*----- Action functions -----*/
+    $scope.createTask = function(user) {
+      ModalLauncher.launchSITaskCreateModal(user);
+    };
+
     $scope.verify = function(user) {
       user.verified = true;
       $scope.updateUser(user);
@@ -71,5 +75,7 @@ angular.module('technician').controller('UserListController', ['$scope', '$http'
         .error(function() { alert('Request failed. Please view console for error.'); })
         .success(renderUsers);
     };
+
+    $scope.invalid();
   }
 ]);

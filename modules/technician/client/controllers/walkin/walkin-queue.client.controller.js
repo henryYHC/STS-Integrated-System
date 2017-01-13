@@ -41,7 +41,7 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
           }
 
           // Auto refresh queue
-          $scope.autoRefresher = $interval(function(){ $scope.initWalkin(); }, 20000);
+          $scope.autoRefresher = $interval(function(){ $scope.initWalkin(null); }, 20000);
 
           $rootScope.$on('$locationChangeSuccess', function() {
             $interval.cancel($scope.autoRefresher);
@@ -57,28 +57,42 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
         $scope.avgWaitTime = result.avgWaitTime;
         $scope.avgWorkTime = result.avgWorkTime;
 
+        var ids = result.walkins.map(function(walkin){ return walkin._id; });
+        if($scope.selected && ids.indexOf($scope.selected._id) < 0) $scope.selected = undefined;
+
         if(callback) callback(result.walkins);
       });
     };
 
     // Load additional walk-in information i.e. messages, etc
     $scope.loadWalkin = function(walkin){
-      var selected = $scope.selected = walkin;
+      var request = $http.get('/api/tech/sitask/fetch/' + walkin.user.username);
 
-      if(!selected.resolutionType)
-        $scope.selected.resolutionType = $scope.resolutions_options.default;
-      
-      // Flag if user is not verified
-      if(!$scope.selected.user.verified)
-        $scope.selected.message = true;
+      request.then(function(result) {
+        if(result.status != '200') alert('Server error when fetching sts tasks.');
+        else if(result.data && result.data.length > 0) {
+          walkin.sitask = result.data[0];
+          walkin.flagged = true;
+        }
 
-      // Clear cache for template task array
-      checkedTasks = []; checkedTasksOffset = 0;
+        var selected = $scope.selected = walkin;
 
-      // Force refresh select2 selection box (Work around)
-      $timeout(function(){
-        angular.element('#resolution').select2({ minimumResultsForSearch: Infinity });
-      }, 10);
+        if(!selected.resolutionType)
+          $scope.selected.resolutionType = $scope.resolutions_options.default;
+
+        // Flag if user is not verified
+        if(!$scope.selected.user.verified)
+          $scope.selected.unverified = true;
+
+        // Clear cache for template task array
+        checkedTasks = []; checkedTasksOffset = 0;
+
+        // Force refresh select2 selection box (Work around)
+        $timeout(function(){
+          angular.element('#resolution').select2({ minimumResultsForSearch: Infinity });
+        }, 10);
+
+      });
     };
 
     $scope.loadPrevious = function() {
@@ -100,6 +114,11 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
         .success(function(walkin) {
           ModalLauncher.launchWalkinViewModal(walkin);
         });
+    };
+
+    $scope.viewSITask = function(sitask) {
+      console.log(sitask);
+      ModalLauncher.launchSITaskViewModal(sitask);
     };
 
     /*----- Status change functions -----*/
@@ -231,6 +250,9 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
       $http.put('/api/technician/walkin/beginService/'+$scope.selected._id)
         .error(function() { alert('Request failed. Please view console for error.'); })
         .success(function(walkin) {
+
+          if($scope.selected.sitask)
+            walkin.sitask = $scope.selected.sitask;
 
           walkin.resolutionType = $scope.resolutions_options.default;
           // Force refresh select2 selection box (Work around)

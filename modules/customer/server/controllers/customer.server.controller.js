@@ -3,6 +3,7 @@
 var _ = require('lodash'),
   mongoose = require('mongoose'),
   Walkin = mongoose.model('Walkin'),
+  SITask = mongoose.model('SITask'),
   Checkin = mongoose.model('Checkin');
 
 var walkin_populate_options = [
@@ -42,7 +43,18 @@ exports.getReferenceTickets = function(req, res) {
 
                 if(checkin && checkin.status === 'Checkout pending')
                   res.json({ found : true, type : 'check-in', ticket : checkin });
-                else res.json({ found : false });
+                else {
+                  var username = user.username;
+
+                  SITask.find({ username : username, walkin : { $exists : false } })
+                    .sort({ created : 1 }).exec(function(err, sitasks) {
+                      if(err){ console.error(err); res.sendStatus(500); }
+
+                      else if(sitasks && sitasks.length > 0)
+                        res.json({ found : true, type : 'sitask', ticket : sitasks[0] });
+                      else res.json({ found : false });
+                    });
+                }
               }
             });
         }

@@ -74,22 +74,32 @@ angular.module('system').service('ModalLauncher', ['$uibModal',
     };
 
     this.launchChoreCreateModal = function() {
-      $uibModal.open({
+      return $uibModal.open({
         animation: true, size: 'md', backdrop: 'static',
         controller: 'ChoreCreateController',
         windowClass: 'fade modal-primary panel-center-modal',
-        templateUrl: 'modules/technician/client/views/chore/chore-create-modal.client.view.html',
+        templateUrl: 'modules/technician/client/views/tasks/chore-create-modal.client.view.html',
         resolve: { data: function(){ return { }; } }
       });
     };
 
     this.launchSITaskCreateModal = function(user) {
-      $uibModal.open({
+      return $uibModal.open({
         animation: true, size: 'lg', backdrop: 'static', keyboard: false,
         controller: 'SITaskCreateModalController',
         windowClass: 'fade modal-warning panel-center-modal',
-        templateUrl: 'modules/technician/client/views/user/sitask-create-modal.client.view.html',
+        templateUrl: 'modules/technician/client/views/tasks/sitask-create-modal.client.view.html',
         resolve: { data: function(){ return { user : user }; } }
+      });
+    };
+
+    this.launchSITaskViewModal = function(sitask) {
+      $uibModal.open({
+        animation: true, size: 'lg', backdrop: 'static',
+        controller: 'SITaskViewModalController',
+        windowClass: 'fade modal-warning panel-center-modal',
+        templateUrl: 'modules/technician/client/views/tasks/sitask-view-modal.client.view.html',
+        resolve: { data: function(){ return { sitask : sitask }; } }
       });
     };
 

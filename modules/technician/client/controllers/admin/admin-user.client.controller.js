@@ -3,7 +3,7 @@
 angular.module('technician.admin').controller('AdminUserController', ['$scope', '$http',
   function ($scope, $http) {
     // Expose view variables
-    $scope.register = { registerAdmin : false };
+    $scope.register = { registerAs : { customer : true } };
 
     $scope.clearMsgs = function() {
       $scope.registerMsg = {}; $scope.resetMsg = {}; $scope.removeMsg = {};
@@ -12,16 +12,15 @@ angular.module('technician.admin').controller('AdminUserController', ['$scope', 
 
     $scope.registerUser = function() {
       $scope.clearMsgs();
-      if($scope.register.registerAdmin)
-        $scope.register.roles = ['admin'];
-      else
-        $scope.register.roles = ['technician'];
 
-      $http.post('/api/auth/registerTechnician', $scope.register).success(function (response) {
+      var registerAs = $scope.register.registerAs;
+      $scope.register.roles = Object.keys(registerAs).filter(function(val) { return registerAs[val] === true; });
+
+      $http.post('/api/auth/registerUser', $scope.register).success(function (response) {
         if(!$scope.register.randomPwd)
           $scope.registerMsg.success = 'User registered successfully!';
         else
-          $scope.registerMsg.success = 'User registered successfully!    Password: ' + response.password;
+          $scope.registerMsg.success = 'User registered successfully! Password: ' + response.password;
 
         $scope.register = { registerAdmin : false };
       }).error(function (response) {

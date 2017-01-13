@@ -5,8 +5,6 @@ angular.module('system').controller('WalkinViewModalController', ['$scope', '$ui
     $scope.data = data;
     $scope.user = Authentication.getUser();
 
-    console.log($scope.user);
-
     var option2Obj = function(val){
       return { text : val, value : val };
     };

@@ -47,18 +47,18 @@
   </div>
   <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="height: 80vh; padding: 0;">
     <!-- Alert messages -->
-    <!--<div class="alert alert-danger alert-dismissible fade in" role="alert">-->
-      <!--<button type="button" class="btn btn-xs btn-danger pull-right" style="margin: 0 0 0 0;">Got it !</button>-->
-      <!--<h4><span class="fa fa-flag"></span>&emsp; Oh snap! Customer has been flagged!</h4>-->
-      <!--<p>Customer's device has been inflected with virus and thus flagged by Emory University. Please run McAfee to remove the threats</p>-->
-    <!--</div>-->
+    <div class="alert alert-danger alert-dismissible fade in" role="alert" ng-show="selected && selected.sitask && selected.flagged && (selected.status === 'In queue' || selected.status == 'Duplicate')">
+      <button type="button" class="btn btn-xs btn-danger pull-right" style="margin: 0 0 0 0;" ng-click="selected.flagged=false;">Got it !</button>
+      <h4><span class="fa fa-flag"></span>&emsp; Oh snap! Customer has been flagged!</h4>
+      <p>{{selected.sitask.msg_DisplayTechnician}}</p>
+    </div>
     <!-- Warning messages -->
-    <div class="alert alert-warning alert-dismissible fade in" role="alert" ng-show="selected && selected.message && selected.status === 'In queue'">
+    <div class="alert alert-warning alert-dismissible fade in" role="alert" ng-show="selected && selected.message && (selected.status === 'In queue' || selected.status == 'Duplicate')">
       <div class="pull-right" style="margin: 0 -15px 0 0;">
-        <button type="button" class="btn btn-sm btn-primary" ng-click="selected.message=false;">Proceed</button>
+        <button type="button" class="btn btn-sm btn-primary" ng-click="selected.unverified=false;">Proceed</button>
         <button class="btn btn-sm btn-default" ng-click="notEligible()">Not Eligible</button>
       </div>
-      <h4><span class="fa fa-hand-stop-o"></span>&emsp; No no! Customer status is not verified!</h4>
+      <h4><span class="fa fa-hand-stop-o"></span>&emsp; Oh no! Customer status is not verified!</h4>
       <p>The NetID customer input is not verified by the system. Please make sure he/she is a student at Emory.</p>
     </div>
     <!-- Start of workspace -->
@@ -78,7 +78,7 @@
         <p style="font-size: 14px;"></p>
         <p style="font-size: 14px;"><i>{{selected.description}}</i></p>
         <hr/>
-        <div><button class="btn btn-lg btn-success" ng-disabled="selected.message" ng-click="beginService()">Begin Service</button></div>
+        <div><button class="btn btn-lg btn-success" ng-disabled="selected.unverified || selected.flagged" ng-click="beginService()">Begin Service</button></div>
       </div>
       <!-- If the walk-in is 'Work in progress'/'House call pending'-->
       <div class="card" ng-show="selected && (selected.status !== 'In queue' && selected.status !== 'Duplicate')">
@@ -89,6 +89,7 @@
             </div>
           </div>
           <div class="pull-right" style="font-size: 16px; margin: 10px 5px 0 0;">
+            <button class="btn btn-xs btn-danger" ng-show="selected.sitask" ng-click="viewSITask(selected.sitask)" style="margin: 0;">View STS Task</button>
             <span class="label" ng-class="'label-' + ((selected.status === 'House call pending')? 'info' : 'success')">
               {{ selected.status }}
             </span>

@@ -20,6 +20,11 @@ angular.module('technician').config(['$stateProvider', '$urlRouterProvider',
         templateUrl: 'modules/technician/client/views/panel/home.client.view.html',
         data: { breadcrumb : 'Dashboard' }
       })
+      .state('tech.tasks', {
+        url: '/tasks',
+        templateUrl: 'modules/technician/client/views/tasks/task-center.client.view.html',
+        data: { breadcrumb : 'Task Center' }
+      })
       // Walk-in
       .state('tech.walkin', {
         abstract: true, url: '/walkin', template: '<ui-view>'

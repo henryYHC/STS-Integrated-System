@@ -13,7 +13,7 @@ var path = require('path'),
 /**
  * Signup
  */
-exports.registerTechnician = function (req, res) {
+exports.registerUser = function (req, res) {
 
   if (req.body.randomPwd) req.body.password = User.generateRandomPassphrase();
 

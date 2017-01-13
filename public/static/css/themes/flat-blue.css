@@ -222,6 +222,10 @@
     background-color: #1ABC9C; }
     .flat-blue .card.card-success .card-header .title {
       color: #FFF; }
+  .flat-blue .card.card-warning .card-header {
+    background-color: #ffb400; }
+    .flat-blue .card.card-warning .card-header .title {
+      color: #FFF; }
   .flat-blue .card.card-info .card-header {
     background-color: #22A7F0; }
     .flat-blue .card.card-info .card-header .title {
