@@ -38,7 +38,7 @@ angular.module('system').controller('SITaskCreateModalController', ['$scope', '$
             $http.post('/api/tech/chore/create', chore)
               .error(function () { $scope.error = 'Server error while creating chore'; })
               .success(function(chore) {
-                sitask.chores = new Array(chore);
+                sitask.chores = new Array(chore._id);
                 createAux(sitask);
               });
           }
