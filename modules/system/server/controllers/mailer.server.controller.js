@@ -16,11 +16,15 @@ exports.CHECKIN = 'Check-in';
 var template_directory = __dirname + '/../../../../public/static/templates/email';
 exports.TEMPLATE = {
   DEFAULT: template_directory + '/DefaultTemplate.json',
+
   WI_SURVEY: template_directory + '/Survey_Walkin.json',
+
   CI_RECEIPT: template_directory + '/CheckinReceipt.json',
   CI_PICKUP: template_directory + '/PickupReceipt.json',
   CI_LOG: template_directory + '/ServiceLog.json',
-  CI_SURVEY: template_directory + '/Survey_Checkin.json'
+  CI_SURVEY: template_directory + '/Survey_Checkin.json',
+
+  PR_WORKSTATIONS: template_directory + '/Problem-Workstations.json'
 };
 exports.ATTACHMENT = {
   CI_LIABILITY: {
@@ -173,6 +177,31 @@ exports.sendREST = function(req, res) {
       template.html = template.html.replace('<BODY>', content.body);
 
       template.html = template.html.replace(/\n/g, '<br>');
+      exports.transporter.sendMail(template, function(err, info){
+        if(err || !info) {
+          console.error(err);
+          return res.sendStatus(500);
+        }
+        else res.sendStatus(200);
+      });
+    }
+  });
+};
+
+exports.reportProblem_Workstations = function(req, res) {
+  var config = req.body, user = req.user;
+
+  jsonfile.readFile(exports.TEMPLATE.PR_WORKSTATIONS, function(err, template) {
+    if (err || !template) {
+      console.error(err);
+      return res.sendStatus(500);
+    }
+    else {
+      template.subject = template.subject.replace('<WSNUMBER>', config.WSnumber);
+      template.text = template.text.replace('<DESCRIPTION>', config.description); template.html = template.html.replace('<DESCRIPTION>', config.description);
+      template.text = template.text.replace('<FIXES>', config.fixes); template.html = template.html.replace('<FIXES>', config.fixes);
+      template.text = template.text.replace('<NAME>', user.displayName); template.html = template.html.replace('<NAME>', user.displayName);
+
       exports.transporter.sendMail(template, function(err, info){
         if(err || !info) {
           console.error(err);
