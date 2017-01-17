@@ -197,6 +197,7 @@ exports.reportProblem_Workstations = function(req, res) {
       return res.sendStatus(500);
     }
     else {
+      template.from = template.from.replace('<NETID>', user.username);
       template.subject = template.subject.replace('<WSNUMBER>', config.WSnumber);
       template.text = template.text.replace('<DESCRIPTION>', config.description); template.html = template.html.replace('<DESCRIPTION>', config.description);
       template.text = template.text.replace('<FIXES>', config.fixes); template.html = template.html.replace('<FIXES>', config.fixes);
