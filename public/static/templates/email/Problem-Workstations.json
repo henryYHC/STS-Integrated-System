@@ -3,6 +3,6 @@
   "to": "sdl-help@emory.edu",
   "subject": "Problem with Workstation <WSNUMBER>",
   "bcc": "stsemory@gmail.com",
-  "text": "<b>Description of the problem:</b>\n\n<DESCRIPTION>\n\n<b>Attempted Fixes:</b>\n\n<FIXES>\n\n\nSubmitted by <NAME>",
-  "html": "<b>Description of the problem:</b><br><br><DESCRIPTION><br><br><b>Attempted Fixes:</b><br><br><FIXES><br><br><br>Submitted by <NAME>"
+  "text": "<b>Description of the problem:</b>\n\n<DESCRIPTION>\n\n<b>Attempted Fixes:</b>\n\n<FIXES>\n\n\nSubmitted by <NAME>, member of STS",
+  "html": "<b>Description of the problem:</b><br><br><DESCRIPTION><br><br><b>Attempted Fixes:</b><br><br><FIXES><br><br><br>Submitted by <NAME>, member of STS"
 }
