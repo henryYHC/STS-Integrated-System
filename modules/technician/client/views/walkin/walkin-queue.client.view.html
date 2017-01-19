@@ -53,7 +53,7 @@
       <p>{{selected.sitask.msg_DisplayTechnician}}</p>
     </div>
     <!-- Warning messages -->
-    <div class="alert alert-warning alert-dismissible fade in" role="alert" ng-show="selected && selected.message && (selected.status === 'In queue' || selected.status == 'Duplicate')">
+    <div class="alert alert-warning alert-dismissible fade in" role="alert" ng-show="selected && selected.unverified && (selected.status === 'In queue' || selected.status == 'Duplicate')">
       <div class="pull-right" style="margin: 0 -15px 0 0;">
         <button type="button" class="btn btn-sm btn-primary" ng-click="selected.unverified=false;">Proceed</button>
         <button class="btn btn-sm btn-default" ng-click="notEligible()">Not Eligible</button>

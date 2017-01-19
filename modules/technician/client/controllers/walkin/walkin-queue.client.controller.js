@@ -71,18 +71,16 @@ angular.module('technician').controller('WalkinQueueController', ['$scope', '$ht
       request.then(function(result) {
         if(result.status != '200') alert('Server error when fetching sts tasks.');
         else if(result.data && result.data.length > 0) {
-          walkin.sitask = result.data[0];
-          walkin.flagged = true;
+          walkin.sitask = result.data[0]; walkin.flagged = true;
         }
+
+        // Flag if user is not verified
+        if(!walkin.user.verified) walkin.unverified = true;
 
         var selected = $scope.selected = walkin;
 
         if(!selected.resolutionType)
           $scope.selected.resolutionType = $scope.resolutions_options.default;
-
-        // Flag if user is not verified
-        if(!$scope.selected.user.verified)
-          $scope.selected.unverified = true;
 
         // Clear cache for template task array
         checkedTasks = []; checkedTasksOffset = 0;
