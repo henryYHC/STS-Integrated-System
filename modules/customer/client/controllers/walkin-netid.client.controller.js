@@ -8,7 +8,7 @@ angular.module('customer').controller('CustomerWalkinNetIDController', ['$scope'
       if($scope.walkin.user && $scope.walkin.user.username){
         var username = $scope.walkin.user.username = $scope.walkin.user.username.toLowerCase();
         if(!isNaN(username.charAt(0)) || !(/^\w+$/.test(username)))
-          $scope.status.error = 'Please enter your NetID correctly.';
+          $scope.status.error = 'Please be sure to enter your NetID correctly.\n(Not student number)';
         else {
           $http.get('/api/users/validate/' + username)
             .error(function () { $scope.error = 'System error. Please contact our technician.'; })
