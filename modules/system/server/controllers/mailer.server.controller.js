@@ -198,9 +198,11 @@ exports.reportProblem_Workstations = function(req, res) {
     }
     else {
       template.subject = template.subject.replace('<WSNUMBER>', config.WSnumber);
-      template.text = template.text.replace('<DESCRIPTION>', config.description); template.html = template.html.replace('<DESCRIPTION>', config.description);
-      template.text = template.text.replace('<FIXES>', config.fixes); template.html = template.html.replace('<FIXES>', config.fixes);
-      template.text = template.text.replace('<NAME>', user.displayName); template.html = template.html.replace('<NAME>', user.displayName);
+      template.text = template.text.replace('<DESCRIPTION>', config.description);
+      template.text = template.text.replace('<FIXES>', config.fixes);
+      template.text = template.text.replace('<NAME>', user.displayName);
+
+      template.html = template.text;
 
       exports.transporter.sendMail(template, function(err, info){
         if(err || !info) {
