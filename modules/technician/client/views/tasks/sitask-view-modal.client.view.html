@@ -29,7 +29,7 @@
       <table class="col-lg-12 col-md-12 col-sm-12 col-xs-12 table table-hover" style="margin-bottom: 0; max-height: 150px; overflow: auto;" ng-show="data.sitask.chores && data.sitask.chores.length">
         <tbody>
           <tr ng-repeat="chore in data.sitask.chores">
-            <td style="line-height: 22px;">{{chore.instruction}}</td>
+            <td style="line-height: 22px; word-wrap: break-word; max-width: 0px;">{{chore.instruction}}</td>
             <td style="width: 150px;">
 
               <div class="form-horizontal" ng-show="!chore.completed" style="line-height: 20px; text-align: right;">
