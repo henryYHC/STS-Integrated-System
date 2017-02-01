@@ -11,7 +11,7 @@ var ChoreSchema = new Schema({
   note: { type: String, default: '', trim: true },
 
   createdBy: { type: Schema.ObjectId, ref: 'User', required: true },
-  created: { type: Date, default: Date.now() },
+  created: { type: Date, default: Date.now },
 
   completedBy: { type: Schema.ObjectId, ref: 'User' },
   completed: { type: Date }
