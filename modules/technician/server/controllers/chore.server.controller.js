@@ -45,6 +45,16 @@ exports.completeChore = function(req, res) {
   });
 };
 
+exports.query = function(req, res) {
+  var query = req.body;
+
+  Chore.find(query).populate(populate_options)
+    .exec(function(err, chores){
+      if(err) { console.error(err); res.statusCode(500); }
+      else { res.json(chores); }
+    });
+};
+
 exports.choreById = function (req, res, next, choreId) {
   if(!choreId)
     return res.status(400).send({ message: 'Chore ID is invalid' });

@@ -63,18 +63,15 @@
                     <span class="badge danger">{{notificationCounts.announcements}}</span> <i class="fa fa-exclamation-circle icon"></i> Announcements
                   </li>
                 </a>
-                <a href="#">
+                <a href="#" ui-sref="tech.tasks">
                   <li class="list-group-item">
                     <span class="badge info">{{notificationCounts.sitasks}}</span> <i class="fa fa-gears icon"></i> STS Tasks
                   </li>
                 </a>
-                <a href="#">
+                <a href="#" ui-sref="tech.tasks">
                   <li class="list-group-item">
                     <span class="badge warning">{{notificationCounts.chores}}</span> <i class="fa fa-tasks icon"></i> Incomplete Chores
                   </li>
-                </a>
-                <a href="#"  ui-sref="tech.tasks">
-                  <li class="list-group-item message">Go to Task Center</li>
                 </a>
               </ul>
             </li>
@@ -123,11 +120,13 @@
               <span class="icon fa fa-tachometer"></span><span class="title">Dashboard</span>
             </a>
           </li>
+
           <li ui-sref-active="active">
             <a ui-sref="tech.tasks">
               <span class="icon fa fa-tasks"></span><span class="title">Task Center</span>
             </a>
           </li>
+
           <li class="panel panel-default dropdown" ui-sref-active="active">
             <a data-toggle="collapse" href="#dropdown-walkin">
               <span class="icon fa fa-child"></span><span class="title">Walk-ins</span>

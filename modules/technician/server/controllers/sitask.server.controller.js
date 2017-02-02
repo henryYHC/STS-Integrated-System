@@ -7,8 +7,7 @@ var _ = require('lodash'),
   SITask = mongoose.model('SITask');
 
 var populate_options = [
-  { path : 'createdBy', model : 'User', select : 'username displayName' },
-  { path : 'walkin', model : 'Walkin' }, { path : 'chores', model : 'Chore' }
+  { path : 'createdBy', model : 'User', select : 'username displayName' }, { path : 'chores', model : 'Chore' }
 ];
 
 var populate_options_chore = [
@@ -64,6 +63,20 @@ exports.sitaskByUsername = function (req, res) {
         Chore.populate(sitask, populate_options_chore, function (err, sitask) {
           if(err) { console.error(err); res.sendStatus(500); }
           else res.json(sitask);
+        });
+      }
+    });
+};
+
+exports.query = function(req, res) {
+  var query = req.body;
+  SITask.find(query).populate(populate_options)
+    .exec(function(err, sitasks){
+      if(err) { console.error(err); res.statusCode(500); }
+      else {
+        Chore.populate(sitasks, populate_options_chore, function (err, sitasks) {
+          if(err){ console.error(err); res.sendStatus(500); }
+          else res.json(sitasks);
         });
       }
     });

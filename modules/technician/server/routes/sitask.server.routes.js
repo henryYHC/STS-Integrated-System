@@ -14,6 +14,7 @@ module.exports = function (app) {
   app.route('/api/tech/sitask/update/:sitaskId').post(users.hasTechnicianPermission, sitask.update);
 
   app.route('/api/tech/sitask/fetch/:username').get(sitask.sitaskByUsername);
+  app.route('/api/tech/sitask/query').post(users.hasTechnicianPermission, sitask.query);
 
   app.param('sitaskId', sitask.sitaskById);
 };

@@ -11,5 +11,7 @@ module.exports = function (app) {
   app.route('/api/tech/chore/list').get(users.hasTechnicianPermission, chore.list);
   app.route('/api/tech/chore/complete/:choreId').post(users.hasTechnicianPermission, chore.completeChore);
 
+  app.route('/api/tech/chore/query').post(users.hasTechnicianPermission, chore.query);
+
   app.param('choreId', chore.choreById);
 };

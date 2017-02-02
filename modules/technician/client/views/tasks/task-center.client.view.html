@@ -7,6 +7,15 @@
             <i class="fa fa-gears"></i>&nbsp;&nbsp;STS Tasks
           </div>
         </div>
+
+        <div class="pull-right title" style="font-size: 16px; margin: 15px -15px 0 0; padding: 0;">
+          <div class="form-group">
+            <i class="col-lg-2 col-md-2 col-sm-2 fa fa fa-search" style="margin-top: 5px;"></i>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="">
+              <input type="text" class="form-control" style="height: 28px; width: 80px" placeholder="  NetID" ng-model="sitask_netid">
+            </div>
+          </div>
+        </div>
       </div>
       <div class="card-body no-padding" style="overflow: auto; max-height: 70vh;">
         <div class="alert text-center" style="margin-bottom: 0px;" ng-show="sitasks && !sitasks.length">
@@ -27,9 +36,12 @@
             </td>
             <td style="text-align: center">
               <button class="btn btn-xs btn-primary" style="margin: 0" ng-click="viewSITask(sitask);">View</button>
-              <button class="btn btn-xs btn-default" style="margin: 0" ng-click="createSITaskChore($index, sitask)"
+              <button ng-show="!sitask.walkin" class="btn btn-xs btn-default" style="margin: 0" ng-click="createSITaskChore($index, sitask)"
                       tooltip-append-to-body="true" tooltip-placement="right" uib-tooltip="Create Chore">
                 <i class="fa fa-tasks"></i></button>
+              <button ng-show="sitask.walkin" class="btn btn-xs btn-default" style="margin: 0" ng-click="viewWalkin(sitask.walkin)"
+                      tooltip-append-to-body="true" tooltip-placement="right" uib-tooltip="View Walk-in">
+                <i class="fa fa-info-circle"></i></button>
             </td>
           </tr>
           </tbody>
@@ -47,10 +59,22 @@
             <i class="fa fa-tasks"></i>&nbsp;&nbsp;Chores
           </div>
         </div>
+
+        <div class="pull-right" style="margin-top: 3px; text-align: right; width: 600px;">
+          <span class="col-lg-7 col-md-7 col-sm-7" style="padding: 0 10px 0 0;">
+            <div class="btn btn-sm btn-info" ng-click="listChores_yesterday()">Yesterday</div>
+            <div class="btn btn-sm btn-success" ng-click="listChores_today()">Today</div>
+            <div class="btn btn-sm btn-danger" ng-click="listChores_incomplete()">Incomplete</div>
+          </span>
+          <span class="col-lg-5 col-md-5 col-sm-5" style="padding: 3px 10px 0 0;">
+            <input type="date" class="form-control col-lg-9 col-md-9 col-sm-9" style="width: 160px;" ng-model="chore_date">
+            <button class="btn btn-sm btn-default col-lg-3 col-md-3 col-sm-3" style="margin: 2px 0 0 10px;" ng-click="listChores_dateQuery(chore_date)">Search</button>
+          </span>
+        </div>
       </div>
       <div class="card-body no-padding" style="overflow: auto; max-height: 70vh;">
         <div class="alert text-center" style="margin-bottom: 0px;" ng-show="chores && !chores.length">
-          <span class="fa fa-smile-o"></span> Hooray! No chores today! <span class="fa fa-smile-o"></span>
+          <span class="fa fa-smile-o"></span> Hooray! No chores found! <span class="fa fa-smile-o"></span>
         </div>
 
         <table class="table table-hover" style="margin-bottom: 0; " ng-show="chores && chores.length">
