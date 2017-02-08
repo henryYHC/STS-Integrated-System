@@ -10,6 +10,8 @@ var path = require('path'),
   User = mongoose.model('User'),
   _ = require('lodash');
 
+mongoose.Promise = global.Promise;
+
 /**
  * Signin after passport authentication
  */

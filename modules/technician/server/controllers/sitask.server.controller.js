@@ -15,6 +15,8 @@ var populate_options_chore = [
   { path : 'chores.completedBy', model : 'User', select : 'firstName lastName displayName username' }
 ];
 
+mongoose.Promise = global.Promise;
+
 exports.create = function(req, res) {
   var sitask = new SITask(req.body), user = req.user;
   sitask.createdBy = user;

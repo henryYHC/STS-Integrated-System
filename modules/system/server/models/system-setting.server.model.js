@@ -3,6 +3,8 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
+mongoose.Promise = global.Promise;
+
 var SystemSettingSchema = new Schema({
   user_wildcard_prefixes : {
     type: [{

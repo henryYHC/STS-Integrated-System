@@ -86,4 +86,7 @@ mongod
 CHANGELOG.md
 CONTRIBUTING.md
 Procfile
+
 /config/credentials/
+/config/env/
+/config/templates/

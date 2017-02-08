@@ -31,6 +31,8 @@ var popOpt_entry = [
 var workflow_templates_path = 'config/templates/checkin/workflow_templates.json',
   workflow_templates = JSON.parse(fs.readFileSync(workflow_templates_path, 'utf8'));
 
+mongoose.Promise = global.Promise;
+
 exports.getCheckinTransferSetting = function(req, res) {
   var system = req.setting, setting = {};
   

@@ -6,6 +6,8 @@ var async = require('async'),
   Chore = mongoose.model('Chore'), SITask = mongoose.model('SITask'),
   Walkin = mongoose.model('Walkin'), Checkin = mongoose.model('Checkin');
 
+mongoose.Promise = global.Promise;
+
 exports.stats = function(req, res) {
   var stats = { walkin: {}, checkin : {} };
   var today = new Date(Date.now()); today.setHours(0);

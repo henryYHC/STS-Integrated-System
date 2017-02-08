@@ -4,6 +4,8 @@ var mongoose = require('mongoose'),
   autoIncrement = require('mongoose-auto-increment'),
   Schema = mongoose.Schema;
 
+mongoose.Promise = global.Promise;
+
 var ChoreSchema = new Schema({
   type : { type : String, enum : ['automated', 'general'], default: 'general' },
 

@@ -3,6 +3,8 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
+mongoose.Promise = global.Promise;
+
 // Schema
 var MessageSchema = new Schema({
   type: {

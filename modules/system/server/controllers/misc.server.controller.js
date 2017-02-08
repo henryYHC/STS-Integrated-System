@@ -4,6 +4,8 @@ var mongoose = require('mongoose'),
   Walkin = mongoose.model('Walkin'),
   sn = require('./service-now.server.controller.js');
 
+mongoose.Promise = global.Promise;
+
 var popOpt_walkin = [
   { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified isWildcard' },
   { path : 'lastUpdateTechnician', model : 'User', select : 'displayName username' },

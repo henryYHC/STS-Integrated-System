@@ -12,6 +12,8 @@ var _ = require('lodash'),
   KeyValueList = mongoose.model('KeyValueList'),
   SystemSetting = mongoose.model('SystemSetting');
 
+mongoose.Promise = global.Promise;
+
 // Validator body
 var retrieveSystemSetting = function(username, callback){
   SystemSetting.findOne({}, '-_id user_wildcard_prefixes')

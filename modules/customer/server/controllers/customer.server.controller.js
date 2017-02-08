@@ -6,6 +6,8 @@ var _ = require('lodash'),
   SITask = mongoose.model('SITask'),
   Checkin = mongoose.model('Checkin');
 
+mongoose.Promise = global.Promise;
+
 var walkin_populate_options = [
   { path : 'user', model : 'User', select : 'firstName lastName displayName username phone location verified isWildcard' }
 ];

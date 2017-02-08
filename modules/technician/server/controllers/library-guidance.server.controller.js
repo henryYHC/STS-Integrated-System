@@ -4,6 +4,8 @@ var mongoose = require('mongoose'),
   User = mongoose.model('User'),
   LibraryGuidance = mongoose.model('LibraryGuidance');
 
+mongoose.Promise = global.Promise;
+
 exports.log = function (req, res) {
   var event = new LibraryGuidance(req.body);
   event.user = req.user;

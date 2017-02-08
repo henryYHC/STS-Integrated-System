@@ -7,6 +7,8 @@ var
   jsonfile = require('jsonfile'),
   smtpTransport = require('nodemailer-smtp-transport');
 
+mongoose.Promise = global.Promise;
+
 // Module variables
 exports.transporter = null;
 

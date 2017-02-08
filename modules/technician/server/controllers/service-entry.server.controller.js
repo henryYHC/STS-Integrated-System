@@ -3,6 +3,8 @@
 var mongoose = require('mongoose'),
   ServiceEntry = mongoose.model('ServiceEntry');
 
+mongoose.Promise = global.Promise;
+
 exports.update = function (req, res) {
   var entry = req.body;
   ServiceEntry.findOneAndUpdate({ _id : entry._id }, entry, function(err, entry){

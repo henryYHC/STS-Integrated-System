@@ -11,6 +11,8 @@ var popOpt = [
   { path: 'from', model : 'User', select : 'username displayName profileImageURL' }
 ];
 
+mongoose.Promise = global.Promise;
+
 exports.create = function(req, res) {
   var from = req.user, to = req.profile;
   var message = new Message(_.extend(req.body, { from : from, to : to }));

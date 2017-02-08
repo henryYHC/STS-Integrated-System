@@ -3,6 +3,8 @@
 var mongoose = require('mongoose'),
   User = mongoose.model('User');
 
+mongoose.Promise = global.Promise;
+
 exports.query = function(req, res) {
   var query = req.body;
 

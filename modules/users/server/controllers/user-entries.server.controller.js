@@ -4,6 +4,8 @@ var _ = require('lodash'),
   mongoose = require('mongoose'),
   UserEntry = mongoose.model('UserEntry');
 
+mongoose.Promise = global.Promise;
+
 exports.create = function(req, res) {
   var new_entry = req.body;
 

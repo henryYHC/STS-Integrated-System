@@ -9,6 +9,8 @@ var mongoose = require('mongoose'),
   mailer = require('./mailer.server.controller.js'),
   sn = require('./service-now.server.controller.js');
 
+mongoose.Promise = global.Promise;
+
 var popOpt = [
   { path : 'user', model : 'User', select : 'displayName username isWildcard' }
 ];

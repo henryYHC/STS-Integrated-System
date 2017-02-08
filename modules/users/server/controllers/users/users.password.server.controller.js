@@ -11,6 +11,8 @@ var path = require('path'),
   async = require('async'),
   crypto = require('crypto');
 
+mongoose.Promise = global.Promise;
+
 /**
  * Change Password
  */

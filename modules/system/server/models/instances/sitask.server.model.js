@@ -4,6 +4,8 @@ var mongoose = require('mongoose'),
   autoIncrement = require('mongoose-auto-increment'),
   Schema = mongoose.Schema;
 
+mongoose.Promise = global.Promise;
+
 var SITaskSchema = new Schema({
 // Core information
   username: { type: String, trim: true, required: true },

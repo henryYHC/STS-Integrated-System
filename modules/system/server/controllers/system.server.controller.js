@@ -10,6 +10,8 @@ var
   KeyValueList = mongoose.model('KeyValueList'),
   SystemSetting = mongoose.model('SystemSetting');
 
+mongoose.Promise = global.Promise;
+
 // Module variables
 var popOpt = [
   { path: 'device_options', model: 'KeyValueList', select: 'key values' },

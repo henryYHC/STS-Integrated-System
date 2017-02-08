@@ -12,6 +12,8 @@ var _ = require('lodash'),
   config = require(path.resolve('./config/config')),
   User = mongoose.model('User');
 
+mongoose.Promise = global.Promise;
+
 exports.update = function (req, res) {
   var user = req.profile, updated = req.body;
 

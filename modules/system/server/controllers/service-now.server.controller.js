@@ -8,8 +8,10 @@ var fs = require('fs'),
   Walkin = mongoose.model('Walkin'),
   Checkin = mongoose.model('Checkin');
 
+mongoose.Promise = global.Promise;
+
 // Get credentials (& reformat wsdl url)
-var credentialFilePath = __dirname + '/../../../../config/credentials/ServiceNow.json',
+var credentialFilePath = __dirname + '/../../../../config/credentials/ServiceNow_Test.json',
   credentialFile = fs.readFileSync(credentialFilePath, 'utf8'),
   credential = JSON.parse(credentialFile);
 
@@ -65,9 +67,9 @@ var getWalkinTemplateObj = function(walkin){
         else if(dinfo) subject += dinfo;
 
         obj.type = 'Service Request';
-        obj.category1 = 'Application Management';
-        obj.category2 = 'Access';
-        obj.category3 = 'Inaccessible';
+        obj.category1 = 'Student Technology';
+        obj.category2 = 'Hardware';
+        obj.category3 = 'Add';
         break;
 
       case 'EmoryUnplugged':
@@ -80,15 +82,15 @@ var getWalkinTemplateObj = function(walkin){
           else subject += dinfo;
         }
 
-        obj.category1 = 'Desktop Management';
-        obj.category2 = 'Software';
-        obj.category3 = 'Error';
+        obj.category1 = 'Student Technology';
+        obj.category2 = 'OS/Firmware';
+        obj.category3 = 'Modify';
         break;
 
       case 'Hardware':
         subject += 'HW';
 
-        obj.category1 = 'Desktop Management';
+        obj.category1 = 'Student Technology';
         obj.category2 = 'Hardware';
         obj.category3 = 'Failure';
         break;
@@ -97,7 +99,7 @@ var getWalkinTemplateObj = function(walkin){
         subject += 'O365';
 
         obj.category1 = 'Application Management';
-        obj.category2 = 'Software';
+        obj.category2 = 'Access';
         obj.category3 = 'Error';
         break;
 
@@ -108,31 +110,31 @@ var getWalkinTemplateObj = function(walkin){
           subject += walkin.otherDevice;
         else if(dinfo) subject += dinfo;
 
-        obj.category1 = 'Desktop Management';
+        obj.category1 = 'Student Technology';
         obj.category2 = 'OS/Firmware';
-        obj.category3 = 'Error';
+        obj.category3 = 'Consult';
         break;
 
       case 'Password Resets':
         subject += 'PwdReset';
 
-        obj.category1 = 'Application Management';
-        obj.category2 = 'Access';
-        obj.category3 = 'Inaccessible';
+        obj.category1 = 'Security Management';
+        obj.category2 = 'Password';
+        obj.category3 = 'Reset';
         break;
 
       case 'Printing':
         subject += 'Printing';
 
-        obj.category1 = 'Print Management';
+        obj.category1 = 'Student Technology';
         obj.category2 = 'User Printing';
-        obj.category3 = 'Inaccessible';
+        obj.category3 = 'Consult';
         break;
 
       case 'Check-in':
         subject += 'Converted to CI';
 
-        obj.category1 = 'Desktop Management';
+        obj.category1 = 'Student Technology';
         obj.category2 = 'OS/Firmware';
         obj.category3 = 'Error';
         break;
@@ -140,8 +142,8 @@ var getWalkinTemplateObj = function(walkin){
       case 'Other':
         subject += 'Other ' + walkin.otherResolution;
 
-        obj.category1 = 'Desktop Management';
-        obj.category2 = 'Software';
+        obj.category1 = 'Student Technology';
+        obj.category2 = 'OS/Firmware';
         obj.category3 = 'Error';
         break;
     }
@@ -154,9 +156,9 @@ var getWalkinTemplateObj = function(walkin){
 var getCheckinTemplateObj = function(checkin){
   return {
     short_description: 'STS: CI: Diagnose and Repair',
-    category1: 'Desktop Management',
+    category1: 'Student Technology',
     category2: 'OS/Firmware',
-    category3: 'Error'
+    category3: 'Restore'
   };
 };
 
@@ -167,7 +169,7 @@ var formulateWalkin = function(walkin, soapAction){
     // Request info
     u_soap_action : soapAction,
     u_incident_state : 'Resolved',
-    u_resolution_code : 'Configure',
+    u_resolution_code : 'Solved',
 
     // Static info
     u_category_1 : template.category1,
@@ -181,7 +183,7 @@ var formulateWalkin = function(walkin, soapAction){
     // Walk-in info
     u_correlation_id : walkin._id,
     u_record_type:  (template.type)? template.type :'Incident',
-    u_reported_source :  'Walk In',
+    u_reported_source :  'Walk-in',
     u_customer : walkin.user.isWildcard? 'guest' : walkin.user.username,
     u_problem : 'Problem:\n' + getEscapedXMLCharacters(walkin.description),
     u_liability_agreement : walkin.liabilityAgreement,
@@ -268,7 +270,7 @@ var formulateMessageForwarding = function(ticket, soapAction){
     u_suppress_notification: 'No',
     u_urgency: '4 - Low',
     u_assignment_group: 'LITS: Messaging- Tier 3',
-    u_category_1: 'Communications &amp; Messaging',
+    u_category_1: 'Email and Messaging',
     u_category_2: 'Mailbox',
     u_category_3: 'Restore',
     u_work_note: 'See ' + ticket.snValue + '\n1.Reset user\'s password\n2.Educated user on phishing\n3.Scanned machine for threats\n4.Enrolled user in Duo\n\nMessaging: Please remove block.'

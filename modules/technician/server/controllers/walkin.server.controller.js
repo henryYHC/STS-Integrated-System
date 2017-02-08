@@ -21,6 +21,8 @@ var populate_options = [
 var resolution_templates_path = 'config/templates/walkin/resolution_templates.json',
   resolution_templates = JSON.parse(fs.readFileSync(resolution_templates_path, 'utf8'));
 
+mongoose.Promise = global.Promise;
+
 /*----- Getters -----*/
 exports.getWalkinSetting = function(req, res){
   var system = req.setting, setting = {};

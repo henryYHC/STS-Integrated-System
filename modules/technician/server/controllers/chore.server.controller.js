@@ -10,6 +10,8 @@ var populate_options = [
   { path : 'completedBy', model : 'User', select : 'firstName lastName displayName username' }
 ];
 
+mongoose.Promise = global.Promise;
+
 exports.create = function(req, res) {
   var chore = new Chore(_.extend(req.body, { createdBy: req.user }));
 
