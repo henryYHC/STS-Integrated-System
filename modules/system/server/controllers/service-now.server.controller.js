@@ -11,7 +11,7 @@ var fs = require('fs'),
 mongoose.Promise = global.Promise;
 
 // Get credentials (& reformat wsdl url)
-var credentialFilePath = __dirname + '/../../../../config/credentials/ServiceNow_Test.json',
+var credentialFilePath = __dirname + '/../../../../config/credentials/ServiceNow.json',
   credentialFile = fs.readFileSync(credentialFilePath, 'utf8'),
   credential = JSON.parse(credentialFile);
 
@@ -270,7 +270,7 @@ var formulateMessageForwarding = function(ticket, soapAction){
     u_suppress_notification: 'No',
     u_urgency: '4 - Low',
     u_assignment_group: 'LITS: Messaging- Tier 3',
-    u_category_1: 'Email and Messaging',
+    u_category_1: 'Email &amp; Messaging',
     u_category_2: 'Mailbox',
     u_category_3: 'Restore',
     u_work_note: 'See ' + ticket.snValue + '\n1.Reset user\'s password\n2.Educated user on phishing\n3.Scanned machine for threats\n4.Enrolled user in Duo\n\nMessaging: Please remove block.'
