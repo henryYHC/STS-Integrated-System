@@ -182,15 +182,13 @@ exports.create = function(req, res) {
   async.waterfall([
     // Get+Update/Save user
     function(callback) {
-      if(!need2CreateUser)
-        User.findOne({ username : walkin.user.username }, function (err, user) {
-          user = _.extend(user, walkin.user);
+      User.findOne({ username : walkin.user.username }, function (err, user) {
+        if(err){ console.error(err); callback(err);}
+        else {
+          user = user? user = _.extend(user, walkin.user) : new User(walkin.user);
           user.save(function(err){ walkin.user = user; callback(err); });
-        });
-      else {
-        var user = new User(walkin.user);
-        user.save(function(err){ walkin.user = user; callback(err); });
-      }
+        }
+      });
     },
 
     // Create walk-in
